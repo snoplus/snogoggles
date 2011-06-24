@@ -1,0 +1,30 @@
+unsetenv SFML_BASE_DIR
+unsetenv ROOTSYS
+unsetenv RAT_BASE_DIR
+unsetenv G4_BASE_DIR
+unsetenv XERCESCROOT
+unsetenv LD_LIBRARY_PATH
+unsetenv G4LIB_BUILD_GDML
+unsetenv GLEW_BASE_DIR
+
+unsetenv VIEWER_BASE_DIR
+unsetenv VIEWER_BUILD_DIR
+unsetenv VIEWER_INCLUDE_DIR
+
+setenv SFML_BASE_DIR /home/wasalski/software/SFML
+setenv ROOTSYS /home/wasalski/rat_dev/snocave/libraries/root-5.28.00
+setenv RAT_BASE_DIR /home/wasalski/rat_dev/snocave/sasquatch/dev/rat
+setenv G4_BASE_DIR /home/wasalski/rat_dev/snocave/libraries/geant4.9.4.p01
+setenv XERCESCROOT /home/wasalski/software
+setenv GLEW_BASE_DIR /home/wasalski/software/glew
+
+setenv PYTHONPATH /home/wasalski/rat_dev/snocave/libraries/scons-2.0.1/engine
+setenv PATH /home/wasalski/rat_dev/snocave/libraries/scons-2.0.1/script:{$PATH}
+
+setenv VIEWER_BASE_DIR {$PWD}
+setenv PYTHONPATH {$PYTHONPATH}:{$VIEWER_BASE_DIR}/python
+setenv PATH {$PATH}:{$VIEWER_BASE_DIR}/bin
+
+source {$G4_BASE_DIR}/env.csh
+
+setenv LD_LIBRARY_PATH {$LD_LIBRARY_PATH}:{$SFML_BASE_DIR}/lib:{$ROOTSYS}/lib:{$XERCESCROOT}/lib:{$GLEW_BASE_DIR}/lib
