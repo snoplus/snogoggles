@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class ViewerWindow
+/// \class Viewer::ViewerWindow
 ///
 /// \brief   The Singleton class that is the SNOGoggles Viewer
 ///
@@ -16,6 +16,8 @@
 #define __Viewer_ViewerWindow__
 
 #include <cstddef> //NULL and other things
+
+#include <Viewer/FrameManager.hh>
 
 namespace sf
 {
@@ -43,7 +45,7 @@ private:
 
   void RenderLoop();
 
-  //FrameManager fFrameManager;
+  FrameManager fFrameManager;
   sf::RenderWindow* fWindowApp;
   //Configuration fConfiugration;
   

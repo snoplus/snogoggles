@@ -69,8 +69,8 @@ if [ "$ADVANCED_OPTIONS" = "Yes" ]; then
 	set_param SCONS_VERSION 2.0.1 "The version number of SCons."
 	SCONS_VERSION=$return_value
 
-	set_param GLEW_BASE_DIR /usr "The home directory for GLEW."
-	GLEW_BASE_DIR=$return_value
+	set_param GLEWROOT /usr "The home directory for GLEW."
+	GLEWROOT=$return_value
 
 else
 
@@ -78,38 +78,38 @@ else
 	GEANT4_VERSION=4.9.4.p01
 	SCONS_VERSION=2.0.1
 
-	GLEW_BASE_DIR=/usr
+	GLEWROOT=/usr
 
 fi
 
 if [ "$SET_NOT_SNOCAVE" = "Yes" ]; then
 
-	set_param GEANT4_BASE_DIR "" "The home directory of Geant4."
-	GEANT4_BASE_DIR=$return_value
+	set_param GEANT4ROOT "" "The home directory of Geant4."
+	GEANT4ROOT=$return_value
 
 	set_param ROOTSYS "" "The home directory of ROOT."
 	ROOTSYS=$return_value
 
-	set_param SCONS_BASE_DIR "" "The home directory of SCons."
-	SCONS_BASE_DIR=$return_value
+	set_param SCONSROOT "" "The home directory of SCons."
+	SCONSROOT=$return_value
 
-	set_param RAT_BASE_DIR "" "The home directory of RAT."
-	RAT_BASE_DIR=$return_value
+	set_param RATROOT "" "The home directory of RAT."
+	RATROOT=$return_value
 
 else
 
 	set_param SNOCAVE_DIR "" "Path to the snocave directory."
 	SNOCAVE_DIR=$return_value
 
-	RAT_BASE_DIR=$SNOCAVE_DIR/sasquatch/dev/rat
-	GEANT4_BASE_DIR=$SNOCAVE_DIR/libraries/geant$GEANT4_VERSION
+	RATROOT=$SNOCAVE_DIR/sasquatch/dev/rat
+	GEANT4ROOT=$SNOCAVE_DIR/libraries/geant$GEANT4_VERSION
 	ROOTSYS=$SNOCAVE_DIR/libraries/root-$ROOT_VERSION
-	SCONS_BASE_DIR=$SNOCAVE_DIR/libraries/scons-$SCONS_VERSION
+	SCONSROOT=$SNOCAVE_DIR/libraries/scons-$SCONS_VERSION
 
 fi
 
-set_param SFML_BASE_DIR "" "Path to the SFML directory."
-SFML_BASE_DIR=$return_value
+set_param SFMLROOT "" "Path to the SFML directory."
+SFMLROOT=$return_value
 
 set_param XERCESCROOT "" "Path to the Xerces-C++ home directory."
 XERCESCROOT=$return_value
@@ -117,11 +117,11 @@ XERCESCROOT=$return_value
 
 echo "Testing to ensure that all packages exist at specified directories..."
 
-check_package_terminate RAT $RAT_BASE_DIR include/RAT/DS/EV.hh
-check_package_terminate Geant4 $GEANT4_BASE_DIR include/G4Event.hh
+check_package_terminate RAT $RATROOT include/RAT/DS/EV.hh
+check_package_terminate Geant4 $GEANT4ROOT include/G4Event.hh
 
 # Checks whether Geant4 has GDML_BUILD_ENABLED
-if [ -f $GEANT4_BASE_DIR/include/G4GDMLParser.hh ]; then
+if [ -f $GEANT4ROOT/include/G4GDMLParser.hh ]; then
 	echo "     Geant4 also has the GDML parser built!"
 else
 	echo "     WARNING: Geant4 does not have the GDML parser built!"
@@ -129,10 +129,10 @@ else
 fi
 
 check_package_terminate ROOT $ROOTSYS include/TVector3.h
-check_package_terminate SCons $SCONS_BASE_DIR scons.1
-check_package_terminate SFML $SFML_BASE_DIR include/SFML/OpenGL.hpp
+check_package_terminate SCons $SCONSROOT scons.1
+check_package_terminate SFML $SFMLROOT include/SFML/OpenGL.hpp
 check_package_terminate Xerces-C++ $XERCESCROOT include/xercesc/dom/DOM.hpp
-check_package_terminate GLEW $GLEW_BASE_DIR include/GL/glew.h
+check_package_terminate GLEW $GLEWROOT include/GL/glew.h
 
 echo ""
 
@@ -142,19 +142,19 @@ echo -n "Creating env.sh... "
 rm -f env.sh
 echo '####### SNOGoggles environment #######' > env.sh
 echo ' ' >> env.sh
-echo 'export VIEWER_BASE_DIR='$PWD >> env.sh
+echo 'export VIEWERROOT='$PWD >> env.sh
 echo ' ' >> env.sh
-echo 'source '$GEANT4_BASE_DIR'/env.sh' >> env.sh
+echo 'source '$GEANT4ROOT'/env.sh' >> env.sh
 echo ' ' >> env.sh
-echo 'export RAT_BASE_DIR='$RAT_BASE_DIR >> env.sh
+echo 'export RATROOT='$RATROOT >> env.sh
 echo 'export ROOTSYS='$ROOTSYS >> env.sh
-echo 'export SFML_BASE_DIR='$SFML_BASE_DIR >> env.sh
+echo 'export SFMLROOT='$SFMLROOT >> env.sh
 echo 'export XERCESCROOT='$XERCESCROOT >> env.sh
-echo 'export GLEW_BASE_DIR='$GLEW_BASE_DIR >> env.sh
+echo 'export GLEWROOT='$GLEWROOT >> env.sh
 echo ' ' >> env.sh
-echo 'export PATH=$PATH:'$SCONS_BASE_DIR'/script:$VIEWER_BASE_DIR/bin' >> env.sh
-echo 'export PYTHONPATH='$SCONS_BASE_DIR'/engine:$VIEWER_BASE_DIR/python' >> env.sh
-echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib:$SFML_BASE_DIR/lib:$XERCESCROOT/lib:$GLEW_BASE_DIR/lib' >> env.sh
+echo 'export PATH=$PATH:'$SCONSROOT'/script:$VIEWERROOT/bin' >> env.sh
+echo 'export PYTHONPATH='$SCONSROOT'/engine:$VIEWERROOT/python' >> env.sh
+echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib:$SFMLROOT/lib:$XERCESCROOT/lib:$GLEWROOT/lib' >> env.sh
 echo ' ' >> env.sh
 
 echo "Done."
@@ -166,26 +166,26 @@ echo -n "Creating env.csh... "
 rm -f env.csh
 echo '####### SNOGoggles environment #######' > env.csh
 echo ' ' >> env.csh
-echo 'setenv VIEWER_BASE_DIR {$PWD}' >> env.csh
+echo 'setenv VIEWERROOT {$PWD}' >> env.csh
 echo ' ' >> env.csh
-echo 'source '$GEANT4_BASE_DIR'/env.csh' >> env.csh
+echo 'source '$GEANT4ROOT'/env.csh' >> env.csh
 echo ' ' >> env.csh
-echo 'unsetenv RAT_BASE_DIR' >> env.csh
+echo 'unsetenv RATROOT' >> env.csh
 echo 'unsetenv ROOTSYS' >> env.csh
-echo 'unsetenv SFML_BASE_DIR' >> env.csh
+echo 'unsetenv SFMLROOT' >> env.csh
 echo 'unsetenv XERCESCROOT' >> env.csh
-echo 'unsetenv GLEW_BASE_DIR' >> env.csh
+echo 'unsetenv GLEWROOT' >> env.csh
 echo 'unsetenv PYTHONPATH' >> env.csh
 echo ' ' >> env.csh
-echo 'setenv RAT_BASE_DIR '$RAT_BASE_DIR >> env.csh
+echo 'setenv RATROOT '$RATROOT >> env.csh
 echo 'setenv ROOTSYS '$ROOTSYS >> env.csh
-echo 'setenv SFML_BASE_DIR '$SFML_BASE_DIR >> env.csh
+echo 'setenv SFMLROOT '$SFMLROOT >> env.csh
 echo 'setenv XERCESCROOT '$XERCESCROOT >> env.csh
-echo 'setenv GLEW_BASE_DIR '$GLEW_BASE_DIR >> env.csh
+echo 'setenv GLEWROOT '$GLEWROOT >> env.csh
 echo ' ' >> env.csh
-echo 'setenv PATH {$PATH}:'$SCONS_BASE_DIR'/script:{$VIEWER_BASE_DIR}/bin' >> env.csh
-echo 'setenv PYTHONPATH '$SCONS_BASE_DIR'/engine:{$VIEWER_BASE_DIR}/python' >> env.csh
-echo 'setenv LD_LIBRARY_PATH {$LD_LIBRARY_PATH}:{$ROOTSYS}/lib:{$SFML_BASE_DIR}/lib:{$XERCESCROOT}/lib:{$GLEW_BASE_DIR}/lib' >> env.csh
+echo 'setenv PATH {$PATH}:'$SCONSROOT'/script:{$VIEWERROOT}/bin' >> env.csh
+echo 'setenv PYTHONPATH '$SCONSROOT'/engine:{$VIEWERROOT}/python' >> env.csh
+echo 'setenv LD_LIBRARY_PATH {$LD_LIBRARY_PATH}:{$ROOTSYS}/lib:{$SFMLROOT}/lib:{$XERCESCROOT}/lib:{$GLEWROOT}/lib' >> env.csh
 echo ' ' >> env.csh
 
 echo "Done."

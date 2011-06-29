@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class FrameManager
+/// \class Viewer::FrameManager
 ///
 /// \brief   Manages the Frames' existance, position and size
 ///
@@ -15,10 +15,20 @@
 #ifndef __Viewer_FrameManager__
 #define __Viewer_FrameManager__
 
+#include <vector>
+
+namespace sf
+{
+  class Event;
+  class RenderWindow;
+}
+
 namespace Viewer
 {
+  class ConfigurationTable;
+  class FrameContainer;
 
-class Frame
+class FrameManager
 {
 public:
   void Initialise( ConfigurationTable& configTable );
@@ -30,8 +40,7 @@ public:
   
   void SaveConfiguration( ConfigurationTable& configTable );
 private:
-  std::vector<FrameContainer*> fFrames2d;
-  std::vector<FrameContainer*> fFrames3d;
+  std::vector<FrameContainer*> fFrames;
   int fFocus;
 };
 

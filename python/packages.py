@@ -8,13 +8,9 @@ import os
 
 # Appends Geant4 and CLHEP
 def geant4(env):
-	
 	env.Append( CPPPATH = [ os.environ["G4INCLUDE"], os.environ["CLHEP_INCLUDE_DIR"] ] )
-	
 	env.Append( LIBPATH = [ os.path.join( os.environ["G4LIB"], os.environ["G4SYSTEM"] ), os.environ["CLHEP_LIB_DIR"] ] )
-	
 	env.Append( LIBS = ['CLHEP'] )
-	
 	env.ParseConfig('%s/liblist -m %s < %s/libname.map'.replace('%s', os.path.join(os.environ["G4LIB"], os.environ["G4SYSTEM"])))
 
 # Appends ROOT

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class FrameCoord
+/// \class Viewer::FrameCoord
 ///
 /// \brief   The Frame coordinates and coordinate system.
 ///
@@ -21,8 +21,8 @@
 #ifndef __Viewer_FrameCoord__
 #define __Viewer_FrameCoord__
 
-#include <SFML/Rect.hpp>
-#include <SFML/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
 
 namespace Viewer
 {
@@ -33,19 +33,19 @@ public:
   static inline void SetWindowSize( double width, double height );
   static inline void SetResolution( double width, double height );
 
-  inline void SetFrameRect( const sf::Rect frameRect );
+  inline void SetFrameRect( const sf::Rect<double> frameRect );
 
   sf::Vector2<double> ToFrameCoord( const sf::Vector2<double>& resolutionCoord ) const;
   sf::Vector2<double> ToResolutionCoord( const sf::Vector2<double>& frameCoord ) const;
   
-  sf::Rect ToFrameRect( const sf::Rect& resolutionRect ) const;
-  sf::Rect ToResolutionRect( const sf::Rect& frameRect ) const;
+  sf::Rect<double> ToFrameRect( const sf::Rect<double>& resolutionRect ) const;
+  sf::Rect<double> ToResolutionRect( const sf::Rect<double>& frameRect ) const;
 
-  sf::Rect Get3dViewport() const;
-  sf::Rect GetFrameRect() const;
+  sf::Rect<double> Get3dViewport() const;
+  sf::Rect<double> GetFrameRect() const;
 
 private:
-  sf::Rect fRect;
+  sf::Rect<double> fRect;
   
   static double fsWindowHeight;
   static double fsWindowWidth;
@@ -53,19 +53,22 @@ private:
   static double fsResolutionWidth;
 };
 
-void SetWindowSize( double width, double height )
+void 
+FrameCoord::SetWindowSize( double width, double height )
 {
   fsWindowWidth = width;
   fsWindowHeight = height;
 }
 
-void SetResolution( double width, double height )
+void 
+FrameCoord::SetResolution( double width, double height )
 {
   fsResolutionWidth = width;
   fsResolutionHeight = height;
 }
 
-void SetFrameRect( const sf::Rect frameRect )
+void 
+FrameCoord::SetFrameRect( const sf::Rect<double> frameRect )
 {
   fRect = frameRect;
 }
