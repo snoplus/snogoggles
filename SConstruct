@@ -3,7 +3,7 @@
 
 #### Add new source module names here ####
 
-directories = Split("""  """)
+directories = Split("""Viewer Frame Util Configuration GUI""")
 
 ############### You should not need to edit below this line ############
 
@@ -26,11 +26,11 @@ for d in directories:
 addpackages(env)
 
 # Add a link to the include directory of the viewer
-env.Append( CPPPATH = [ os.environ["VIEWER_BASE_DIR"] + "/include" ] )
+env.Append( CPPPATH = [ os.environ["VIEWERROOT"] + "/include" ] )
 
 # Creates SNOGoggles Library
 # Can be used by RAT to create a RAT processor version of SNOGoggles
-env.StaticLibrary( os.environ["VIEWER_BASE_DIR"] + "/lib/snogoggles", viewer_obj)
+env.StaticLibrary( os.environ["VIEWERROOT"] + "/lib/snogoggles", viewer_obj)
 
 # Creates binary file
-env.Program(target = 'bin/snogoggles', source = viewer_obj)
+env.Program(target = 'bin/snogoggles', source = [ viewer_obj, "SNOGoggles.cc" ])

@@ -1,10 +1,10 @@
 import os
 
 # Appends Xerces-C++
-def xercesc(env):
-	env.Append( CPPPATH = [ os.environ["XERCESCROOT"] + "/include" ] )
-	env.Append( LIBPATH = [ os.environ["XERCESCROOT"] + "/lib" ] )
-	env.Append( LIBS = ['xerces-c'] )
+#def xercesc(env):
+#	env.Append( CPPPATH = [ os.environ["XERCESCROOT"] + "/include" ] )
+#	env.Append( LIBPATH = [ os.environ["XERCESCROOT"] + "/lib" ] )
+#	env.Append( LIBS = ['xerces-c'] )
 
 # Appends Geant4 and CLHEP
 def geant4(env):
@@ -24,19 +24,19 @@ def root(env):
 
 # Appends SFML and GLEW
 def sfml(env):
-	env.Append( CPPPATH = [ os.environ["SFML_BASE_DIR"] + "/include", os.environ["GLEW_BASE_DIR"] + "/include" ] )
-	env.Append( LIBPATH = [ os.environ["SFML_BASE_DIR"] + "/lib", os.environ["GLEW_BASE_DIR"] + "/lib" ] )
+	env.Append( CPPPATH = [ os.environ["SFMLROOT"] + "/include", os.environ["GLEWROOT"] + "/include" ] )
+	env.Append( LIBPATH = [ os.environ["SFMLROOT"] + "/lib", os.environ["GLEWROOT"] + "/lib" ] )
 	env.Append( LIBS = [ 'sfml-graphics', 'sfml-window', 'sfml-system', 'GLEW' ] )
 
 # Appends RAT
 def rat(env):
-	env.Append( CPPPATH = [ os.environ["RAT_BASE_DIR"] + "/include" ] )
-	env.Append( LIBPATH = [ os.environ["RAT_BASE_DIR"] + "/lib" ] )
+	env.Append( CPPPATH = [ os.environ["RATROOT"] + "/include" ] )
+	env.Append( LIBPATH = [ os.environ["RATROOT"] + "/lib" ] )
 	env.Append( LIBS = [ 'rat_' + os.environ["G4SYSTEM"] ] )
 
 # Adds all packages
 def addpackages(env):
-	xercesc(env)
+	#xercesc(env)
 	geant4(env)
 	root(env)
 	sfml(env)

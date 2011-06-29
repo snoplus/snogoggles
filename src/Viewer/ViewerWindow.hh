@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer
+/// \class ViewerWindow
 ///
 /// \brief   The Singleton class that is the SNOGoggles Viewer
 ///
@@ -12,8 +12,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Viewer__
-#define __Viewer_Viewer__
+#ifndef __Viewer_ViewerWindow__
+#define __Viewer_ViewerWindow__
+
+#include <cstddef> //NULL and other things
 
 namespace sf
 {
@@ -23,31 +25,37 @@ namespace sf
 namespace Viewer
 {
 
-class Viewer
+class ViewerWindow
 {
 public:
+  inline static ViewerWindow& GetInstance();
 
-  inline Viewer& GetInstance();
+  void Initialise();
+  
+  void Run();
+
+  void Destruct();
+
+private:
+  ViewerWindow();
 
   void EventLoop();
 
   void RenderLoop();
-private:
-  Viewer();
 
-  FrameManager fFrameManager;
+  //FrameManager fFrameManager;
   sf::RenderWindow* fWindowApp;
-  Configuration fConfiugration;
+  //Configuration fConfiugration;
   
-  static Viewer* fViewer;
+  static ViewerWindow* fViewer;
 };
 
-Viewer&
-Viewer::GetInstance()
+ViewerWindow&
+ViewerWindow::GetInstance()
 {
   if( fViewer == NULL )
-    fViewer = new Viewer();
-  return fViewer
+    fViewer = new ViewerWindow();
+  return *fViewer;
 }
 
 } //::Viewer
