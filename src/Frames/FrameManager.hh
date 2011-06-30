@@ -15,6 +15,8 @@
 #ifndef __Viewer_FrameManager__
 #define __Viewer_FrameManager__
 
+#include <SFML/System/Vector2.hpp>
+
 #include <vector>
 
 namespace sf
@@ -34,14 +36,18 @@ public:
   void Initialise( ConfigurationTable& configTable );
   
   void NewEvent( sf::Event& event );
+  void WorkLoop();
   void RenderGUI( sf::RenderWindow& windowApp );
   void Render2d( sf::RenderWindow& windowApp );
   void Render3d( sf::RenderWindow& windowApp );
   
   void SaveConfiguration( ConfigurationTable& configTable );
 private:
-  std::vector<FrameContainer*> fFrames;
+  int FindFrame( const sf::Vector2<double>& resolutionCoord );
+
+  std::vector<FrameContainer*> fFrameContainers;
   int fFocus;
+  bool fMoving;
 };
 
 } // ::Viewer

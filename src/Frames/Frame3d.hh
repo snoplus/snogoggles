@@ -24,7 +24,7 @@ class Frame3d : public Frame
 {
 public:
   /// Force 2d Rendering to do nothing
-  void Render2d( sf::RenderWindow& windowApp ) {}; 
+  void Render2d( RWWrapper& windowApp ) {}; 
   virtual ~Frame3d() {}
 };
 

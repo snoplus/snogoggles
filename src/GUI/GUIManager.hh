@@ -30,14 +30,15 @@ namespace sf
 namespace Viewer
 {
   class GUI;
+  class FrameCoord;
 
 class GUIManager
 {
 public:
   UIEvent NewEvent( sf::Event& event );
-  void Render( sf::RenderWindow& windowApp );
+  void Render( sf::RenderWindow& windowApp, const FrameCoord& frameCoord );
   
-  template<class T>
+  template<class T> inline
   GUI* NewGUI( sf::Rect<double>& rect );
 
   GUI* GetGUI( unsigned int guiID );
@@ -45,6 +46,15 @@ private:
   std::vector<GUI*> fGUIObjects;
   int fFocus;
 };
+
+template<class T>
+GUI* 
+GUIManager::NewGUI( sf::Rect<double>& rect )
+{
+  GUI* gui = new T( rect, fGUIObjects.size() );
+  fGUIObjects.push_back( gui );
+  return gui;
+}
 
 } // ::Viewer
 

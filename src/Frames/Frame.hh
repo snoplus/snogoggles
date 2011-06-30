@@ -20,8 +20,9 @@
 #include <string>
 
 #include <Viewer/FrameCoord.hh>
-//#include <Viewer/GUIManager.hh>
+#include <Viewer/GUIManager.hh>
 #include <Viewer/UIEvent.hh>
+#include <Viewer/RWWrapper.hh>
 
 namespace sf
 {
@@ -38,8 +39,6 @@ public:
   
   virtual ~Frame() {};
 
-  virtual void RenderGUI( sf::RenderWindow& windowApp );
-
   virtual void NewEvent( sf::Event& event );
    
   virtual void Initialise( ConfigurationTable& configTable );
@@ -49,23 +48,48 @@ public:
   virtual void EventLoop() = 0;
   
   virtual std::string GetName() = 0;
-
-  virtual void Render2d( sf::RenderWindow& windowApp ) = 0;
   
-  virtual void Render3d( sf::RenderWindow& windowApp ) = 0;
+  /// Only the GUIManager needs the RWWrapper, if overload RenderGUI then you should know what todo...
+  virtual void RenderGUI( sf::RenderWindow& windowApp );
+  inline virtual void Render2dT( sf::RenderWindow& windowApp );
+  virtual void Render2d( RWWrapper& windowApp ) = 0;
+  inline virtual void Render3dT( sf::RenderWindow& windowApp );
+  virtual void Render3d( RWWrapper& windowApp ) = 0;
 
   inline void SetFrameCoord( const FrameCoord& frameCoord );
+  inline FrameCoord GetFrameCoord(); 
 protected:
   FrameCoord fFrameCoord;
-  //GUIManager fGUIManager;
+  GUIManager fGUIManager;
   std::queue<UIEvent> fEvents;
 };
+
+void 
+Frame::Render2dT( sf::RenderWindow& windowApp ) 
+{ 
+  RWWrapper wrapper = RWWrapper( windowApp, fFrameCoord );
+  Render2d( wrapper ); 
+}
+
+void 
+Frame::Render3dT( sf::RenderWindow& windowApp ) 
+{ 
+  RWWrapper wrapper = RWWrapper( windowApp, fFrameCoord );
+  Render3d( wrapper );
+}
 
 void
 Frame::SetFrameCoord( const FrameCoord& frameCoord ) 
 {
   fFrameCoord = frameCoord;
 }
+
+FrameCoord 
+Frame::GetFrameCoord()
+{
+  return fFrameCoord;
+}
+
 
 } // ::Viewer
 

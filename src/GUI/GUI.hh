@@ -27,6 +27,7 @@ namespace sf
 
 namespace Viewer
 {
+  class FrameCoord;
 
 class GUI
 {
@@ -37,13 +38,17 @@ public:
   inline unsigned int GetGlobalID();
   inline void SetRect( sf::Rect<double>& rect );
 
-  virtual void Render( sf::RenderWindow& windowApp ) = 0;
+  bool ContainsPoint( const sf::Vector2<double>& localCoord );
+
+  virtual void Render( sf::RenderWindow& windowApp, const FrameCoord& frameCoord ) = 0;
   virtual UIEvent NewEvent( sf::Event& event ) = 0;
+  virtual double PreferedRatio() = 0; 
 
 protected:
   sf::Rect<double> fRect;
   unsigned int fID;
   unsigned int fGlobalID;
+private:
   static unsigned int fsNextID;
 };
 

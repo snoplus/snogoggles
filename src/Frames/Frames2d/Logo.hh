@@ -15,10 +15,8 @@
 #ifndef __Viewer_Frames_Logo__
 #define __Viewer_Frames_Logo__
 
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Image.hpp> // Poor Sprite independence
-
 #include <Viewer/Frame2d.hh>
+#include <Viewer/Sprite.hh>
 
 namespace Viewer
 {
@@ -38,9 +36,11 @@ public:
   
   static std::string Name() { return std::string( "Logo" ); }
 
-  virtual void Render2d( sf::RenderWindow& windowApp );
+  virtual void Render2d( RWWrapper& windowApp );
 private:
-  sf::Sprite fLogo;
+  Sprite fLogo;
+  Sprite fLogo2;
+  bool fState;
 };
 
 } // ::Frames

@@ -35,12 +35,12 @@ ImageManager::GetImage(
   return *image;
 }
 
-sf::Sprite
+Sprite
 ImageManager::NewSprite(
 			const string& fileName )
 {
   // sf::Images are resource safe, i.e. Sprites will know when Image is deleted
-  sf::Sprite sprite;
+  Sprite sprite;
   sprite.SetImage( GetImage( fileName ) );
   return sprite;
 }

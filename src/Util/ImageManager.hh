@@ -31,10 +31,10 @@
 #ifndef __Viewer_Example__
 #define __Viewer_Example__
 
-#include <SFML/Graphics/Sprite.hpp>
-
 #include <stdexcept>
 #include <map>
+
+#include <Viewer/Sprite.hh>
 
 namespace sf
 {
@@ -59,7 +59,7 @@ public:
 
   sf::Image& GetImage( const std::string& fileName );
 
-  sf::Sprite NewSprite( const std::string& fileName );
+  Sprite NewSprite( const std::string& fileName );
 private:
   ImageManager() {};
 

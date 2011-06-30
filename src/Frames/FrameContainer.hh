@@ -17,6 +17,7 @@
 #define __Viewer_FrameContainer__
 
 #include <Viewer/FrameCoord.hh>
+#include <Viewer/FrameEvent.hh>
 
 namespace sf
 {
@@ -28,34 +29,38 @@ namespace Viewer
 {
   class ConfigurationTable;
   class Frame;
-
-  //namespace GUI
-  //{
-  //  class Button;
-  //  class DragAble;
-  //}
+  class GUI;
+namespace GUIs
+{
+  class Button;
+}
 
 class FrameContainer
 {
 public:
+  virtual ~FrameContainer();
+
   void Initialise( ConfigurationTable& configTable );
   
   void Render2d( sf::RenderWindow& windowApp );
   void Render3d( sf::RenderWindow& windowApp );
   void RenderGUI( sf::RenderWindow& windowApp );
 
-  void NewEvent( sf::Event& event );
+  FrameEvent NewEvent( sf::Event& event );
   
   void SaveConfiguration( ConfigurationTable& configTable );
 
-  void SetContainerCoord( FrameCoord& frameCoord );
+  void Resize( const sf::Vector2<double>& size );
+  void Move( const sf::Vector2<double>& position );
+  void SetContainerCoord( FrameCoord& fContainerCoord );
+  FrameCoord GetContainerCoord();
 private:
-  FrameCoord fContainerCoord;
+  FrameCoord fTopBarCoord;
   
   Frame* fFrame;
-  //GUI::Button* fPinButton;
-  //GUI::Button* fExitButton;
-  //GUI::DragAble* fTopBar;
+  GUIs::Button* fPinButton;
+  GUIs::Button* fExitButton;
+  GUIs::Button* fTopBar;
 };
 
 } // ::Viewer

@@ -4,6 +4,7 @@
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/ImageManager.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/FrameCoord.hh>
 using namespace Viewer;
 
 ViewerWindow* ViewerWindow::fViewer = NULL;
@@ -17,6 +18,8 @@ void
 ViewerWindow::Initialise()
 {
   fWindowApp = new sf::RenderWindow( sf::VideoMode( 800, 600 ), "SNO Goggles" ); // Need to load Resolution
+  FrameCoord::SetResolution( 800, 600 );
+  FrameCoord::SetWindowSize( 800, 600 );
   // Draw a splash background
   ImageManager& im = ImageManager::GetInstance();
   sf::Sprite sp = im.NewSprite( "Logo.png" );
@@ -53,6 +56,29 @@ ViewerWindow::EventLoop()
   sf::Event event;
   while( fWindowApp->PollEvent( event ) )
     {
+      switch( event.Type )
+	{
+// First ViewerWindow Specific Events
+	case sf::Event::Closed:
+	  fWindowApp->Close();
+	  break;
+	case sf::Event::Resized:
+	  FrameCoord::SetWindowSize( event.Size.Width, event.Size.Height );
+	  break;
+	case sf::Event::LostFocus:
+	case sf::Event::GainedFocus:
+	  break;
+// Now events to use and then pass to frames
+	case sf::Event::KeyPressed:
+	  if( event.Key.Code == sf::Key::Escape )
+	    {
+	      fWindowApp->Close();
+	      break;
+	    }
+//Drop through
+	default:
+	  fFrameManager.NewEvent( event );
+	}
       if( event.Type == sf::Event::Closed )
 	fWindowApp->Close();
     }
@@ -62,5 +88,7 @@ void
 ViewerWindow::RenderLoop()
 {
   fFrameManager.Render2d( *fWindowApp );
+  fFrameManager.RenderGUI( *fWindowApp );
+  
   fWindowApp->Display();
 }

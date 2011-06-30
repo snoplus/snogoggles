@@ -6,7 +6,7 @@ using namespace Viewer;
 void 
 Frame::RenderGUI( sf::RenderWindow& windowApp )
 {
-
+  fGUIManager.Render( windowApp, fFrameCoord );
 }
 
 void 
