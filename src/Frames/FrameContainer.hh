@@ -41,13 +41,13 @@ public:
   virtual ~FrameContainer();
 
   void Initialise( ConfigurationTable& configTable );
-  
+
+  void EventLoop();  
   void Render2d( sf::RenderWindow& windowApp );
   void Render3d( sf::RenderWindow& windowApp );
   void RenderGUI( sf::RenderWindow& windowApp );
 
   FrameEvent NewEvent( sf::Event& event );
-  
   void SaveConfiguration( ConfigurationTable& configTable );
 
   void Resize( const sf::Vector2<double>& size );

@@ -1,10 +1,10 @@
 import os
 
 # Appends Xerces-C++
-#def xercesc(env):
-#	env.Append( CPPPATH = [ os.environ["XERCESCROOT"] + "/include" ] )
-#	env.Append( LIBPATH = [ os.environ["XERCESCROOT"] + "/lib" ] )
-#	env.Append( LIBS = ['xerces-c'] )
+def xercesc(env):
+	env.Append( CPPPATH = [ os.environ["XERCESCROOT"] + "/include" ] )
+	env.Append( LIBPATH = [ os.environ["XERCESCROOT"] + "/lib" ] )
+	env.Append( LIBS = ['xerces-c'] )
 
 # Appends Geant4 and CLHEP
 def geant4(env):
@@ -32,7 +32,7 @@ def rat(env):
 
 # Adds all packages
 def addpackages(env):
-	#xercesc(env)
+	xercesc(env)
 	geant4(env)
 	root(env)
 	sfml(env)

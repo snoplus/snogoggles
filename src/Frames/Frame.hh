@@ -21,7 +21,7 @@
 
 #include <Viewer/FrameCoord.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/UIEvent.hh>
+#include <Viewer/GUIReturn.hh>
 #include <Viewer/RWWrapper.hh>
 
 namespace sf
@@ -61,7 +61,7 @@ public:
 protected:
   FrameCoord fFrameCoord;
   GUIManager fGUIManager;
-  std::queue<UIEvent> fEvents;
+  std::queue<GUIReturn> fEvents;
 };
 
 void 

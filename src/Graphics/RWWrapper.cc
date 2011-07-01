@@ -5,6 +5,7 @@
 #include <Viewer/FrameCoord.hh>
 #include <Viewer/Shape.hh>
 #include <Viewer/Sprite.hh>
+#include <Viewer/Text.hh>
 using namespace Viewer;
 
 #include <iostream>
@@ -20,10 +21,9 @@ void
 RWWrapper::Draw( Shape& object )
 {
   sf::Shape newObject( object );
-  sf::Rect<double> frameRect = fFrameCoord.GetRect();
-  sf::Rect<double> objectRect = object.GetBoundingRect();
-  newObject.SetPosition( frameRect.Left + objectRect.Left, frameRect.Top + objectRect.Top );
-  newObject.Scale( objectRect.Width * frameRect.Width, objectRect.Height * frameRect.Height );
+  sf::Rect<double> objectRect = fFrameCoord.FrameToResolutionRect( object.GetBoundingRect() );
+  newObject.SetPosition( objectRect.Left, objectRect.Top );
+  newObject.Scale( objectRect.Width, objectRect.Height );
   DrawObject( newObject );
 }
 
@@ -31,16 +31,20 @@ void
 RWWrapper::Draw( Sprite& object )
 {
   sf::Sprite newObject( object );
-  sf::Rect<double> frameRect = fFrameCoord.GetRect();
-  sf::Rect<double> objectRect = object.GetBoundingRect();
-  newObject.SetPosition( frameRect.Left + objectRect.Left, frameRect.Top + objectRect.Top );
-  newObject.Resize( objectRect.Width * frameRect.Width, objectRect.Height * frameRect.Height );
+  sf::Rect<double> objectRect = fFrameCoord.FrameToResolutionRect( object.GetBoundingRect() );
+  newObject.SetPosition(  objectRect.Left, objectRect.Top );
+  newObject.Resize( objectRect.Width, objectRect.Height );
   DrawObject( newObject );
 }
 void 
-RWWrapper::Draw( sf::Text& object )
+RWWrapper::Draw( Text& object )
 {
-
+  sf::Text newObject( object );
+  sf::Rect<float> textRect = newObject.GetRect();
+  sf::Rect<double> objectRect = fFrameCoord.FrameToResolutionRect( object.GetBoundingRect() );
+  newObject.SetPosition( objectRect.Left, objectRect.Top );
+  newObject.Scale( objectRect.Width / textRect.Width, objectRect.Height / textRect.Height );
+  DrawObject( newObject );
 }
 
 void 

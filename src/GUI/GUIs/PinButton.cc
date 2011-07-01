@@ -2,41 +2,31 @@
 #include <SFML/Graphics.hpp>
 
 #include <Viewer/PinButton.hh>
-#include <Viewer/FrameCoord.hh>
+#include <Viewer/RWWrapper.hh>
+#include <Viewer/ImageManager.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
 PinButton::PinButton( sf::Rect<double>& rect, unsigned int guiID )
   : Button( rect, guiID )
 {
-  fButtonBox = new sf::Shape( sf::Shape::Rectangle( 0.0, 0.0, 1.0, 1.0, sf::Color( 255, 255, 255 ), 0.1, sf::Color( 0, 0, 0 ) ) );
-  fLine1 = new sf::Shape( sf::Shape::Line( 0.5, 0.0, 0.5, 1.0, 0.1, sf::Color( 0, 0, 0 ) ) );
-  fLine2 = new sf::Shape( sf::Shape::Line( 0.0, 0.5, 1.0, 0.5, 0.1, sf::Color( 0, 0, 0 ) ) );
+  ImageManager& imageManager = ImageManager::GetInstance();
+  fButton = imageManager.NewSprite( "FrameUI.png" );
+  fButton.SetBoundingRect( rect );
+  fButton.SetSubRect( sf::Rect<int>( 301, 0, 21, 20 ) );
 }
 
 PinButton::~PinButton()
 {
-  delete fButtonBox;
-  delete fLine1;
-  delete fLine2;
 }
 
 void 
-PinButton::Render( sf::RenderWindow& windowApp, const FrameCoord& frameCoord )
+PinButton::Render( RWWrapper& windowApp )
 {
-  sf::Rect<double> boundingBox = frameCoord.FrameToResolutionRect( fRect );
-  fButtonBox->SetPosition( boundingBox.Left, boundingBox.Top );
-  fButtonBox->SetScale( boundingBox.Width, boundingBox.Height );
-  if( fPressed )
-    fButtonBox->SetColor( sf::Color( 200, 200, 200 ) );
+  if( !fPressed )
+    fButton.SetSubRect( sf::Rect<int>( 301, 0, 21, 20 ) );
   else
-    fButtonBox->SetColor( sf::Color( 255, 255, 255 ) );
-  fLine1->SetPosition( boundingBox.Left, boundingBox.Top );
-  fLine1->SetScale( boundingBox.Width, boundingBox.Height );
-  fLine2->SetPosition( boundingBox.Left, boundingBox.Top );
-  fLine2->SetScale( boundingBox.Width, boundingBox.Height );
+    fButton.SetSubRect( sf::Rect<int>( 301, 20, 21, 20 ) );
 
-  windowApp.Draw( *fButtonBox );
-  windowApp.Draw( *fLine1 );
-  windowApp.Draw( *fLine2 );
+  windowApp.Draw( fButton );
 }

@@ -5,6 +5,8 @@
 #include <Viewer/Logo.hh>
 #include <Viewer/ExitButton.hh>
 #include <Viewer/PinButton.hh>
+#include <Viewer/TopBarButton.hh>
+#include <Viewer/UIEvent.hh>
 using namespace Viewer;
 
 void 
@@ -12,10 +14,10 @@ FrameContainer::Initialise( ConfigurationTable& configTable )
 {
   sf::Rect<double> exitPos( 0.95, 0.0, 0.05, 0.9 );
   fExitButton = new GUIs::ExitButton( exitPos, 0 );
-  sf::Rect<double> pinPos( 0.85, 0.0, 0.05, 0.9 );
+  sf::Rect<double> pinPos( 0.9, 0.0, 0.05, 0.9 );
   fPinButton = new GUIs::PinButton( pinPos, 1 );
-  sf::Rect<double> barPos( 0.0, 0.0, 0.6, 0.9 );
-  fTopBar = new GUIs::PinButton( barPos, 3 );
+  sf::Rect<double> barPos( 0.0, 0.0, 0.9, 0.9 );
+  fTopBar = new GUIs::TopBarButton( barPos, 3 );
   // Temp below
   fFrame = new Frames::Logo();
   fFrame->Initialise( configTable );
@@ -27,6 +29,12 @@ FrameContainer::~FrameContainer()
   delete fFrame;
 }
   
+void
+FrameContainer::EventLoop()
+{
+  fFrame->EventLoop();
+}
+
 void 
 FrameContainer::Render2d( sf::RenderWindow& windowApp )
 {
@@ -42,51 +50,56 @@ FrameContainer::Render3d( sf::RenderWindow& windowApp )
 void 
 FrameContainer::RenderGUI( sf::RenderWindow& windowApp )
 {
-  fExitButton->Render( windowApp, fTopBarCoord );
-  fPinButton->Render( windowApp, fTopBarCoord );
-  fTopBar->Render( windowApp, fTopBarCoord );
+  RWWrapper rWindowApp( windowApp, fTopBarCoord );
+  fExitButton->Render( rWindowApp );
+  fPinButton->Render( rWindowApp );
+  fTopBar->Render( rWindowApp );
   fFrame->RenderGUI( windowApp );
 }
 
 FrameEvent 
 FrameContainer::NewEvent( sf::Event& event )
 {
+  FrameEvent returnEvent;
+  UIEvent uiEvent = UIEvent( event, fTopBarCoord );
   switch( event.Type )
     {
 // Some events may be relevant to the top bar
     case sf::Event::MouseButtonPressed:
       {
-	sf::Vector2<double> localPosition = fTopBarCoord.ResolutionToFrameCoord( FrameCoord::WindowToResolutionCoord( sf::Vector2<double>( event.MouseButton.X, event.MouseButton.Y ) ) );
-	
-	if( fTopBar->ContainsPoint( localPosition ) )
+	if( fTopBar->ContainsPoint( uiEvent.GetLocalCoord() ) )
 	  {
-	    fTopBar->NewEvent( event );
-	    return FrameEvent( FrameEvent::eStartMove );
+	    fTopBar->NewEvent( uiEvent );
+	    returnEvent = FrameEvent( FrameEvent::eStartMove );
 	  }
-	if( fExitButton->ContainsPoint( localPosition ) )
-	  fExitButton->NewEvent( event );
-	if( fPinButton->ContainsPoint( localPosition ) )
-	  fPinButton->NewEvent( event );
+	if( fExitButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
+	  fExitButton->NewEvent( uiEvent );
+	if( fPinButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
+	  fPinButton->NewEvent( uiEvent );
       }
       break;
     case sf::Event::MouseButtonReleased:
       {
-	sf::Vector2<double> localPosition = fTopBarCoord.ResolutionToFrameCoord( FrameCoord::WindowToResolutionCoord( sf::Vector2<double>( event.MouseButton.X, event.MouseButton.Y ) ) );
-	
-	if( fExitButton->ContainsPoint( localPosition ) )
-	  fExitButton->NewEvent( event );
-	if( fPinButton->ContainsPoint( localPosition ) )
-	  fPinButton->NewEvent( event );
-	if( fTopBar->GetState() ) // Always ??
+	if( fExitButton->GetState() )
+	  fExitButton->NewEvent( uiEvent );
+	if( fExitButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
+	  returnEvent = FrameEvent( FrameEvent::eClosed );
+
+	if( fPinButton->GetState() )
+	  returnEvent = FrameEvent( FrameEvent::ePinned );
+	if( fPinButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
+	  fPinButton->NewEvent( uiEvent );
+
+	if( fTopBar->GetState() ) // Always Stop moving if mouse up
 	  {
-	    fTopBar->NewEvent( event );
-	    return FrameEvent( FrameEvent::eStopMove );
+	    fTopBar->NewEvent( uiEvent );
+	    returnEvent = FrameEvent( FrameEvent::eStopMove );
 	  }
       }
       break;
     }
  fFrame->NewEvent( event );
- return FrameEvent();
+ return returnEvent;
 }
   
 void 
@@ -121,7 +134,7 @@ FrameContainer::Move( const sf::Vector2<double>& position )
 void 
 FrameContainer::SetContainerCoord( FrameCoord& fContainerCoord )
 {
-  const double barHeight = 10.0; // Height of the Top bar
+  const double barHeight = 20.0; // Height of the Top bar
   sf::Rect<double> rect = fContainerCoord.GetRect();
   sf::Rect<double> frameRect( rect.Left, rect.Top + barHeight,
 			      rect.Width, rect.Height - barHeight );

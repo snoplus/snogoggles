@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Shape
+/// \class Text
 ///
 /// \brief   
 ///
@@ -12,19 +12,22 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Shape__
-#define __Viewer_Shape__
+#ifndef __Viewer_Text__
+#define __Viewer_Text__
 
-#include <SFML/Graphics/Shape.hpp>
+#include <SFML/Graphics/Text.hpp>
+
 
 namespace Viewer
 {
 
-class Shape : public sf::Shape
+class Text : public sf::Text
 {
 public:
-  Shape() : sf::Shape() { }
-  Shape( sf::Shape shape ) : sf::Shape( shape ) { }
+  Text () : sf::Text() { }
+  Text (const sf::String &string, const sf::Font &font=sf::Font::GetDefaultFont(), unsigned int characterSize=30)
+    : sf::Text( string, font, characterSize ) 
+  { }
 
   void SetBoundingRect( const sf::Rect<double>& rect ) { fRect = rect; }
   sf::Rect<double> GetBoundingRect() { return fRect; }
@@ -49,6 +52,9 @@ private:
   const sf::Vector2f& GetScale() const;
   const sf::Vector2f& GetPosition() const;
   const sf::Vector2f& GetOrigin() const;
+  void Move (float offsetX, float offsetY);
+  void Move (const sf::Vector2f &offset);
+  sf::FloatRect GetRect () const;
 };
 
 } // ::Viewer

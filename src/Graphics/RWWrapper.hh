@@ -20,7 +20,7 @@ namespace sf
 {
   class Drawable;
   class Shader;
-  class Text;
+  class RenderWindow;
 }
 
 namespace Viewer
@@ -28,6 +28,7 @@ namespace Viewer
   class FrameCoord;
   class Shape;
   class Sprite;
+  class Text;
 
 class RWWrapper
 {
@@ -36,7 +37,7 @@ public:
 
   void Draw( Shape& object );
   void Draw( Sprite& object );
-  void Draw( sf::Text& object );
+  void Draw( Text& object );
 
 protected:
   void DrawObject( sf::Drawable& object );

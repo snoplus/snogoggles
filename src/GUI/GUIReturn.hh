@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class UIEvent
+/// \class GUIReturn
 ///
 /// \brief   
 ///
@@ -12,27 +12,26 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_UIEvent__
-#define __Viewer_UIEvent__
-
-#include <SFML/Window/Event.hpp>
-
-#include <Viewer/FrameCoord.hh>
+#ifndef __Viewer_GUIReturn__
+#define __Viewer_GUIReturn__
 
 namespace Viewer
 {
-
-class UIEvent : public sf::Event
+class GUIReturn
 {
 public:
-  inline UIEvent( sf::Event& event, FrameCoord frameCoord )
-    : sf::Event( event ), fFrameCoord( frameCoord )
-  { }
+  GUIReturn() : fguiID( -1 ), fGlobalID( -1 ) { }
+  inline GUIReturn( unsigned int guiID, unsigned int globalID );
 
-  sf::Vector2<double> GetLocalCoord();
-private:
-  FrameCoord& fFrameCoord;
+  unsigned int fguiID;
+  unsigned int fGlobalID;
 };
+
+GUIReturn::GUIReturn( unsigned int guiID, unsigned int globalID )
+  : fguiID( guiID ), fGlobalID( globalID )
+{
+  
+}
 
 } // ::Viewer
 

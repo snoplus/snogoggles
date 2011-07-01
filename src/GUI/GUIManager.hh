@@ -16,33 +16,32 @@
 #define __Viewer_GUIManager__
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include <vector>
 
-#include <Viewer/UIEvent.hh>
-
-namespace sf
-{
-  class Event;
-  class RenderWindow;
-}
+#include <Viewer/GUIReturn.hh>
 
 namespace Viewer
 {
   class GUI;
   class FrameCoord;
+  class UIEvent;
+  class RWWrapper;
 
 class GUIManager
 {
 public:
-  UIEvent NewEvent( sf::Event& event );
-  void Render( sf::RenderWindow& windowApp, const FrameCoord& frameCoord );
+  GUIReturn NewEvent( UIEvent& event );
+  void Render( RWWrapper& windowApp );
   
   template<class T> inline
   GUI* NewGUI( sf::Rect<double>& rect );
 
   GUI* GetGUI( unsigned int guiID );
 private:
+  int FindGUI( sf::Vector2<double> localCoord );
+
   std::vector<GUI*> fGUIObjects;
   int fFocus;
 };

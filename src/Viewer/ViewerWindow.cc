@@ -82,11 +82,14 @@ ViewerWindow::EventLoop()
       if( event.Type == sf::Event::Closed )
 	fWindowApp->Close();
     }
+  // Now get Frames to deal with events
+  fFrameManager.EventLoop();
 }
 
 void
 ViewerWindow::RenderLoop()
 {
+  fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
   fFrameManager.Render2d( *fWindowApp );
   fFrameManager.RenderGUI( *fWindowApp );
   

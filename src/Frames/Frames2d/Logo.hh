@@ -17,6 +17,7 @@
 
 #include <Viewer/Frame2d.hh>
 #include <Viewer/Sprite.hh>
+#include <Viewer/Text.hh>
 
 namespace Viewer
 {
@@ -40,6 +41,7 @@ public:
 private:
   Sprite fLogo;
   Sprite fLogo2;
+  Text fMessage;
   bool fState;
 };
 

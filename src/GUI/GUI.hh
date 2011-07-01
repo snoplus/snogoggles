@@ -17,17 +17,13 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-#include <Viewer/UIEvent.hh>
-
-namespace sf
-{
-  class RenderWindow;
-  class Event;
-}
+#include <Viewer/GUIReturn.hh>
 
 namespace Viewer
 {
   class FrameCoord;
+  class UIEvent;
+  class RWWrapper;
 
 class GUI
 {
@@ -40,8 +36,8 @@ public:
 
   bool ContainsPoint( const sf::Vector2<double>& localCoord );
 
-  virtual void Render( sf::RenderWindow& windowApp, const FrameCoord& frameCoord ) = 0;
-  virtual UIEvent NewEvent( sf::Event& event ) = 0;
+  virtual void Render( RWWrapper& windowApp ) = 0;
+  virtual GUIReturn NewEvent( UIEvent& event ) = 0;
   virtual double PreferedRatio() = 0; 
 
 protected:

@@ -16,14 +16,10 @@
 #define __Viewer_GUIs_ExitButton__
 
 #include <Viewer/Button.hh>
-
-namespace sf
-{
-  class Shape;
-}
+#include <Viewer/Sprite.hh>
 
 namespace Viewer
-{
+{  
 namespace GUIs
 {
 
@@ -33,12 +29,10 @@ public:
   ExitButton( sf::Rect<double>& rect, unsigned int guiID );
   virtual ~ExitButton();
 
-  void Render( sf::RenderWindow& windowApp, const FrameCoord& frameCoord );
+  void Render( RWWrapper& windowApp );
   inline double PreferedRatio();
 protected:
-  sf::Shape* fButtonBox;
-  sf::Shape* fLine1;
-  sf::Shape* fLine2;
+  Sprite fButton;
 };
 
 double

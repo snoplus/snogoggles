@@ -1,11 +1,12 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/Button.hh>
+#include <Viewer/UIEvent.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-UIEvent
-Button::NewEvent( sf::Event& event )
+GUIReturn 
+Button::NewEvent( UIEvent& event )
 {
   switch( event.Type )
     {
@@ -16,5 +17,5 @@ Button::NewEvent( sf::Event& event )
       fPressed = false;
       break;
     }
-  return UIEvent( fID, fGlobalID );
+  return GUIReturn( fID, fGlobalID );
 }

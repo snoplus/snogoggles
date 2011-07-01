@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::PinButton
+/// \class Viewer::GUIs::TopBarButton
 ///
-/// \brief   Button with an pin square
+/// \brief   
 ///
 /// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///
@@ -12,34 +12,29 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_PinButton__
-#define __Viewer_GUIs_PinButton__
+#ifndef __Viewer_GUIs_TopBarButton__
+#define __Viewer_GUIs_TopBarButton__
 
 #include <Viewer/Button.hh>
 #include <Viewer/Sprite.hh>
 
 namespace Viewer
-{ 
+{  
+
 namespace GUIs
 {
 
-class PinButton : public Button
+class TopBarButton : public Button
 {
 public:
-  PinButton( sf::Rect<double>& rect, unsigned int guiID );
-  virtual ~PinButton();
+  TopBarButton( sf::Rect<double>& rect, unsigned int guiID );
+  virtual ~TopBarButton();
 
   void Render( RWWrapper& windowApp );
-  inline double PreferedRatio();
+  double PreferedRatio() { return 1.0; }
 protected:
-  Sprite fButton;
+  Sprite fBar;
 };
-
-double
-PinButton::PreferedRatio()
-{
-  return 1.0;
-}
 
 } // ::GUIs
 

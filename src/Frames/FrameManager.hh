@@ -35,12 +35,12 @@ class FrameManager
 public:
   void Initialise( ConfigurationTable& configTable );
   
-  void NewEvent( sf::Event& event );
-  void WorkLoop();
+  void EventLoop();
   void RenderGUI( sf::RenderWindow& windowApp );
   void Render2d( sf::RenderWindow& windowApp );
   void Render3d( sf::RenderWindow& windowApp );
-  
+
+  void NewEvent( sf::Event& event ); 
   void SaveConfiguration( ConfigurationTable& configTable );
 private:
   int FindFrame( const sf::Vector2<double>& resolutionCoord );

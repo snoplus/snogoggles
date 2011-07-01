@@ -37,6 +37,7 @@ FrameManager::NewEvent( sf::Event& event )
       if( fFocus >= 0 && fFocus < fFrameContainers.size() )
 	retEvent = fFrameContainers[fFocus]->NewEvent( event );
       break;
+
 // Now events that go straight through to Focus and change the focus   
     case sf::Event::MouseButtonReleased:
       if( fFocus >= 0 && fFocus < fFrameContainers.size() )
@@ -44,6 +45,8 @@ FrameManager::NewEvent( sf::Event& event )
       point = sf::Vector2<double>( event.MouseButton.X, event.MouseButton.Y );
       point = FrameCoord::WindowToResolutionCoord( point );
       fFocus = FindFrame( point );
+      fMoving = false; // Always release if mouse button up
+
 // Now events that change the focus   
     case sf::Event::MouseButtonPressed:
       point = sf::Vector2<double>( event.MouseButton.X, event.MouseButton.Y );
@@ -87,6 +90,13 @@ FrameManager::RenderGUI( sf::RenderWindow& windowApp )
 {
   for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
     fFrameContainers[uFrame]->RenderGUI( windowApp );
+}
+
+void
+FrameManager::EventLoop()
+{
+  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
+    fFrameContainers[uFrame]->EventLoop();
 }
 
 void 
