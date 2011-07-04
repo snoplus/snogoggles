@@ -29,6 +29,15 @@ def rat(env):
 	env.Append( CPPPATH = [ os.environ["RATROOT"] + "/include" ] )
 	env.Append( LIBPATH = [ os.environ["RATROOT"] + "/lib" ] )
 	env.Append( LIBS = [ 'rat_' + os.environ["G4SYSTEM"] ] )
+	Curl(env)
+
+# Appends Curl and Bzip (for RAT)
+def Curl(env):
+	env.Append( LIBS = [ "bz2", "curl" ] )
+
+# Appends Pthread
+def PThread(env):
+	env.Append( LIBS = [ "pthread" ] )
 
 # Adds all packages
 def addpackages(env):
@@ -37,4 +46,5 @@ def addpackages(env):
 	root(env)
 	sfml(env)
 	rat(env)
+	PThread(env)
 	

@@ -3,7 +3,7 @@
 
 #### Add new source module names here ####
 
-directories = Split("""Viewer Frames Frames/Frames2d Util Configuration GUI GUI/GUIs Graphics""")
+directories = Split("""Viewer Frames Frames/Frames2d Util Configuration GUI GUI/GUIs Graphics Thread""")
 
 ############### You should not need to edit below this line ############
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<SNOGoggles resX="800">
+    <!-- Hand written -->
+    <Viewer resX="800" resY="600">
+    </Viewer>
+    <Frame type="Logo" posX="0" posY="0" sizeX="100" sizeY="100">
+    </Frame>
+    <Frame type="Logo" posX="100" posY="0" sizeX="100" sizeY="100">
+    </Frame>
+</SNOGoggles>

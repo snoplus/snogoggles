@@ -27,6 +27,7 @@
 namespace sf
 {
   class RenderWindow;
+  class Event;
 } //::sf
 
 namespace Viewer

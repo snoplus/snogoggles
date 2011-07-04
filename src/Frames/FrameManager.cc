@@ -3,22 +3,22 @@
 #include <Viewer/FrameManager.hh>
 #include <Viewer/FrameContainer.hh>
 #include <Viewer/FrameCoord.hh>
+#include <Viewer/Configuration.hh>
 using namespace Viewer;
 
 #include <iostream>
+#include <string>
+using namespace std;
 
 void 
-FrameManager::Initialise( ConfigurationTable& configTable )
+FrameManager::Initialise( Configuration& config )
 {
-  // Temp init 
-  FrameContainer* logoFrame = new FrameContainer();
-  logoFrame->Initialise( configTable );
-  // Very Temp
-  sf::Vector2<double> pos( 100, 100 );
-  sf::Vector2<double> size( 100, 50 );
-  logoFrame->Move( pos );
-  logoFrame->Resize( size );
-  fFrameContainers.push_back( logoFrame );
+  for( vector< ConfigurationTable* >::iterator iTer = config.GetTableBegin(); iTer != config.GetTableEnd(); iTer++ )
+    {
+      ConfigurationTable& currentTable = **iTer;
+      FrameContainer* currentFrameContainer = new FrameContainer( currentTable );
+      fFrameContainers.push_back( currentFrameContainer );
+    }
   fFocus = -1;
   fMoving = false;
 }
@@ -114,10 +114,10 @@ FrameManager::Render3d( sf::RenderWindow& windowApp )
 }
   
 void 
-FrameManager::SaveConfiguration( ConfigurationTable& configTable )
+FrameManager::SaveConfiguration( Configuration& config )
 {
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    fFrameContainers[uFrame]->SaveConfiguration( configTable );
+  //  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
+  //    fFrameContainers[uFrame]->SaveConfiguration( configTable );
 }
 
 int 

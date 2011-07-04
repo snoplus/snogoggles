@@ -11,16 +11,32 @@
 /// \detail  The main function is defined here
 ///
 ////////////////////////////////////////////////////////////////////////
+#include <iostream>
+using namespace std;
+
 #include <Viewer/ViewerWindow.hh>
+#include <Viewer/Semaphore.hh>
+#include <Viewer/LoadRootFileThread.hh>
 using namespace Viewer;
 
-int main()
+#include <xercesc/util/PlatformUtils.hpp>
+using namespace xercesc;
+
+int main( int argc, char *argv[] )
 {
+  XMLPlatformUtils::Initialize();
 
   ViewerWindow& viewer = ViewerWindow::GetInstance();
 
   viewer.Initialise();
+  Semaphore sema;
+  LoadRootFileThread loadData( argv[1], sema );
+  // Wait for first event to be loaded
+  sema.Wait();
+
   viewer.Run();
   viewer.Destruct();
+
+  XMLPlatformUtils::Terminate();
   return 0;
 }

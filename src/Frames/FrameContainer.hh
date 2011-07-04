@@ -18,6 +18,7 @@
 
 #include <Viewer/FrameCoord.hh>
 #include <Viewer/FrameEvent.hh>
+#include <Viewer/FrameFactory.hh>
 
 namespace sf
 {
@@ -38,9 +39,9 @@ namespace GUIs
 class FrameContainer
 {
 public:
-  virtual ~FrameContainer();
+  FrameContainer( ConfigurationTable& configTable );
 
-  void Initialise( ConfigurationTable& configTable );
+  virtual ~FrameContainer();
 
   void EventLoop();  
   void Render2d( sf::RenderWindow& windowApp );
@@ -56,7 +57,8 @@ public:
   FrameCoord GetContainerCoord();
 private:
   FrameCoord fTopBarCoord;
-  
+  FrameFactory fFrameFactory;
+
   Frame* fFrame;
   GUIs::Button* fPinButton;
   GUIs::Button* fExitButton;

@@ -27,13 +27,13 @@ namespace sf
 
 namespace Viewer
 {
-  class ConfigurationTable;
+  class Configuration;
   class FrameContainer;
 
 class FrameManager
 {
 public:
-  void Initialise( ConfigurationTable& configTable );
+  void Initialise( Configuration& config );
   
   void EventLoop();
   void RenderGUI( sf::RenderWindow& windowApp );
@@ -41,7 +41,7 @@ public:
   void Render3d( sf::RenderWindow& windowApp );
 
   void NewEvent( sf::Event& event ); 
-  void SaveConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( Configuration& config );
 private:
   int FindFrame( const sf::Vector2<double>& resolutionCoord );
 

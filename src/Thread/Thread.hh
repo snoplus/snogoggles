@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Mutex, Lock, Thread
+/// \class Mutex
 ///
 /// \brief   Base class for threads
 ///
@@ -18,56 +18,9 @@
 #define Thread_hh
 
 #include <pthread.h>
-#include <semaphore.h>
 
-class Semaphore
+namespace Viewer
 {
-public:
-  Semaphore();
-  ~Semaphore();
-
-  void
-  Wait();
-
-  void
-  Signal();
-private:
-#ifdef __APPLE__
-  sem_t* fSemaphore;
-#else
-  sem_t fSemaphore;
-#endif
-};
-
-
-class Mutex
-{
-public:
-  Mutex();
-  ~Mutex();
-
-  bool
-  TryLock();
-
-  void
-  Lock();
-
-  void
-  Unlock();
-private:
-  pthread_mutex_t fMutex; //! <Mutex lock itself
-};
-
-class Lock
-{
-public:
-  Lock(
-       Mutex& mutex );
-
-  ~Lock();
-private:
-  Mutex& fMutex;
-};
 
 class Thread
 {
@@ -90,13 +43,15 @@ public:
 
   //private:
   void
-  TRun();
+  RunT();
 private:
   static void* 
   PosixCaller( void* arg );
 
-  bool fRun; //! <If false then thread stops.
-  pthread_t fPThread; //! <Posix thread handle for this...
+  bool fRun; /// <If false then thread stops.
+  pthread_t fPThread; /// <Posix thread handle for this...
 };
+
+} //::Viewer
 
 #endif

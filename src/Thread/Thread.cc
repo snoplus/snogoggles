@@ -1,100 +1,5 @@
-
-#include <Thread.hh>
-#include <iostream>
-
-////////////////////////////////////////////////////////////////////////
-/// Semaphore functions
-////////////////////////////////////////////////////////////////////////
-Semaphore::Semaphore()
-{
-  // Will need to worry about apple naming soon...
-#ifdef __APPLE__
-  fSemaphore = sem_open( "Sema", O_CREAT | O_EXCL, 0644, 0 );
-#else
-  sem_init( &fSemaphore, 0, 0 );
-#endif
-}
-
-Semaphore::~Semaphore()
-{
-#ifdef __APPLE__
-  //fSemaphore = sem_unlink( "Sema" );
-  sem_unlink( "Sema" );
-#else
-  sem_destroy( &fSemaphore );
-#endif
-}
-
-void
-Semaphore::Wait()
-{
-#ifdef __APPLE__
-  sem_wait( fSemaphore );
-#else
-  sem_wait( &fSemaphore );
-#endif
-}
-
-void
-Semaphore::Signal()
-{
-#ifdef __APPLE__
-  sem_post( fSemaphore );
-#else
-  sem_post( &fSemaphore );
-#endif
-}
-
-////////////////////////////////////////////////////////////////////////
-/// Mutex functions
-////////////////////////////////////////////////////////////////////////
-
-Mutex::Mutex()
-{
-  pthread_mutex_init( &fMutex, NULL );
-}
-
-Mutex::~Mutex()
-{
-  pthread_mutex_destroy( &fMutex );
-}
-
-bool
-Mutex::TryLock()
-{
-  return pthread_mutex_trylock( &fMutex ) == 0;
-}
-
-void
-Mutex::Lock()
-{
-  pthread_mutex_lock( &fMutex );
-}
-
-void
-Mutex::Unlock()
-{
-  pthread_mutex_unlock( &fMutex );
-}
-
-////////////////////////////////////////////////////////////////////////
-/// Lock functions
-////////////////////////////////////////////////////////////////////////
-
-Lock::Lock( Mutex& mutex )
-  : fMutex( mutex )
-{
-  fMutex.Lock();
-}
-
-Lock::~Lock()
-{
-  fMutex.Unlock();
-}
-
-////////////////////////////////////////////////////////////////////////
-/// Thread functions
-////////////////////////////////////////////////////////////////////////
+#include <Viewer/Thread.hh>
+using namespace Viewer;
 
 Thread::Thread()
 {
@@ -111,7 +16,7 @@ void*
 Thread::PosixCaller( void* arg )
 {
   Thread* threadInstance = reinterpret_cast<Thread*>( arg );
-  threadInstance->TRun();
+  threadInstance->RunT();
   return NULL;
 }
 
@@ -135,7 +40,7 @@ Thread::Wait()
 }
 
 void
-Thread::TRun()
+Thread::RunT()
 {
   while( fRun )
     Run();

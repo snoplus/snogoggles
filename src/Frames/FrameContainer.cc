@@ -1,5 +1,8 @@
 #include <SFML/Window/Event.hpp>
 
+#include <string>
+using namespace std;
+
 #include <Viewer/FrameContainer.hh>
 #include <Viewer/Frame.hh>
 #include <Viewer/Logo.hh>
@@ -7,21 +10,28 @@
 #include <Viewer/PinButton.hh>
 #include <Viewer/TopBarButton.hh>
 #include <Viewer/UIEvent.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
-void 
-FrameContainer::Initialise( ConfigurationTable& configTable )
-{
+FrameContainer::FrameContainer( ConfigurationTable& configTable )
+{      
+  string frameType = configTable.GetS( "type" );
+  fFrame = fFrameFactory.New( frameType );
+
   sf::Rect<double> exitPos( 0.95, 0.0, 0.05, 0.9 );
   fExitButton = new GUIs::ExitButton( exitPos, 0 );
   sf::Rect<double> pinPos( 0.9, 0.0, 0.05, 0.9 );
   fPinButton = new GUIs::PinButton( pinPos, 1 );
   sf::Rect<double> barPos( 0.0, 0.0, 0.9, 0.9 );
-  fTopBar = new GUIs::TopBarButton( barPos, 3 );
-  // Temp below
-  fFrame = new Frames::Logo();
+  fTopBar = new GUIs::TopBarButton( barPos, 3 );  
+
+  sf::Vector2<double> pos( configTable.GetI( "posX" ), configTable.GetI( "posY" ) );
+  sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
+  Move( pos );
+  Resize( size );
+
   fFrame->Initialise( configTable );
-}
+} 
 
 FrameContainer::~FrameContainer()
 {

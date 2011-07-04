@@ -1,8 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include <string>
+using namespace std;
+
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/ImageManager.hh>
+#include <Viewer/Configuration.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/FrameCoord.hh>
 using namespace Viewer;
@@ -17,9 +21,15 @@ ViewerWindow::ViewerWindow()
 void
 ViewerWindow::Initialise()
 {
-  fWindowApp = new sf::RenderWindow( sf::VideoMode( 800, 600 ), "SNO Goggles" ); // Need to load Resolution
-  FrameCoord::SetResolution( 800, 600 );
-  FrameCoord::SetWindowSize( 800, 600 );
+  // Load the configuration
+  Configuration loadConfig( false );  
+  ConfigurationTable& viewerTable = *loadConfig.GetViewerTable();
+  int resX = viewerTable.GetI( "resX" ); 
+  int resY = viewerTable.GetI( "resY" );
+  FrameCoord::SetResolution( resX, resY );
+  FrameCoord::SetWindowSize( resX, resY );
+
+  fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles" ); // Need to load Resolution
   // Draw a splash background
   ImageManager& im = ImageManager::GetInstance();
   sf::Sprite sp = im.NewSprite( "Logo.png" );
@@ -29,9 +39,7 @@ ViewerWindow::Initialise()
   fWindowApp->Draw( sp );
   fWindowApp->Display();
 
-  // Very temp
-  ConfigurationTable a;
-  fFrameManager.Initialise( a );
+  fFrameManager.Initialise( loadConfig );
 }
 
 void
