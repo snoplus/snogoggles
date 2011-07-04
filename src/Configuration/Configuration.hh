@@ -35,15 +35,21 @@ public:
   
   inline std::vector< ConfigurationTable* >::iterator GetTableBegin();
   inline std::vector< ConfigurationTable* >::iterator GetTableEnd();
-  inline ConfigurationTable* GetViewerTable();
   inline unsigned int GetNumTables();
   
   ConfigurationTable* NewTable( const std::string& name );
 
   void SaveConfiguration();
+
+  int GetI( const std::string& name );
+  double GetD( const std::string& name );
+  std::string GetS( const std::string& name );
+
+  void SetI( const std::string& name, const int value );
+  void SetD( const std::string& name, const double value );
+  void SetS( const std::string& name, const std::string& value );
 private:
   std::vector< ConfigurationTable* > fConfigTables;
-  ConfigurationTable* fViewerTable;
   xercesc_2_8::DOMDocument* fDOMDocument;
   xercesc_2_8::DOMElement* fRootElement;
   bool fOutput;
@@ -60,13 +66,6 @@ std::vector< ConfigurationTable* >::iterator
 Configuration::GetTableEnd()
 {
   return fConfigTables.end();
-}
-
-
-ConfigurationTable*
-Configuration::GetViewerTable()
-{
-  return fViewerTable;
 }
 
 unsigned int

@@ -32,7 +32,9 @@ class FrameCoord
 {
 public:
   static inline void SetWindowSize( double width, double height );
+  static inline sf::Vector2<double> GetWindowSize();
   static inline void SetResolution( double width, double height );
+  static inline sf::Vector2<double> GetResolution();
 
   static sf::Vector2<double> WindowToResolutionCoord( const sf::Vector2<double>& windowCoord );
   static sf::Vector2<double> ResolutionToWindowCoord( const sf::Vector2<double>& resolutionCoord );
@@ -77,11 +79,23 @@ FrameCoord::SetWindowSize( double width, double height )
   fsWindowHeight = height;
 }
 
+sf::Vector2<double> 
+FrameCoord::GetWindowSize()
+{
+  return sf::Vector2<double>( fsWindowWidth, fsWindowHeight );
+}
+
 void 
 FrameCoord::SetResolution( double width, double height )
 {
   fsResolutionWidth = width;
   fsResolutionHeight = height;
+}
+
+sf::Vector2<double> 
+FrameCoord::GetResolution()
+{
+  return sf::Vector2<double>( fsResolutionWidth, fsResolutionHeight );
 }
 
 void 

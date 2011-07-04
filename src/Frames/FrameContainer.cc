@@ -115,6 +115,13 @@ FrameContainer::NewEvent( sf::Event& event )
 void 
 FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
 {
+  configTable.SetS( "type", fFrame->GetName() );
+  FrameCoord full = GetContainerCoord();
+  sf::Rect<double> rect = full.GetRect();
+  configTable.SetI( "posX", static_cast<int>( rect.Left ) );
+  configTable.SetI( "posY", static_cast<int>( rect.Top ) );
+  configTable.SetI( "sizeX", static_cast<int>( rect.Width ) );
+  configTable.SetI( "sizeY", static_cast<int>( rect.Height ) );
   fFrame->SaveConfiguration( configTable );
 }
 

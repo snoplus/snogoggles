@@ -116,8 +116,11 @@ FrameManager::Render3d( sf::RenderWindow& windowApp )
 void 
 FrameManager::SaveConfiguration( Configuration& config )
 {
-  //  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-  //    fFrameContainers[uFrame]->SaveConfiguration( configTable );
+  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
+    {
+      ConfigurationTable& configTable = *config.NewTable( "Frame" );
+      fFrameContainers[uFrame]->SaveConfiguration( configTable );
+    }
 }
 
 int 

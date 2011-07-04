@@ -42,10 +42,7 @@ Configuration::Configuration( bool output )
 	      char* name = xercesc::XMLString::transcode( currentElement->getTagName() );
 	      string elementName( name );
 	      xercesc::XMLString::release( &name ) ;
-	      if( elementName == string( "Viewer" ) )
-		fViewerTable = new ConfigurationTable( currentElement, fOutput, fDOMDocument );
-	      else
-		fConfigTables.push_back( new ConfigurationTable( currentElement, fOutput, fDOMDocument ) );
+	      fConfigTables.push_back( new ConfigurationTable( currentElement, fOutput, fDOMDocument ) );
 	    }
 	}
     }
@@ -73,7 +70,6 @@ Configuration::SaveConfiguration()
   configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
   XMLFormatTarget* target = new LocalFileFormatTarget( configFileName.str().c_str() );
   serializer->writeNode( target, *fDOMDocument );
-
 }
 
 ConfigurationTable*
@@ -83,10 +79,96 @@ Configuration::NewTable( const string& name )
   DOMElement* newElement = fDOMDocument->createElement( elementName );
   fRootElement->appendChild( newElement );
   XMLString::release( &elementName );
-  if( name == string( "Viewer" ) )
-    fViewerTable = new ConfigurationTable( newElement, fOutput, fDOMDocument );
-  else if( name == string( "Frame" ) )
-    fConfigTables.push_back( new ConfigurationTable( newElement, fOutput, fDOMDocument ) );
+  if( name == string( "Frame" ) )
+    {
+      ConfigurationTable* newTable = new ConfigurationTable( newElement, fOutput, fDOMDocument );
+      fConfigTables.push_back( newTable );
+      return newTable;
+    }
   else
-    throw;
+    throw; // TODO
+}
+
+
+int 
+Configuration::GetI( const string& name )
+{
+  XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  const XMLCh* attributeValue = fRootElement->getAttribute( attributeName );
+  char* attributeValueChar = XMLString::transcode( attributeValue );
+  stringstream value; 
+  value << attributeValueChar;
+  int result; 
+  value >> result;
+  XMLString::release( &attributeName );
+  XMLString::release( &attributeValueChar );
+  return result;
+}
+
+double 
+Configuration::GetD( const string& name )
+{
+  XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  const XMLCh* attributeValue = fRootElement->getAttribute( attributeName );
+  char* attributeValueChar = XMLString::transcode( attributeValue );
+  stringstream value;
+  value.setf( ios::scientific, ios::floatfield );
+  value.precision( 4 );
+  value << attributeValueChar;
+  int result; 
+  value >> result;
+  XMLString::release( &attributeName );
+  XMLString::release( &attributeValueChar );
+  return result;
+}
+
+string
+Configuration::GetS( const string& name )
+{
+  XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  const XMLCh* attributeValue = fRootElement->getAttribute( attributeName );
+  char* attributeValueChar = XMLString::transcode( attributeValue );
+  string result( attributeValueChar );
+  XMLString::release( &attributeName );
+  XMLString::release( &attributeValueChar );
+  return result;
+}
+
+void 
+Configuration::SetI( const std::string& name, const int value )
+{
+  XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  stringstream svalue;
+  svalue << value;
+  XMLCh* attributeValue = XMLString::transcode( svalue.str().c_str() );
+  fRootElement->setAttribute( attributeName, attributeValue );
+  XMLString::release( &attributeName );
+  XMLString::release( &attributeValue );
+  return;
+}
+
+void 
+Configuration::SetD( const std::string& name, const double value )
+{
+  XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  stringstream svalue;
+  svalue.setf( ios::scientific, ios::floatfield );
+  svalue.precision( 4 );
+  svalue << value;
+  XMLCh* attributeValue = XMLString::transcode( svalue.str().c_str() );
+  fRootElement->setAttribute( attributeName, attributeValue );
+  XMLString::release( &attributeName );
+  XMLString::release( &attributeValue );
+  return;
+}
+
+void 
+Configuration::SetS( const std::string& name, const std::string& value )
+{
+  XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  XMLCh* attributeValue = XMLString::transcode( value.c_str() );
+  fRootElement->setAttribute( attributeName, attributeValue );
+  XMLString::release( &attributeName );
+  XMLString::release( &attributeValue );
+  return;
 }

@@ -23,9 +23,8 @@ ViewerWindow::Initialise()
 {
   // Load the configuration
   Configuration loadConfig( false );  
-  ConfigurationTable& viewerTable = *loadConfig.GetViewerTable();
-  int resX = viewerTable.GetI( "resX" ); 
-  int resY = viewerTable.GetI( "resY" );
+  int resX = loadConfig.GetI( "resX" ); 
+  int resY = loadConfig.GetI( "resY" );
   FrameCoord::SetResolution( resX, resY );
   FrameCoord::SetWindowSize( resX, resY );
 
@@ -55,6 +54,12 @@ ViewerWindow::Run()
 void
 ViewerWindow::Destruct()
 {
+  Configuration saveConfig( true );
+  saveConfig.SetI( "resX", static_cast<int>( FrameCoord::GetResolution().x ) );
+  saveConfig.SetI( "resY", static_cast<int>( FrameCoord::GetResolution().y ) );
+  fFrameManager.SaveConfiguration( saveConfig );
+  saveConfig.SaveConfiguration();
+  
   delete fWindowApp;
 }
 
