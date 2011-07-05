@@ -17,7 +17,7 @@
 #define __Viewer_FrameContainer__
 
 #include <Viewer/FrameCoord.hh>
-#include <Viewer/FrameEvent.hh>
+#include <Viewer/FrameUIReturn.hh>
 #include <Viewer/FrameFactory.hh>
 
 namespace sf
@@ -48,7 +48,7 @@ public:
   void Render3d( sf::RenderWindow& windowApp );
   void RenderGUI( sf::RenderWindow& windowApp );
 
-  FrameEvent NewEvent( sf::Event& event );
+  FrameUIReturn NewEvent( sf::Event& event );
   void SaveConfiguration( ConfigurationTable& configTable );
 
   void Resize( const sf::Vector2<double>& size );

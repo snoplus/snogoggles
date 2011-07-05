@@ -67,10 +67,10 @@ FrameContainer::RenderGUI( sf::RenderWindow& windowApp )
   fFrame->RenderGUI( windowApp );
 }
 
-FrameEvent 
+FrameUIReturn 
 FrameContainer::NewEvent( sf::Event& event )
 {
-  FrameEvent returnEvent;
+  FrameUIReturn returnEvent;
   UIEvent uiEvent = UIEvent( event, fTopBarCoord );
   switch( event.Type )
     {
@@ -80,7 +80,7 @@ FrameContainer::NewEvent( sf::Event& event )
 	if( fTopBar->ContainsPoint( uiEvent.GetLocalCoord() ) )
 	  {
 	    fTopBar->NewEvent( uiEvent );
-	    returnEvent = FrameEvent( FrameEvent::eStartMove );
+	    returnEvent = FrameUIReturn( FrameUIReturn::eStartMove );
 	  }
 	if( fExitButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
 	  fExitButton->NewEvent( uiEvent );
@@ -93,17 +93,17 @@ FrameContainer::NewEvent( sf::Event& event )
 	if( fExitButton->GetState() )
 	  fExitButton->NewEvent( uiEvent );
 	if( fExitButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
-	  returnEvent = FrameEvent( FrameEvent::eClosed );
+	  returnEvent = FrameUIReturn( FrameUIReturn::eClosed );
 
 	if( fPinButton->GetState() )
-	  returnEvent = FrameEvent( FrameEvent::ePinned );
+	  returnEvent = FrameUIReturn( FrameUIReturn::ePinned );
 	if( fPinButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
 	  fPinButton->NewEvent( uiEvent );
 
 	if( fTopBar->GetState() ) // Always Stop moving if mouse up
 	  {
 	    fTopBar->NewEvent( uiEvent );
-	    returnEvent = FrameEvent( FrameEvent::eStopMove );
+	    returnEvent = FrameUIReturn( FrameUIReturn::eStopMove );
 	  }
       }
       break;

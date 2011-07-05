@@ -26,7 +26,7 @@ FrameManager::Initialise( Configuration& config )
 void 
 FrameManager::NewEvent( sf::Event& event )
 {
-  FrameEvent retEvent; // Returned event
+  FrameUIReturn retEvent; // Returned event
   sf::Vector2<double> point;
   int oldFocus = fFocus;
   switch( event.Type )
@@ -68,9 +68,9 @@ FrameManager::NewEvent( sf::Event& event )
 	retEvent = fFrameContainers[fFocus]->NewEvent( event );
       break;
     }
-  if( retEvent.fType == FrameEvent::eStartMove )
+  if( retEvent.fType == FrameUIReturn::eStartMove )
     fMoving = true;
-  if( retEvent.fType == FrameEvent::eStopMove )
+  if( retEvent.fType == FrameUIReturn::eStopMove )
     fMoving = false;
   // Temp below
   if( fFocus != oldFocus && fFocus != -1 ) // Focus has changed to a new frame

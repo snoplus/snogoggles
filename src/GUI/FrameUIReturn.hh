@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class FrameEvent
+/// \class FrameUIReturn
 ///
 /// \brief   
 ///
@@ -12,19 +12,19 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_FrameEvent__
-#define __Viewer_FrameEvent__
+#ifndef __Viewer_FrameUIReturn__
+#define __Viewer_FrameUIReturn__
 
 namespace Viewer
 {
-class FrameEvent
+class FrameUIReturn
 {
 public: 
   enum EventType { eNone, ePinned, eClosed, eStartMove, eStopMove };
 
-  FrameEvent() : fType( eNone ) { }
+  FrameUIReturn() : fType( eNone ) { }
 
-  FrameEvent( EventType type ) : fType( type ) { }
+  FrameUIReturn( EventType type ) : fType( type ) { }
 
   EventType fType;
 };
