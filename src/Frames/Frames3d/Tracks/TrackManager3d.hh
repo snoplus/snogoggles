@@ -9,6 +9,8 @@
 ///
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
+///     06/07/11 : Olivia Wasalski - FrontChecker3d is passed through a setter
+///              instead of the constructor. \n
 ///
 /// \details 	The track manager is responsible for: \n
 ///
@@ -39,17 +41,22 @@ namespace Frames {
 
     class FrontChecker3d;
 
-  class TrackManager3d : public Module3d {
+class TrackManager3d : public Module3d {
 
 public:
-
-    /// Stores the IFrontChecker3d object.
-    TrackManager3d( FrontChecker3d* f ) { fFront = f; }
 
     virtual ~TrackManager3d() { }
 
     static std::string TableName() { return "TrackManager3d"; }
     std::string GetTableName() { return TableName(); }
+
+    /// Stores the FrontChecker3d object.
+    void SetFrontChecker( FrontChecker3d* f ) { fFront = f; }
+    static inline void SetFrontCheckerSafe( TrackManager3d* t, FrontChecker3d* f )
+    {
+        if( t != NULL )
+            t->SetFrontChecker( f );
+    }
 
     /// Renders tracks.
     virtual void RenderTracks( RAT::DS::MC* mc ) = 0;

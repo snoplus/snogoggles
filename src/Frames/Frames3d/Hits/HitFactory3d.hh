@@ -8,6 +8,7 @@
 ///
 /// REVISION HISTORY:\n
 ///     05/07/11 : Olivia Wasalski - First Revision, new file. \n
+///     06/07/11 : Olivia Wasalski - Factory adds a front checker. \n
 ///
 /// \detail 
 ///
@@ -22,13 +23,15 @@
 namespace Viewer {
 namespace Frames {
 
+    class FrontChecker3d;
+
 class HitFactory3d {
 
 public:
 
     static HitFactory3d* GetInstance();
 
-    HitManager3d* GetHitManager( const std::string name );
+    HitManager3d* GetHitManager( const std::string name, FrontChecker3d* f );
 
 private:
 

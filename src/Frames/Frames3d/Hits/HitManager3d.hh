@@ -9,6 +9,8 @@
 ///
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
+///     06/07/11 : Olivia Wasalski - FrontChecker3d is passed through a setter
+///              instead of the constructor. \n
 ///
 /// \details 	The hit manager is responsible for: \n
 ///
@@ -45,13 +47,18 @@ class HitManager3d : public Module3d {
 
 public:
 
-    /// Stores the FrontChecker3d object.
-    HitManager3d( FrontChecker3d* f ) { fFront = f; }
-
     virtual ~HitManager3d() { }
 
     static std::string TableName() { return "HitManager3d"; }
     std::string GetTableName() { return TableName(); }
+
+    /// Stores the FrontChecker3d object.
+    void SetFrontChecker( FrontChecker3d* f ) { fFront = f; }
+    static inline void SetFrontCheckerSafe( HitManager3d* h, FrontChecker3d* f )
+    {
+        if( h != NULL )
+            h->SetFrontChecker( f );
+    }
 
     /// Renders hits.
     virtual void RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList ) = 0;

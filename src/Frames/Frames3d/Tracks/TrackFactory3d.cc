@@ -21,9 +21,11 @@ TrackFactory3d::TrackFactory3d()
     fFactory.Register( "null", new NullAlloc<TrackManager3d>() );
 }
 
-TrackManager3d* TrackFactory3d::GetTrackManager( const std::string name )
+TrackManager3d* TrackFactory3d::GetTrackManager( const std::string name, FrontChecker3d* f )
 {
-    return fFactory.New( name );
+    TrackManager3d* t = fFactory.New( name );
+    TrackManager3d::SetFrontCheckerSafe( t, f );
+    return t;
 }
 
 }; // namespace Frames 

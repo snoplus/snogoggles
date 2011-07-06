@@ -8,6 +8,7 @@
 ///
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
+///     06/07/11 : Olivia Wasalski - Added the module tag. \n
 ///
 /// \details 	
 ///
@@ -36,8 +37,8 @@ public:
 
     /// Gets the name of the module instance. 
     virtual std::string GetName() = 0;
-
     virtual std::string GetTableName() = 0;
+    static std::string ModuleTag() { return "type"; }
 
     /// Creates all the GUI objects for the module.
     static void CreateGUIObjectsSafe( Module3d* module, GUIManager* g, const sf::Rect<double>& optionsArea );

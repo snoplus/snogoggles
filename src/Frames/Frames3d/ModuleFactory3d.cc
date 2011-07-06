@@ -43,8 +43,8 @@ void ModuleFactory3d::SetAllModules( Manager3d* manager3d, std::vector<std::stri
 
     manager3d->SetAllModules(
         c,
-        HitFactory3d::GetInstance()->GetHitManager( hitManager ),
-        TrackFactory3d::GetInstance()->GetTrackManager( trackManager ),
+        HitFactory3d::GetInstance()->GetHitManager( hitManager, c ),
+        TrackFactory3d::GetInstance()->GetTrackManager( trackManager, c ),
         GeoFactory3d::GetInstance()->GetGeoManager( geoManager ),
         FitterFactory3d::GetInstance()->GetFitterManager( fitterManager )
     );

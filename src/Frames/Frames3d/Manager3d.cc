@@ -24,7 +24,7 @@ namespace Frames {
 
 Manager3d::Manager3d()
 {
-    Manager3d( "" );
+    SetAllModules( NULL, NULL, NULL, NULL, NULL );
 }
 
 Manager3d::Manager3d( const std::string& options )
@@ -52,7 +52,7 @@ void Manager3d::SetAllModules( CameraManager3d* camera, HitManager3d* hits, Trac
     fFitterManager = fitter;
 }
 
-void Manager3d::Initialize( ConfigurationTable& configTable ) 
+void Manager3d::Initialise( ConfigurationTable& configTable ) 
 {
     CreateGUIObjects();
     LoadConfiguration( configTable );
@@ -64,6 +64,18 @@ void Manager3d::CreateGUIObjects()
 }
 
 void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
+{
+    LoadSelfConfiguration( configTable );
+    LoadModuleConfigurations( configTable );
+}
+
+void Manager3d::LoadSelfConfiguration( ConfigurationTable& configTable )
+{
+    std::vector<std::string> modules;
+    ModuleFactory3d::SetAllModules( this, modules );
+}
+
+void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
 {
     Module3d::LoadConfigurationSafe( fCameraManager, configTable );
     Module3d::LoadConfigurationSafe( fHitManager, configTable );

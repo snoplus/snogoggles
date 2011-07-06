@@ -10,7 +10,8 @@
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
 ///     06/07/11 : Olivia Wasalski - Now inherits from Frame class instead
-///              of Frame3d class. Namespace change to reflect this.
+///              of Frame3d class. Namespace change to reflect this. \n
+///     06/07/11 : Olivia Wasalski - Split the load configuration method. \n
 ///
 /// \details	The design for the 3D aspects of the viewer is modular 
 ///		in nature. The Manager3d class combines a series of 
@@ -80,7 +81,7 @@ public:
     /// Returns the name of the type of 3d frame.
     std::string GetName() { return Name(); }
 
-    void Initialize( ConfigurationTable& configTable );
+    void Initialise( ConfigurationTable& configTable );
 
     void CreateGUIObjects();
 
@@ -97,6 +98,10 @@ public:
     void Render3d();
 
 private:
+
+    void LoadSelfConfiguration( ConfigurationTable& configTable );
+
+    void LoadModuleConfigurations( ConfigurationTable& configTable );
 
     CameraManager3d*    fCameraManager;     ///< The camera manager	
     HitManager3d*       fHitManager;        ///< The hit manager.

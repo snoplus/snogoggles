@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <string>
+
 namespace Viewer {
 
     class GUIManager;
@@ -20,12 +22,21 @@ void Module3d::LoadConfigurationSafe( Module3d* module, ConfigurationTable& conf
 {
 //    if( module != NULL ) 
 //        module->LoadConfiguration( configTable.GetNextTable( module->GetTableName() ) );
+//    if( module != NULL ) 
+//        module->LoadConfiguration( &configTable );
 }
 
 void Module3d::SaveConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
 {
 //    if( module != NULL ) 
-//        module->SaveConfiguration( configTable.NewTable( module->GetTableName() ) );
+//    {
+//        ConfigurationTable* newConfigTable = configTable.NewTable( module->GetTableName() );
+//        newConfigTable->SetS( Module3d::ModuleTag(), module->GetName() );
+//        module->SaveConfiguration( newConfigTable );
+//    }
+
+//    if( module != NULL ) 
+//        module->SaveConfiguration( &configTable );
 }
 
 void Module3d::EventLoopSafe( Module3d* module, const GUIReturn& g )

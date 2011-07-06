@@ -21,9 +21,11 @@ HitFactory3d::HitFactory3d()
     fFactory.Register( "null", new NullAlloc<HitManager3d>() );
 }
 
-HitManager3d* HitFactory3d::GetHitManager( const std::string name )
+HitManager3d* HitFactory3d::GetHitManager( const std::string name, FrontChecker3d* f )
 {
-    return fFactory.New( name );
+    HitManager3d* h = fFactory.New( name );
+    HitManager3d::SetFrontCheckerSafe( h, f );
+    return h;
 }
 
 }; // namespace Frames 
