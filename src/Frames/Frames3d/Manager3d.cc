@@ -96,12 +96,13 @@ void Manager3d::EventLoop()
     }
 }
 
-void Manager3d::Render3d( RWWrapper& windowApp ) 
+void Manager3d::Render3d( ) 
 {
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
     RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetPMTList();
 
-    fCameraManager->SetUpCameraSystem( fFrameCoord.Get3dViewport() );
+    if( fCameraManager != NULL )
+        fCameraManager->SetUpCameraSystem( fFrameCoord.Get3dViewport() );
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
     // TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );

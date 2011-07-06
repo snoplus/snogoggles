@@ -90,7 +90,7 @@ public:
     /// Calls all of the event loops of all of the modules.
     void EventLoop();
 
-    void Render3d( RWWrapper& windowApp );
+    void Render3d();
 
 private:
 
