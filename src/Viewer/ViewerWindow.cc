@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 
 #include <string>
+#include <iostream>
 using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
@@ -67,7 +68,7 @@ void
 ViewerWindow::EventLoop()
 {
   sf::Event event;
-  while( fWindowApp->PollEvent( event ) )
+   while( fWindowApp->PollEvent( event ) )
     {
       switch( event.Type )
 	{

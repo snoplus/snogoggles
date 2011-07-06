@@ -15,7 +15,7 @@
 #ifndef __Viewer_GUIs_PinButton__
 #define __Viewer_GUIs_PinButton__
 
-#include <Viewer/Button.hh>
+#include <Viewer/Persist.hh>
 #include <Viewer/Sprite.hh>
 
 namespace Viewer
@@ -23,7 +23,7 @@ namespace Viewer
 namespace GUIs
 {
 
-class PinButton : public Button
+class PinButton : public Persist
 {
 public:
   PinButton( sf::Rect<double>& rect, unsigned int guiID );

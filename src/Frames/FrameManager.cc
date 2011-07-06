@@ -46,6 +46,7 @@ FrameManager::NewEvent( sf::Event& event )
       point = FrameCoord::WindowToResolutionCoord( point );
       fFocus = FindFrame( point );
       fMoving = false; // Always release if mouse button up
+      if( fFocus == oldFocus ) break; // Drop through if affects something new
 
 // Now events that change the focus   
     case sf::Event::MouseButtonPressed:
@@ -81,7 +82,8 @@ FrameManager::NewEvent( sf::Event& event )
   if( fFocus != oldFocus && oldFocus != -1 ) // Focus has changed thus Minimise old frame
     {
       sf::Vector2<double> size( 100, 50 ); //No c++0x yet...
-      fFrameContainers[oldFocus]->Resize( size );
+      if( fFrameContainers[oldFocus]->IsPinned() == false )
+	fFrameContainers[oldFocus]->Resize( size );
     }    
 }
 

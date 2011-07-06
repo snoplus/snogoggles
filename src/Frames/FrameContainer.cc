@@ -1,6 +1,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include <string>
+#include <iostream>
 using namespace std;
 
 #include <Viewer/FrameContainer.hh>
@@ -74,7 +75,6 @@ FrameContainer::NewEvent( sf::Event& event )
   UIEvent uiEvent = UIEvent( event, fTopBarCoord );
   switch( event.Type )
     {
-// Some events may be relevant to the top bar
     case sf::Event::MouseButtonPressed:
       {
 	if( fTopBar->ContainsPoint( uiEvent.GetLocalCoord() ) )
@@ -90,15 +90,17 @@ FrameContainer::NewEvent( sf::Event& event )
       break;
     case sf::Event::MouseButtonReleased:
       {
-	if( fExitButton->GetState() )
-	  fExitButton->NewEvent( uiEvent );
 	if( fExitButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
-	  returnEvent = FrameUIReturn( FrameUIReturn::eClosed );
+	  {
+	    fExitButton->NewEvent( uiEvent );
+	    returnEvent = FrameUIReturn( FrameUIReturn::eClosed );
+	  }
 
-	if( fPinButton->GetState() )
-	  returnEvent = FrameUIReturn( FrameUIReturn::ePinned );
 	if( fPinButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
-	  fPinButton->NewEvent( uiEvent );
+	  {
+	    fPinButton->NewEvent( uiEvent );
+	    returnEvent = FrameUIReturn( FrameUIReturn::ePinned );
+	  }
 
 	if( fTopBar->GetState() ) // Always Stop moving if mouse up
 	  {
