@@ -54,8 +54,7 @@ public:
   virtual void RenderGUI( sf::RenderWindow& windowApp );
   inline virtual void Render2dT( sf::RenderWindow& windowApp );
   virtual void Render2d( RWWrapper& windowApp ) = 0;
-  inline virtual void Render3dT( sf::RenderWindow& windowApp );
-  virtual void Render3d( RWWrapper& windowApp ) = 0;
+  virtual void Render3d() = 0;
 
   inline void SetFrameCoord( const FrameCoord& frameCoord );
   inline FrameCoord GetFrameCoord(); 
@@ -70,13 +69,6 @@ Frame::Render2dT( sf::RenderWindow& windowApp )
 { 
   RWWrapper wrapper = RWWrapper( windowApp, fFrameCoord );
   Render2d( wrapper ); 
-}
-
-void 
-Frame::Render3dT( sf::RenderWindow& windowApp ) 
-{ 
-  RWWrapper wrapper = RWWrapper( windowApp, fFrameCoord );
-  Render3d( wrapper );
 }
 
 void

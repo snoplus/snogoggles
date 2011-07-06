@@ -8,7 +8,7 @@ using namespace Viewer;
 using namespace Viewer::GUIs;
 
 PinButton::PinButton( sf::Rect<double>& rect, unsigned int guiID )
-  : Button( rect, guiID )
+  : Persist( rect, guiID )
 {
   ImageManager& imageManager = ImageManager::GetInstance();
   fButton = imageManager.NewSprite( "FrameUI.png" );
@@ -23,7 +23,7 @@ PinButton::~PinButton()
 void 
 PinButton::Render( RWWrapper& windowApp )
 {
-  if( !fPressed )
+  if( !fActive )
     fButton.SetSubRect( sf::Rect<int>( 301, 0, 21, 20 ) );
   else
     fButton.SetSubRect( sf::Rect<int>( 301, 20, 21, 20 ) );

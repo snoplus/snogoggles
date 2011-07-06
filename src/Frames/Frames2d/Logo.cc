@@ -3,7 +3,7 @@
 #include <Viewer/Logo.hh>
 #include <Viewer/ImageManager.hh>
 #include <Viewer/ConfigurationTable.hh>
-#include <Viewer/ExitButton.hh>
+#include <Viewer/CheckBoxLabel.hh>
 using namespace Viewer;
 using namespace Frames;
 
@@ -20,13 +20,17 @@ Logo::Initialise( ConfigurationTable& configTable )
   fMessage.SetColor( sf::Color( 0, 0, 0 ) );
   fState = false;
   sf::Rect<double> button( 0.8, 0.1, 0.2, 0.1 );
-  fGUIManager.NewGUI<GUIs::ExitButton>( button );
+  GUIs::CheckBoxLabel* cbLabel = dynamic_cast<GUIs::CheckBoxLabel*>( fGUIManager.NewGUI<GUIs::CheckBoxLabel>( button ) );
+  cbLabel->SetLabel( "New Logo" );
+
+  fState = configTable.GetI( "state" );
+  cbLabel->SetState( fState );
 }
 
 void
 Logo::SaveConfiguration( ConfigurationTable& configTable )
 {
-  // Nothing TODO
+  configTable.SetI( "state", fState );
 }
 
 void 

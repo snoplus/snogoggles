@@ -30,6 +30,11 @@ int main( int argc, char *argv[] )
 
   viewer.Initialise();
   Semaphore sema;
+  if( argc < 2 )
+    {
+      cout << "Wrong number of arguments, try snogoggles File.root" << endl;
+      return 1;
+    }
   LoadRootFileThread loadData( argv[1], sema );
   // Wait for first event to be loaded
   sema.Wait();

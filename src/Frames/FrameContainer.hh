@@ -19,6 +19,7 @@
 #include <Viewer/FrameCoord.hh>
 #include <Viewer/FrameUIReturn.hh>
 #include <Viewer/FrameFactory.hh>
+#include <Viewer/Persist.hh>
 
 namespace sf
 {
@@ -34,6 +35,7 @@ namespace Viewer
 namespace GUIs
 {
   class Button;
+  class Persist;
 }
 
 class FrameContainer
@@ -45,7 +47,7 @@ public:
 
   void EventLoop();  
   void Render2d( sf::RenderWindow& windowApp );
-  void Render3d( sf::RenderWindow& windowApp );
+  void Render3d();
   void RenderGUI( sf::RenderWindow& windowApp );
 
   FrameUIReturn NewEvent( sf::Event& event );
@@ -55,15 +57,23 @@ public:
   void Move( const sf::Vector2<double>& position );
   void SetContainerCoord( FrameCoord& fContainerCoord );
   FrameCoord GetContainerCoord();
+
+  inline bool IsPinned();
 private:
   FrameCoord fTopBarCoord;
   FrameFactory fFrameFactory;
 
   Frame* fFrame;
-  GUIs::Button* fPinButton;
+  GUIs::Persist* fPinButton;
   GUIs::Button* fExitButton;
   GUIs::Button* fTopBar;
 };
+
+bool
+FrameContainer::IsPinned()
+{
+  return fPinButton->GetState();
+}
 
 } // ::Viewer
 

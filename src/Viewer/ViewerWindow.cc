@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 
 #include <string>
+#include <iostream>
 using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
@@ -67,7 +68,7 @@ void
 ViewerWindow::EventLoop()
 {
   sf::Event event;
-  while( fWindowApp->PollEvent( event ) )
+   while( fWindowApp->PollEvent( event ) )
     {
       switch( event.Type )
 	{
@@ -103,8 +104,11 @@ void
 ViewerWindow::RenderLoop()
 {
   fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
+  fFrameManager.Render3d();
+  fWindowApp->SaveGLStates();
   fFrameManager.Render2d( *fWindowApp );
   fFrameManager.RenderGUI( *fWindowApp );
-  
+  fWindowApp->RestoreGLStates();
+
   fWindowApp->Display();
 }

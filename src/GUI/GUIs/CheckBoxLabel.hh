@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::PinButton
+/// \class Viewer::GUIs::CheckBoxLabel
 ///
-/// \brief   Button with an pin square
+/// \brief   Label with a check box next to it
 ///
 /// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///
@@ -12,31 +12,37 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_PinButton__
-#define __Viewer_GUIs_PinButton__
+#ifndef __Viewer_GUIs_CheckBoxLabel__
+#define __Viewer_GUIs_CheckBoxLabel__
+
+#include <string>
 
 #include <Viewer/Persist.hh>
 #include <Viewer/Sprite.hh>
+#include <Viewer/Text.hh>
 
 namespace Viewer
 { 
 namespace GUIs
 {
 
-class PinButton : public Persist
+class CheckBoxLabel : public Persist
 {
 public:
-  PinButton( sf::Rect<double>& rect, unsigned int guiID );
-  virtual ~PinButton();
+  CheckBoxLabel( sf::Rect<double>& rect, unsigned int guiID );
+  virtual ~CheckBoxLabel();
+
+  void SetLabel( const std::string& label );
 
   void Render( RWWrapper& windowApp );
   inline double PreferedRatio();
 protected:
-  Sprite fButton;
+  Sprite fBox;
+  Text fLabel;
 };
 
 double
-PinButton::PreferedRatio()
+CheckBoxLabel::PreferedRatio()
 {
   return 1.0;
 }
