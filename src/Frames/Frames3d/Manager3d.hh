@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::Manager3d
+/// \class Viewer::Frames::Manager3d
 ///
 /// \brief   	This class manages independent, abstract modules to 
 ///		make up a complete 3d frame. 
@@ -9,6 +9,8 @@
 ///
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
+///     06/07/11 : Olivia Wasalski - Now inherits from Frame class instead
+///              of Frame3d class. Namespace change to reflect this.
 ///
 /// \details	The design for the 3D aspects of the viewer is modular 
 ///		in nature. The Manager3d class combines a series of 
@@ -34,10 +36,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_Manager3d__
-#define __Viewer_Frames3d_Manager3d__
+#ifndef __Viewer_Frames_Manager3d__
+#define __Viewer_Frames_Manager3d__
 
-#include <Viewer/Frame3d.hh>
+#include <Viewer/Frame.hh>
 #include <string>
 
 namespace Viewer {
@@ -45,7 +47,7 @@ namespace Viewer {
     class RWWrapper;
     class ConfigurationTable;
 
-namespace Frames3d {
+namespace Frames {
 
     class CameraManager3d;
     class HitManager3d;
@@ -53,7 +55,7 @@ namespace Frames3d {
     class GeoManager3d;
     class FitterManager3d;
 
-class Manager3d : public Frame3d {
+class Manager3d : public Frame {
 
 public:
 
@@ -90,6 +92,8 @@ public:
     /// Calls all of the event loops of all of the modules.
     void EventLoop();
 
+    void Render2d( RWWrapper& windowApp );
+
     void Render3d();
 
 private:
@@ -102,8 +106,8 @@ private:
 
 }; // class Manager3d
 
-}; // namespace Frames3d
+}; // namespace Frames
 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_Manager3d__
+#endif // __Viewer_Frames_Manager3d__

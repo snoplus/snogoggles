@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::FitterFactory3d
+/// \class Viewer::Frames::FitterFactory3d
 ///
 /// \brief Singleton factory that creates all fitter managers
 ///
@@ -13,14 +13,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_FitterFactory3d__
-#define __Viewer_Frames3d_FitterFactory3d__
+#ifndef __Viewer_Frames_FitterFactory3d__
+#define __Viewer_Frames_FitterFactory3d__
 
 #include <Viewer/Factory.hh>
 #include <Viewer/FitterManager3d.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class FitterFactory3d {
 
@@ -41,7 +41,7 @@ private:
 
 }; // class FitterFactory
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_FitterFactory3d__
+#endif // __Viewer_Frames_FitterFactory3d__

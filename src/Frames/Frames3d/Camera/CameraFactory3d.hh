@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::CameraFactory3d
+/// \class Viewer::Frames::CameraFactory3d
 ///
 /// \brief Singleton factory that creates all camera managers
 ///
@@ -13,14 +13,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_CameraFactory3d__
-#define __Viewer_Frames3d_CameraFactory3d__
+#ifndef __Viewer_Frames_CameraFactory3d__
+#define __Viewer_Frames_CameraFactory3d__
 
 #include <Viewer/Factory.hh>
 #include <Viewer/CameraManager3d.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class CameraFactory3d {
 
@@ -41,7 +41,7 @@ private:
 
 }; // class CameraFactory
 
-}; // namespace Frames3d
+}; // namespace Frames
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_CameraFactory3d__
+#endif // __Viewer_Frames_CameraFactory3d__

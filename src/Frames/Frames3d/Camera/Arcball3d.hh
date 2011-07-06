@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::Arcball3d
+/// \class Viewer::Frames::Arcball3d
 ///
 /// \brief   Arcball which is responsible for managing 
 ///	     the OpenGL modelview and projection matricies.
@@ -14,8 +14,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_Arcball3d__
-#define __Viewer_Frames3d_Arcball3d__
+#ifndef __Viewer_Frames_Arcball3d__
+#define __Viewer_Frames_Arcball3d__
 
 #include <Viewer/CameraManager3d.hh>
 #include <SFML/Graphics.hpp>
@@ -23,7 +23,7 @@
 #include <string>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class Arcball3d : public CameraManager3d {
 
@@ -82,8 +82,8 @@ private:
 
 }; // class Arcball3d
 
-}; // namespace Frames3d
+}; // namespace Frames
 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_Arcball3d__
+#endif // __Viewer_Frames_Arcball3d__

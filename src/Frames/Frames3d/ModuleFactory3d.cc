@@ -13,7 +13,7 @@
 #include <stdexcept>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
     class CameraManager3d;
 
@@ -51,5 +51,5 @@ void ModuleFactory3d::SetAllModules( Manager3d* manager3d, std::vector<std::stri
 
 }
 
-}; // namespce Frames3d
+}; // namespce Frames
 }; // namespace Viewer

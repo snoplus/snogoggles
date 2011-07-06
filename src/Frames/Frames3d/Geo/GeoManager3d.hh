@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::GeoManager3d
+/// \class Viewer::Frames::GeoManager3d
 ///
 /// \brief   Abstract class which is responsible for loading
 ///	     and rendering geometry.
@@ -20,15 +20,15 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __Viewer_Frames3d_GeoManager3d__
-#define __Viewer_Frames3d_GeoManager3d__
+#ifndef __Viewer_Frames_GeoManager3d__
+#define __Viewer_Frames_GeoManager3d__
 
 #include <Viewer/Module3d.hh>
 
 #include <string>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class GeoManager3d : public Module3d {
 
@@ -54,7 +54,7 @@ public:
 
 }; // class GeoManager3d
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_GeoManager3d__
+#endif // __Viewer_Frames_GeoManager3d__

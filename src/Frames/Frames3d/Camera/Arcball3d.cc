@@ -7,7 +7,7 @@
 #include <string>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 Arcball3d::Arcball3d()
 {
@@ -79,5 +79,5 @@ bool Arcball3d::IsFront( TVector3 v )
     else return false;
 }
 
-}; // namespace Frames3d
+}; // namespace Frames
 }; // namespace Viewer

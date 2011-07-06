@@ -5,7 +5,7 @@
 #include <Viewer/Arcball3d.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 CameraFactory3d* CameraFactory3d::fInstance = NULL;
 
@@ -28,5 +28,5 @@ CameraManager3d* CameraFactory3d::GetCameraManager( const std::string name )
     return fFactory.New( name );
 }
 
-}; // namespce Frames3d
+}; // namespce Frames
 }; // namespace Viewer

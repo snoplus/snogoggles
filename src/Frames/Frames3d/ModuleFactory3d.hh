@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::ModuleFactory3d
+/// \class Viewer::Frames::ModuleFactory3d
 ///
 /// \brief Singleton factory that creates all the modules
 ///
@@ -13,14 +13,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_ModuleFactory3d__
-#define __Viewer_Frames3d_ModuleFactory3d__
+#ifndef __Viewer_Frames_ModuleFactory3d__
+#define __Viewer_Frames_ModuleFactory3d__
 
 #include <vector>
 #include <string>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
     class Manager3d;
 
@@ -33,7 +33,7 @@ public:
 
 }; // class ModuleFactory
 
-}; // namespace Frames3d
+}; // namespace Frames
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_ModuleFactory3d__
+#endif // __Viewer_Frames_ModuleFactory3d__

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::Module3d
+/// \class Viewer::Frames::Module3d
 ///
 /// \brief   All the modules share these capabilities.
 ///
@@ -14,8 +14,8 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __Viewer_Frames3d_Module3d__
-#define __Viewer_Frames3d_Module3d__
+#ifndef __Viewer_Frames_Module3d__
+#define __Viewer_Frames_Module3d__
 
 #include <Viewer/GUIReturn.hh>
 #include <Viewer/ConfigurationTable.hh>
@@ -26,7 +26,7 @@ namespace Viewer {
 
     class GUIManager;
 
-namespace Frames3d {
+namespace Frames {
 
 class Module3d {
 
@@ -57,8 +57,8 @@ public:
 
 }; // class Module3d
 
-}; // namespace Frames3d
+}; // namespace Frames
 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_Module3d__
+#endif // __Viewer_Frames_Module3d__

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::TrackManager3d
+/// \class Viewer::Frames::TrackManager3d
 ///
 /// \brief   Abstract class which is responsible for filtering
 ///	     and rendering tracks.
@@ -21,8 +21,8 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __Viewer_Frames3d_TrackManager3d__
-#define __Viewer_Frames3d_TrackManager3d__
+#ifndef __Viewer_Frames_TrackManager3d__
+#define __Viewer_Frames_TrackManager3d__
 
 #include <Viewer/Module3d.hh>
 
@@ -35,7 +35,7 @@ namespace RAT {
 };
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
     class FrontChecker3d;
 
@@ -67,7 +67,7 @@ protected:
 
 }; // class TrackManager3d
 
-}; // namesapce Frames3d 
+}; // namesapce Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_TrackManager3d__
+#endif // __Viewer_Frames_TrackManager3d__

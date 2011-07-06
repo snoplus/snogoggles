@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::CameraManager3d
+/// \class Viewer::Frames::CameraManager3d
 ///
 /// \brief   Abstract class which is responsible for managing 
 ///	     the OpenGL modelview and projection matricies.
@@ -30,8 +30,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_CameraManager3d__
-#define __Viewer_Frames3d_CameraManager3d__
+#ifndef __Viewer_Frames_CameraManager3d__
+#define __Viewer_Frames_CameraManager3d__
 
 #include <Viewer/Module3d.hh>
 #include <Viewer/FrontChecker3d.hh>
@@ -40,7 +40,7 @@
 
 namespace Viewer {
 
-namespace Frames3d {
+namespace Frames {
 
 class CameraManager3d : public Module3d, public FrontChecker3d {
 
@@ -60,8 +60,8 @@ public:
 
 }; // class CameraManager3d
 
-}; // namespace Frames3d
+}; // namespace Frames
 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_CameraManager3d__
+#endif // __Viewer_Frames_CameraManager3d__

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::HitFactory3d
+/// \class Viewer::Frames::HitFactory3d
 ///
 /// \brief Singleton factory that creates all hit managers
 ///
@@ -13,14 +13,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_HitFactory3d__
-#define __Viewer_Frames3d_HitFactory3d__
+#ifndef __Viewer_Frames_HitFactory3d__
+#define __Viewer_Frames_HitFactory3d__
 
 #include <Viewer/Factory.hh>
 #include <Viewer/HitManager3d.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class HitFactory3d {
 
@@ -41,7 +41,7 @@ private:
 
 }; // class HitFactory
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_HitFactory3d__
+#endif // __Viewer_Frames_HitFactory3d__

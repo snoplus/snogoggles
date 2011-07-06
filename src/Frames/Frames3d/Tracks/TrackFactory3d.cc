@@ -3,7 +3,7 @@
 #include <Viewer/Factory.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 TrackFactory3d* TrackFactory3d::fInstance = NULL;
 
@@ -26,5 +26,5 @@ TrackManager3d* TrackFactory3d::GetTrackManager( const std::string name )
     return fFactory.New( name );
 }
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer

@@ -8,7 +8,7 @@ namespace Viewer {
 
     class GUIManager;
 
-namespace Frames3d {
+namespace Frames {
 
 void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager* g, const sf::Rect<double>& optionsArea )
 {
@@ -34,5 +34,5 @@ void Module3d::EventLoopSafe( Module3d* module, const GUIReturn& g )
         module->EventLoop( g );
 }
 
-}; // namespace Frames3d
+}; // namespace Frames
 }; // namespace Viewer

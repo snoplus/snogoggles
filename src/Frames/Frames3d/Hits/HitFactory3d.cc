@@ -3,7 +3,7 @@
 #include <Viewer/Factory.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 HitFactory3d* HitFactory3d::fInstance = NULL;
 
@@ -26,5 +26,5 @@ HitManager3d* HitFactory3d::GetHitManager( const std::string name )
     return fFactory.New( name );
 }
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer

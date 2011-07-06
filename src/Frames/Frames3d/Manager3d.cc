@@ -20,7 +20,7 @@ namespace RAT {
 }; // namespace RAT
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 Manager3d::Manager3d()
 {
@@ -95,6 +95,11 @@ void Manager3d::EventLoop()
     }
 }
 
+void Manager3d::Render2d( RWWrapper& windowApp )
+{
+
+}
+
 void Manager3d::Render3d( ) 
 {
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
@@ -107,5 +112,5 @@ void Manager3d::Render3d( )
     FitterManager3d::RenderFitVertexSafe( fFitterManager );
 }
 
-}; // namespace Frames3d
+}; // namespace Frames
 }; // namespace Viewer

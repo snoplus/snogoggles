@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::FrontChecker3d
+/// \class Viewer::Frames::FrontChecker3d
 ///
 /// \brief   Checks whether a given vector is in the front half
 ///	     of the scene.
@@ -16,13 +16,13 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_FrontChecker3d__
-#define __Viewer_Frames3d_FrontChecker3d__
+#ifndef __Viewer_Frames_FrontChecker3d__
+#define __Viewer_Frames_FrontChecker3d__
 
 class TVector3;
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class FrontChecker3d {
 
@@ -33,7 +33,7 @@ virtual bool IsFront( TVector3 v ) = 0;
 
 }; // class FrontChecker3d
 
-}; // namespace Frames3d
+}; // namespace Frames
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_FrontChecker3d__
+#endif // __Viewer_Frames_FrontChecker3d__

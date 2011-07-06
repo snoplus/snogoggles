@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::GeoFactory3d
+/// \class Viewer::Frames::GeoFactory3d
 ///
 /// \brief Singleton factory that creates all geometry managers
 ///
@@ -13,14 +13,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_GeoFactory3d__
-#define __Viewer_Frames3d_GeoFactory3d__
+#ifndef __Viewer_Frames_GeoFactory3d__
+#define __Viewer_Frames_GeoFactory3d__
 
 #include <Viewer/Factory.hh>
 #include <Viewer/GeoManager3d.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class GeoFactory3d {
 
@@ -41,7 +41,7 @@ private:
 
 }; // class GeoFactory
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_GeoFactory3d__
+#endif // __Viewer_Frames_GeoFactory3d__

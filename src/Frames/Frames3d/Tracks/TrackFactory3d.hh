@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::TrackFactory3d
+/// \class Viewer::Frames::TrackFactory3d
 ///
 /// \brief Singleton factory that creates all track managers
 ///
@@ -13,14 +13,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_TrackFactory3d__
-#define __Viewer_Frames3d_TrackFactory3d__
+#ifndef __Viewer_Frames_TrackFactory3d__
+#define __Viewer_Frames_TrackFactory3d__
 
 #include <Viewer/Factory.hh>
 #include <Viewer/TrackManager3d.hh>
 
 namespace Viewer {
-namespace Frames3d {
+namespace Frames {
 
 class TrackFactory3d {
 
@@ -41,7 +41,7 @@ private:
 
 }; // class TrackFactory
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames3d_TrackFactory3d__
+#endif // __Viewer_Frames_TrackFactory3d__

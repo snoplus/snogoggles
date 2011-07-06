@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames3d::HitManager3d
+/// \class Viewer::Frames::HitManager3d
 ///
 /// \brief   Abstract class which is responsible for filtering
 ///	     and rendering hits.
@@ -20,8 +20,8 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __Viewer_Frames3d_HitManager3d__
-#define __Viewer_Frames3d_HitManager3d__
+#ifndef __Viewer_Frames_HitManager3d__
+#define __Viewer_Frames_HitManager3d__
 
 #include <Viewer/Module3d.hh>
 #include <Viewer/FrontChecker3d.hh>
@@ -37,7 +37,7 @@ namespace RAT {
 
 namespace Viewer {
 
-namespace Frames3d {
+namespace Frames {
 
     class FrontChecker3d;
 
@@ -68,7 +68,7 @@ protected:
 
 }; // class HitManager3d
 
-}; // namespace Frames3d 
+}; // namespace Frames 
 }; // namespace Viewer
 
-#endif // Viewer_Frames3d_HitManager3d_hh
+#endif // Viewer_Frames_HitManager3d_hh
