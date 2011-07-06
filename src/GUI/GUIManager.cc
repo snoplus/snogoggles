@@ -9,6 +9,7 @@ GUIReturn
 GUIManager::NewEvent( UIEvent& event )
 {
   GUIReturn retEvent; // Returned event
+  int oldFocus = fFocus;
   switch( event.Type )
     {
 // First events that go straight through to Focus
@@ -23,6 +24,7 @@ GUIManager::NewEvent( UIEvent& event )
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
 	retEvent = fGUIObjects[fFocus]->NewEvent( event );
       fFocus = FindGUI( event.GetLocalCoord() );
+      if( fFocus == oldFocus ) break; // Only drop through if affect new object
 
 // Now events that change the focus   
     case sf::Event::MouseMoved:

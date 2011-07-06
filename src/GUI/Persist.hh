@@ -31,6 +31,7 @@ public:
   virtual GUIReturn NewEvent( UIEvent& event );
 
   inline virtual bool GetState();
+  inline virtual void SetState( bool state );
 protected:
   bool fActive;
 };
@@ -45,6 +46,12 @@ bool
 Persist::GetState()
 {
   return fActive;
+}
+
+void
+Persist::SetState( bool state )
+{
+  fActive = state;
 }
 
 } // ::GUIs

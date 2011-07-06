@@ -15,7 +15,9 @@ void
 Frame::NewEvent( sf::Event& event )
 {
   UIEvent uiEvent( event, fFrameCoord );
-  fEvents.push( fGUIManager.NewEvent( uiEvent ) );
+  GUIReturn retEvent = fGUIManager.NewEvent( uiEvent );
+  if( retEvent.IsNULL() == false )
+    fEvents.push( retEvent );
 }
    
 void 
