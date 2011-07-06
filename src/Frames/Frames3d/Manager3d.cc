@@ -24,12 +24,11 @@ namespace Frames3d {
 
 Manager3d::Manager3d()
 {
-    SetAllModules( NULL, NULL, NULL, NULL, NULL );
+    Manager3d( "" );
 }
 
 Manager3d::Manager3d( const std::string& options )
 {
-    Manager3d();
     std::vector<std::string> tokens;
     StringUtils::SplitString( options, " ", tokens );
     ModuleFactory3d::SetAllModules( this, tokens );
@@ -101,8 +100,7 @@ void Manager3d::Render3d( )
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
     RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetPMTList();
 
-    if( fCameraManager != NULL )
-        fCameraManager->SetUpCameraSystem( fFrameCoord.Get3dViewport() );
+    fCameraManager->SetUpCameraSystem( fFrameCoord.Get3dViewport() );
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
     // TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );

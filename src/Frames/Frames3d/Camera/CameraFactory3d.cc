@@ -2,6 +2,8 @@
 #include <Viewer/CameraManager3d.hh>
 #include <Viewer/Factory.hh>
 
+#include <Viewer/Arcball3d.hh>
+
 namespace Viewer {
 namespace Frames3d {
 
@@ -18,7 +20,7 @@ CameraFactory3d* CameraFactory3d::GetInstance()
 
 CameraFactory3d::CameraFactory3d()
 {
-    fFactory.Register( "null", new NullAlloc<CameraManager3d>() );
+    fFactory.Register( Arcball3d::Name(), new Alloc<CameraManager3d, Arcball3d>() );
 }
 
 CameraManager3d* CameraFactory3d::GetCameraManager( const std::string name )

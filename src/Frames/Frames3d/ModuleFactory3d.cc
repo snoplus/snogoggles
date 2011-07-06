@@ -6,6 +6,8 @@
 #include <Viewer/GeoFactory3d.hh>
 #include <Viewer/FitterFactory3d.hh>
 
+#include <Viewer/Arcball3d.hh>
+
 #include <vector>
 #include <string>
 #include <stdexcept>
@@ -17,7 +19,7 @@ namespace Frames3d {
 
 void ModuleFactory3d::SetAllModules( Manager3d* manager3d, std::vector<std::string>& modules )
 {
-    std::string cameraManager = "null";
+    std::string cameraManager = Arcball3d::Name();
     try { cameraManager = modules.at(0); }
     catch (std::out_of_range &e) { }
 
