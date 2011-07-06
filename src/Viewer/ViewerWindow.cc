@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
 
 #include <string>
 #include <iostream>
@@ -104,6 +105,7 @@ void
 ViewerWindow::RenderLoop()
 {
   fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
+  SetGlobalGLStates();
   fFrameManager.Render3d();
   fWindowApp->SaveGLStates();
   fFrameManager.Render2d( *fWindowApp );
@@ -111,4 +113,14 @@ ViewerWindow::RenderLoop()
   fWindowApp->RestoreGLStates();
 
   fWindowApp->Display();
+}
+
+void 
+ViewerWindow::SetGlobalGLStates()
+{
+  // I believe that I do not need to clear the colour buffer because SFML clears it for me. OW
+  glClearDepth( 0 );
+  glClearStencil( 0 );
+  glClear( GL_DEPTH_BUFFER_BIT );
+  glClear( GL_STENCIL_BUFFER_BIT );
 }
