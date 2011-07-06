@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Factory
+/// \class Viewer::Factory
 ///
 /// \brief   Allocates instances of classes
 ///
@@ -8,6 +8,7 @@
 ///
 /// REVISION HISTORY:\n
 ///     29/06/11 : P.Jones - Ported from RAT. \n
+///     05/07/11 : Olivia Wasalski - Added the NullAlloc and the OptionsAlloc. \n
 ///
 /// \detail  As Brief.
 ///
@@ -23,14 +24,30 @@ namespace Viewer {
 template <class T>
 class AllocBase {
 public:
-  virtual T* New() = 0;
+  virtual T* New( const std::string& options ) = 0;
 };
 
 template <class T, class TDerived>
 class Alloc : public AllocBase<T> {
 public:
-  virtual T* New() {
+  virtual T* New( const std::string& ) {
     return new TDerived;
+  };
+};
+
+template <class T>
+class NullAlloc : public AllocBase<T> {
+public:
+  virtual T* New( const std::string& ) {
+    return NULL;
+  };
+};
+
+template <class T, class TDerived>
+class OptionsAlloc : public AllocBase<T> {
+public:
+  virtual T* New( const std::string& options ) {
+    return new TDerived( options );
   };
 };
 
@@ -49,11 +66,11 @@ class AllocTable : public std::map< std::string, AllocBase<T>* >
 template <class T>
 class Factory {
 public:
-  T* New(const std::string &id) {
+  T* New(const std::string &id, const std::string& options = "" ) {
     if (table.count(id) == 0)
       throw FactoryUnknownID(id);
     else
-      return table[id]->New();
+      return table[id]->New( options );
   };
 
   void Register(const std::string &id, AllocBase<T> *allocator) {
@@ -84,4 +101,4 @@ Factory<T> GlobalFactory<T>::factory;
 
 } // namespace Viewer
 
-#endif
+#endif // __Viewer_Factory__

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <SNOGoggles resX="800" resY="600">
 
-  <Frame posX="0" posY="0" sizeX="200" sizeY="100" type="Logo"/>
+  <Frame posX="0" posY="0" sizeX="100" sizeY="50" type="Logo"/>
 
-  <Frame posX="200" posY="0" sizeX="200" sizeY="100" type="Logo"/>
+  <Frame posX="200" posY="0" sizeX="100" sizeY="50" type="Logo"/>
+
+  <Frame posX="400" posY="0" sizeX="400" sizeY="200" type="3D-Combo"/>
 
 </SNOGoggles>
