@@ -15,7 +15,7 @@
 #ifndef __Viewer_Frames_Logo__
 #define __Viewer_Frames_Logo__
 
-#include <Viewer/Frame2d.hh>
+#include <Viewer/Frame.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/Text.hh>
 
@@ -24,7 +24,7 @@ namespace Viewer
 namespace Frames
 {
 
-class Logo : public Frame2d
+class Logo : public Frame
 {
 public:
   void Initialise( ConfigurationTable& configTable );
@@ -38,6 +38,8 @@ public:
   static std::string Name() { return std::string( "Logo" ); }
 
   virtual void Render2d( RWWrapper& windowApp );
+
+  void Render3d() { }
 private:
   Sprite fLogo;
   Sprite fLogo2;

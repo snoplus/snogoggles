@@ -107,10 +107,10 @@ FrameManager::Render2d( sf::RenderWindow& windowApp )
 }
 
 void 
-FrameManager::Render3d( sf::RenderWindow& windowApp )
+FrameManager::Render3d()
 {
   for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    fFrameContainers[uFrame]->Render3d( windowApp );
+    fFrameContainers[uFrame]->Render3d();
 }
   
 void 

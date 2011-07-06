@@ -45,7 +45,7 @@ public:
 
   void EventLoop();  
   void Render2d( sf::RenderWindow& windowApp );
-  void Render3d( sf::RenderWindow& windowApp );
+  void Render3d();
   void RenderGUI( sf::RenderWindow& windowApp );
 
   FrameUIReturn NewEvent( sf::Event& event );

@@ -52,9 +52,9 @@ FrameContainer::Render2d( sf::RenderWindow& windowApp )
 }
 
 void 
-FrameContainer::Render3d( sf::RenderWindow& windowApp )
+FrameContainer::Render3d()
 {
-  fFrame->Render3dT( windowApp );
+  fFrame->Render3d();
 }
 
 void 

@@ -38,7 +38,7 @@ public:
   void EventLoop();
   void RenderGUI( sf::RenderWindow& windowApp );
   void Render2d( sf::RenderWindow& windowApp );
-  void Render3d( sf::RenderWindow& windowApp );
+  void Render3d();
 
   void NewEvent( sf::Event& event ); 
   void SaveConfiguration( Configuration& config );
