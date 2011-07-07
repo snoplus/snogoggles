@@ -106,12 +106,16 @@ ViewerWindow::RenderLoop()
 {
   fWindowApp->SetActive();
   SetGlobalGLStates();
-  fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
+
+  // SetGlobalGLStates clears the background colour to white.
+  // This SFML call is unnecessary.
+  //fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
+
   fFrameManager.Render3d();
-  fWindowApp->SaveGLStates();
+  fWindowApp->SaveGLStates(); // This call seems to be necessary.
   fFrameManager.Render2d( *fWindowApp );
   fFrameManager.RenderGUI( *fWindowApp );
-  fWindowApp->RestoreGLStates();
+  fWindowApp->RestoreGLStates(); // Matches the save call above.
 
   fWindowApp->Display();
 }
@@ -119,16 +123,14 @@ ViewerWindow::RenderLoop()
 void 
 ViewerWindow::SetGlobalGLStates()
 {
-  glClearDepth(1.f);
-  glClearColor(0.f, 0.f, 0.f, 0.f);
-  
+  glClearColor(1.f, 1.f, 1.f, 1.f); // Sets the clear color to white.
+  glClearDepth(1.f); // Sets the depth buffer clear to 1.
+  glClearStencil(0); // Sets the stencil buffer clear to 0.
+
+  // Clears the color, depth and stencil buffers.
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+
   // Enable Z-buffer read and write
   glEnable(GL_DEPTH_TEST);
   glDepthMask(GL_TRUE);
-  return;
-// I believe that I do not need to clear the colour buffer because SFML clears it for me. OW
-  glClearDepth( 0 );
-  glClearStencil( 0 );
-  glClear( GL_DEPTH_BUFFER_BIT );
-  glClear( GL_STENCIL_BUFFER_BIT );
 }
