@@ -38,8 +38,7 @@ public:
 
   virtual void Render( RWWrapper& windowApp ) = 0;
   virtual GUIReturn NewEvent( UIEvent& event ) = 0;
-  virtual double PreferedRatio() = 0; 
-
+ 
 protected:
   sf::Rect<double> fRect;
   unsigned int fID;
