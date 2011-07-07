@@ -6,6 +6,10 @@ using namespace std;
 #include <Viewer/Semaphore.hh>
 using namespace Viewer;
 
+#ifdef __APPLE__
+unsigned int Semaphore::fsNumSemaphores = 0;
+#endif
+
 Semaphore::Semaphore()
 {
 #ifdef __APPLE__
