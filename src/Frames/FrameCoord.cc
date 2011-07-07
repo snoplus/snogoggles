@@ -81,8 +81,8 @@ FrameCoord::Get3dViewport() const
   sf::Rect<double> windowRect = ResolutionToWindowRect( fRect );
   return sf::Rect<double>( windowRect.Left,
 			   fsWindowHeight - ( windowRect.Top + windowRect.Height ),
-			   windowRect.Left + windowRect.Width,
-			   fsWindowHeight - windowRect.Top );
+			   windowRect.Width,
+			   windowRect.Height );
 }
 
 bool

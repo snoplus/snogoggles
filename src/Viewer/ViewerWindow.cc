@@ -104,8 +104,9 @@ ViewerWindow::EventLoop()
 void
 ViewerWindow::RenderLoop()
 {
-  fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
+  fWindowApp->SetActive();
   SetGlobalGLStates();
+  fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
   fFrameManager.Render3d();
   fWindowApp->SaveGLStates();
   fFrameManager.Render2d( *fWindowApp );
@@ -118,7 +119,14 @@ ViewerWindow::RenderLoop()
 void 
 ViewerWindow::SetGlobalGLStates()
 {
-  // I believe that I do not need to clear the colour buffer because SFML clears it for me. OW
+  glClearDepth(1.f);
+  glClearColor(0.f, 0.f, 0.f, 0.f);
+  
+  // Enable Z-buffer read and write
+  glEnable(GL_DEPTH_TEST);
+  glDepthMask(GL_TRUE);
+  return;
+// I believe that I do not need to clear the colour buffer because SFML clears it for me. OW
   glClearDepth( 0 );
   glClearStencil( 0 );
   glClear( GL_DEPTH_BUFFER_BIT );
