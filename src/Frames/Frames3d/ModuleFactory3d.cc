@@ -7,6 +7,7 @@
 #include <Viewer/FitterFactory3d.hh>
 
 #include <Viewer/Arcball3d.hh>
+#include <Viewer/DefaultHits3d.hh>
 
 #include <vector>
 #include <string>
@@ -23,7 +24,7 @@ void ModuleFactory3d::SetAllModules( Manager3d* manager3d, std::vector<std::stri
     try { cameraManager = modules.at(0); }
     catch (std::out_of_range &e) { }
 
-    std::string hitManager = "null";
+    std::string hitManager = DefaultHits3d::Name();
     try { hitManager = modules.at(1); }
     catch (std::out_of_range &e) { }
 

@@ -23,5 +23,18 @@ TVector3 ConfigTableUtils::GetTVector3( ConfigurationTable* configTable, const s
     return v;
 }
 
+void ConfigTableUtils::SetBoolean( ConfigurationTable* configTable, const std::string& name, bool value )
+{
+    if( value == true ) configTable->SetS( name, TrueTag() );
+    else configTable->SetS( name, FalseTag() );
+}
+
+bool ConfigTableUtils::GetBoolean( ConfigurationTable* configTable, const std::string& name )
+{
+    std::string tag = configTable->GetS( name );
+    if( tag == TrueTag() ) return true;
+    else if ( tag == FalseTag() ) return false;
+}
+
 };
 

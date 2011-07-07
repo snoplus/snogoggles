@@ -33,6 +33,18 @@ public:
     /// Loads a TVector3 objects from a config table from 3 doubles
     static TVector3 GetTVector3( ConfigurationTable* configTable, const std::string& name );
 
+    /// Saves a boolean to a config table as a string
+    static void SetBoolean( ConfigurationTable* configTable, const std::string& name, bool value );
+
+    /// Loads a boolean from a config table from a string
+    static bool GetBoolean( ConfigurationTable* configTable, const std::string& name );
+
+private:
+
+    static inline std::string TrueTag() { return "TRUE"; }
+    static inline std::string FalseTag() { return "FALSE"; }
+
+
 }; // class ConfigTableUtils 
 
 }; // namespace Viewer
