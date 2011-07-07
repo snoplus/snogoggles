@@ -23,7 +23,9 @@ def sfml(env):
 	env.Append( CPPPATH = [ os.environ["SFMLROOT"] + "/include", os.environ["GLEWROOT"] + "/include" ] )
 	env.Append( LIBPATH = [ os.environ["SFMLROOT"] + "/lib", os.environ["GLEWROOT"] + "/lib" ] )
 	env.Append( LIBS = [ 'sfml-graphics', 'sfml-window', 'sfml-system', 'GLEW' ] )
-
+	# Need to put an "If APPLE" wrapper around this
+	if "Darwin" in os.environ["G4SYSTEM"]:
+		env.Append(LINKFLAGS=['-framework', 'OpenGL'])
 # Appends RAT
 def rat(env):
 	env.Append( CPPPATH = [ os.environ["RATROOT"] + "/include" ] )
