@@ -42,6 +42,8 @@ int main( int argc, char *argv[] )
   viewer.Run();
   viewer.Destruct();
 
+  loadData.KillAndWait();
+
   XMLPlatformUtils::Terminate();
   return 0;
 }
