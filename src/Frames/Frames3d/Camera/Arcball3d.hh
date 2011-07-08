@@ -18,11 +18,16 @@
 #define __Viewer_Frames_Arcball3d__
 
 #include <Viewer/CameraManager3d.hh>
+#include <Viewer/GUIReturn.hh>
 #include <SFML/Graphics.hpp>
 #include <TVector3.h>
 #include <string>
 
 namespace Viewer {
+
+    class ConfigurationTable;
+    class GUIManager;
+
 namespace Frames {
 
 class Arcball3d : public CameraManager3d {

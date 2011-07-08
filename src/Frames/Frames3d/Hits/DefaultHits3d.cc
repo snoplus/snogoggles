@@ -50,15 +50,19 @@ void DefaultHits3d::EventLoop( const GUIReturn& g )
 
 void DefaultHits3d::RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
 {
+    if( fCurrentEV != ev || fReFilter == true )
+        FilterHits( ev, pmtList );
+
     if( fDisplayAllPMTs == true )
         DisplayAllPMTs( pmtList );
 
-    FilterByType( ev, pmtList );
+    RenderHits( pmtList );
 }
 
-void DefaultHits3d::DisplayAllPMTs( RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
 {
-   // TODO: Needs to be completed when Viewer::Colour is ready.
+    fFilteredHits.clear();
+    FilterByType( ev, pmtList );
 }
 
 void DefaultHits3d::FilterByType( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
@@ -85,14 +89,30 @@ void DefaultHits3d::FilterByPosition( const PMTWrapper& pmt, RAT::DS::PMTPropert
     if( fDisplayFrontPMTsOnly == true )
     {
         if( fFront->IsFront( pmt.GetPos( pmtList ) ) )
-            AssignColour( pmt, pmtList );
+            AddToFilteredHits( pmt, pmtList );
     }
-    else AssignColour( pmt, pmtList );
+    else AddToFilteredHits( pmt, pmtList );
 }
 
-void DefaultHits3d::AssignColour( const PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::AddToFilteredHits( const PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList )
 {
-   // TODO: Needs to be completed when Viewer::Colour is ready.
+   // TODO: Needs to be completed when ColorPalette is ready
+}
+
+void DefaultHits3d::DisplayAllPMTs( RAT::DS::PMTProperties* pmtList )
+{
+   // TODO: Needs to be completed
+}
+
+void DefaultHits3d::RenderHits( RAT::DS::PMTProperties* pmtList )
+{
+    for( int i=0 ; i < fFilteredHits.size(); i++)
+        RenderHit( fFilteredHits.at(i), pmtList );
+}
+
+void DefaultHits3d::RenderHit( PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList )
+{
+   // TODO: Needs to be completed
 }
 
 }; // namespace Frames

@@ -8,6 +8,8 @@
 ///
 /// REVISION HISTORY:\n
 /// 	06/07/11 : Olivia Wasalski - New File \n
+/// 	06/07/11 : Olivia Wasalski - Refactored so that hits are only
+///                                  filtered when needed. \n
 ///
 /// \details 	
 ///
@@ -18,8 +20,11 @@
 #define __Viewer_Frames_DefaultHits3d__
 
 #include <Viewer/HitManager3d.hh>
+#include <Viewer/GUIReturn.hh>
+#include <Viewer/PMTWrapper.hh>
 
 #include <string>
+#include <vector>
 
 namespace RAT {
     namespace DS {
@@ -30,7 +35,8 @@ namespace RAT {
 
 namespace Viewer {
 
-   class PMTWrapper; 
+    class ConfigurationTable;
+    class GUIManager;
 
 namespace Frames {
 
@@ -62,13 +68,19 @@ public:
 
 private:
 
-    void DisplayAllPMTs( RAT::DS::PMTProperties* pmtList );
+    void FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
 
     void FilterByType( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
 
     void FilterByPosition( const PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList );
 
-    void AssignColour( const PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList );
+    void AddToFilteredHits( const PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList );
+
+    void DisplayAllPMTs( RAT::DS::PMTProperties* pmtList );
+
+    void RenderHits( RAT::DS::PMTProperties* pmtList );
+
+    void RenderHit( PMTWrapper& pmt,  RAT::DS::PMTProperties* pmtList );
 
     static inline std::string DisplayAllPMTsTag() { return "DisplayAllPMTs"; }
     static inline std::string PMTTypeTag() { return "PMTType"; }
@@ -77,6 +89,11 @@ private:
     bool fDisplayAllPMTs;                   ///< Stores whether to render all (including unhit) PMTs.
     enum PMTType { UNCAL, CAL } fPMTType;   ///< Stores whether the PMTs are UnCal or Cal.
     bool fDisplayFrontPMTsOnly;             ///< Stores whether to only display front hits.
+
+
+    bool fReFilter;
+    RAT::DS::EV* fCurrentEV;
+    std::vector<PMTWrapper> fFilteredHits;
 
 
 }; // class DefaultHits3d

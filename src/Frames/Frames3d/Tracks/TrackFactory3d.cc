@@ -2,6 +2,8 @@
 #include <Viewer/TrackManager3d.hh>
 #include <Viewer/Factory.hh>
 
+#include <Viewer/DefaultTracks3d.hh>
+
 namespace Viewer {
 namespace Frames {
 
@@ -19,6 +21,7 @@ TrackFactory3d* TrackFactory3d::GetInstance()
 TrackFactory3d::TrackFactory3d()
 {
     fFactory.Register( "null", new NullAlloc<TrackManager3d>() );
+    fFactory.Register( DefaultTracks3d::Name(), new Alloc<TrackManager3d, DefaultTracks3d>() );
 }
 
 TrackManager3d* TrackFactory3d::GetTrackManager( const std::string name, FrontChecker3d* f )

@@ -8,6 +8,7 @@
 ///
 /// REVISION HISTORY:\n
 /// 	07/07/11 : Olivia Wasalski - New File \n
+/// 	07/07/11 : Olivia Wasalski - Added fColour member variable. \n
 ///
 /// \details 	
 ///
@@ -18,6 +19,7 @@
 
 #include <RAT/DS/PMTCal.hh>
 #include <RAT/DS/PMTUnCal.hh>
+#include <SFML/Graphics.hpp>
 
 namespace RAT {
     namespace DS {
@@ -37,6 +39,7 @@ public:
     virtual TVector3 GetPos(RAT::DS::PMTProperties * pmtlist) const = 0;
     virtual unsigned short GetCellID() const = 0;
     virtual char GetChanFlags() const = 0;
+    sf::Color fColor;
 };
 
 class PMTUnCalWrapper : public PMTWrapper {
