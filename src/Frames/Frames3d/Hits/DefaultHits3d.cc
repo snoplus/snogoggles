@@ -1,5 +1,4 @@
 #include <Viewer/DefaultHits3d.hh>
-#include <Viewer/HitRenderer3d.hh>
 #include <Viewer/PMTWrapper.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/ConfigTableUtils.hh>
