@@ -9,6 +9,7 @@
 ///
 /// REVISION HISTORY:\n
 /// 	06/07/11 : Olivia Wasalski - New File \n
+//      08/07/11 : Olivia Wasalski - Slight refactoring of the static private members. \n
 ///
 /// \details 	
 ///
@@ -63,13 +64,13 @@ public:
 
 private:
 
-    static std::string CameraTag() { return "camera"; }             ///< Name used to save fCamera.
-    static std::string EyeTag() { return "eye"; }                   ///< Name used to save fEye.
-    static std::string UpTag() { return "up"; }                     ///< Name used to save fUp.
+    static const std::string fCameraTag;        ///< Name used to save fCamera.
+    static const std::string fEyeTag;           ///< Name used to save fEye.
+    static const std::string fUpTag;            ///< Name used to save fUp.
 
-    static std::string RadiusTag() { return "radius"; }             ///< Name used to save fRadius.
-    static std::string CameraDistTag() { return "cameraDist"; }     ///< Name used to save fCameraDist.
-    static std::string ZoomTag() { return "zoom"; }                 ///< Name used to save fZoom.
+    static const std::string fRadiusTag;        ///< Name used to save fRadius.
+    static const std::string fCameraDistTag;    ///< Name used to save fCameraDist.
+    static const std::string fZoomTag;          ///< Name used to save fZoom.
 
     TVector3 fCamera;                   ///< Position of the camera.
     TVector3 fEye;                      ///< Point to look at.

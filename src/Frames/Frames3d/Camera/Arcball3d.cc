@@ -9,6 +9,14 @@
 namespace Viewer {
 namespace Frames {
 
+const std::string Arcball3d::fCameraTag = "Camera";
+const std::string Arcball3d::fEyeTag = "Eye";
+const std::string Arcball3d::fUpTag = "Up";
+
+const std::string Arcball3d::fRadiusTag = "Radius";
+const std::string Arcball3d::fCameraDistTag = "CameraDist";
+const std::string Arcball3d::fZoomTag = "Zoom";
+
 Arcball3d::Arcball3d()
 {
   fRadius = 8900.0;
@@ -21,39 +29,39 @@ Arcball3d::Arcball3d()
 
 void Arcball3d::CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea )
 {
-
+    // TODO: Needs to be completed.
 }
 
 void Arcball3d::CreateDragArea( GUIManager* g, const sf::Rect<double>& draggableArea )
 {
-
+    // TODO: Needs to be completed.
 }
 
 void Arcball3d::LoadConfiguration( ConfigurationTable* configTable )
 {
-    fRadius = configTable->GetD( RadiusTag() );
-    fCameraDist = configTable->GetD( CameraDistTag() );
-    fZoom = configTable->GetD( ZoomTag() );
+    fRadius = configTable->GetD( fRadiusTag );
+    fCameraDist = configTable->GetD( fCameraDistTag );
+    fZoom = configTable->GetD( fZoomTag );
 
-    fCamera = ConfigTableUtils::GetTVector3( configTable, CameraTag() );
-    fEye = ConfigTableUtils::GetTVector3( configTable, EyeTag() );
-    fUp = ConfigTableUtils::GetTVector3( configTable, UpTag() );
+    fCamera = ConfigTableUtils::GetTVector3( configTable, fCameraTag );
+    fEye = ConfigTableUtils::GetTVector3( configTable, fEyeTag );
+    fUp = ConfigTableUtils::GetTVector3( configTable, fUpTag );
 }
 
 void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-    configTable->SetD( RadiusTag(), fRadius );
-    configTable->SetD( CameraDistTag(), fCameraDist );
-    configTable->SetD( ZoomTag(), fZoom );
+    configTable->SetD( fRadiusTag, fRadius );
+    configTable->SetD( fCameraDistTag, fCameraDist );
+    configTable->SetD( fZoomTag, fZoom );
 
-    ConfigTableUtils::SetTVector3( configTable, CameraTag(), fCamera );
-    ConfigTableUtils::SetTVector3( configTable, EyeTag(), fEye );
-    ConfigTableUtils::SetTVector3( configTable, UpTag(), fUp );
+    ConfigTableUtils::SetTVector3( configTable, fCameraTag, fCamera );
+    ConfigTableUtils::SetTVector3( configTable, fEyeTag, fEye );
+    ConfigTableUtils::SetTVector3( configTable, fUpTag, fUp );
 }
 
 void Arcball3d::EventLoop( const GUIReturn& g )
 {
-
+    // TODO: Needs to be completed.
 }
 
 void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )
