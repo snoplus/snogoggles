@@ -31,6 +31,29 @@ ConfigurationTable::ConfigurationTable( xercesc_2_8::DOMElement* element, bool o
     }
 }
 
+ConfigurationTable*
+ConfigurationTable::NewTable( const string& name )
+{
+  XMLCh* elementName = XMLString::transcode( name.c_str() );
+  DOMElement* newElement = fDOMDocument->createElement( elementName );
+  fDOMElement->appendChild( newElement );
+  XMLString::release( &elementName );
+  ConfigurationTable* newTable = new ConfigurationTable( newElement, fOutput, fDOMDocument );
+  if( fConfigTables.count( name ) == 1 )
+    throw;
+  fConfigTables[ name ] = newTable;
+  return newTable;
+}
+
+ConfigurationTable* 
+ConfigurationTable::GetTable( const std::string& name )
+{
+  if( fConfigTables.count( name ) == 0 )
+    throw;
+  return fConfigTables[ name ];
+}
+
+
 int 
 ConfigurationTable::GetI( const string& name )
 {

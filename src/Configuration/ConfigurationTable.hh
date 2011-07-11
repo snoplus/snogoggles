@@ -33,7 +33,7 @@ class ConfigurationTable
 public:
   ConfigurationTable( xercesc_2_8::DOMElement* element, bool output, xercesc_2_8::DOMDocument* domDocument );
 
-  ConfigurationTable* GetNextTable( std::string& name );
+  ConfigurationTable* GetTable( const std::string& name );
   inline unsigned int GetNumTables();
   ConfigurationTable* NewTable( const std::string& name );
 
