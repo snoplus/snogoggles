@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class ConfigurationTable
+/// \class Viewer::ConfigurationTable
 ///
 /// \brief   
 ///
@@ -12,12 +12,27 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////
+/// \class Viewer::ConfigurationTable::NoTableError
+///
+/// \brief   
+///
+/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+///
+/// REVISION HISTORY:\n
+///     11/07/11 : P.Jones - First Revision, new file. \n
+///
+/// \detail  
+///
+////////////////////////////////////////////////////////////////////////
+
 #ifndef __Viewer_ConfigurationTable__
 #define __Viewer_ConfigurationTable__
 
 #include <map>
 #include <string>
 #include <sstream>
+#include <stdexcept>
 
 namespace xercesc_2_8
 {
@@ -31,6 +46,13 @@ namespace Viewer
 class ConfigurationTable
 {
 public:
+  class NoTableError : public std::runtime_error
+  {
+  public:
+    /// Just sets up a std::runtime_error
+    NoTableError( const std::string& param ) : std::runtime_error( param ) {}
+  };
+
   ConfigurationTable( xercesc_2_8::DOMElement* element, bool output, xercesc_2_8::DOMDocument* domDocument );
 
   ConfigurationTable* GetTable( const std::string& name );

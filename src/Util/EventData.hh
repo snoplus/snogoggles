@@ -24,7 +24,7 @@ namespace DS
 {
   class Root;
   class EV;
-  class PMTProperties;
+  class Run;
 }
 }
 
@@ -46,9 +46,9 @@ public:
 
   RAT::DS::EV* GetCurrentEV();
 
-  RAT::DS::PMTProperties* GetPMTList() { return fPMTList; }
+  RAT::DS::Run* GetRun() { return fRun; }
 
-  void SetPMTList( RAT::DS::PMTProperties* pmtList );
+  void SetRun( RAT::DS::Run* run );
   bool AddEV( RAT::DS::EV* ev );
 
   RAT::DS::EV* NextEV();
@@ -62,7 +62,7 @@ private:
   Mutex fLock;
   std::vector<RAT::DS::EV*> fEVs; /// <Must Lock to access
   int fCurrentID; /// <Must Lock to access
-  RAT::DS::PMTProperties* fPMTList;
+  RAT::DS::Run* fRun;
   RAT::DS::EV* fCurrentEvent;
 };
 

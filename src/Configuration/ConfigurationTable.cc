@@ -40,7 +40,7 @@ ConfigurationTable::NewTable( const string& name )
   XMLString::release( &elementName );
   ConfigurationTable* newTable = new ConfigurationTable( newElement, fOutput, fDOMDocument );
   if( fConfigTables.count( name ) == 1 )
-    throw;
+    throw NoTableError( name );
   fConfigTables[ name ] = newTable;
   return newTable;
 }
@@ -49,7 +49,7 @@ ConfigurationTable*
 ConfigurationTable::GetTable( const std::string& name )
 {
   if( fConfigTables.count( name ) == 0 )
-    throw;
+    throw NoTableError( name );
   return fConfigTables[ name ];
 }
 

@@ -11,13 +11,14 @@ using namespace std;
 #include <Viewer/Configuration.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/FrameCoord.hh>
+#include <Viewer/GreyScalePalette.hh>
 using namespace Viewer;
 
 ViewerWindow* ViewerWindow::fViewer = NULL;
 
 ViewerWindow::ViewerWindow()
 {
-  // TODO 
+  ColourPalette::gPalette = new GreyScalePalette();
 }
 
 void

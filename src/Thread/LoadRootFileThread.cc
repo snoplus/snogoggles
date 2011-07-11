@@ -1,5 +1,4 @@
 #include <RAT/DS/Root.hh>
-#include <RAT/DS/PMTProperties.hh>
 #include <RAT/DS/Run.hh>
 using namespace RAT;
 
@@ -21,8 +20,8 @@ LoadRootFileThread::Run()
   EventData& events = EventData::GetInstance();
   if( fTree == NULL )
     {
-      LoadRootFile( &fTree, &fDS, &fPMTList );
-      events.SetPMTList( fPMTList );
+      LoadRootFile();
+      events.SetRun( fRun );
       fTree->GetEntry( fMCEvent );
       for( int iEV = 0; iEV < fDS->GetEVCount(); iEV++ )
 	{
@@ -37,6 +36,7 @@ LoadRootFileThread::Run()
       fFile->Close();
       delete fFile;
       delete fDS;
+      delete fRun;
       Kill();
     }
   else
@@ -51,23 +51,16 @@ LoadRootFileThread::Run()
 }
 
 void
-LoadRootFileThread::LoadRootFile(
-				 TTree **tree,
-				 RAT::DS::Root **rDS,
-				 RAT::DS::PMTProperties **rPMTList )
+LoadRootFileThread::LoadRootFile()
 {
   fFile = new TFile( fFileName.c_str(), "READ" );
-  (*tree) = (TTree*)fFile->Get( "T" ); 
-  TTree *runTree = (TTree*)fFile->Get( "runT" ); 
-  
-  *rDS = new RAT::DS::Root();
+ 
+  fTree = (TTree*)fFile->Get( "T" ); 
+  fDS = new RAT::DS::Root();
+  fTree->SetBranchAddress( "ds", &fDS );
 
-  (*tree)->SetBranchAddress( "ds", &(*rDS) );
-
-  RAT::DS::Run* rRun = new RAT::DS::Run();
-
-  runTree->SetBranchAddress( "run", &rRun );
-
-  runTree->GetEntry();
-  *rPMTList = rRun->GetPMTProp();
+  fRunTree = (TTree*)fFile->Get( "runT" ); 
+  fRun = new RAT::DS::Run();
+  fRunTree->SetBranchAddress( "run", &fRun );
+  fRunTree->GetEntry();
 }
