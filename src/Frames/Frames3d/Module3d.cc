@@ -20,23 +20,18 @@ void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::
 
 void Module3d::LoadConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
 {
-//    if( module != NULL ) 
-//        module->LoadConfiguration( configTable.GetNextTable( module->GetTableName() ) );
-//    if( module != NULL ) 
-//        module->LoadConfiguration( &configTable );
+    if( module != NULL ) 
+        module->LoadConfiguration( configTable.GetTable( module->GetTableName() ) );
 }
 
 void Module3d::SaveConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
 {
-//    if( module != NULL ) 
-//    {
-//        ConfigurationTable* newConfigTable = configTable.NewTable( module->GetTableName() );
-//        newConfigTable->SetS( Module3d::ModuleTag(), module->GetName() );
-//        module->SaveConfiguration( newConfigTable );
-//    }
-
-//    if( module != NULL ) 
-//        module->SaveConfiguration( &configTable );
+    if( module != NULL ) 
+    {
+        ConfigurationTable* newConfigTable = configTable.NewTable( module->GetTableName() );
+        newConfigTable->SetS( Module3d::ModuleTag(), module->GetName() );
+        module->SaveConfiguration( newConfigTable );
+    }
 }
 
 void Module3d::EventLoopSafe( Module3d* module, const GUIReturn& g )
