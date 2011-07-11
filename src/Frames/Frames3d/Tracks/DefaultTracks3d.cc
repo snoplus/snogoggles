@@ -29,7 +29,7 @@ DefaultTracks3d::DefaultTracks3d()
     AddParticleType( "neutrino", sf::Color::Magenta );
 }
 
-void DefaultTracks3d::CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea )
+void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     // TODO:
 }

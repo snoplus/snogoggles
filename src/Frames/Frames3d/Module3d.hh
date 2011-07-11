@@ -41,8 +41,8 @@ public:
     static std::string ModuleTag() { return "type"; }
 
     /// Creates all the GUI objects for the module.
-    static void CreateGUIObjectsSafe( Module3d* module, GUIManager* g, const sf::Rect<double>& optionsArea );
-    virtual void CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea ) = 0;
+    static void CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::Rect<double>& optionsArea );
+    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) = 0;
 
     /// Loads configuration
     static void LoadConfigurationSafe( Module3d* module, ConfigurationTable& configTable );

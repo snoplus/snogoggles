@@ -12,7 +12,7 @@ namespace Viewer {
 
 namespace Frames {
 
-void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager* g, const sf::Rect<double>& optionsArea )
+void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     if( module != NULL ) 
         module->CreateGUIObjects( g, optionsArea );

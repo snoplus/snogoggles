@@ -1,5 +1,7 @@
 #include <Viewer/Arcball3d.hh>
 #include <Viewer/ConfigTableUtils.hh>
+#include <Viewer/SpriteButton.hh>
+#include <Viewer/GUIManager.hh>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
@@ -27,12 +29,15 @@ Arcball3d::Arcball3d()
   fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
 }
 
-void Arcball3d::CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea )
+void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     // TODO: Needs to be completed.
+    sf::Rect<double> buttonRect(0,0,0.3,0.5);
+    GUIs::SpriteButton* button = dynamic_cast<GUIs::SpriteButton*>( g.NewGUI<GUIs::SpriteButton>( buttonRect ) );
+    //button->SetSprite("Clockwise_Arrow.png");
 }
 
-void Arcball3d::CreateDragArea( GUIManager* g, const sf::Rect<double>& draggableArea )
+void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea )
 {
     // TODO: Needs to be completed.
 }

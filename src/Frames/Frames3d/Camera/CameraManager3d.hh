@@ -52,7 +52,7 @@ public:
     std::string GetTableName() { return TableName(); }
 
     /// Creates all the GUI objects for the camera manager.
-    virtual void CreateDragArea( GUIManager* g, const sf::Rect<double>& draggableArea ) = 0;
+    virtual void CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea ) = 0;
 
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect ) = 0;

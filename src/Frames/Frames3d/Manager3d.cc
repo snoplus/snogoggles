@@ -54,13 +54,13 @@ void Manager3d::SetAllModules( CameraManager3d* camera, HitManager3d* hits, Trac
 
 void Manager3d::Initialise( ConfigurationTable& configTable ) 
 {
-    CreateGUIObjects();
     LoadConfiguration( configTable );
+    CreateGUIObjects();
 }
 
 void Manager3d::CreateGUIObjects()
 {
-
+    Module3d::CreateGUIObjectsSafe( fCameraManager, fGUIManager, sf::Rect<double>(0,0,1,1) );
 }
 
 void Manager3d::LoadConfiguration( ConfigurationTable& configTable )

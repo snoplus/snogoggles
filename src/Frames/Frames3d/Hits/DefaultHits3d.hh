@@ -55,7 +55,7 @@ public:
     std::string GetName() { return Name(); }
 
     /// Creates all the GUI objects.
-    void CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea );
+    void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
 
     /// Loads configuration
     void LoadConfiguration( ConfigurationTable* configTable );

@@ -43,10 +43,10 @@ public:
     virtual std::string GetName() { return Name(); }
 
     /// Creates all the GUI objects for the camera manager.
-    virtual void CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea );
+    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
 
     /// Creates the drag area for rotating the scene.
-    virtual void CreateDragArea( GUIManager* g, const sf::Rect<double>& draggableArea );
+    virtual void CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea );
 
     /// Loads configuration
     virtual void LoadConfiguration( ConfigurationTable* configTable );
