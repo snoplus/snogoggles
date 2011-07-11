@@ -9,7 +9,7 @@ EventData* EventData::fsEventData = NULL;
 EventData::EventData()
 {
   fCurrentEvent = NULL;
-  fPMTList = NULL;
+  fRun = NULL;
   fCurrentID = 0;
 }
 
@@ -18,7 +18,7 @@ EventData::~EventData()
   for( unsigned int uLoop = 0; uLoop < fEVs.size(); uLoop++ )
     delete fEVs[uLoop];
   fEVs.clear();
-  delete fPMTList;
+  delete fRun;
 }
 
 DS::EV*
@@ -58,10 +58,10 @@ EventData::AddEV(
 }
 
 void
-EventData::SetPMTList(
-		   DS::PMTProperties* pmtList ) 
+EventData::SetRun(
+		  DS::Run* run ) 
 { 
-  fPMTList = new RAT::DS::PMTProperties( *pmtList ); 
+  fRun = new RAT::DS::Run( *run ); 
 }
 
 DS::EV*

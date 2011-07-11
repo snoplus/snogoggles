@@ -31,13 +31,14 @@ public:
   void SetWidth( double width ) { fRect.Width = width; }
   void SetHeight( double height ) { fRect.Height = height; }
 
+  void SetPosition( float x, float y ) { fRect.Left = x; fRect.Top = y; }
+  void SetPosition( const sf::Vector2<double>& position ) { fRect.Left = position.x; fRect.Top = position.y; }
+
 protected:
   sf::Rect<double> fRect;
 private:
   /// Should not be called
 // Functions to overload, or maybe blocked??
-  void SetPosition( float x, float y ) { fRect.Left = x; fRect.Top = y; }
-  void SetPosition( const sf::Vector2f& position ) { fRect.Left = position.x; fRect.Top = position.y; }
   void SetX( float x ) { fRect.Left = x; }
   void SetY( float y ) { fRect.Top = y; }
   void SetOrigin( float x, float y ) { fRect.Left = x + fRect.Width / 2.0; fRect.Top = y + fRect.Height / 2.0; }

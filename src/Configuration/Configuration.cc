@@ -86,7 +86,7 @@ Configuration::NewTable( const string& name )
       return newTable;
     }
   else
-    throw; // TODO
+    throw ConfigurationTable::NoTableError( name ); // TODO
 }
 
 

@@ -1,3 +1,5 @@
+#include <RAT/DS/Run.hh>
+
 #include <Viewer/Manager3d.hh>
 #include <Viewer/CameraManager3d.hh>
 #include <Viewer/HitManager3d.hh>
@@ -115,7 +117,7 @@ void Manager3d::Render2d( RWWrapper& windowApp )
 void Manager3d::Render3d( ) 
 {
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
-    RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetPMTList();
+    RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetRun()->GetPMTProp();
 
     fCameraManager->SetUpCameraSystem( fFrameCoord.Get3dViewport() );
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );

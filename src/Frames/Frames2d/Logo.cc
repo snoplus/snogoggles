@@ -5,7 +5,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/CheckBoxLabel.hh>
 using namespace Viewer;
-using namespace Frames;
+using namespace Viewer::Frames;
 
 void
 Logo::Initialise( ConfigurationTable& configTable )
@@ -25,12 +25,17 @@ Logo::Initialise( ConfigurationTable& configTable )
 
   fState = configTable.GetI( "state" );
   cbLabel->SetState( fState );
+
+  if( configTable.GetTable( "Nested" )->GetI( "state" ) )
+    fMessage.SetString( "BOB" );
 }
 
 void
 Logo::SaveConfiguration( ConfigurationTable& configTable )
 {
   configTable.SetI( "state", fState );
+  ConfigurationTable* newTable = configTable.NewTable( "Nested" );
+  newTable->SetI( "state", 0 );
 }
 
 void 

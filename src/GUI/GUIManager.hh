@@ -36,7 +36,7 @@ public:
   void Render( RWWrapper& windowApp );
   
   template<class T> inline
-  GUI* NewGUI( sf::Rect<double>& rect );
+  T* NewGUI( sf::Rect<double>& rect );
 
   GUI* GetGUI( unsigned int guiID );
 private:
@@ -47,10 +47,10 @@ private:
 };
 
 template<class T>
-GUI* 
+T* 
 GUIManager::NewGUI( sf::Rect<double>& rect )
 {
-  GUI* gui = new T( rect, fGUIObjects.size() );
+  T* gui = new T( rect, fGUIObjects.size() );
   fGUIObjects.push_back( gui );
   return gui;
 }

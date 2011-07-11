@@ -26,7 +26,7 @@ namespace RAT
 namespace DS
 {
   class Root;
-  class PMTProperties;
+  class Run;
 }
 }
 
@@ -44,17 +44,14 @@ public:
   virtual void
   Run();
 private:
-  void
-  LoadRootFile(
-	       TTree** tree,
-	       RAT::DS::Root** rDS,
-	       RAT::DS::PMTProperties** rPMTList );
+  void LoadRootFile();
 
   std::string fFileName;
-  TTree* fTree;
   TFile* fFile;
+  TTree* fTree;
+  TTree* fRunTree;
   RAT::DS::Root* fDS;
-  RAT::DS::PMTProperties* fPMTList;
+  RAT::DS::Run* fRun;
   int fMCEvent;
   Semaphore& fSemaphore;
 };
@@ -64,7 +61,7 @@ LoadRootFileThread::LoadRootFileThread( const std::string& fileName, Semaphore& 
 { 
   fTree = NULL; 
   fDS = NULL; 
-  fPMTList = NULL; 
+  fRun = NULL; 
   fMCEvent = 0; 
 } 
 
