@@ -1,20 +1,21 @@
 #include <Viewer/DefaultHits3d.hh>
-#include <Viewer/PMTWrapper.hh>
+#include <Viewer/OpenGLUtils.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/ConfigTableUtils.hh>
+#include <Viewer/HitRenderer3d.hh>
 
 #include <RAT/DS/EV.hh>
 #include <RAT/DS/PMTProperties.hh>
-
-namespace RAT {
-    namespace DS {
-        class PMTCal;
-        class PMTUnCal;
-    };
-};
+#include <RAT/DS/PMTUnCal.hh>
+#include <RAT/DS/PMTCal.hh>
+#include <SFML/OpenGL.hpp>
 
 namespace Viewer {
 namespace Frames {
+
+const std::string DefaultHits3d::fDisplayAllPMTsTag = "DisplayAllPMTs";
+const std::string DefaultHits3d::fPMTTypeTag = "PMTType";
+const std::string DefaultHits3d::fDisplayFrontPMTsOnlyTag = "DisplayFrontPMTsOnly";
 
 DefaultHits3d::DefaultHits3d()
 {
@@ -30,16 +31,16 @@ void DefaultHits3d::CreateGUIObjects( GUIManager* g, const sf::Rect<double>& opt
 
 void DefaultHits3d::LoadConfiguration( ConfigurationTable* configTable )
 {
-    fDisplayAllPMTs = ConfigTableUtils::GetBoolean( configTable, DisplayAllPMTsTag() );
-    fPMTType =  (PMTType) configTable->GetI( PMTTypeTag() );
-    fDisplayFrontPMTsOnly = ConfigTableUtils::GetBoolean( configTable, DisplayFrontPMTsOnlyTag() );
+    fDisplayAllPMTs = ConfigTableUtils::GetBoolean( configTable, fDisplayAllPMTsTag );
+    fPMTType =  (PMTType) configTable->GetI( fPMTTypeTag );
+    fDisplayFrontPMTsOnly = ConfigTableUtils::GetBoolean( configTable, fDisplayFrontPMTsOnlyTag );
 }
 
 void DefaultHits3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-    ConfigTableUtils::SetBoolean( configTable, DisplayAllPMTsTag(), fDisplayAllPMTs );
-    configTable->SetI( PMTTypeTag(), fPMTType );
-    ConfigTableUtils::SetBoolean( configTable, DisplayFrontPMTsOnlyTag(), fDisplayFrontPMTsOnly );
+    ConfigTableUtils::SetBoolean( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
+    configTable->SetI( fPMTTypeTag, fPMTType );
+    ConfigTableUtils::SetBoolean( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
 }
 
 void DefaultHits3d::EventLoop( const GUIReturn& g )
@@ -49,69 +50,110 @@ void DefaultHits3d::EventLoop( const GUIReturn& g )
 
 void DefaultHits3d::RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
 {
-    if( fCurrentEV != ev || fReFilter == true )
-        FilterHits( ev, pmtList );
-
     if( fDisplayAllPMTs == true )
         DisplayAllPMTs( pmtList );
 
-    RenderHits( pmtList );
-}
-
-void DefaultHits3d::FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
-{
-    fFilteredHits.clear();
-    FilterByType( ev, pmtList );
-}
-
-void DefaultHits3d::FilterByType( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
-{
     switch( fPMTType )
     {
-        case UNCAL :
-            for( int i=0; i < ev->GetPMTUnCalCount(); i++)
-            {
-                FilterByPosition( PMTUnCalWrapper( ev->GetPMTUnCal( i ) ), pmtList );
-            }
+        case( UNCAL ):
+            RenderUnCalHits( ev, pmtList );
             break;
-        case CAL :
-            for( int i=0; i < ev->GetPMTCalCount(); i++)
-            {
-                FilterByPosition( PMTCalWrapper( ev->GetPMTCal( i ) ), pmtList );
-            }
+        case( CAL ):
+            RenderCalHits( ev, pmtList );
             break;
     }
 }
 
-void DefaultHits3d::FilterByPosition( const PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::RenderUnCalHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
 {
-    if( fDisplayFrontPMTsOnly == true )
+    for(int i=0; i < ev->GetPMTUnCalCount(); i++)
     {
-        if( fFront->IsFront( pmt.GetPos( pmtList ) ) )
-            AddToFilteredHits( pmt, pmtList );
+        glPushAttrib(GL_COLOR);
+        RAT::DS::PMTUnCal* pmt = ev->GetPMTUnCal( i );
+        SetColour( pmt );
+        RenderHit( pmt, pmtList );
+        glPopAttrib();
     }
-    else AddToFilteredHits( pmt, pmtList );
 }
 
-void DefaultHits3d::AddToFilteredHits( const PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::RenderCalHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
 {
-   // TODO: Needs to be completed when ColorPalette is ready
+    for(int i=0; i < ev->GetPMTCalCount(); i++)
+    {
+        glPushAttrib(GL_COLOR);
+        RAT::DS::PMTCal* pmt = ev->GetPMTCal( i );
+        SetColour( pmt );
+        RenderHit( pmt, pmtList );
+        glPopAttrib();
+    }
 }
 
 void DefaultHits3d::DisplayAllPMTs( RAT::DS::PMTProperties* pmtList )
 {
-   // TODO: Needs to be completed
+    glPushAttrib( GL_COLOR );
+    OpenGLUtils::SetColour( sf::Color( 200, 200, 200) );
+
+    for( int i = 0; i < pmtList->GetCorrPMTsNumber(); i++ )
+    {
+        if( fDisplayFrontPMTsOnly == true )
+            RenderFrontHollowHitOnly( pmtList->GetPos( i ) );
+        else
+            HitRenderer3d::RenderHollowHit( pmtList->GetPos( i ) );
+    }
+
+    glPopAttrib();
 }
 
-void DefaultHits3d::RenderHits( RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::SetColour( RAT::DS::PMTUnCal* pmt )
 {
-    for( int i=0 ; i < fFilteredHits.size(); i++)
-        RenderHit( fFilteredHits.at(i), pmtList );
+    // TODO: Needs to be completed when ColourPalette is ready.
+    OpenGLUtils::SetColour( sf::Color::Red );
 }
 
-void DefaultHits3d::RenderHit( PMTWrapper& pmt, RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::SetColour( RAT::DS::PMTCal* pmt )
 {
-   // TODO: Needs to be completed
+    // TODO: Needs to be completed when ColourPalette is ready.
+    OpenGLUtils::SetColour( sf::Color::Red );
+}
+
+void DefaultHits3d::RenderHit( RAT::DS::PMTUnCal* pmt, RAT::DS::PMTProperties* pmtList )
+{
+    if( fDisplayFrontPMTsOnly == true )
+        RenderFrontSolidHitOnly( pmt->GetPos( pmtList ) );
+    else if( fDisplayAllPMTs == true )
+        HitRenderer3d::RenderSolidHit( pmt->GetPos( pmtList ) );
+    else
+        RenderSolidOrHollowHit( pmt->GetPos( pmtList ) );
+}
+
+void DefaultHits3d::RenderHit( RAT::DS::PMTCal* pmt, RAT::DS::PMTProperties* pmtList )
+{
+    if( fDisplayFrontPMTsOnly == true )
+        RenderFrontSolidHitOnly( pmt->GetPos( pmtList ) );
+    else if( fDisplayAllPMTs == true )
+        HitRenderer3d::RenderSolidHit( pmt->GetPos( pmtList ) );
+    else
+        RenderSolidOrHollowHit( pmt->GetPos( pmtList ) );
+}
+
+void DefaultHits3d::RenderFrontSolidHitOnly( const TVector3& pos )
+{
+    if( fFront->IsFront( pos ) == true )
+        HitRenderer3d::RenderSolidHit( pos );
+}
+
+void DefaultHits3d::RenderFrontHollowHitOnly( const TVector3& pos )
+{
+    if( fFront->IsFront( pos ) == true )
+        HitRenderer3d::RenderHollowHit( pos );
+}
+
+void DefaultHits3d::RenderSolidOrHollowHit( const TVector3& pos )
+{
+    if( fFront->IsFront( pos ) == true )
+        HitRenderer3d::RenderSolidHit( pos );
+    else
+        HitRenderer3d::RenderHollowHit( pos );
 }
 
 }; // namespace Frames
