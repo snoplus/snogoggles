@@ -7,12 +7,18 @@ using namespace Viewer;
 using namespace Frames;
 
 void 
-EventUI::Initialise( ConfigurationTable& )
+EventUI::Initialise()
 {
   sf::Rect<double> forward( 0.7, 0.7, 0.2, 0.2 );
   fNextButton = fGUIManager.NewGUI<GUIs::ExitButton>( forward );
   sf::Rect<double> back( 0.1, 0.7, 0.2, 0.2 );
   fPrevButton = fGUIManager.NewGUI<GUIs::ExitButton>( back );
+}
+
+void
+EventUI::Initialise( ConfigurationTable& )
+{
+  Initialise();
 }
 
 void 

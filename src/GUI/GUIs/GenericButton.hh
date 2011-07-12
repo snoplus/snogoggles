@@ -30,13 +30,14 @@ class GenericButton : public Button
 {
 public:
 
-    GenericButton( sf::Rect<double>& rect, unsigned int guiID );
+  GenericButton( sf::Rect<double>& rect, unsigned int guiID );
+  
+  virtual ~GenericButton() { }
 
-    virtual ~GenericButton() { }
-
-    void Render( RWWrapper& windowApp );
-
-    virtual void RenderLabel( RWWrapper& windowApp ) { }
+  void RenderT( sf::RenderWindow& windowApp ) { };
+  void Render( RWWrapper& windowApp );
+  
+  virtual void RenderLabel( RWWrapper& windowApp ) { }
 
 protected:
 

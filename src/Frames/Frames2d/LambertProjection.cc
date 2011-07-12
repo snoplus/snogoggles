@@ -14,7 +14,7 @@ using namespace Viewer::Frames;
 using namespace std;
 
 void
-LambertProjection::Initialise( ConfigurationTable& configTable )
+LambertProjection::Initialise()
 {
   fFilledPMT.AddPoint( -1.0, sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );  
   fFilledPMT.AddPoint( 1.0, sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
@@ -36,6 +36,12 @@ LambertProjection::Initialise( ConfigurationTable& configTable )
   fOpenPMT.EnableFill( false );
   fOpenPMT.EnableOutline( true );
   fOpenPMT.SetOutlineThickness( 0.5 );
+}
+
+void 
+LambertProjection::Initialise( ConfigurationTable& configTable )
+{
+  Initialise();
 }
 
 void

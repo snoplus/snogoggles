@@ -8,12 +8,17 @@ using namespace Viewer;
 using namespace Viewer::Frames;
 
 void 
-TestBox::Initialise( ConfigurationTable& configTable )
+TestBox::Initialise()
 {
-  Frame::Initialise( configTable );
   sf::Rect<double> dragPos = sf::Rect<double>( 0.0, 0.0, 1.0, 1.0 );
   fRotate = 0.0;
   fDragArea = dynamic_cast<GUIs::DragArea*>( fGUIManager.NewGUI<GUIs::DragArea>( dragPos ) );
+}
+
+void
+TestBox::Initialise( ConfigurationTable& configTable )
+{
+  Initialise();
 }
 
 void 

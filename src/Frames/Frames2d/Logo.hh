@@ -27,6 +27,7 @@ namespace Frames
 class Logo : public Frame
 {
 public:
+  void Initialise();
   void Initialise( ConfigurationTable& configTable );
 
   void SaveConfiguration( ConfigurationTable& configTable );

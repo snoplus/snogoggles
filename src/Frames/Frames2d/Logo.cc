@@ -8,7 +8,7 @@ using namespace Viewer;
 using namespace Viewer::Frames;
 
 void
-Logo::Initialise( ConfigurationTable& configTable )
+Logo::Initialise()
 {
   ImageManager& imageManager = ImageManager::GetInstance();
   fLogo = imageManager.NewSprite( "Logo.png" );
@@ -19,6 +19,12 @@ Logo::Initialise( ConfigurationTable& configTable )
   fMessage.SetBoundingRect( sf::Rect<double>( 0.5, 0.0, 0.5, 0.5 ) );
   fMessage.SetColor( sf::Color( 0, 0, 0 ) );
   fState = false;
+}
+
+void
+Logo::Initialise( ConfigurationTable& configTable )
+{
+  Initialise();
   sf::Rect<double> button( 0.8, 0.1, 0.2, 0.1 );
   GUIs::CheckBoxLabel* cbLabel = dynamic_cast<GUIs::CheckBoxLabel*>( fGUIManager.NewGUI<GUIs::CheckBoxLabel>( button ) );
   cbLabel->SetLabel( "New Logo" );

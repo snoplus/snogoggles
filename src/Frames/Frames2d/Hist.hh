@@ -26,6 +26,7 @@ namespace Viewer {
     class Hist: public Frame {
       
     public:
+      void Initialise();
       void Initialise(ConfigurationTable& configTable);
       virtual void Render2d(RWWrapper& windowApp);
       virtual void Render3d();

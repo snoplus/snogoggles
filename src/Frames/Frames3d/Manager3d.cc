@@ -64,6 +64,11 @@ void Manager3d::SetAllModules( CameraManager3d* camera, HitManager3d* hits, Trac
         fAxes = new Axes3d( fCameraManager->SuggestedAxisLength() );
 }
 
+void Manager3d::Initialise()
+{
+  // TODO :p
+}
+
 void Manager3d::Initialise( ConfigurationTable& configTable ) 
 {
     LoadConfiguration( configTable );

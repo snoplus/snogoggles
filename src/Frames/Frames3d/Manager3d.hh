@@ -84,6 +84,7 @@ public:
     /// Returns the name of the type of 3d frame.
     std::string GetName() { return Name(); }
 
+  void Initialise();
     void Initialise( ConfigurationTable& configTable );
 
     void CreateGUIObjects();
