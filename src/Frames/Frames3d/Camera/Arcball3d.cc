@@ -27,8 +27,8 @@ Arcball3d::Arcball3d()
     fEye.SetXYZ(0,0,0);
     fUp.SetXYZ(0,0,1);
     fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
-    fSpinSpeed = 0.01;
-    fZoomSpeed = 0.0005;
+    fSpinSpeed = 0.001;
+    fZoomSpeed = 0.0001;
 }
 
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
@@ -130,16 +130,16 @@ void Arcball3d::Spin( const TVector3& axis )
 void Arcball3d::Events( )
 {
     if( fSpinLeftButton->GetState() == true )
-        Spin( -fUp );
-
-    if( fSpinRightButton->GetState() == true )
         Spin( fUp );
 
+    if( fSpinRightButton->GetState() == true )
+        Spin( -fUp );
+
     if( fSpinUpButton->GetState() == true )
-        Spin( fCamera.Cross( fUp ) );
+        Spin( -fCamera.Cross( fUp ) );
 
     if( fSpinDownButton->GetState() == true )
-        Spin( -fCamera.Cross( fUp ) );
+        Spin( fCamera.Cross( fUp ) );
 
     if( fZoomInButton->GetState() == true )
         Zoom( -fZoomSpeed );

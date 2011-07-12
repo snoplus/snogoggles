@@ -10,6 +10,8 @@
 #include <Viewer/ModuleFactory3d.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/EventData.hh>
+#include <Viewer/Axes3d.hh>
+#include <Viewer/ConfigTableUtils.hh>
 
 #include <vector>
 #include <string>
@@ -24,9 +26,12 @@ namespace RAT {
 namespace Viewer {
 namespace Frames {
 
+const std::string Manager3d::DISPLAY_AXIS_TAG = "DisplayAxes";
+
 Manager3d::Manager3d()
 {
     SetAllModules( NULL, NULL, NULL, NULL, NULL );
+    fDisplayAxis = true;
 }
 
 Manager3d::Manager3d( const std::string& options )
@@ -43,6 +48,8 @@ Manager3d::~Manager3d()
     delete fTrackManager;     fTrackManager = NULL;
     delete fGeoManager;       fGeoManager = NULL;
     delete fFitterManager;    fFitterManager = NULL;
+
+    delete fAxes;             fAxes = NULL;
 }
 
 void Manager3d::SetAllModules( CameraManager3d* camera, HitManager3d* hits, TrackManager3d* tracks, GeoManager3d* geo, FitterManager3d* fitter)
@@ -52,6 +59,9 @@ void Manager3d::SetAllModules( CameraManager3d* camera, HitManager3d* hits, Trac
     fTrackManager = tracks;
     fGeoManager = geo;
     fFitterManager = fitter;
+
+    if( fCameraManager != NULL )
+        fAxes = new Axes3d( fCameraManager->SuggestedAxisLength() );
 }
 
 void Manager3d::Initialise( ConfigurationTable& configTable ) 
@@ -69,6 +79,7 @@ void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
 {
     ModuleFactory3d::GetInstance()->SetAllModuleTypes( this, configTable );
     LoadModuleConfigurations( configTable );
+    fDisplayAxis = ConfigTableUtils::GetBoolean( &configTable, DISPLAY_AXIS_TAG );
 }
 
 void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
@@ -82,6 +93,7 @@ void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
 
 void Manager3d::SaveConfiguration( ConfigurationTable& configTable ) 
 {
+    ConfigTableUtils::SetBoolean( &configTable, DISPLAY_AXIS_TAG, fDisplayAxis );
     SaveModuleConfigurations( configTable );
 }
 
@@ -123,6 +135,9 @@ void Manager3d::Render3d( )
     // TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );
     FitterManager3d::RenderFitVertexSafe( fFitterManager );
+
+    if( fDisplayAxis == true )
+        Axes3d::RenderAxesSafe( fAxes );
 }
 
 }; // namespace Frames
