@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <SNOGoggles resX="800" resY="600">
 
-  <Frame posX="0" posY="0" sizeX="100" sizeY="50" state="1" type="Logo"/>
+  <Frame posX="0" posY="0" sizeX="100" sizeY="50" type="Hist"/>
 
-  <Frame posX="200" posY="0" sizeX="100" sizeY="50" state="1" type="Logo"/>
+  <Frame posX="200" posY="0" sizeX="100" sizeY="50" type="LambertProjection"/>
 
-  <Frame posX="400" posY="0" sizeX="100" sizeY="50" type="3D-Combo"/>
+  <Frame posX="400" posY="0" sizeX="100" sizeY="50" type="3D-Combo">
+    <CameraManager3d Camera.X="3.1150e+04" Camera.Y="0.0000e+00" Camera.Z="0.0000e+00" CameraDist="3.5000e+00" Eye.X="0.0000e+00" Eye.Y="0.0000e+00" Eye.Z="0.0000e+00" Radius="8.9000e+03" Up.X="0.0000e+00" Up.Y="0.0000e+00" Up.Z="1.0000e+00" Zoom="1.0000e+00" type="Arcball"/>
+    <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
+  </Frame>
 
 </SNOGoggles>

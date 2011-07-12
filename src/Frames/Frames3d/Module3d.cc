@@ -12,7 +12,9 @@ namespace Viewer {
 
 namespace Frames {
 
-void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager* g, const sf::Rect<double>& optionsArea )
+const std::string Module3d::MODULE_TAG = "type";
+
+void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     if( module != NULL ) 
         module->CreateGUIObjects( g, optionsArea );
@@ -20,23 +22,21 @@ void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager* g, const sf::
 
 void Module3d::LoadConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
 {
-//    if( module != NULL ) 
-//        module->LoadConfiguration( configTable.GetNextTable( module->GetTableName() ) );
-//    if( module != NULL ) 
-//        module->LoadConfiguration( &configTable );
+    if( module != NULL ) 
+    {
+        try { module->LoadConfiguration( configTable.GetTable( module->GetTableName() ) ); }
+        catch( ConfigurationTable::NoTableError& e ) { }
+    }
 }
 
 void Module3d::SaveConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
 {
-//    if( module != NULL ) 
-//    {
-//        ConfigurationTable* newConfigTable = configTable.NewTable( module->GetTableName() );
-//        newConfigTable->SetS( Module3d::ModuleTag(), module->GetName() );
-//        module->SaveConfiguration( newConfigTable );
-//    }
-
-//    if( module != NULL ) 
-//        module->SaveConfiguration( &configTable );
+    if( module != NULL ) 
+    {
+        ConfigurationTable* newConfigTable = configTable.NewTable( module->GetTableName() );
+        newConfigTable->SetS( MODULE_TAG, module->GetName() );
+        module->SaveConfiguration( newConfigTable );
+    }
 }
 
 void Module3d::EventLoopSafe( Module3d* module, const GUIReturn& g )

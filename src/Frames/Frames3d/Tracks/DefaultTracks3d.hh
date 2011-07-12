@@ -75,7 +75,7 @@ public:
     virtual std::string GetName() { return Name(); }
 
     /// Creates all the GUI objects for the module.
-    virtual void CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea );
+    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
 
     /// Loads configuration
     virtual void LoadConfiguration( ConfigurationTable* configTable );

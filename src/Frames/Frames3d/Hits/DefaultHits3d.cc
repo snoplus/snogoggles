@@ -24,7 +24,7 @@ DefaultHits3d::DefaultHits3d()
     fDisplayFrontPMTsOnly = false;
 }
 
-void DefaultHits3d::CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea )
+void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     // TODO: Needs to be completed
 }

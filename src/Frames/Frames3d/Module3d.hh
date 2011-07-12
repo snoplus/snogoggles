@@ -38,11 +38,12 @@ public:
     /// Gets the name of the module instance. 
     virtual std::string GetName() = 0;
     virtual std::string GetTableName() = 0;
-    static std::string ModuleTag() { return "type"; }
+
+    static std::string NullTag() { return "NULL"; }
 
     /// Creates all the GUI objects for the module.
-    static void CreateGUIObjectsSafe( Module3d* module, GUIManager* g, const sf::Rect<double>& optionsArea );
-    virtual void CreateGUIObjects( GUIManager* g, const sf::Rect<double>& optionsArea ) = 0;
+    static void CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::Rect<double>& optionsArea );
+    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) = 0;
 
     /// Loads configuration
     static void LoadConfigurationSafe( Module3d* module, ConfigurationTable& configTable );
@@ -55,6 +56,8 @@ public:
     /// Event loop for the camera manager.
     static void EventLoopSafe( Module3d* module, const GUIReturn& g );
     virtual void EventLoop( const GUIReturn& g ) = 0;
+
+    static const std::string MODULE_TAG;
 
 }; // class Module3d
 

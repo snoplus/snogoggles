@@ -89,7 +89,7 @@ ConfigurationTable::GetD( const string& name )
   value.setf( ios::scientific, ios::floatfield );
   value.precision( 4 );
   value << attributeValueChar;
-  int result; 
+  double result; 
   value >> result;
   XMLString::release( &attributeName );
   XMLString::release( &attributeValueChar );

@@ -9,6 +9,7 @@
 ///
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
+/// 	05/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
 ///
 /// \details 	The camera manager is responsible for: \n
 ///
@@ -52,11 +53,12 @@ public:
     std::string GetTableName() { return TableName(); }
 
     /// Creates all the GUI objects for the camera manager.
-    virtual void CreateDragArea( GUIManager* g, const sf::Rect<double>& draggableArea ) = 0;
+    virtual void CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea ) = 0;
 
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect ) = 0;
 
+    virtual double SuggestedAxisLength() = 0;
 
 }; // class CameraManager3d
 
