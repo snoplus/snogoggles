@@ -14,27 +14,25 @@ using namespace Viewer;
 using namespace xercesc;
 
 
-Configuration::Configuration( bool output )
+Configuration::Configuration( const string& fileName, bool output )
 {
-  stringstream configFileName;
-  configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-
+  fFileName = fileName;
   fOutput = output;
   if( !fOutput ) // Reading
     {
       // Check file exists
       struct stat fileStatus;
       
-      int iretStat = stat( configFileName.str().c_str(), &fileStatus);
+      int iretStat = stat( fFileName.c_str(), &fileStatus);
       if( iretStat != 0 )
-	throw NoFileError( configFileName.str() );
+	throw NoFileError( fFileName );
       XercesDOMParser* fileParser = new XercesDOMParser;
       fileParser->setValidationScheme( XercesDOMParser::Val_Never );
       fileParser->setDoNamespaces( false );	   
       fileParser->setDoSchema( false );
       fileParser->setLoadExternalDTD( false );
 
-      fileParser->parse( configFileName.str().c_str() );
+      fileParser->parse( fFileName.c_str() );
       fDOMDocument = fileParser->getDocument();
       fRootElement = fDOMDocument->getDocumentElement();
 
@@ -73,9 +71,7 @@ Configuration::SaveConfiguration()
   XMLString::release( &ls );
   DOMWriter* serializer = reinterpret_cast<DOMImplementationLS*>( domImplementation)->createDOMWriter();
   serializer->setFeature( XMLUni::fgDOMWRTFormatPrettyPrint, true );
-  stringstream configFileName;
-  configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-  XMLFormatTarget* target = new LocalFileFormatTarget( configFileName.str().c_str() );
+  XMLFormatTarget* target = new LocalFileFormatTarget( fFileName.c_str() );
   serializer->writeNode( target, *fDOMDocument );
 }
 

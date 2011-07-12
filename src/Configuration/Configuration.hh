@@ -53,7 +53,7 @@ public:
     NoFileError( const std::string& param ) : std::runtime_error( param ) {}
   }; 
 
-  Configuration( bool ouput );
+  Configuration( const std::string& fileName, bool ouput );
   
   inline std::vector< ConfigurationTable* >::iterator GetTableBegin();
   inline std::vector< ConfigurationTable* >::iterator GetTableEnd();
@@ -71,6 +71,7 @@ public:
   void SetD( const std::string& name, const double value );
   void SetS( const std::string& name, const std::string& value );
 private:
+  std::string fFileName;
   std::vector< ConfigurationTable* > fConfigTables;
   xercesc_2_8::DOMDocument* fDOMDocument;
   xercesc_2_8::DOMElement* fRootElement;

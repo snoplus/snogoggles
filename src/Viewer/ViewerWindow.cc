@@ -29,7 +29,9 @@ ViewerWindow::Initialise()
   // Load the configuration
   try
     {
-      Configuration loadConfig( false );  
+      stringstream configFileName;
+      configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
+      Configuration loadConfig( configFileName.str(), false );  
       int resX = loadConfig.GetI( "resX" ); 
       int resY = loadConfig.GetI( "resY" );
       Coord::SetWindowResolution( resX, resY );
@@ -69,7 +71,9 @@ ViewerWindow::Run()
 void
 ViewerWindow::Destruct()
 {
-  Configuration saveConfig( true );
+  stringstream configFileName;
+  configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
+  Configuration saveConfig( configFileName.str(), true );
   saveConfig.SetI( "resX", static_cast<int>( Coord::GetWindowResolution().x ) );
   saveConfig.SetI( "resY", static_cast<int>( Coord::GetWindowResolution().y ) );
   fFrameManager.SaveConfiguration( saveConfig );
