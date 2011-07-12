@@ -29,6 +29,10 @@ namespace Viewer {
     class ConfigurationTable;
     class GUIManager;
 
+    namespace GUIs {
+        class SpriteButton;
+    }; // namepsace GUIs
+
 namespace Frames {
 
 class Arcball3d : public CameraManager3d {
@@ -64,27 +68,44 @@ public:
 
 private:
 
-    static const std::string fCameraTag;        ///< Name used to save fCamera.
-    static const std::string fEyeTag;           ///< Name used to save fEye.
-    static const std::string fUpTag;            ///< Name used to save fUp.
+    void Spin( const TVector3& axis );
 
-    static const std::string fRadiusTag;        ///< Name used to save fRadius.
-    static const std::string fCameraDistTag;    ///< Name used to save fCameraDist.
-    static const std::string fZoomTag;          ///< Name used to save fZoom.
+    void Zoom( float speed );
 
+    void Events( );
+
+    // All tags for saving data to config table.
+    static const std::string CAMERA_TAG;        ///< Name used to save fCamera.
+    static const std::string EYE_TAG;           ///< Name used to save fEye.
+    static const std::string UP_TAG;            ///< Name used to save fUp.
+    static const std::string RADIUS_TAG;        ///< Name used to save fRadius.
+    static const std::string CAMERA_DIST_TAG;   ///< Name used to save fCameraDist.
+    static const std::string ZOOM_TAG;          ///< Name used to save fZoom.
+
+    // All data which is saved to conig table.
     TVector3 fCamera;                   ///< Position of the camera.
     TVector3 fEye;                      ///< Point to look at.
     TVector3 fUp;                       ///< Orient the scene upwards.
-
     double fRadius;                     ///< Radius of the arcball.
     double fCameraDist;                 ///< Distance from the center of the camera.
     double fZoom;                       ///< Zoom factor.
 
+    // All GUI objects.
+    GUIs::SpriteButton* fSpinLeftButton;
+    GUIs::SpriteButton* fSpinRightButton;
+    GUIs::SpriteButton* fSpinUpButton;
+    GUIs::SpriteButton* fSpinDownButton;
+    GUIs::SpriteButton* fZoomInButton;
+    GUIs::SpriteButton* fZoomOutButton;
+
+    // All others.
     static const double MAX_ZOOM = 1.5; ///< Upper limit on fZoom.
-    static const double MIN_ZOOM = 0.5; ///< Lower limit on fZoom.
+    static const double MIN_ZOOM = 0.1; ///< Lower limit on fZoom.
 
     sf::Clock fClock;                   ///< SFML clock used to rotate the scene.
 
+    double fSpinSpeed;                  ///< Speed of rotations.
+    double fZoomSpeed;                  ///< Speed of zooming.
 
 }; // class Arcball3d
 
