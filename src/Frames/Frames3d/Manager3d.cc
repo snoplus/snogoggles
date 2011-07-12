@@ -84,7 +84,7 @@ void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
 {
     ModuleFactory3d::GetInstance()->SetAllModuleTypes( this, configTable );
     LoadModuleConfigurations( configTable );
-    fDisplayAxis = ConfigTableUtils::GetBoolean( &configTable, DISPLAY_AXIS_TAG );
+    ConfigTableUtils::GetBooleanSafe( &configTable, DISPLAY_AXIS_TAG, fDisplayAxis );
 }
 
 void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
