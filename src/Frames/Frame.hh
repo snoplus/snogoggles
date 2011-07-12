@@ -19,7 +19,7 @@
 #include <queue>
 #include <string>
 
-#include <Viewer/FrameCoord.hh>
+#include <Viewer/Rect.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/GUIReturn.hh>
 #include <Viewer/RWWrapper.hh>
@@ -40,7 +40,7 @@ public:
   
   virtual ~Frame() {};
 
-  virtual void NewEvent( sf::Event& event );
+  virtual void NewEvent( UIEvent& event );
    
   virtual void Initialise( ConfigurationTable& configTable );
 
@@ -56,10 +56,10 @@ public:
   virtual void Render2d( RWWrapper& windowApp ) = 0;
   virtual void Render3d() = 0;
 
-  inline void SetFrameCoord( const FrameCoord& frameCoord );
-  inline FrameCoord GetFrameCoord(); 
+  inline void SetRect( const Rect& rect );
+  inline Rect GetRect(); 
 protected:
-  FrameCoord fFrameCoord;
+  Rect fFrameRect;
   GUIManager fGUIManager;
   std::queue<GUIReturn> fEvents;
 };
@@ -67,20 +67,20 @@ protected:
 void 
 Frame::Render2dT( sf::RenderWindow& windowApp ) 
 { 
-  RWWrapper wrapper = RWWrapper( windowApp, fFrameCoord );
+  RWWrapper wrapper = RWWrapper( windowApp, fFrameRect );
   Render2d( wrapper ); 
 }
 
 void
-Frame::SetFrameCoord( const FrameCoord& frameCoord ) 
+Frame::SetRect( const Rect& rect ) 
 {
-  fFrameCoord = frameCoord;
+  fFrameRect = rect;
 }
 
-FrameCoord 
-Frame::GetFrameCoord()
+Rect 
+Frame::GetRect()
 {
-  return fFrameCoord;
+  return fFrameRect;
 }
 
 

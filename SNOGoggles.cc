@@ -29,7 +29,11 @@ int main( int argc, char *argv[] )
   ViewerWindow& viewer = ViewerWindow::GetInstance();
 
   viewer.Initialise();
+#ifdef __APPLE__
+  Semaphore sema("LoadSema");
+#else
   Semaphore sema;
+#endif
   if( argc < 2 )
     {
       cout << "Wrong number of arguments, try snogoggles File.root" << endl;

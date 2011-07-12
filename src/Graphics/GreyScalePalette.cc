@@ -1,3 +1,5 @@
+#include <cstddef> //NULL and other things
+
 #include <Viewer/GreyScalePalette.hh>
 using namespace Viewer;
 

@@ -1,5 +1,5 @@
 #ifdef __APPLE__
-#include <sstream>
+#include <string>
 using namespace std;
 #endif
 
@@ -7,27 +7,22 @@ using namespace std;
 using namespace Viewer;
 
 #ifdef __APPLE__
-unsigned int Semaphore::fsNumSemaphores = 0;
-#endif
-
+Semaphore::Semaphore( const string& name )
+{
+  fName = name;
+  fSemaphore = sem_open( fName.c_str(), O_CREAT | O_EXCL, 0644, 0 );
+}
+#else
 Semaphore::Semaphore()
 {
-#ifdef __APPLE__
-  stringstream name;
-  fID = fsNumSemaphores++;
-  name << "Sema" << fID;
-  fSemaphore = sem_open( name.str().c_str(), O_CREAT | O_EXCL, 0644, 0 );
-#else
   sem_init( &fSemaphore, 0, 0 );
-#endif
 }
+#endif
 
 Semaphore::~Semaphore()
 {
 #ifdef __APPLE__
-  stringstream name;
-  name << "Sema" << fID;
-  sem_unlink( name.str().c_str() );
+  sem_unlink( fName..c_str() );
 #else
   sem_destroy( &fSemaphore );
 #endif

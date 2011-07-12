@@ -18,6 +18,21 @@ PinButton::PinButton( sf::Rect<double>& rect, unsigned int guiID )
 
 PinButton::~PinButton()
 {
+
+}
+
+void 
+PinButton::RenderT( sf::RenderWindow& windowApp )
+{
+  if( !fActive )
+    fButton.SetSubRect( sf::Rect<int>( 301, 0, 21, 20 ) );
+  else
+    fButton.SetSubRect( sf::Rect<int>( 301, 20, 21, 20 ) );
+
+  sf::Sprite newObject( fButton );
+  newObject.SetPosition( fRect.Left, fRect.Top );
+  newObject.Resize( fRect.Width, fRect.Height );
+  windowApp.Draw( newObject );
 }
 
 void 

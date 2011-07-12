@@ -1,4 +1,5 @@
 #include <sstream>
+#include <sys/stat.h>
 using namespace std;
 
 #include <Viewer/Configuration.hh>
@@ -21,6 +22,12 @@ Configuration::Configuration( bool output )
   fOutput = output;
   if( !fOutput ) // Reading
     {
+      // Check file exists
+      struct stat fileStatus;
+      
+      int iretStat = stat( configFileName.str().c_str(), &fileStatus);
+      if( iretStat != 0 )
+	throw NoFileError( configFileName.str() );
       XercesDOMParser* fileParser = new XercesDOMParser;
       fileParser->setValidationScheme( XercesDOMParser::Val_Never );
       fileParser->setDoNamespaces( false );	   

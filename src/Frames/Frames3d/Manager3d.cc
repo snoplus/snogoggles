@@ -119,7 +119,7 @@ void Manager3d::Render3d( )
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
     RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetRun()->GetPMTProp();
 
-    fCameraManager->SetUpCameraSystem( fFrameCoord.Get3dViewport() );
+    fCameraManager->SetUpCameraSystem( fFrameRect.GetViewport() );
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
     // TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );

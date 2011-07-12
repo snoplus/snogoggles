@@ -21,18 +21,21 @@
 
 namespace sf
 {
-  class Event;
   class RenderWindow;
 }
 
 namespace Viewer
 {
+  class UIEvent;
   class Configuration;
   class FrameContainer;
 
 class FrameManager
 {
 public:
+  /// Initialise without any configuration
+  void Initialise();
+  /// Initialise with a configuration
   void Initialise( Configuration& config );
   
   void EventLoop();
@@ -40,7 +43,7 @@ public:
   void Render2d( sf::RenderWindow& windowApp );
   void Render3d();
 
-  void NewEvent( sf::Event& event ); 
+  void NewEvent( UIEvent& event ); 
   void SaveConfiguration( Configuration& config );
 private:
   int FindFrame( const sf::Vector2<double>& resolutionCoord );

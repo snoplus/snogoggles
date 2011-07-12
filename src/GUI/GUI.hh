@@ -19,6 +19,11 @@
 
 #include <Viewer/GUIReturn.hh>
 
+namespace sf
+{
+  class RenderWindow;
+}
+
 namespace Viewer
 {
   class FrameCoord;
@@ -36,6 +41,7 @@ public:
 
   bool ContainsPoint( const sf::Vector2<double>& localCoord );
 
+  virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
   virtual void Render( RWWrapper& windowApp ) = 0;
   virtual GUIReturn NewEvent( UIEvent& event ) = 0;
  

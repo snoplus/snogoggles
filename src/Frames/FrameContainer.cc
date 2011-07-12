@@ -19,12 +19,10 @@ FrameContainer::FrameContainer( ConfigurationTable& configTable )
   string frameType = configTable.GetS( "type" );
   fFrame = fFrameFactory.New( frameType );
 
-  sf::Rect<double> exitPos( 0.95, 0.0, 0.05, 0.9 );
-  fExitButton = new GUIs::ExitButton( exitPos, 0 );
-  sf::Rect<double> pinPos( 0.9, 0.0, 0.05, 0.9 );
-  fPinButton = new GUIs::PinButton( pinPos, 1 );
-  sf::Rect<double> barPos( 0.0, 0.0, 0.9, 0.9 );
-  fTopBar = new GUIs::TopBarButton( barPos, 3 );  
+  sf::Rect<double> tempPos( 0.0, 0.0, 1.0, 1.0 );
+  fExitButton = new GUIs::ExitButton( tempPos, 0 );
+  fPinButton = new GUIs::PinButton( tempPos, 1 );
+  fTopBar = new GUIs::TopBarButton( tempPos, 3 );  
 
   sf::Vector2<double> pos( configTable.GetI( "posX" ), configTable.GetI( "posY" ) );
   sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
@@ -61,50 +59,57 @@ FrameContainer::Render3d()
 void 
 FrameContainer::RenderGUI( sf::RenderWindow& windowApp )
 {
-  RWWrapper rWindowApp( windowApp, fTopBarCoord );
-  fExitButton->Render( rWindowApp );
-  fPinButton->Render( rWindowApp );
-  fTopBar->Render( rWindowApp );
+  sf::Rect<double> containerRect = GetContainerRect().GetResolutionRect();
+  sf::Rect<double>buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 20, containerRect.Top, 20, 20 );
+  fExitButton->SetRect( buttonPos );
+  fExitButton->RenderT( windowApp );
+
+  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 40, containerRect.Top, 20, 20 );
+  fPinButton->SetRect( buttonPos );
+  fPinButton->RenderT( windowApp );
+
+  buttonPos = sf::Rect<double>( containerRect.Left, containerRect.Top, containerRect.Width - 40, 20 );
+  fTopBar->SetRect( buttonPos );
+  fTopBar->RenderT( windowApp );
   fFrame->RenderGUI( windowApp );
 }
 
 FrameUIReturn 
-FrameContainer::NewEvent( sf::Event& event )
+FrameContainer::NewEvent( UIEvent& event )
 {
   FrameUIReturn returnEvent;
-  UIEvent uiEvent = UIEvent( event, fTopBarCoord );
   switch( event.Type )
     {
     case sf::Event::MouseButtonPressed:
       {
-	if( fTopBar->ContainsPoint( uiEvent.GetLocalCoord() ) )
+	if( fTopBar->ContainsPoint( event.GetResolutionCoord() ) )
 	  {
-	    fTopBar->NewEvent( uiEvent );
+	    fTopBar->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::eStartMove );
 	  }
-	if( fExitButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
-	  fExitButton->NewEvent( uiEvent );
-	if( fPinButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
-	  fPinButton->NewEvent( uiEvent );
+	if( fExitButton->ContainsPoint( event.GetResolutionCoord() ) )
+	  fExitButton->NewEvent( event );
+	if( fPinButton->ContainsPoint( event.GetResolutionCoord() ) )
+	  fPinButton->NewEvent( event );
       }
       break;
     case sf::Event::MouseButtonReleased:
       {
-	if( fExitButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
+	if( fExitButton->ContainsPoint( event.GetResolutionCoord() ) )
 	  {
-	    fExitButton->NewEvent( uiEvent );
+	    fExitButton->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::eClosed );
 	  }
 
-	if( fPinButton->ContainsPoint( uiEvent.GetLocalCoord() ) )
+	if( fPinButton->ContainsPoint( event.GetResolutionCoord() ) )
 	  {
-	    fPinButton->NewEvent( uiEvent );
+	    fPinButton->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::ePinned );
 	  }
 
 	if( fTopBar->GetState() ) // Always Stop moving if mouse up
 	  {
-	    fTopBar->NewEvent( uiEvent );
+	    fTopBar->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::eStopMove );
 	  }
       }
@@ -118,8 +123,8 @@ void
 FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
 {
   configTable.SetS( "type", fFrame->GetName() );
-  FrameCoord full = GetContainerCoord();
-  sf::Rect<double> rect = full.GetRect();
+  Rect full = GetContainerRect();
+  sf::Rect<double> rect = full.GetResolutionRect();
   configTable.SetI( "posX", static_cast<int>( rect.Left ) );
   configTable.SetI( "posY", static_cast<int>( rect.Top ) );
   configTable.SetI( "sizeX", static_cast<int>( rect.Width ) );
@@ -130,45 +135,35 @@ FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
 void 
 FrameContainer::Resize( const sf::Vector2<double>& size )
 {
-  FrameCoord full = GetContainerCoord();
-  sf::Rect<double> rect = full.GetRect();
-  rect.Width = size.x;
-  rect.Height = size.y;
-  full.SetRect( rect );
-  SetContainerCoord( full );
+  Rect newRect = GetContainerRect();
+  sf::Vector2<double> position = newRect.GetResolutionCoord();
+  newRect.SetFromResolutionRect( sf::Rect<double>( position.x, position.y, size.x, size.y ) );
+  SetContainerRect( newRect );
 }
 
 void 
 FrameContainer::Move( const sf::Vector2<double>& position )
 {
-  FrameCoord full = GetContainerCoord();
-  sf::Rect<double> rect = full.GetRect();
-  rect.Left = position.x;
-  rect.Top = position.y;
-  full.SetRect( rect );
-  SetContainerCoord( full );
+  Rect newRect = GetContainerRect();
+  newRect.SetFromResolutionCoord( position );
+  SetContainerRect( newRect );
 }
 
 
 void 
-FrameContainer::SetContainerCoord( FrameCoord& fContainerCoord )
+FrameContainer::SetContainerRect( Rect& containerRect )
 {
-  const double barHeight = 20.0; // Height of the Top bar
-  sf::Rect<double> rect = fContainerCoord.GetRect();
-  sf::Rect<double> frameRect( rect.Left, rect.Top + barHeight,
-			      rect.Width, rect.Height - barHeight );
-  sf::Rect<double> barRect( rect.Left, rect.Top,
-			    rect.Width, barHeight );
-  fTopBarCoord = FrameCoord( barRect );  
-  fFrame->SetFrameCoord( FrameCoord( frameRect ) );
+  fContainerRect = containerRect;
+  sf::Rect<double> rect = fContainerRect.GetResolutionRect();
+  rect.Top = rect.Top + 20;
+  rect.Height = rect.Height - 20;
+  Rect frameRect;
+  frameRect.SetFromResolutionRect( rect );
+  fFrame->SetRect( frameRect );
 }
 
-FrameCoord
-FrameContainer::GetContainerCoord()
+Rect
+FrameContainer::GetContainerRect()
 {
-  sf::Rect<double> rect( fTopBarCoord.GetRect().Left, // Must be left
-			 fTopBarCoord.GetRect().Top, // Must be top
-			 fTopBarCoord.GetRect().Width, // Must be consistent
-			 fTopBarCoord.GetRect().Height + fFrame->GetFrameCoord().GetRect().Height );
-  return FrameCoord( rect );
+  return fContainerRect;
 }

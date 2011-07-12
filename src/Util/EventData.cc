@@ -9,8 +9,9 @@ EventData* EventData::fsEventData = NULL;
 EventData::EventData()
 {
   fCurrentEvent = NULL;
+  fCurrentMC = NULL;
   fRun = NULL;
-  fCurrentID = 0;
+  fCurrentID = -1;
 }
 
 EventData::~EventData()
@@ -21,7 +22,7 @@ EventData::~EventData()
   delete fRun;
 }
 
-DS::EV*
+void
 EventData::NextEV()
 {
   Lock lock( fLock );
@@ -29,28 +30,48 @@ EventData::NextEV()
   if( fCurrentID >= fEVs.size() )
     fCurrentID--;
   fCurrentEvent = fEVs[fCurrentID];
-  return fCurrentEvent;
+  if( !fMCs.empty() )
+    fCurrentMC = fMCs[ fEVToMC[fCurrentID] ];
+  return;
 }
 
-DS::EV*
+void
 EventData::PreviousEV()
 {
   Lock lock( fLock );
   fCurrentID--;
   if( fCurrentID < 0 )
     fCurrentID++;
-  fCurrentEvent = fEVs[fCurrentID];
-  return fCurrentEvent;
+  fCurrentEvent = fEVs[fCurrentID];  
+  if( !fMCs.empty() )
+    fCurrentMC = fMCs[ fEVToMC[fCurrentID] ];
+  return;
 }
 
 bool
 EventData::AddEV(
-	      DS::EV* ev )
+		 DS::EV* ev,
+		 int mcEvent )
 {
   if( fLock.TryLock() == true )
     {
       DS::EV* nEV = new DS::EV( *ev );
       fEVs.push_back( nEV );
+      fEVToMC[ fEVs.size() - 1 ] = mcEvent;
+      fLock.Unlock();
+    }
+  else
+    return false;
+}
+
+bool
+EventData::AddMC(
+		 DS::MC* ev )
+{
+  if( fLock.TryLock() == true )
+    {
+      DS::MC* nMC = new DS::MC( *ev );
+      fMCs.push_back( nMC );
       fLock.Unlock();
     }
   else
@@ -68,9 +89,14 @@ DS::EV*
 EventData::GetCurrentEV()
 {
   if( fCurrentEvent == NULL )
-    {
-      Lock lock( fLock );
-      fCurrentEvent = fEVs[fCurrentID];
-    }
+    NextEV();
   return fCurrentEvent;    
+}
+
+DS::MC*
+EventData::GetCurrentMC()
+{
+  if( fCurrentMC == NULL )
+    NextEV();
+  return fCurrentMC;    
 }

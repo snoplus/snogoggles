@@ -20,7 +20,7 @@ namespace Viewer
 class FrameUIReturn
 {
 public: 
-  enum EventType { eNone, ePinned, eClosed, eStartMove, eStopMove };
+  enum EventType { eNone, ePinned, eClosed, eStartMove, eStopMove, eIncrease, eDecrease };
 
   FrameUIReturn() : fType( eNone ) { }
 

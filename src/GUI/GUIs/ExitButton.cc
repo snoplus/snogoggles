@@ -22,6 +22,20 @@ ExitButton::~ExitButton()
 }
 
 void 
+ExitButton::RenderT( sf::RenderWindow& windowApp )
+{
+  if( !fPressed )
+    fButton.SetSubRect( sf::Rect<int>( 323, 0, 21, 20 ) );
+  else
+    fButton.SetSubRect( sf::Rect<int>( 323, 20, 21, 20 ) );
+
+  sf::Sprite newObject( fButton );
+  newObject.SetPosition( fRect.Left, fRect.Top );
+  newObject.Resize( fRect.Width, fRect.Height );
+  windowApp.Draw( newObject );
+}
+
+void 
 ExitButton::Render( RWWrapper& windowApp )
 {
   if( !fPressed )

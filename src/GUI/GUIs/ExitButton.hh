@@ -28,7 +28,8 @@ class ExitButton : public Button
 public:
   ExitButton( sf::Rect<double>& rect, unsigned int guiID );
   virtual ~ExitButton();
-
+  
+  void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
   inline double PreferedRatio();
 protected:

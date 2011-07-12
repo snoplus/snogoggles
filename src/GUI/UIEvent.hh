@@ -17,21 +17,22 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include <Viewer/FrameCoord.hh>
+#include <Viewer/Coord.hh>
 
 namespace Viewer
 {
+  class Rect;
 
 class UIEvent : public sf::Event
 {
 public:
-  inline UIEvent( sf::Event& event, FrameCoord frameCoord )
-    : sf::Event( event ), fFrameCoord( frameCoord )
-  { }
+  UIEvent( sf::Event& event, Rect& motherRect );
 
   sf::Vector2<double> GetLocalCoord();
+  sf::Vector2<double> GetResolutionCoord();
 private:
-  FrameCoord& fFrameCoord;
+  Coord fCoord;
+  Rect& fMotherRect;
 };
 
 } // ::Viewer
