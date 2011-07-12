@@ -5,4 +5,9 @@
 
   <Frame posX="200" posY="0" sizeX="100" sizeY="50" type="LambertProjection"/>
 
+  <Frame DisplayAxes="TRUE" posX="400" posY="0" sizeX="400" sizeY="200" type="3D-Combo">
+    <CameraManager3d Camera.X="-6.7338e+02" Camera.Y="3.0322e+04" Camera.Z="7.1015e+03" CameraDist="3.5000e+00" Eye.X="0.0000e+00" Eye.Y="0.0000e+00" Eye.Z="0.0000e+00" Radius="8.9000e+03" Up.X="5.0615e-03" Up.Y="-2.2792e-01" Up.Z="9.7367e-01" Zoom="1.0000e+00" type="Arcball"/>
+    <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
+  </Frame>
+
 </SNOGoggles>
