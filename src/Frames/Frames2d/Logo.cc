@@ -22,12 +22,25 @@ Logo::Initialise( ConfigurationTable& configTable )
   sf::Rect<double> button( 0.8, 0.1, 0.2, 0.1 );
   GUIs::CheckBoxLabel* cbLabel = dynamic_cast<GUIs::CheckBoxLabel*>( fGUIManager.NewGUI<GUIs::CheckBoxLabel>( button ) );
   cbLabel->SetLabel( "New Logo" );
-
-  fState = configTable.GetI( "state" );
-  cbLabel->SetState( fState );
-
-  if( configTable.GetTable( "Nested" )->GetI( "state" ) )
-    fMessage.SetString( "BOB" );
+  
+  try
+    {
+      fState = configTable.GetI( "state" );
+      cbLabel->SetState( fState );
+    }
+  catch( ConfigurationTable::NoAttributeError& e )
+    {
+      // Oh dear
+    }
+  try
+    {
+      if( configTable.GetTable( "Nested" )->GetI( "state" ) )
+	fMessage.SetString( "BOB" );
+    }
+  catch( ConfigurationTable::NoTableError& e )
+    {
+      // Ah well
+    }
 }
 
 void
