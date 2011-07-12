@@ -12,6 +12,8 @@ namespace Viewer {
 
 namespace Frames {
 
+const std::string Module3d::MODULE_TAG = "type";
+
 void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     if( module != NULL ) 
@@ -21,7 +23,10 @@ void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::
 void Module3d::LoadConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
 {
     if( module != NULL ) 
-        module->LoadConfiguration( configTable.GetTable( module->GetTableName() ) );
+    {
+        try { module->LoadConfiguration( configTable.GetTable( module->GetTableName() ) ); }
+        catch( ConfigurationTable::NoTableError& e ) { }
+    }
 }
 
 void Module3d::SaveConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
@@ -29,7 +34,7 @@ void Module3d::SaveConfigurationSafe( Module3d* module, ConfigurationTable& conf
     if( module != NULL ) 
     {
         ConfigurationTable* newConfigTable = configTable.NewTable( module->GetTableName() );
-        newConfigTable->SetS( Module3d::ModuleTag(), module->GetName() );
+        newConfigTable->SetS( MODULE_TAG, module->GetName() );
         module->SaveConfiguration( newConfigTable );
     }
 }
