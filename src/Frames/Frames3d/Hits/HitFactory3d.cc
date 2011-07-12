@@ -1,6 +1,7 @@
 #include <Viewer/HitFactory3d.hh>
 #include <Viewer/HitManager3d.hh>
 #include <Viewer/Factory.hh>
+#include <Viewer/Module3d.hh>
 
 #include <Viewer/DefaultHits3d.hh>
 
@@ -20,7 +21,7 @@ HitFactory3d* HitFactory3d::GetInstance()
 
 HitFactory3d::HitFactory3d()
 {
-    fFactory.Register( "null", new NullAlloc<HitManager3d>() );
+    fFactory.Register( Module3d::NullTag(), new NullAlloc<HitManager3d>() );
     fFactory.Register( DefaultHits3d::Name(), new Alloc<HitManager3d, DefaultHits3d>() );
 }
 

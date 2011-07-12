@@ -39,7 +39,7 @@ public:
 
     ~Arcball3d() { }
 
-    static std::string Name() { return "arcball"; }
+    static std::string Name() { return "Arcball"; }
     virtual std::string GetName() { return Name(); }
 
     /// Creates all the GUI objects for the camera manager.

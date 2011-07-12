@@ -33,7 +33,7 @@ Manager3d::Manager3d( const std::string& options )
 {
     std::vector<std::string> tokens;
     StringUtils::SplitString( options, " ", tokens );
-    ModuleFactory3d::SetAllModules( this, tokens );
+    ModuleFactory3d::GetInstance()->SetAllModules( this, tokens );
 }
 
 Manager3d::~Manager3d()
@@ -67,14 +67,8 @@ void Manager3d::CreateGUIObjects()
 
 void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
 {
-    LoadSelfConfiguration( configTable );
+    ModuleFactory3d::GetInstance()->SetAllModuleTypes( this, configTable );
     LoadModuleConfigurations( configTable );
-}
-
-void Manager3d::LoadSelfConfiguration( ConfigurationTable& configTable )
-{
-    std::vector<std::string> modules;
-    ModuleFactory3d::SetAllModules( this, modules );
 }
 
 void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
@@ -87,6 +81,11 @@ void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
 }
 
 void Manager3d::SaveConfiguration( ConfigurationTable& configTable ) 
+{
+    SaveModuleConfigurations( configTable );
+}
+
+void Manager3d::SaveModuleConfigurations( ConfigurationTable& configTable ) 
 {
     Module3d::SaveConfigurationSafe( fCameraManager, configTable );
     Module3d::SaveConfigurationSafe( fHitManager, configTable );

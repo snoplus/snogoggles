@@ -99,9 +99,9 @@ public:
 
 private:
 
-    void LoadSelfConfiguration( ConfigurationTable& configTable );
-
     void LoadModuleConfigurations( ConfigurationTable& configTable );
+
+    void SaveModuleConfigurations( ConfigurationTable& configTable );
 
     CameraManager3d*    fCameraManager;     ///< The camera manager	
     HitManager3d*       fHitManager;        ///< The hit manager.

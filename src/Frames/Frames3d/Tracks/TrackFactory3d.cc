@@ -1,6 +1,7 @@
 #include <Viewer/TrackFactory3d.hh>
 #include <Viewer/TrackManager3d.hh>
 #include <Viewer/Factory.hh>
+#include <Viewer/Module3d.hh>
 
 #include <Viewer/DefaultTracks3d.hh>
 
@@ -20,7 +21,7 @@ TrackFactory3d* TrackFactory3d::GetInstance()
 
 TrackFactory3d::TrackFactory3d()
 {
-    fFactory.Register( "null", new NullAlloc<TrackManager3d>() );
+    fFactory.Register( Module3d::NullTag(), new NullAlloc<TrackManager3d>() );
     fFactory.Register( DefaultTracks3d::Name(), new Alloc<TrackManager3d, DefaultTracks3d>() );
 }
 
