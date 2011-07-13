@@ -14,15 +14,28 @@ using namespace std;
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
-FrameContainer::FrameContainer( ConfigurationTable& configTable )
-{      
-  string frameType = configTable.GetS( "type" );
-  fFrame = fFrameFactory.New( frameType );
+FrameContainer::FrameContainer()
+{
 
+}
+
+void 
+FrameContainer::Initialise( const string& type )
+{
+  fFrame = fFrameFactory.New( type );  
   sf::Rect<double> tempPos( 0.0, 0.0, 1.0, 1.0 );
   fExitButton = new GUIs::ExitButton( tempPos, 0 );
   fPinButton = new GUIs::PinButton( tempPos, 1 );
   fTopBar = new GUIs::TopBarButton( tempPos, 3 );  
+
+  fFrame->Initialise();
+}
+
+void 
+FrameContainer::Initialise( ConfigurationTable& configTable )
+{      
+  string frameType = configTable.GetS( "type" );
+  Initialise( frameType );
 
   sf::Vector2<double> pos( configTable.GetI( "posX" ), configTable.GetI( "posY" ) );
   sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
@@ -145,6 +158,9 @@ void
 FrameContainer::Move( const sf::Vector2<double>& position )
 {
   Rect newRect = GetContainerRect();
+  sf::Vector2<double> resolution = Coord::GetWindowResolution();
+  if( position.x > resolution.x || position.y > resolution.y )
+    return;
   newRect.SetFromResolutionCoord( position );
   SetContainerRect( newRect );
 }
@@ -166,4 +182,17 @@ Rect
 FrameContainer::GetContainerRect()
 {
   return fContainerRect;
+}
+
+sf::Vector2<double> 
+FrameContainer::GetPos()
+{
+  return GetContainerRect().GetResolutionCoord();
+}
+
+sf::Vector2<double> 
+FrameContainer::GetSize()
+{
+  sf::Rect<double> rect = GetContainerRect().GetResolutionRect();
+  return sf::Vector2<double>( rect.Width, rect.Height );
 }

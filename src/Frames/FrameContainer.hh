@@ -16,6 +16,8 @@
 #ifndef __Viewer_FrameContainer__
 #define __Viewer_FrameContainer__
 
+#include <iostream>
+
 #include <Viewer/Rect.hh>
 #include <Viewer/FrameUIReturn.hh>
 #include <Viewer/FrameFactory.hh>
@@ -41,9 +43,11 @@ namespace GUIs
 class FrameContainer
 {
 public:
-  FrameContainer( ConfigurationTable& configTable );
-
+  FrameContainer();
   virtual ~FrameContainer();
+
+  void Initialise( const std::string& type );
+  void Initialise( ConfigurationTable& configTable );
 
   void EventLoop();  
   void Render2d( sf::RenderWindow& windowApp );
@@ -57,6 +61,8 @@ public:
   void Move( const sf::Vector2<double>& position );
   void SetContainerRect( Rect& fContainerRect );
   Rect GetContainerRect();
+  sf::Vector2<double> GetPos();
+  sf::Vector2<double> GetSize();
 
   inline bool IsPinned();
 private:

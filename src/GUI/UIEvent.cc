@@ -18,7 +18,7 @@ sf::Vector2<double>
 UIEvent::GetLocalCoord()
 {
   if( this->Type != MouseButtonPressed && this->Type != MouseButtonReleased && this->Type != MouseMoved )
-    throw;
+    return sf::Vector2<double>( -1.0, -1.0 );
   return fCoord.GetLocalCoord( fMotherRect );
 }
 
@@ -26,6 +26,6 @@ sf::Vector2<double>
 UIEvent::GetResolutionCoord()
 {  
   if( this->Type != MouseButtonPressed && this->Type != MouseButtonReleased && this->Type != MouseMoved )
-    throw;
+    return sf::Vector2<double>( -1.0, -1.0 );
   return fCoord.GetResolutionCoord();
 }

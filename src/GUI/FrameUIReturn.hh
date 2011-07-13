@@ -27,6 +27,8 @@ public:
   FrameUIReturn( EventType type ) : fType( type ) { }
 
   EventType fType;
+
+  int fFrameID;
 };
 
 } // ::Viewer

@@ -15,6 +15,9 @@
 #ifndef __Viewer_FrameFactory__
 #define __Viewer_FrameFactory__
 
+#include <vector>
+#include <string>
+
 #include <Viewer/Factory.hh>
 #include <Viewer/Frame.hh>
 
@@ -25,6 +28,8 @@ class FrameFactory : public Factory<Frame>
 {
 public:   
   FrameFactory();
+
+  std::vector<std::string> GetNames();
 };
 
 } // ::Viewer

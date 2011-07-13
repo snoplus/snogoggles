@@ -7,7 +7,9 @@
 #include <Viewer/EventUI.hh>
 using namespace Viewer;
 
-#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
 
 FrameFactory::FrameFactory()
 {
@@ -19,4 +21,13 @@ FrameFactory::FrameFactory()
 
     // Combo 3D frame added by Olivia Wasalski 05/07/11
     Register( Frames::Manager3d::Name(), new OptionsAlloc<Frame, Frames::Manager3d>() );
+}
+
+vector<string>
+FrameFactory::GetNames()
+{
+  vector<string> names;
+  for( std::map< std::string, AllocBase<Frame>* >::iterator iTer = table.begin(); iTer != table.end(); iTer++ )
+    names.push_back( iTer->first );
+  return names;
 }

@@ -59,6 +59,8 @@ public:
 
   inline void SetRect( const Rect& rect );
   inline Rect GetRect(); 
+
+  inline bool ContainsResolutionPoint( const sf::Vector2<double>& point );
 protected:
   Rect fFrameRect;
   GUIManager fGUIManager;
@@ -84,6 +86,11 @@ Frame::GetRect()
   return fFrameRect;
 }
 
+bool 
+Frame::ContainsResolutionPoint(const sf::Vector2<double>& point  )
+{
+  return fFrameRect.ContainsResolutionPoint( point );
+}
 
 } // ::Viewer
 
