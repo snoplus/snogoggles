@@ -16,7 +16,8 @@ Semaphore::Semaphore()
   stringstream name;
   fID = fsNumSemaphores++;
   name << "Sema" << fID;
-  fSemaphore = sem_open( name.str().c_str(), O_CREAT | O_EXCL, 0644, 0 );
+  //fSemaphore = sem_open( name.str().c_str(), O_CREAT | O_EXCL, 0644, 0 );
+  fSemaphore = sem_open("Sema", O_CREAT | O_EXCL, 0644, 0 );
 #else
   sem_init( &fSemaphore, 0, 0 );
 #endif
@@ -27,7 +28,8 @@ Semaphore::~Semaphore()
 #ifdef __APPLE__
   stringstream name;
   name << "Sema" << fID;
-  sem_unlink( name.str().c_str() );
+  //sem_unlink( name.str().c_str() );
+  sem_unlink( "Sema" );
 #else
   sem_destroy( &fSemaphore );
 #endif
