@@ -22,7 +22,7 @@ Semaphore::Semaphore()
 Semaphore::~Semaphore()
 {
 #ifdef __APPLE__
-  sem_unlink( fName..c_str() );
+  sem_unlink( fName.c_str() );
 #else
   sem_destroy( &fSemaphore );
 #endif
