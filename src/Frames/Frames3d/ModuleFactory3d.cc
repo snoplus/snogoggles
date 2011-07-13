@@ -82,6 +82,7 @@ void ModuleFactory3d::SetAllModuleTypes( Manager3d* manager3d, ConfigurationTabl
     modules.push_back( GetModuleType( configTable, GeoManager3d::TableName(), fDefaultGeoManager ) );
     modules.push_back( GetModuleType( configTable, FitterManager3d::TableName(), fDefaultFitterManager ) );
 
+    manager3d->DeleteAllModules();
     SetAllModules( manager3d, modules );
 }
 

@@ -28,14 +28,9 @@ namespace Frames {
 
 const std::string Manager3d::DISPLAY_AXIS_TAG = "DisplayAxes";
 
-Manager3d::Manager3d()
-{
-    SetAllModules( NULL, NULL, NULL, NULL, NULL );
-    fDisplayAxis = true;
-}
-
 Manager3d::Manager3d( const std::string& options )
 {
+    fDisplayAxis = true;
     std::vector<std::string> tokens;
     StringUtils::SplitString( options, " ", tokens );
     ModuleFactory3d::GetInstance()->SetAllModules( this, tokens );
@@ -43,13 +38,7 @@ Manager3d::Manager3d( const std::string& options )
 
 Manager3d::~Manager3d()
 {
-    delete fCameraManager;    fCameraManager = NULL; 
-    delete fHitManager;       fHitManager = NULL; 
-    delete fTrackManager;     fTrackManager = NULL;
-    delete fGeoManager;       fGeoManager = NULL;
-    delete fFitterManager;    fFitterManager = NULL;
-
-    delete fAxes;             fAxes = NULL;
+    DeleteAllModules();
 }
 
 void Manager3d::SetAllModules( CameraManager3d* camera, HitManager3d* hits, TrackManager3d* tracks, GeoManager3d* geo, FitterManager3d* fitter)
@@ -64,15 +53,26 @@ void Manager3d::SetAllModules( CameraManager3d* camera, HitManager3d* hits, Trac
         fAxes = new Axes3d( fCameraManager->SuggestedAxisLength() );
 }
 
+void Manager3d::DeleteAllModules()
+{
+    delete fCameraManager;    fCameraManager = NULL; 
+    delete fHitManager;       fHitManager = NULL; 
+    delete fTrackManager;     fTrackManager = NULL;
+    delete fGeoManager;       fGeoManager = NULL;
+    delete fFitterManager;    fFitterManager = NULL;
+
+    delete fAxes;             fAxes = NULL;
+}
+
 void Manager3d::Initialise()
 {
-  // TODO :p
+    CreateGUIObjects();
 }
 
 void Manager3d::Initialise( ConfigurationTable& configTable ) 
 {
     LoadConfiguration( configTable );
-    CreateGUIObjects();
+    //Initialise();
 }
 
 void Manager3d::CreateGUIObjects()
@@ -132,10 +132,15 @@ void Manager3d::Render2d( RWWrapper& windowApp )
 
 void Manager3d::Render3d( ) 
 {
+    // checks that the camera manager is not null
+    // if the camera manager is null, throws an error
+    if( fCameraManager == NULL )
+        throw NoCameraError();
+
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
     RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetRun()->GetPMTProp();
 
-    fCameraManager->SetUpCameraSystem( fFrameRect.GetViewport() );
+    fCameraManager->SetUpCameraSystem( fFrameRect.GetViewport() ); 
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
     // TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );

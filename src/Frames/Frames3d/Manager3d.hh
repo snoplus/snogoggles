@@ -13,6 +13,8 @@
 ///              of Frame3d class. Namespace change to reflect this. \n
 ///     06/07/11 : Olivia Wasalski - Split the load configuration method. \n
 ///     12/07/11 : Olivia Wasalski - Added x, y and z axes. \n
+///     13/07/11 : Olivia Wasalski - Added function to delete all modules,
+///                fixed a couple of other bugs. \n
 ///
 /// \details	The design for the 3D aspects of the viewer is modular 
 ///		in nature. The Manager3d class combines a series of 
@@ -35,6 +37,21 @@
 ///		Each module has an area where the module's GUI objects can 
 ///		be drawn. This area is passed to each module in the frame 
 ///		coordinate system. 
+///
+////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////
+/// \class Viewer::Frames::Manager3d::NoCameraError
+///
+/// \brief   	
+///
+/// \author Olivia Wasalski <wasalski@triumf.ca> 
+///			    <oliviawasalski@gmail.com>
+///
+/// REVISION HISTORY:\n
+/// 	13/07/11 : Olivia Wasalski - New File \n
+///
+/// \details
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -63,7 +80,13 @@ class Manager3d : public Frame {
 
 public:
 
-    Manager3d();
+    class NoCameraError
+    {
+    public:
+        NoCameraError( ) { }
+    };
+
+    //Manager3d();
 
     Manager3d( const std::string& options );
 
@@ -78,13 +101,15 @@ public:
         FitterManager3d* fitter
        );
 
+    void DeleteAllModules();
+
     /// Static Name function for the Manager3d class. 
     static std::string Name() { return "3D-Combo"; }
 
     /// Returns the name of the type of 3d frame.
     std::string GetName() { return Name(); }
 
-  void Initialise();
+    void Initialise();
     void Initialise( ConfigurationTable& configTable );
 
     void CreateGUIObjects();
