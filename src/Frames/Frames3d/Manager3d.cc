@@ -66,12 +66,14 @@ void Manager3d::DeleteAllModules()
 
 void Manager3d::Initialise()
 {
+    GeoManager3d::LoadFileSafe( fGeoManager );
     CreateGUIObjects();
 }
 
 void Manager3d::Initialise( ConfigurationTable& configTable ) 
 {
     LoadConfiguration( configTable );
+    GeoManager3d::LoadFileSafe( fGeoManager );
     //Initialise();
 }
 

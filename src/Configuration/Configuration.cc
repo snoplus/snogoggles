@@ -82,13 +82,13 @@ Configuration::NewTable( const string& name )
   DOMElement* newElement = fDOMDocument->createElement( elementName );
   fRootElement->appendChild( newElement );
   XMLString::release( &elementName );
-  if( name == string( "Frame" ) )
-    {
+//  if( name == string( "Frame" ) )
+//    {
       ConfigurationTable* newTable = new ConfigurationTable( newElement, fOutput, fDOMDocument );
       fConfigTables.push_back( newTable );
       return newTable;
-    }
-  else
+ //   }
+ // else
     throw ConfigurationTable::NoTableError( name ); // TODO
 }
 

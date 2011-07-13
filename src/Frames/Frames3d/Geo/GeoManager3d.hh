@@ -24,7 +24,6 @@
 #define __Viewer_Frames_GeoManager3d__
 
 #include <Viewer/Module3d.hh>
-
 #include <string>
 
 namespace Viewer {
@@ -40,7 +39,12 @@ public:
     std::string GetTableName() { return TableName(); }
 
     /// Loads a geometry file.
-    virtual void Load( const char* filename ) = 0;
+    virtual void LoadFile( ) = 0;
+    static inline void LoadFileSafe( GeoManager3d* g )
+    {
+        if( g != NULL )
+            g->LoadFile();
+    }
 
     /// Renders the geometry.
     virtual void RenderGeometry( ) = 0;
