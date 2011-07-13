@@ -27,7 +27,7 @@ class Semaphore
 {
 public:
 #ifdef __APPLE__
-  Semaphore( cons string& name );
+  Semaphore( const string& name );
 #else
   Semaphore();
 #endif
