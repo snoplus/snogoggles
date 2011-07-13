@@ -32,9 +32,6 @@ class ConfigTableUtils {
 
 public:
 
-    static void SetTVector3( ConfigurationTable* configTable, const std::string& name, const TVector3& v );
-    static TVector3 GetTVector3( ConfigurationTable* configTable, const std::string& name );
-
     static void SetBoolean( ConfigurationTable* configTable, const std::string& name, bool value );
     static bool GetBoolean( ConfigurationTable* configTable, const std::string& name );
 
@@ -56,7 +53,6 @@ public:
     static void GetSSafe( ConfigurationTable* configTable, const std::string& name, std::string& value );
 
     static void GetBooleanSafe( ConfigurationTable* configTable, const std::string& name, bool& value );
-    static void GetTVector3Safe( ConfigurationTable* configTable, const std::string& name, TVector3& value );
     static void GetVector3Safe( ConfigurationTable* configTable, const std::string& name, Vector3& value );
 
 private:

@@ -23,9 +23,9 @@ Arcball3d::Arcball3d()
 {
     fRadius = 8900.0;
     fCameraDist = 3.5;
-    fCamera.SetXYZ(fCameraDist*fRadius, 0, 0);
-    fEye.SetXYZ(0,0,0);
-    fUp.SetXYZ(0,0,1);
+    fCamera = Vector3(fCameraDist*fRadius, 0, 0);
+    fEye = Vector3(0,0,0);
+    fUp = Vector3(0,0,1);
     fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
     fSpinSpeed = 0.001;
     fZoomSpeed = 0.0001;
@@ -34,8 +34,8 @@ Arcball3d::Arcball3d()
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     // TODO: Needs to be completed.
-    float width = 0.075;
-    float height = 3 * width;
+    float width = 0.1;
+    float height = width;
     float left = 0;
     float top = 1 - height;
 
@@ -71,9 +71,9 @@ void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggable
 
 void Arcball3d::LoadConfiguration( ConfigurationTable* configTable )
 {
-    ConfigTableUtils::GetTVector3Safe( configTable, CAMERA_TAG, fCamera );
-    ConfigTableUtils::GetTVector3Safe( configTable, EYE_TAG, fEye );
-    ConfigTableUtils::GetTVector3Safe( configTable, UP_TAG, fUp );
+    ConfigTableUtils::GetVector3Safe( configTable, CAMERA_TAG, fCamera );
+    ConfigTableUtils::GetVector3Safe( configTable, EYE_TAG, fEye );
+    ConfigTableUtils::GetVector3Safe( configTable, UP_TAG, fUp );
     ConfigTableUtils::GetDSafe( configTable, RADIUS_TAG, fRadius );
     ConfigTableUtils::GetDSafe( configTable, CAMERA_DIST_TAG, fCameraDist );
     ConfigTableUtils::GetDSafe( configTable, ZOOM_TAG, fZoom );
@@ -81,9 +81,9 @@ void Arcball3d::LoadConfiguration( ConfigurationTable* configTable )
 
 void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-    ConfigTableUtils::SetTVector3( configTable, CAMERA_TAG, fCamera );
-    ConfigTableUtils::SetTVector3( configTable, EYE_TAG, fEye );
-    ConfigTableUtils::SetTVector3( configTable, UP_TAG, fUp );
+    ConfigTableUtils::SetVector3( configTable, CAMERA_TAG, fCamera );
+    ConfigTableUtils::SetVector3( configTable, EYE_TAG, fEye );
+    ConfigTableUtils::SetVector3( configTable, UP_TAG, fUp );
     configTable->SetD( RADIUS_TAG, fRadius );
     configTable->SetD( CAMERA_DIST_TAG, fCameraDist );
     configTable->SetD( ZOOM_TAG, fZoom );
@@ -113,9 +113,9 @@ void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )
     Events();
 }
 
-bool Arcball3d::IsFront( TVector3 v )
+bool Arcball3d::IsFront( const TVector3& v )
 {
-    if (fCamera*v >= 0) return true;
+    if ( fCamera * v >= 0 ) return true;
     else return false;
 }
 
@@ -136,7 +136,7 @@ void Arcball3d::Events( )
         Spin( -fUp );
 
     if( fSpinUpButton->GetState() == true )
-        Spin( -fCamera.Cross( fUp ) );
+        Spin( fCamera.Cross( fUp ) );
 
     if( fSpinDownButton->GetState() == true )
         Spin( fCamera.Cross( fUp ) );

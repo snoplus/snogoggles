@@ -11,6 +11,7 @@
 /// 	06/07/11 : Olivia Wasalski - New File \n
 ///     08/07/11 : Olivia Wasalski - Slight refactoring of the static private members. \n
 ///     12/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
+///     13/07/11 : Olivia Wasalski - Changed the TVector3 objects to Vector3 objects. \n
 ///
 /// \details 	
 ///
@@ -21,8 +22,8 @@
 
 #include <Viewer/CameraManager3d.hh>
 #include <Viewer/GUIReturn.hh>
+#include <Viewer/Vector3.hh>
 #include <SFML/Graphics.hpp>
-#include <TVector3.h>
 #include <string>
 
 namespace Viewer {
@@ -65,7 +66,7 @@ public:
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect );
 
-    bool IsFront( TVector3 v );
+    bool IsFront( const TVector3& v );
 
     double SuggestedAxisLength() { return 1.5 * fRadius; }
 
@@ -86,9 +87,9 @@ private:
     static const std::string ZOOM_TAG;          ///< Name used to save fZoom.
 
     // All data which is saved to conig table.
-    TVector3 fCamera;                   ///< Position of the camera.
-    TVector3 fEye;                      ///< Point to look at.
-    TVector3 fUp;                       ///< Orient the scene upwards.
+    Vector3 fCamera;                    ///< Position of the camera.
+    Vector3 fEye;                       ///< Point to look at.
+    Vector3 fUp;                        ///< Orient the scene upwards.
     double fRadius;                     ///< Radius of the arcball.
     double fCameraDist;                 ///< Distance from the center of the camera.
     double fZoom;                       ///< Zoom factor.

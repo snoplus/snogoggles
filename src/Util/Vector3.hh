@@ -28,6 +28,8 @@ public:
     Vector3( double x = 0.0, double y = 0.0, double z = 0.0 )
         : TVector3( x, y, z ) { }
 
+    Vector3( const TVector3& v ) { Vector3( v.x(), v.y(), v.z() ); }
+
     inline void RenderOpenGL();
 
     static inline std::string Tag() { return "vertex"; }

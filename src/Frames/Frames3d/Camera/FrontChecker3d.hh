@@ -19,7 +19,7 @@
 #ifndef __Viewer_Frames_FrontChecker3d__
 #define __Viewer_Frames_FrontChecker3d__
 
-class TVector3;
+#include <TVector3.h>
 
 namespace Viewer {
 namespace Frames {
@@ -29,7 +29,7 @@ class FrontChecker3d {
 public:
 
 /// Checks whether the given vector is in the front half or the back half of the scene.
-virtual bool IsFront( TVector3 v ) = 0;
+virtual bool IsFront( const TVector3& v ) = 0;
 
 }; // class FrontChecker3d
 
