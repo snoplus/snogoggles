@@ -15,6 +15,7 @@
 #define __Viewer_EventData__
 
 #include <vector>
+#include <map>
 
 #include <Viewer/Mutex.hh>
 
@@ -25,6 +26,7 @@ namespace DS
   class Root;
   class EV;
   class Run;
+  class MC;
 }
 }
 
@@ -45,15 +47,17 @@ public:
   ~EventData();
 
   RAT::DS::EV* GetCurrentEV();
+  RAT::DS::MC* GetCurrentMC();
 
   RAT::DS::Run* GetRun() { return fRun; }
 
   void SetRun( RAT::DS::Run* run );
-  bool AddEV( RAT::DS::EV* ev );
+  bool AddEV( RAT::DS::EV* ev, int mcEvent );
+  bool AddMC( RAT::DS::MC* mc );
 
-  RAT::DS::EV* NextEV();
+  void NextEV();
 
-  RAT::DS::EV* PreviousEV();
+  void PreviousEV();
 private:
   EventData();
 
@@ -61,9 +65,12 @@ private:
 
   Mutex fLock;
   std::vector<RAT::DS::EV*> fEVs; /// <Must Lock to access
+  std::vector<RAT::DS::MC*> fMCs; /// <Must Lock to access
+  std::map< int, int > fEVToMC; /// <Must Lock to access, mapping from EV number to MC number
   int fCurrentID; /// <Must Lock to access
   RAT::DS::Run* fRun;
   RAT::DS::EV* fCurrentEvent;
+  RAT::DS::MC* fCurrentMC;
 };
 
 } //::Viewer

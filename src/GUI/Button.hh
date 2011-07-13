@@ -27,6 +27,8 @@ class Button : public GUI
 public:
   inline Button( sf::Rect<double>& rect, unsigned int guiID );
   virtual ~Button() {};
+ 
+  virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
   virtual void Render( RWWrapper& windowApp ) = 0;
   virtual GUIReturn NewEvent( UIEvent& event );
 

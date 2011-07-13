@@ -9,7 +9,8 @@
 ///
 /// REVISION HISTORY:\n
 /// 	06/07/11 : Olivia Wasalski - New File \n
-//      08/07/11 : Olivia Wasalski - Slight refactoring of the static private members. \n
+///     08/07/11 : Olivia Wasalski - Slight refactoring of the static private members. \n
+///     12/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
 ///
 /// \details 	
 ///
@@ -65,6 +66,8 @@ public:
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect );
 
     bool IsFront( TVector3 v );
+
+    double SuggestedAxisLength() { return 1.5 * fRadius; }
 
 private:
 

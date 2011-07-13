@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::Logo
+/// \class Viewer::Frames::EventUI
 ///
 /// \brief   Simple Frame, just displays the logo
 ///
@@ -12,8 +12,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames_Logo__
-#define __Viewer_Frames_Logo__
+#ifndef __Viewer_Frames_EventUI__
+#define __Viewer_Frames_EventUI__
 
 #include <Viewer/Frame.hh>
 #include <Viewer/Sprite.hh>
@@ -21,31 +21,34 @@
 
 namespace Viewer
 {
+namespace GUIs
+{
+  class Button;
+}
+
 namespace Frames
 {
 
-class Logo : public Frame
+class EventUI : public Frame
 {
 public:
   void Initialise();
   void Initialise( ConfigurationTable& configTable );
 
-  void SaveConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable& configTable ) { };
 
   virtual void EventLoop();
   
-  virtual std::string GetName() { return Logo::Name(); }
+  virtual std::string GetName() { return EventUI::Name(); }
   
-  static std::string Name() { return std::string( "Logo" ); }
+  static std::string Name() { return std::string( "EventUI" ); }
 
   virtual void Render2d( RWWrapper& windowApp );
 
   void Render3d() { }
 private:
-  Sprite fLogo;
-  Sprite fLogo2;
-  Text fMessage;
-  bool fState;
+  GUIs::Button* fNextButton;
+  GUIs::Button* fPrevButton;
 };
 
 } // ::Frames

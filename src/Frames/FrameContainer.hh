@@ -16,7 +16,9 @@
 #ifndef __Viewer_FrameContainer__
 #define __Viewer_FrameContainer__
 
-#include <Viewer/FrameCoord.hh>
+#include <iostream>
+
+#include <Viewer/Rect.hh>
 #include <Viewer/FrameUIReturn.hh>
 #include <Viewer/FrameFactory.hh>
 #include <Viewer/Persist.hh>
@@ -24,7 +26,6 @@
 namespace sf
 {
   class RenderWindow;
-  class Event;
 }
 
 namespace Viewer
@@ -32,6 +33,7 @@ namespace Viewer
   class ConfigurationTable;
   class Frame;
   class GUI;
+  class UIEvent;
 namespace GUIs
 {
   class Button;
@@ -41,26 +43,30 @@ namespace GUIs
 class FrameContainer
 {
 public:
-  FrameContainer( ConfigurationTable& configTable );
-
+  FrameContainer();
   virtual ~FrameContainer();
+
+  void Initialise( const std::string& type );
+  void Initialise( ConfigurationTable& configTable );
 
   void EventLoop();  
   void Render2d( sf::RenderWindow& windowApp );
   void Render3d();
   void RenderGUI( sf::RenderWindow& windowApp );
 
-  FrameUIReturn NewEvent( sf::Event& event );
+  FrameUIReturn NewEvent( UIEvent& event );
   void SaveConfiguration( ConfigurationTable& configTable );
 
   void Resize( const sf::Vector2<double>& size );
   void Move( const sf::Vector2<double>& position );
-  void SetContainerCoord( FrameCoord& fContainerCoord );
-  FrameCoord GetContainerCoord();
+  void SetContainerRect( Rect& fContainerRect );
+  Rect GetContainerRect();
+  sf::Vector2<double> GetPos();
+  sf::Vector2<double> GetSize();
 
   inline bool IsPinned();
 private:
-  FrameCoord fTopBarCoord;
+  Rect fContainerRect;
   FrameFactory fFrameFactory;
 
   Frame* fFrame;

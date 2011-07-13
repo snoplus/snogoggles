@@ -25,7 +25,7 @@ namespace sf
 
 namespace Viewer
 {
-  class FrameCoord;
+  class Rect;
   class Shape;
   class Sprite;
   class Text;
@@ -33,7 +33,7 @@ namespace Viewer
 class RWWrapper
 {
 public:
-  RWWrapper( sf::RenderWindow& renderWindow, FrameCoord& frameCoord );
+  RWWrapper( sf::RenderWindow& renderWindow, Rect& motherRect );
 
   void Draw( Shape& object );
   void Draw( Sprite& object );
@@ -43,7 +43,7 @@ protected:
   void DrawObject( sf::Drawable& object );
 
   sf::RenderWindow& fRenderWindow;
-  FrameCoord& fFrameCoord;
+  Rect& fMotherRect;
 };
 
 } // ::Viewer

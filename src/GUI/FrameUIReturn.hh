@@ -20,13 +20,15 @@ namespace Viewer
 class FrameUIReturn
 {
 public: 
-  enum EventType { eNone, ePinned, eClosed, eStartMove, eStopMove };
+  enum EventType { eNone, ePinned, eClosed, eStartMove, eStopMove, eIncrease, eDecrease };
 
   FrameUIReturn() : fType( eNone ) { }
 
   FrameUIReturn( EventType type ) : fType( type ) { }
 
   EventType fType;
+
+  int fFrameID;
 };
 
 } // ::Viewer

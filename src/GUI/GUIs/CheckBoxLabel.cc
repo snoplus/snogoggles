@@ -37,6 +37,12 @@ CheckBoxLabel::SetLabel( const string& label )
 }
 
 void 
+CheckBoxLabel::RenderT( sf::RenderWindow& windowApp )
+{
+  // TODO if needed
+}
+
+void 
 CheckBoxLabel::Render( RWWrapper& windowApp )
 {
   if( !fActive )

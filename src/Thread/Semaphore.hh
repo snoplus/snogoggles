@@ -18,13 +18,19 @@
 
 #include <semaphore.h>
 
+#include <string>
+
 namespace Viewer
 {
 
 class Semaphore
 {
 public:
+#ifdef __APPLE__
+  Semaphore( cons string& name );
+#else
   Semaphore();
+#endif
   ~Semaphore();
 
   void
@@ -34,9 +40,9 @@ public:
   Signal();
 private:
 #ifdef __APPLE__
+  Semaphore();
   sem_t* fSemaphore; // Must be named on a Mac
-  static unsigned int fsNumSemaphores;
-  unsigned int fID;
+  std::string fName;
 #else
   sem_t fSemaphore;
 #endif

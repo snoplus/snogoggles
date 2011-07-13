@@ -30,6 +30,7 @@ namespace Frames
 class LambertProjection : public Frame
 {
 public:
+  void Initialise();
   void Initialise( ConfigurationTable& configTable );
 
   void SaveConfiguration( ConfigurationTable& configTable );

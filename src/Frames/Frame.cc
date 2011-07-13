@@ -7,14 +7,15 @@ using namespace Viewer;
 void 
 Frame::RenderGUI( sf::RenderWindow& windowApp )
 {
-  RWWrapper rWindowApp( windowApp, fFrameCoord );
+  RWWrapper rWindowApp( windowApp, fFrameRect );
   fGUIManager.Render( rWindowApp );
 }
 
 void 
-Frame::NewEvent( sf::Event& event )
+Frame::NewEvent( UIEvent& event )
 {
-  UIEvent uiEvent( event, fFrameCoord );
+  // New Mother rect, thus new UIEvent
+  UIEvent uiEvent( event, fFrameRect ); 
   GUIReturn retEvent = fGUIManager.NewEvent( uiEvent );
   if( retEvent.IsNULL() == false )
     fEvents.push( retEvent );

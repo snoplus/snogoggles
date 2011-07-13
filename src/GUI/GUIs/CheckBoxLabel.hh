@@ -34,6 +34,7 @@ public:
 
   void SetLabel( const std::string& label );
 
+  void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
   inline double PreferedRatio();
 protected:

@@ -8,12 +8,17 @@ using namespace Viewer;
 using namespace Viewer::Frames;
 
 void 
-TestBox::Initialise( ConfigurationTable& configTable )
+TestBox::Initialise()
 {
-  Frame::Initialise( configTable );
   sf::Rect<double> dragPos = sf::Rect<double>( 0.0, 0.0, 1.0, 1.0 );
   fRotate = 0.0;
   fDragArea = dynamic_cast<GUIs::DragArea*>( fGUIManager.NewGUI<GUIs::DragArea>( dragPos ) );
+}
+
+void
+TestBox::Initialise( ConfigurationTable& configTable )
+{
+  Initialise();
 }
 
 void 
@@ -31,8 +36,7 @@ void
 TestBox::Render3d()
 {
   // Remember Rect is defined as top left, viewport as bottom left
-  sf::Rect<double> viewPort = fFrameCoord.Get3dViewport();
-  glViewport( viewPort.Left, viewPort.Top, viewPort.Width, viewPort.Height );
+  fFrameRect.SetAsGLViewport();
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(90.f, 1.f, 1.f, 500.f);

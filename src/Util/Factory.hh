@@ -77,6 +77,11 @@ public:
     table[id] = allocator;
   };
 
+  ~Factory() {
+    for( typename AllocTable<T>::iterator iTer = table.begin(); iTer != table.end(); iTer++ )
+      delete iTer->second;
+    table.clear();
+  }
 
 protected:
   AllocTable<T> table;

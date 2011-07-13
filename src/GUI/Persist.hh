@@ -27,6 +27,8 @@ class Persist : public GUI
 public:
   inline Persist( sf::Rect<double>& rect, unsigned int guiID );
   virtual ~Persist() {};
+
+  virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
   virtual void Render( RWWrapper& windowApp ) = 0;
   virtual GUIReturn NewEvent( UIEvent& event );
 

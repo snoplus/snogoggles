@@ -29,6 +29,8 @@ class DragArea : public GUI
 public:
   inline DragArea( sf::Rect<double>& rect, unsigned int guiID );
   virtual ~DragArea() {};
+
+  virtual void RenderT( sf::RenderWindow& windowApp ) { };
   virtual void Render( RWWrapper& windowApp ) { };
   virtual GUIReturn NewEvent( UIEvent& event );
 

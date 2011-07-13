@@ -10,7 +10,9 @@ using namespace std;
 #include <Viewer/ImageManager.hh>
 #include <Viewer/Configuration.hh>
 #include <Viewer/ConfigurationTable.hh>
-#include <Viewer/FrameCoord.hh>
+#include <Viewer/Coord.hh>
+#include <Viewer/Rect.hh>
+#include <Viewer/UIEvent.hh>
 #include <Viewer/GreyScalePalette.hh>
 using namespace Viewer;
 
@@ -25,23 +27,35 @@ void
 ViewerWindow::Initialise()
 {
   // Load the configuration
-  Configuration loadConfig( false );  
-  int resX = loadConfig.GetI( "resX" ); 
-  int resY = loadConfig.GetI( "resY" );
-  FrameCoord::SetResolution( resX, resY );
-  FrameCoord::SetWindowSize( resX, resY );
-
-  fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles" ); // Need to load Resolution
+  try
+    {
+      stringstream configFileName;
+      configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
+      Configuration loadConfig( configFileName.str(), false );  
+      int resX = loadConfig.GetI( "resX" ); 
+      int resY = loadConfig.GetI( "resY" );
+      Coord::SetWindowResolution( resX, resY );
+      Coord::SetWindowSize( resX, resY );
+      fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles" );
+      fFrameManager.Initialise( loadConfig );
+    }
+  catch( Configuration::NoFileError& e )
+    {
+      sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
+      fWindowApp = new sf::RenderWindow( sf::VideoMode::GetDesktopMode(), "SNO Goggles" ); 
+      Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
+      Coord::SetWindowSize( fullScreen.Width, fullScreen.Height );
+      fFrameManager.Initialise();
+    }
   // Draw a splash background
   ImageManager& im = ImageManager::GetInstance();
   sf::Sprite sp = im.NewSprite( "Logo.png" );
-  sp.SetPosition( 400 - sp.GetSize().x / 2.0, 300 - sp.GetSize().y / 2.0 );
+  sf::Vector2<double> windowResolution = Coord::GetWindowResolution();
+  sp.SetPosition( windowResolution.x / 2 - sp.GetSize().x / 2.0, windowResolution.y / 2 - sp.GetSize().y / 2.0 );
 
   fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
   fWindowApp->Draw( sp );
   fWindowApp->Display();
-
-  fFrameManager.Initialise( loadConfig );
 }
 
 void
@@ -57,9 +71,11 @@ ViewerWindow::Run()
 void
 ViewerWindow::Destruct()
 {
-  Configuration saveConfig( true );
-  saveConfig.SetI( "resX", static_cast<int>( FrameCoord::GetResolution().x ) );
-  saveConfig.SetI( "resY", static_cast<int>( FrameCoord::GetResolution().y ) );
+  stringstream configFileName;
+  configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
+  Configuration saveConfig( configFileName.str(), true );
+  saveConfig.SetI( "resX", static_cast<int>( Coord::GetWindowResolution().x ) );
+  saveConfig.SetI( "resY", static_cast<int>( Coord::GetWindowResolution().y ) );
   fFrameManager.SaveConfiguration( saveConfig );
   saveConfig.SaveConfiguration();
   
@@ -70,7 +86,7 @@ void
 ViewerWindow::EventLoop()
 {
   sf::Event event;
-   while( fWindowApp->PollEvent( event ) )
+  while( fWindowApp->PollEvent( event ) )
     {
       switch( event.Type )
 	{
@@ -79,11 +95,12 @@ ViewerWindow::EventLoop()
 	  fWindowApp->Close();
 	  break;
 	case sf::Event::Resized:
-	  FrameCoord::SetWindowSize( event.Size.Width, event.Size.Height );
+	  Coord::SetWindowSize( event.Size.Width, event.Size.Height );
 	  break;
 	case sf::Event::LostFocus:
 	case sf::Event::GainedFocus:
 	  break;
+
 // Now events to use and then pass to frames
 	case sf::Event::KeyPressed:
 	  if( event.Key.Code == sf::Key::Escape )
@@ -93,10 +110,11 @@ ViewerWindow::EventLoop()
 	    }
 //Drop through
 	default:
-	  fFrameManager.NewEvent( event );
+	  Rect windowRect;
+	  windowRect.SetFromResolutionRect( sf::Rect<double>( 0.0, 0.0, Coord::GetWindowResolution().x, Coord::GetWindowResolution().y ) );
+	  UIEvent uiEvent( event, windowRect );
+	  fFrameManager.NewEvent( uiEvent );
 	}
-      if( event.Type == sf::Event::Closed )
-	fWindowApp->Close();
     }
   // Now get Frames to deal with events
   fFrameManager.EventLoop();

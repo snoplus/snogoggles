@@ -39,10 +39,18 @@ public:
     /// Loads a boolean from a config table from a string
     static bool GetBoolean( ConfigurationTable* configTable, const std::string& name );
 
+    // These methods catch the exception.
+    static void GetISafe( ConfigurationTable* configTable, const std::string& name, int& value );
+    static void GetDSafe( ConfigurationTable* configTable, const std::string& name, double& value );
+    static void GetSSafe( ConfigurationTable* configTable, const std::string& name, std::string& value );
+
+    static void GetBooleanSafe( ConfigurationTable* configTable, const std::string& name, bool& value );
+    static void GetTVector3Safe( ConfigurationTable* configTable, const std::string& name, TVector3& value );
+
 private:
 
-    static inline std::string TrueTag() { return "TRUE"; }
-    static inline std::string FalseTag() { return "FALSE"; }
+    static const std::string TRUE_TAG;
+    static const std::string FALSE_TAG;
 
 
 }; // class ConfigTableUtils 

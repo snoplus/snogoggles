@@ -27,8 +27,8 @@ Arcball3d::Arcball3d()
     fEye.SetXYZ(0,0,0);
     fUp.SetXYZ(0,0,1);
     fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
-    fSpinSpeed = 0.01;
-    fZoomSpeed = 0.0005;
+    fSpinSpeed = 0.001;
+    fZoomSpeed = 0.0001;
 }
 
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
@@ -71,12 +71,12 @@ void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggable
 
 void Arcball3d::LoadConfiguration( ConfigurationTable* configTable )
 {
-    fCamera = ConfigTableUtils::GetTVector3( configTable, CAMERA_TAG );
-    fEye = ConfigTableUtils::GetTVector3( configTable, EYE_TAG );
-    fUp = ConfigTableUtils::GetTVector3( configTable, UP_TAG );
-    fRadius = configTable->GetD( RADIUS_TAG );
-    fCameraDist = configTable->GetD( CAMERA_DIST_TAG );
-    fZoom = configTable->GetD( ZOOM_TAG );
+    ConfigTableUtils::GetTVector3Safe( configTable, CAMERA_TAG, fCamera );
+    ConfigTableUtils::GetTVector3Safe( configTable, EYE_TAG, fEye );
+    ConfigTableUtils::GetTVector3Safe( configTable, UP_TAG, fUp );
+    ConfigTableUtils::GetDSafe( configTable, RADIUS_TAG, fRadius );
+    ConfigTableUtils::GetDSafe( configTable, CAMERA_DIST_TAG, fCameraDist );
+    ConfigTableUtils::GetDSafe( configTable, ZOOM_TAG, fZoom );
 }
 
 void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
@@ -130,16 +130,16 @@ void Arcball3d::Spin( const TVector3& axis )
 void Arcball3d::Events( )
 {
     if( fSpinLeftButton->GetState() == true )
-        Spin( -fUp );
-
-    if( fSpinRightButton->GetState() == true )
         Spin( fUp );
 
+    if( fSpinRightButton->GetState() == true )
+        Spin( -fUp );
+
     if( fSpinUpButton->GetState() == true )
-        Spin( fCamera.Cross( fUp ) );
+        Spin( -fCamera.Cross( fUp ) );
 
     if( fSpinDownButton->GetState() == true )
-        Spin( -fCamera.Cross( fUp ) );
+        Spin( fCamera.Cross( fUp ) );
 
     if( fZoomInButton->GetState() == true )
         Zoom( -fZoomSpeed );

@@ -36,6 +36,7 @@ public:
   TestBox() { }
   virtual ~TestBox() { }
 
+  void Initialise();
   void Initialise( ConfigurationTable& configTable );
 
   virtual void EventLoop();

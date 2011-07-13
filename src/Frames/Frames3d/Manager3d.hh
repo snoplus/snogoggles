@@ -12,6 +12,7 @@
 ///     06/07/11 : Olivia Wasalski - Now inherits from Frame class instead
 ///              of Frame3d class. Namespace change to reflect this. \n
 ///     06/07/11 : Olivia Wasalski - Split the load configuration method. \n
+///     12/07/11 : Olivia Wasalski - Added x, y and z axes. \n
 ///
 /// \details	The design for the 3D aspects of the viewer is modular 
 ///		in nature. The Manager3d class combines a series of 
@@ -56,6 +57,8 @@ namespace Frames {
     class GeoManager3d;
     class FitterManager3d;
 
+    class Axes3d;
+
 class Manager3d : public Frame {
 
 public:
@@ -81,6 +84,7 @@ public:
     /// Returns the name of the type of 3d frame.
     std::string GetName() { return Name(); }
 
+  void Initialise();
     void Initialise( ConfigurationTable& configTable );
 
     void CreateGUIObjects();
@@ -108,6 +112,10 @@ private:
     TrackManager3d*     fTrackManager;      ///< The track manager.
     GeoManager3d*       fGeoManager;        ///< The geometry manager.
     FitterManager3d*    fFitterManager;	    ///< The fitter manager.
+
+    bool fDisplayAxis;
+    Axes3d* fAxes;
+    static const std::string DISPLAY_AXIS_TAG;
 
 }; // class Manager3d
 

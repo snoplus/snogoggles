@@ -29,6 +29,7 @@ public:
   PinButton( sf::Rect<double>& rect, unsigned int guiID );
   virtual ~PinButton();
 
+  void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
   inline double PreferedRatio();
 protected:

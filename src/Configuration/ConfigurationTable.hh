@@ -26,6 +26,20 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////
+/// \class Viewer::ConfigurationTable::NoAttributeError
+///
+/// \brief   
+///
+/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+///
+/// REVISION HISTORY:\n
+///     12/07/11 : P.Jones - First Revision, new file. \n
+///
+/// \detail  
+///
+////////////////////////////////////////////////////////////////////////
+
 #ifndef __Viewer_ConfigurationTable__
 #define __Viewer_ConfigurationTable__
 
@@ -51,6 +65,13 @@ public:
   public:
     /// Just sets up a std::runtime_error
     NoTableError( const std::string& param ) : std::runtime_error( param ) {}
+  }; 
+
+  class NoAttributeError : public std::runtime_error
+  {
+  public:
+    /// Just sets up a std::runtime_error
+    NoAttributeError( const std::string& param ) : std::runtime_error( param ) {}
   };
 
   ConfigurationTable( xercesc_2_8::DOMElement* element, bool output, xercesc_2_8::DOMDocument* domDocument );

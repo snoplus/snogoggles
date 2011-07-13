@@ -58,6 +58,11 @@ int
 ConfigurationTable::GetI( const string& name )
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  if( !fDOMElement->hasAttribute( attributeName ) )
+    {
+      XMLString::release( &attributeName );
+      throw NoAttributeError( name );
+    }
   const XMLCh* attributeValue = fDOMElement->getAttribute( attributeName );
   char* attributeValueChar = XMLString::transcode( attributeValue );
   stringstream value; 
@@ -73,6 +78,11 @@ double
 ConfigurationTable::GetD( const string& name )
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  if( !fDOMElement->hasAttribute( attributeName ) )
+    {
+      XMLString::release( &attributeName );
+      throw NoAttributeError( name );
+    }
   const XMLCh* attributeValue = fDOMElement->getAttribute( attributeName );
   char* attributeValueChar = XMLString::transcode( attributeValue );
   stringstream value;
@@ -90,6 +100,11 @@ string
 ConfigurationTable::GetS( const string& name )
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  if( !fDOMElement->hasAttribute( attributeName ) )
+    {
+      XMLString::release( &attributeName );
+      throw NoAttributeError( name );
+    }
   const XMLCh* attributeValue = fDOMElement->getAttribute( attributeName );
   char* attributeValueChar = XMLString::transcode( attributeValue );
   string result( attributeValueChar );

@@ -12,11 +12,26 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////
+/// \class Viewer::Configuration::NoFileError
+///
+/// \brief   
+///
+/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+///
+/// REVISION HISTORY:\n
+///     12/07/11 : P.Jones - First Revision, new file. \n
+///
+/// \detail  
+///
+////////////////////////////////////////////////////////////////////////
+
 #ifndef __Viewer_Configuration__
 #define __Viewer_Configuration__
 
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 namespace xercesc_2_8
 {
@@ -31,7 +46,14 @@ namespace Viewer
 class Configuration
 {
 public:
-  Configuration( bool ouput );
+  class NoFileError : public std::runtime_error
+  {
+  public:
+    /// Just sets up a std::runtime_error
+    NoFileError( const std::string& param ) : std::runtime_error( param ) {}
+  }; 
+
+  Configuration( const std::string& fileName, bool ouput );
   
   inline std::vector< ConfigurationTable* >::iterator GetTableBegin();
   inline std::vector< ConfigurationTable* >::iterator GetTableEnd();
@@ -49,6 +71,7 @@ public:
   void SetD( const std::string& name, const double value );
   void SetS( const std::string& name, const std::string& value );
 private:
+  std::string fFileName;
   std::vector< ConfigurationTable* > fConfigTables;
   xercesc_2_8::DOMDocument* fDOMDocument;
   xercesc_2_8::DOMElement* fRootElement;

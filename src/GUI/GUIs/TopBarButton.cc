@@ -21,6 +21,21 @@ TopBarButton::~TopBarButton()
 
 }
 
+
+void 
+TopBarButton::RenderT( sf::RenderWindow& windowApp )
+{
+  if( !fPressed )
+    fBar.SetSubRect( sf::Rect<int>( 0, 0, 300, 20 ) );
+  else
+    fBar.SetSubRect( sf::Rect<int>( 0, 20, 300, 20 ) );
+
+  sf::Sprite newObject( fBar );
+  newObject.SetPosition( fRect.Left, fRect.Top );
+  newObject.Resize( fRect.Width, fRect.Height );
+  windowApp.Draw( newObject );
+}
+
 void 
 TopBarButton::Render( RWWrapper& windowApp )
 {

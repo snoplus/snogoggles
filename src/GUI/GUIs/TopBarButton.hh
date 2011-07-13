@@ -30,6 +30,7 @@ public:
   TopBarButton( sf::Rect<double>& rect, unsigned int guiID );
   virtual ~TopBarButton();
 
+  void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
   double PreferedRatio() { return 1.0; }
 protected:
