@@ -12,6 +12,7 @@ namespace Frames {
 
 void Polyhedrons3d::LoadFile()
 {
+/*
     Configuration config = Configuration( GetFilename(), false );
 
     std::vector< ConfigurationTable* >::iterator itr;
@@ -24,7 +25,7 @@ void Polyhedrons3d::LoadFile()
         ConfigTableUtils::SetPolyhedron( outConfig.NewTable( "polyhedron" ), fPolyhedrons.at(i) );
 
     outConfig.SaveConfiguration();
-
+*/
 }
 
 void Polyhedrons3d::RenderGeometry( )
