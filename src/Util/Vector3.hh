@@ -30,7 +30,7 @@ public:
 
     Vector3( const TVector3& v ) { Vector3( v.x(), v.y(), v.z() ); }
 
-    inline void RenderOpenGL();
+    inline void RenderOpenGL() const;
 
     static inline std::string Tag() { return "vertex"; }
     static inline std::string XTag() { return "x"; }
@@ -39,7 +39,7 @@ public:
 
 }; // class Vector3
 
-void Vector3::RenderOpenGL()
+void Vector3::RenderOpenGL() const
 {
     glVertex3f( (float) x(), (float) y(), (float) z() );
 }

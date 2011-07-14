@@ -7,6 +7,7 @@
 ///
 /// REVISION HISTORY:\n
 ///     11/07/11 : P.Jones - First Revision, new file. \n
+///     14/07/11 : Olivia Wasalski - Added a constructor which accepts an sf::Color. \n
 ///
 /// \detail  
 ///
@@ -28,6 +29,7 @@ class Colour : public sf::Color
 public:
   Colour() : sf::Color() { };
   Colour( sf::Uint8 red, sf::Uint8 green, sf::Uint8 blue, sf::Uint8 alpha = 255 ) : sf::Color( red, green, blue, alpha ) { }
+  Colour( const sf::Color& color ) : sf::Color( color ) { }
 
   inline void SetOpenGL();
 };

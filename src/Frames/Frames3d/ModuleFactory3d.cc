@@ -77,10 +77,10 @@ void ModuleFactory3d::SetAllModuleTypes( Manager3d* manager3d, ConfigurationTabl
     std::vector<std::string> modules;
 
     modules.push_back( GetModuleType( configTable, CameraManager3d::TableName(), fDefaultCameraManager ) );
-    modules.push_back( GetModuleType( configTable, HitManager3d::TableName(), fDefaultHitManager ) );
-    modules.push_back( GetModuleType( configTable, TrackManager3d::TableName(), fDefaultTrackManager ) );
-    modules.push_back( GetModuleType( configTable, GeoManager3d::TableName(), fDefaultGeoManager ) );
-    modules.push_back( GetModuleType( configTable, FitterManager3d::TableName(), fDefaultFitterManager ) );
+    modules.push_back( GetModuleType( configTable, HitManager3d::TableName(), Module3d::NullTag() ) );
+    modules.push_back( GetModuleType( configTable, TrackManager3d::TableName(), Module3d::NullTag() ) );
+    modules.push_back( GetModuleType( configTable, GeoManager3d::TableName(), Module3d::NullTag() ) );
+    modules.push_back( GetModuleType( configTable, FitterManager3d::TableName(), Module3d::NullTag() ) );
 
     manager3d->DeleteAllModules();
     SetAllModules( manager3d, modules );

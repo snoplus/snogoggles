@@ -20,6 +20,7 @@ namespace RAT {
     namespace DS {
         class EV;
         class PMTProperties;
+        class MC;
     }; // namespace DS
 }; // namespace RAT
 
@@ -140,11 +141,12 @@ void Manager3d::Render3d( )
         throw NoCameraError();
 
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
+    RAT::DS::MC* mc = EventData::GetInstance().GetCurrentMC();
     RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetRun()->GetPMTProp();
 
     fCameraManager->SetUpCameraSystem( fFrameRect.GetViewport() ); 
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
-    // TrackManager3d::RenderTracksSafe( fTrackManager, mc );
+    TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );
     FitterManager3d::RenderFitVertexSafe( fFitterManager );
 
