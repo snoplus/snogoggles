@@ -6,9 +6,12 @@
   <Frame posX="336" posY="168" sizeX="168" sizeY="168" type="EventUI"/>
 
   <Frame DisplayAxes="TRUE" posX="672" posY="336" sizeX="168" sizeY="168" type="3D-Combo">
-    <CameraManager3d Camera.X="2.5907e+04" Camera.Y="-6.7944e+03" Camera.Z="-1.5908e+04" CameraDist="3.5000e+00" Eye.X="0.0000e+00" Eye.Y="0.0000e+00" Eye.Z="0.0000e+00" Radius="8.9000e+03" Up.X="-5.2475e-01" Up.Y="-6.0952e-01" Up.Z="-5.9424e-01" Zoom="9.0760e-01" type="Arcball"/>
+    <CameraManager3d CameraDist="3.5000e+00" Radius="8.9000e+03" Zoom="8.0000e-01" type="Arcball">
+      <Camera x="3.1150e+04" y="0.0000e+00" z="0.0000e+00"/>
+      <Eye x="0.0000e+00" y="0.0000e+00" z="0.0000e+00"/>
+      <Up x="0.0000e+00" y="0.0000e+00" z="1.0000e+00"/>
+    </CameraManager3d>
     <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
-    <GeoManager3d type="Geodesic"/>
   </Frame>
 
 </SNOGoggles>

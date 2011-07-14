@@ -3,8 +3,6 @@
 #include <Viewer/Factory.hh>
 #include <Viewer/Module3d.hh>
 
-#include <Viewer/Geodesic3d.hh>
-
 namespace Viewer {
 namespace Frames {
 
@@ -22,7 +20,6 @@ GeoFactory3d* GeoFactory3d::GetInstance()
 GeoFactory3d::GeoFactory3d()
 {
     fFactory.Register( Module3d::NullTag(), new NullAlloc<GeoManager3d>() );
-    fFactory.Register( Geodesic3d::Name(), new Alloc<GeoManager3d, Geodesic3d>() );
 }
 
 GeoManager3d* GeoFactory3d::GetGeoManager( const std::string name )
