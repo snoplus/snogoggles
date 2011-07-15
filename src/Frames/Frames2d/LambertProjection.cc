@@ -93,7 +93,7 @@ LambertProjection::Render2d( RWWrapper& windowApp )
       if( pmtHitTime < 250.0 )
 	fFilledPMT.SetColor( ColourPalette::gPalette->GetPrimaryColour( eWhite ) );
       else
-	fFilledPMT.SetColor( ColourPalette::gPalette->GetColour( ( pmtHitTime - 250.0 ) / 250.0 ) );
+	fFilledPMT.SetColor( ColourPalette::gPalette->GetColour( ( 500.0 - pmtHitTime ) / 250.0 ) );
       windowApp.Draw( fFilledPMT );
     }
 }

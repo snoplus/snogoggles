@@ -36,6 +36,7 @@ FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
 {      
   sf::Vector2<double> pos( configTable.GetI( "posX" ), configTable.GetI( "posY" ) );
   sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
+  fPinButton->SetState( configTable.GetI( "pinned" ) );
   Move( pos );
   Resize( size );
 
@@ -139,6 +140,7 @@ FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
   configTable.SetI( "posY", static_cast<int>( rect.Top ) );
   configTable.SetI( "sizeX", static_cast<int>( rect.Width ) );
   configTable.SetI( "sizeY", static_cast<int>( rect.Height ) );
+  configTable.SetI( "pinned", IsPinned() );
   fFrame->SaveConfiguration( configTable );
 }
 

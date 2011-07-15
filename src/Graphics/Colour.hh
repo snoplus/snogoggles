@@ -32,6 +32,8 @@ public:
   Colour( const sf::Color& color ) : sf::Color( color ) { }
 
   inline void SetOpenGL();
+
+  inline Colour AddColourFraction( const Colour& newColour, double fraction );
 };
 
 void
@@ -41,6 +43,16 @@ Colour::SetOpenGL()
 	     static_cast<float>( g ) / 255.0f, 
 	     static_cast<float>( b ) / 255.0f, 
 	     static_cast<float>( a ) / 255.0f );
+}
+
+Colour
+Colour::AddColourFraction( const Colour& newColour, double fraction )
+{
+  double nR = this->r + fraction * ( newColour.r - this->r );
+  double nG = this->g + fraction * ( newColour.g - this->g );
+  double nB = this->b + fraction * ( newColour.b - this->b );
+  double nA = this->a + fraction * ( newColour.a - this->a );
+  return Colour( nR, nG, nB, nA );
 }
 
 } // ::Viewer
