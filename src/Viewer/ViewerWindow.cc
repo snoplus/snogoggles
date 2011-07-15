@@ -37,16 +37,24 @@ ViewerWindow::Initialise()
       Coord::SetWindowResolution( resX, resY );
       Coord::SetWindowSize( resX, resY );
       fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles" );
-      fFrameManager.Initialise( loadConfig );
+      DrawSplash();
+      fFrameManager.Initialise();
+      fFrameManager.LoadConfiguration( loadConfig );
     }
   catch( Configuration::NoFileError& e )
     {
       sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
       fWindowApp = new sf::RenderWindow( sf::VideoMode::GetDesktopMode(), "SNO Goggles" ); 
+      DrawSplash();
       Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
       Coord::SetWindowSize( fullScreen.Width, fullScreen.Height );
       fFrameManager.Initialise();
     }
+}
+
+void
+ViewerWindow::DrawSplash()
+{
   // Draw a splash background
   ImageManager& im = ImageManager::GetInstance();
   sf::Sprite sp = im.NewSprite( "Logo.png" );

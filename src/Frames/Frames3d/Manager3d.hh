@@ -110,7 +110,6 @@ public:
     std::string GetName() { return Name(); }
 
     void Initialise();
-    void Initialise( ConfigurationTable& configTable );
 
     void CreateGUIObjects();
 

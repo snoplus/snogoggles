@@ -40,7 +40,7 @@ public:
   /// Initialise without any configuration
   void Initialise();
   /// Initialise with a configuration
-  void Initialise( Configuration& config );
+  void LoadConfiguration( Configuration& config );
   
   void EventLoop();
   void RenderGUI( sf::RenderWindow& windowApp );

@@ -31,7 +31,7 @@ class LambertProjection : public Frame
 {
 public:
   void Initialise();
-  void Initialise( ConfigurationTable& configTable );
+  void LoadConfiguration( ConfigurationTable& configTable );
 
   void SaveConfiguration( ConfigurationTable& configTable );
 

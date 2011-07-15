@@ -32,17 +32,14 @@ FrameContainer::Initialise( const string& type )
 }
 
 void 
-FrameContainer::Initialise( ConfigurationTable& configTable )
+FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
 {      
-  string frameType = configTable.GetS( "type" );
-  Initialise( frameType );
-
   sf::Vector2<double> pos( configTable.GetI( "posX" ), configTable.GetI( "posY" ) );
   sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
   Move( pos );
   Resize( size );
 
-  fFrame->Initialise( configTable );
+  fFrame->LoadConfiguration( configTable );
 } 
 
 FrameContainer::~FrameContainer()

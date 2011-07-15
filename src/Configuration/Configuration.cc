@@ -50,6 +50,7 @@ Configuration::Configuration( const string& fileName, bool output )
 	      fConfigTables.push_back( new ConfigurationTable( currentElement, fOutput, fDOMDocument ) );
 	    }
 	}
+      //delete fileParser; Causes segFault
     }
   else // Writing
     {

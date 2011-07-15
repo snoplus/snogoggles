@@ -71,13 +71,6 @@ void Manager3d::Initialise()
     CreateGUIObjects();
 }
 
-void Manager3d::Initialise( ConfigurationTable& configTable ) 
-{
-    LoadConfiguration( configTable );
-    GeoManager3d::LoadFileSafe( fGeoManager );
-    //Initialise();
-}
-
 void Manager3d::CreateGUIObjects()
 {
     Module3d::CreateGUIObjectsSafe( fCameraManager, fGUIManager, sf::Rect<double>(0,0,1,1) );
@@ -88,6 +81,7 @@ void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
     ModuleFactory3d::GetInstance()->SetAllModuleTypes( this, configTable );
     LoadModuleConfigurations( configTable );
     ConfigTableUtils::GetBooleanSafe( &configTable, DISPLAY_AXIS_TAG, fDisplayAxis );
+    GeoManager3d::LoadFileSafe( fGeoManager );
 }
 
 void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )

@@ -42,6 +42,8 @@ public:
 private:
   ViewerWindow();
 
+  void DrawSplash();
+
   void EventLoop();
 
   void RenderLoop();

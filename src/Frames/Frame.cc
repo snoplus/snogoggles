@@ -22,7 +22,7 @@ Frame::NewEvent( UIEvent& event )
 }
    
 void 
-Frame::Initialise( ConfigurationTable& configTable )
+Frame::LoadConfiguration( ConfigurationTable& configTable )
 {
 
 }

@@ -33,10 +33,7 @@ class EventUI : public Frame
 {
 public:
   void Initialise();
-  void Initialise( ConfigurationTable& configTable );
-
-  void SaveConfiguration( ConfigurationTable& configTable ) { };
-
+ 
   virtual void EventLoop();
   
   virtual std::string GetName() { return EventUI::Name(); }

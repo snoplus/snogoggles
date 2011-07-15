@@ -36,10 +36,7 @@ public:
   MasterUI( FrameManager* manager );
 
   void Initialise() { };
-  void Initialise( ConfigurationTable& configTable ) { };
-
-  void SaveConfiguration( ConfigurationTable& configTable ) { };
-
+ 
   virtual void EventLoop();
   
   virtual std::string GetName() { return MasterUI::Name(); }

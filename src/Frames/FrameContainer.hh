@@ -47,7 +47,7 @@ public:
   virtual ~FrameContainer();
 
   void Initialise( const std::string& type );
-  void Initialise( ConfigurationTable& configTable );
+  void LoadConfiguration( ConfigurationTable& configTable );
 
   void EventLoop();  
   void Render2d( sf::RenderWindow& windowApp );

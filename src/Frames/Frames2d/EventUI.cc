@@ -15,12 +15,6 @@ EventUI::Initialise()
   fPrevButton = fGUIManager.NewGUI<GUIs::ExitButton>( back );
 }
 
-void
-EventUI::Initialise( ConfigurationTable& )
-{
-  Initialise();
-}
-
 void 
 EventUI::EventLoop()
 {

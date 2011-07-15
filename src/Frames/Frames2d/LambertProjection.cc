@@ -39,9 +39,9 @@ LambertProjection::Initialise()
 }
 
 void 
-LambertProjection::Initialise( ConfigurationTable& configTable )
+LambertProjection::LoadConfiguration( ConfigurationTable& configTable )
 {
-  Initialise();
+ 
 }
 
 void

@@ -22,9 +22,8 @@ Logo::Initialise()
 }
 
 void
-Logo::Initialise( ConfigurationTable& configTable )
+Logo::LoadConfiguration( ConfigurationTable& configTable )
 {
-  Initialise();
   sf::Rect<double> button( 0.8, 0.1, 0.2, 0.1 );
   GUIs::CheckBoxLabel* cbLabel = dynamic_cast<GUIs::CheckBoxLabel*>( fGUIManager.NewGUI<GUIs::CheckBoxLabel>( button ) );
   cbLabel->SetLabel( "New Logo" );

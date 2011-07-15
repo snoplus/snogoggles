@@ -43,7 +43,7 @@ public:
   virtual void NewEvent( UIEvent& event );
    
   virtual void Initialise() = 0;
-  virtual void Initialise( ConfigurationTable& configTable );
+  virtual void LoadConfiguration( ConfigurationTable& configTable );
 
   virtual void SaveConfiguration( ConfigurationTable& configTable );
 

@@ -18,9 +18,9 @@ void Hist::Initialise()
   fMessage.SetColor( sf::Color( 0, 0, 0 ) );
 }
 
-void Hist::Initialise(ConfigurationTable& configTable) 
+void Hist::LoadConfiguration(ConfigurationTable& configTable) 
 {
-  Initialise();
+  
 }
 
 void Hist::Render2d(RWWrapper& windowApp){

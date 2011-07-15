@@ -5,6 +5,7 @@
 #include <Viewer/FrameContainer.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/Configuration.hh>
+#include <Viewer/ConfigurationTable.hh>
 #include <Viewer/MasterUI.hh>
 using namespace Viewer;
 
@@ -30,14 +31,14 @@ FrameManager::Initialise()
 }
 
 void 
-FrameManager::Initialise( Configuration& config )
+FrameManager::LoadConfiguration( Configuration& config )
 {
-  Initialise();
   for( vector< ConfigurationTable* >::iterator iTer = config.GetTableBegin(); iTer != config.GetTableEnd(); iTer++ )
     {
       ConfigurationTable& currentTable = **iTer;
       FrameContainer* currentFrameContainer = new FrameContainer();
-      currentFrameContainer->Initialise( currentTable );
+      currentFrameContainer->Initialise( currentTable.GetS( "type" ) );
+      currentFrameContainer->LoadConfiguration( currentTable );
       fFrameContainers.push_back( currentFrameContainer );
       PositionFrame( fFrameContainers.size() - 1, currentFrameContainer->GetPos() );
     }
