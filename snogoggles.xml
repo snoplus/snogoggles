@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <SNOGoggles resX="1680" resY="1050">
 
-  <Frame posX="840" posY="168" sizeX="336" sizeY="336" type="LambertProjection"/>
+  <Frame pinned="0" posX="840" posY="168" sizeX="168" sizeY="168" type="LambertProjection"/>
 
-  <Frame DisplayAxes="TRUE" posX="504" posY="168" sizeX="336" sizeY="336" type="3D-Combo">
+  <Frame DisplayAxes="TRUE" pinned="0" posX="504" posY="168" sizeX="168" sizeY="168" type="3D-Combo">
     <CameraManager3d CameraDist="3.5000e+00" Radius="8.9000e+03" Zoom="8.0000e-01" type="Arcball">
       <Camera x="3.1148e+04" y="1.5484e+01" z="3.2459e+02"/>
       <Eye x="0.0000e+00" y="0.0000e+00" z="0.0000e+00"/>
@@ -12,9 +12,9 @@
     <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
   </Frame>
 
-  <Frame posX="672" posY="504" sizeX="336" sizeY="336" type="EventUI"/>
+  <Frame pinned="0" posX="672" posY="504" sizeX="336" sizeY="336" type="EventUI"/>
 
-  <Frame DisplayAxes="TRUE" posX="168" posY="336" sizeX="336" sizeY="336" type="3D-Combo">
+  <Frame DisplayAxes="TRUE" pinned="0" posX="168" posY="336" sizeX="168" sizeY="168" type="3D-Combo">
     <CameraManager3d CameraDist="3.5000e+00" Radius="8.9000e+03" Zoom="8.0067e-01" type="Arcball">
       <Camera x="3.1150e+04" y="0.0000e+00" z="0.0000e+00"/>
       <Eye x="0.0000e+00" y="0.0000e+00" z="0.0000e+00"/>
@@ -23,7 +23,7 @@
     <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
   </Frame>
 
-  <Frame posX="840" posY="0" sizeX="336" sizeY="336" state="0" type="Logo">
+  <Frame pinned="0" posX="840" posY="0" sizeX="168" sizeY="168" state="0" type="Logo">
     <Nested state="0"/>
   </Frame>
 

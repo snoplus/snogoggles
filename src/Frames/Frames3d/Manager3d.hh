@@ -15,6 +15,8 @@
 ///     12/07/11 : Olivia Wasalski - Added x, y and z axes. \n
 ///     13/07/11 : Olivia Wasalski - Added function to delete all modules,
 ///                fixed a couple of other bugs. \n
+///     15/07/11 : Olivia Wasalski - Uses lazy initialization. Initializes 
+///              the first time the render3d function is called. \n
 ///
 /// \details	The design for the 3D aspects of the viewer is modular 
 ///		in nature. The Manager3d class combines a series of 
@@ -109,7 +111,7 @@ public:
     /// Returns the name of the type of 3d frame.
     std::string GetName() { return Name(); }
 
-    void Initialise();
+    void Initialise() { }
 
     void CreateGUIObjects();
 
@@ -127,6 +129,8 @@ public:
 
 private:
 
+    void LateInitialise();
+
     void LoadModuleConfigurations( ConfigurationTable& configTable );
 
     void SaveModuleConfigurations( ConfigurationTable& configTable );
@@ -140,6 +144,8 @@ private:
     bool fDisplayAxis;
     Axes3d* fAxes;
     static const std::string DISPLAY_AXIS_TAG;
+
+    bool fInitialised;
 
 }; // class Manager3d
 

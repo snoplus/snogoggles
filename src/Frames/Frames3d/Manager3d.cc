@@ -32,6 +32,7 @@ const std::string Manager3d::DISPLAY_AXIS_TAG = "DisplayAxes";
 Manager3d::Manager3d( const std::string& options )
 {
     fDisplayAxis = true;
+    fInitialised = false;
     std::vector<std::string> tokens;
     StringUtils::SplitString( options, " ", tokens );
     ModuleFactory3d::GetInstance()->SetAllModules( this, tokens );
@@ -65,10 +66,11 @@ void Manager3d::DeleteAllModules()
     delete fAxes;             fAxes = NULL;
 }
 
-void Manager3d::Initialise()
+void Manager3d::LateInitialise()
 {
     GeoManager3d::LoadFileSafe( fGeoManager );
     CreateGUIObjects();
+    fInitialised = true;
 }
 
 void Manager3d::CreateGUIObjects()
@@ -81,7 +83,7 @@ void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
     ModuleFactory3d::GetInstance()->SetAllModuleTypes( this, configTable );
     LoadModuleConfigurations( configTable );
     ConfigTableUtils::GetBooleanSafe( &configTable, DISPLAY_AXIS_TAG, fDisplayAxis );
-    GeoManager3d::LoadFileSafe( fGeoManager );
+    Initialise();
 }
 
 void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
@@ -129,6 +131,9 @@ void Manager3d::Render2d( RWWrapper& windowApp )
 
 void Manager3d::Render3d( ) 
 {
+    if( fInitialised == false )
+        LateInitialise();
+
     // checks that the camera manager is not null
     // if the camera manager is null, throws an error
     if( fCameraManager == NULL )
