@@ -33,7 +33,7 @@ Configuration::Configuration( const string& fileName, bool output )
       fileParser->setLoadExternalDTD( false );
 
       fileParser->parse( fFileName.c_str() );
-      fDOMDocument = fileParser->getDocument();
+      fDOMDocument = fileParser->adoptDocument(); // adopt the DOMDocument fromt the parser.
       fRootElement = fDOMDocument->getDocumentElement();
 
       // Now extract config tables
@@ -50,7 +50,7 @@ Configuration::Configuration( const string& fileName, bool output )
 	      fConfigTables.push_back( new ConfigurationTable( currentElement, fOutput, fDOMDocument ) );
 	    }
 	}
-      //delete fileParser; Causes segFault
+      delete fileParser; // no longer auses segFault, we've adopted the DOMDocument
     }
   else // Writing
     {
@@ -62,6 +62,12 @@ Configuration::Configuration( const string& fileName, bool output )
       XMLString::release( &snog );
       fRootElement = fDOMDocument->getDocumentElement();
     }
+}
+
+Configuration::~Configuration()
+{
+    delete fDOMDocument;
+    fDOMDocument = NULL;
 }
 
 void 

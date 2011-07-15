@@ -7,6 +7,7 @@
 ///
 /// REVISION HISTORY:\n
 ///     29/06/11 : P.Jones - First Revision, new file. \n
+///     15/07/11 : Olivia Wasalski - Fixed memory leak in constructor, added destructor. \n
 ///
 /// \detail  
 ///
@@ -54,6 +55,8 @@ public:
   }; 
 
   Configuration( const std::string& fileName, bool ouput );
+
+  ~Configuration();
   
   inline std::vector< ConfigurationTable* >::iterator GetTableBegin();
   inline std::vector< ConfigurationTable* >::iterator GetTableEnd();
