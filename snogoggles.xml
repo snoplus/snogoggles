@@ -10,6 +10,7 @@
       <Up x="-1.0420e-02" y="-1.9766e-06" z="9.9995e-01"/>
     </CameraManager3d>
     <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
+    <GeoManager3d type="Geodesic"/>
   </Frame>
 
   <Frame pinned="0" posX="672" posY="504" sizeX="336" sizeY="336" type="EventUI"/>
