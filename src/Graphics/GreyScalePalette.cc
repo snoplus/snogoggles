@@ -8,9 +8,9 @@ ColourPalette* ColourPalette::gPalette = NULL;
 Colour 
 GreyScalePalette::GetColour( double value )
 {
-  return Colour( value * 16 * 16,
-		 value * 16 * 16,
-		 value * 16 * 16,
+  return Colour( static_cast<sf::Uint8>( value * 16 * 16 ),
+		 static_cast<sf::Uint8>( value * 16 * 16 ),
+		 static_cast<sf::Uint8>( value * 16 * 16 ),
 		 255 );
 }
   

@@ -3,6 +3,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/HitRenderer3d.hh>
+#include <Viewer/ColourPalette.hh>
 
 #include <RAT/DS/EV.hh>
 #include <RAT/DS/PMTProperties.hh>
@@ -110,14 +111,12 @@ void DefaultHits3d::DisplayAllPMTs( RAT::DS::PMTProperties* pmtList )
 
 void DefaultHits3d::SetColour( RAT::DS::PMTUnCal* pmt )
 {
-    // TODO: Needs to be completed when ColourPalette is ready.
-    OpenGLUtils::SetColour( sf::Color::Red );
+    ColourPalette::gPalette->GetColour( pmt->GetsPMTt() / 4000.0 ).SetOpenGL();
 }
 
 void DefaultHits3d::SetColour( RAT::DS::PMTCal* pmt )
 {
-    // TODO: Needs to be completed when ColourPalette is ready.
-    OpenGLUtils::SetColour( sf::Color::Red );
+    ColourPalette::gPalette->GetColour( pmt->GetsPMTt() / 500.0 ).SetOpenGL();
 }
 
 void DefaultHits3d::RenderHit( RAT::DS::PMTUnCal* pmt, RAT::DS::PMTProperties* pmtList )

@@ -8,6 +8,7 @@
 /// REVISION HISTORY:\n
 ///     11/07/11 : P.Jones - First Revision, new file. \n
 ///     14/07/11 : Olivia Wasalski - Added a constructor which accepts an sf::Color. \n
+///     15/07/11 : Olivia Wasalski - Slight revision to make Colour const correct. \n
 ///
 /// \detail  
 ///
@@ -20,7 +21,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Config.hpp>
 
-
 namespace Viewer
 {
 
@@ -31,13 +31,13 @@ public:
   Colour( sf::Uint8 red, sf::Uint8 green, sf::Uint8 blue, sf::Uint8 alpha = 255 ) : sf::Color( red, green, blue, alpha ) { }
   Colour( const sf::Color& color ) : sf::Color( color ) { }
 
-  inline void SetOpenGL();
+  inline void SetOpenGL() const;
 
-  inline Colour AddColourFraction( const Colour& newColour, double fraction );
+  inline Colour AddColourFraction( const Colour& newColour, double fraction ) const;
 };
 
 void
-Colour::SetOpenGL()
+Colour::SetOpenGL() const
 {
   glColor4f( static_cast<float>( r ) / 255.0f, 
 	     static_cast<float>( g ) / 255.0f, 
@@ -46,13 +46,17 @@ Colour::SetOpenGL()
 }
 
 Colour
-Colour::AddColourFraction( const Colour& newColour, double fraction )
+Colour::AddColourFraction( const Colour& newColour, double fraction ) const
 {
   double nR = this->r + fraction * ( newColour.r - this->r );
   double nG = this->g + fraction * ( newColour.g - this->g );
   double nB = this->b + fraction * ( newColour.b - this->b );
   double nA = this->a + fraction * ( newColour.a - this->a );
-  return Colour( nR, nG, nB, nA );
+
+  return Colour( static_cast<sf::Uint8>( nR ), 
+                 static_cast<sf::Uint8>( nG ), 
+                 static_cast<sf::Uint8>( nB ), 
+                 static_cast<sf::Uint8>( nA ) );
 }
 
 } // ::Viewer
