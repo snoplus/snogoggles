@@ -26,11 +26,7 @@ namespace Viewer
 class Semaphore
 {
 public:
-#ifdef __APPLE__
-  Semaphore( const string& name );
-#else
   Semaphore();
-#endif
   ~Semaphore();
 
   void
@@ -40,9 +36,7 @@ public:
   Signal();
 private:
 #ifdef __APPLE__
-  Semaphore();
   sem_t* fSemaphore; // Must be named on a Mac
-  std::string fName;
 #else
   sem_t fSemaphore;
 #endif
