@@ -87,7 +87,7 @@ FrameManager::NewEvent( UIEvent& event )
 	sf::Vector2<double> point = event.GetResolutionCoord();
 	if( fMoving )
 	  {
-	    fFrameContainers[fFocus]->Move( point );
+	    fFrameContainers[fFocus]->Move( point - fMoveOffset );
 	    break;
 	  }
 	fFocus = FindFrame( point );
@@ -113,7 +113,7 @@ FrameManager::NewEvent( UIEvent& event )
 	    ResizeFrame( fFocus, eLarger );
 	}
     }
-  EventHandler( retEvent );
+  EventHandler( retEvent, event );
 }
 
 FrameUIReturn
@@ -127,7 +127,7 @@ FrameManager::DispatchEvent( UIEvent& event, int iFrame )
 }
 
 void
-FrameManager::EventHandler( FrameUIReturn& retEvent )
+FrameManager::EventHandler( FrameUIReturn& retEvent, UIEvent& event )
 {
   switch( retEvent.fType )
     {
@@ -138,11 +138,20 @@ FrameManager::EventHandler( FrameUIReturn& retEvent )
       break;
     case FrameUIReturn::eStartMove:
       if( !fFrameContainers[fFocus]->IsPinned() )
-	fMoving = true;
+	{
+	  fMoving = true;
+	  fMoveOffset = event.GetResolutionCoord() - fFrameContainers[fFocus]->GetPos();
+	}
       break;
     case FrameUIReturn::eStopMove:
       fMoving = false;
       PositionFrame( retEvent.fFrameID, fFrameContainers[retEvent.fFrameID]->GetPos() );
+      break;
+    case FrameUIReturn::eIncrease:
+      ResizeFrame( retEvent.fFrameID, eLarger );
+      break;
+    case FrameUIReturn::eDecrease:
+      ResizeFrame( retEvent.fFrameID, eSmaller );
       break;
     }
 }
@@ -231,6 +240,8 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
 	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
 	int rowSize = currentSize.y / fRowSize;
 	rowSize++;
+	if( rowSize > fRowSize )
+	  rowSize = fRowSize;
 	int colSize = aspectRatio * rowSize;
 	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
 	break;
@@ -241,6 +252,8 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
 	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
 	int rowSize = currentSize.y / fRowSize;
 	rowSize--;
+	if( rowSize < 1.0 )
+	  rowSize = 1.0;
 	int colSize = aspectRatio * rowSize;
 	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
 	break;

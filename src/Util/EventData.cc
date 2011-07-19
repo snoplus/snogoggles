@@ -100,3 +100,24 @@ EventData::GetCurrentMC()
     NextEV();
   return fCurrentMC;    
 }
+
+void 
+EventData::GetEVData( int& currentEV, int& evCount )
+{
+  Lock lock( fLock );
+  currentEV = fCurrentID;
+  evCount = fEVs.size();
+}
+
+void 
+EventData::GetMCData( int& currentMC, int& mcCount )
+{
+  Lock lock( fLock );
+  if( !fMCs.empty() )
+    {
+      currentMC = fEVToMC[fCurrentID];
+      mcCount = fMCs.size();
+    }
+  else
+    currentMC = -1;
+}

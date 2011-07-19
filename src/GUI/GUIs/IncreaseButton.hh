@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::TopBarButton
+/// \class Viewer::GUIs::IncreaseButton
 ///
-/// \brief   
+/// \brief   Button with an exit square
 ///
 /// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///
@@ -12,33 +12,29 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_TopBarButton__
-#define __Viewer_GUIs_TopBarButton__
+#ifndef __Viewer_GUIs_IncreaseButton__
+#define __Viewer_GUIs_IncreaseButton__
 
 #include <Viewer/Button.hh>
 #include <Viewer/Sprite.hh>
-#include <Viewer/Text.hh>
 
 namespace Viewer
 {  
-
 namespace GUIs
 {
 
-class TopBarButton : public Button
+class IncreaseButton : public Button
 {
 public:
-  TopBarButton( sf::Rect<double>& rect, unsigned int guiID );
-  virtual ~TopBarButton();
-
-  void SetTitle( const std::string& title );
+  IncreaseButton( sf::Rect<double>& rect, unsigned int guiID );
+  virtual ~IncreaseButton();
+  
   void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
 protected:
-  Text fTitle;
-  Sprite fBar;
-  Sprite fLeft;
+  Sprite fButton;
 };
+
 
 } // ::GUIs
 

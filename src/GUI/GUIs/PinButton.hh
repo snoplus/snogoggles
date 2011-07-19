@@ -31,16 +31,9 @@ public:
 
   void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
-  inline double PreferedRatio();
 protected:
   Sprite fButton;
 };
-
-double
-PinButton::PreferedRatio()
-{
-  return 1.0;
-}
 
 } // ::GUIs
 

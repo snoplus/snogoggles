@@ -38,6 +38,7 @@ namespace GUIs
 {
   class Button;
   class Persist;
+  class TopBarButton;
 }
 
 class FrameContainer
@@ -72,7 +73,10 @@ private:
   Frame* fFrame;
   GUIs::Persist* fPinButton;
   GUIs::Button* fExitButton;
-  GUIs::Button* fTopBar;
+  GUIs::Button* fIncreaseButton;
+  GUIs::Button* fDecreaseButton;
+  GUIs::TopBarButton* fTopBar;
+  GUIs::Button* fTopBarRight;
 };
 
 bool

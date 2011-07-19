@@ -1,33 +1,33 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-#include <Viewer/ExitButton.hh>
+#include <Viewer/IncreaseButton.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/ImageManager.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-ExitButton::ExitButton( sf::Rect<double>& rect, unsigned int guiID )
+IncreaseButton::IncreaseButton( sf::Rect<double>& rect, unsigned int guiID )
   : Button( rect, guiID )
 {
   ImageManager& imageManager = ImageManager::GetInstance();
   fButton = imageManager.NewSprite( "GUI.png" );
   fButton.SetBoundingRect( rect );
-  fButton.SetSubRect( sf::Rect<int>( 440, 0, 20, 20 ) );
+  fButton.SetSubRect( sf::Rect<int>( 400, 0, 20, 20 ) );
 }
 
-ExitButton::~ExitButton()
+IncreaseButton::~IncreaseButton()
 {
  
 }
 
 void 
-ExitButton::RenderT( sf::RenderWindow& windowApp )
+IncreaseButton::RenderT( sf::RenderWindow& windowApp )
 {
   if( !fPressed )
-    fButton.SetSubRect( sf::Rect<int>( 440, 0, 20, 20 ) );
+    fButton.SetSubRect( sf::Rect<int>( 400, 0, 20, 20 ) );
   else
-    fButton.SetSubRect( sf::Rect<int>( 440, 20, 20, 20 ) );
+    fButton.SetSubRect( sf::Rect<int>( 400, 20, 20, 20 ) );
 
   sf::Sprite newObject( fButton );
   newObject.SetPosition( fRect.Left, fRect.Top );
@@ -36,12 +36,12 @@ ExitButton::RenderT( sf::RenderWindow& windowApp )
 }
 
 void 
-ExitButton::Render( RWWrapper& windowApp )
+IncreaseButton::Render( RWWrapper& windowApp )
 {
   if( !fPressed )
-    fButton.SetSubRect( sf::Rect<int>( 440, 0, 20, 20 ) );
+    fButton.SetSubRect( sf::Rect<int>( 400, 0, 20, 20 ) );
   else
-    fButton.SetSubRect( sf::Rect<int>( 440, 20, 20, 20 ) );
+    fButton.SetSubRect( sf::Rect<int>( 400, 20, 20, 20 ) );
 
   windowApp.Draw( fButton );
 }

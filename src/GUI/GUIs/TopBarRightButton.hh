@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::TopBarButton
+/// \class Viewer::GUIs::TopBarRightButton
 ///
 /// \brief   
 ///
@@ -12,12 +12,11 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_TopBarButton__
-#define __Viewer_GUIs_TopBarButton__
+#ifndef __Viewer_GUIs_TopBarRightButton__
+#define __Viewer_GUIs_TopBarRightButton__
 
 #include <Viewer/Button.hh>
 #include <Viewer/Sprite.hh>
-#include <Viewer/Text.hh>
 
 namespace Viewer
 {  
@@ -25,19 +24,16 @@ namespace Viewer
 namespace GUIs
 {
 
-class TopBarButton : public Button
+class TopBarRightButton : public Button
 {
 public:
-  TopBarButton( sf::Rect<double>& rect, unsigned int guiID );
-  virtual ~TopBarButton();
+  TopBarRightButton( sf::Rect<double>& rect, unsigned int guiID );
+  virtual ~TopBarRightButton();
 
-  void SetTitle( const std::string& title );
   void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
 protected:
-  Text fTitle;
-  Sprite fBar;
-  Sprite fLeft;
+  Sprite fRight;
 };
 
 } // ::GUIs

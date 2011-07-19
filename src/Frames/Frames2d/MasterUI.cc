@@ -5,7 +5,7 @@
 using namespace std;
 
 #include <Viewer/MasterUI.hh>
-#include <Viewer/ExitButton.hh>
+#include <Viewer/TopBarButton.hh>
 #include <Viewer/FrameFactory.hh>
 #include <Viewer/FrameManager.hh>
 using namespace Viewer;
@@ -18,9 +18,11 @@ MasterUI::MasterUI( FrameManager* manager )
   fFrameNames = a.GetNames();
   for( unsigned int uLoop = 0; uLoop < fFrameNames.size(); uLoop++ )
     {
-      double width = 1.0 / (double)fFrameNames.size();
-      sf::Rect<double> forward( width * (double)uLoop, 0.1, width, 0.8 );
-      fButtons.push_back( fGUIManager.NewGUI<GUIs::ExitButton>( forward ) );
+      double width = 1.0 / ( 1.5 * (double)fFrameNames.size() );
+      sf::Rect<double> pos( 1.5 * width * (double)uLoop, 0.1, width, 0.8 );
+      GUIs::TopBarButton* button = fGUIManager.NewGUI<GUIs::TopBarButton>( pos );
+      button->SetTitle( fFrameNames[uLoop] );
+      fButtons.push_back( button );
     }
 }
 

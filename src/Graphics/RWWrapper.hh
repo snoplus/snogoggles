@@ -38,6 +38,7 @@ public:
   void Draw( Shape& object );
   void Draw( Sprite& object );
   void Draw( Text& object );
+  unsigned int GetFrameTime();
 
 protected:
   void DrawObject( sf::Drawable& object );

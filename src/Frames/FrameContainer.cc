@@ -10,6 +10,9 @@ using namespace std;
 #include <Viewer/ExitButton.hh>
 #include <Viewer/PinButton.hh>
 #include <Viewer/TopBarButton.hh>
+#include <Viewer/TopBarRightButton.hh>
+#include <Viewer/IncreaseButton.hh>
+#include <Viewer/DecreaseButton.hh>
 #include <Viewer/UIEvent.hh>
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
@@ -26,9 +29,13 @@ FrameContainer::Initialise( const string& type )
   sf::Rect<double> tempPos( 0.0, 0.0, 1.0, 1.0 );
   fExitButton = new GUIs::ExitButton( tempPos, 0 );
   fPinButton = new GUIs::PinButton( tempPos, 1 );
-  fTopBar = new GUIs::TopBarButton( tempPos, 3 );  
+  fTopBarRight = new GUIs::TopBarRightButton( tempPos, 2 );
+  fIncreaseButton = new GUIs::IncreaseButton( tempPos, 3 );
+  fDecreaseButton = new GUIs::DecreaseButton( tempPos, 4 );
 
   fFrame->Initialise();
+  fTopBar = new GUIs::TopBarButton( tempPos, 5 );
+  fTopBar->SetTitle( fFrame->GetName() );
 }
 
 void 
@@ -71,17 +78,31 @@ void
 FrameContainer::RenderGUI( sf::RenderWindow& windowApp )
 {
   sf::Rect<double> containerRect = GetContainerRect().GetResolutionRect();
-  sf::Rect<double>buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 20, containerRect.Top, 20, 20 );
+  sf::Rect<double>buttonPos;
+  buttonPos = sf::Rect<double>( containerRect.Left, containerRect.Top, containerRect.Width - 100, 20 );
+  fTopBar->SetRect( buttonPos );
+  fTopBar->RenderT( windowApp );
+
+  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 20, containerRect.Top, 20, 20 );
+  fTopBarRight->SetRect( buttonPos );
+  fTopBarRight->RenderT( windowApp );
+
+  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 40, containerRect.Top, 20, 20 );
   fExitButton->SetRect( buttonPos );
   fExitButton->RenderT( windowApp );
 
-  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 40, containerRect.Top, 20, 20 );
+  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 60, containerRect.Top, 20, 20 );
   fPinButton->SetRect( buttonPos );
   fPinButton->RenderT( windowApp );
 
-  buttonPos = sf::Rect<double>( containerRect.Left, containerRect.Top, containerRect.Width - 40, 20 );
-  fTopBar->SetRect( buttonPos );
-  fTopBar->RenderT( windowApp );
+  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 80, containerRect.Top, 20, 20 );
+  fIncreaseButton->SetRect( buttonPos );
+  fIncreaseButton->RenderT( windowApp );
+
+  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 100, containerRect.Top, 20, 20 );
+  fDecreaseButton->SetRect( buttonPos );
+  fDecreaseButton->RenderT( windowApp );
+
   fFrame->RenderGUI( windowApp );
 }
 
@@ -98,10 +119,19 @@ FrameContainer::NewEvent( UIEvent& event )
 	    fTopBar->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::eStartMove );
 	  }
+	if( fTopBarRight->ContainsPoint( event.GetResolutionCoord() ) )
+	  {
+	    fTopBarRight->NewEvent( event );
+	    returnEvent = FrameUIReturn( FrameUIReturn::eStartMove );
+	  }
 	if( fExitButton->ContainsPoint( event.GetResolutionCoord() ) )
 	  fExitButton->NewEvent( event );
 	if( fPinButton->ContainsPoint( event.GetResolutionCoord() ) )
 	  fPinButton->NewEvent( event );
+	if( fIncreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
+	  fIncreaseButton->NewEvent( event );
+	if( fDecreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
+	  fDecreaseButton->NewEvent( event );
       }
       break;
     case sf::Event::MouseButtonReleased:
@@ -111,16 +141,29 @@ FrameContainer::NewEvent( UIEvent& event )
 	    fExitButton->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::eClosed );
 	  }
-
 	if( fPinButton->ContainsPoint( event.GetResolutionCoord() ) )
 	  {
 	    fPinButton->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::ePinned );
+	  }	
+	if( fIncreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
+	  {
+	    fIncreaseButton->NewEvent( event );
+	    returnEvent = FrameUIReturn( FrameUIReturn::eIncrease );
 	  }
-
+	if( fDecreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
+	  {
+	    fDecreaseButton->NewEvent( event );
+	    returnEvent = FrameUIReturn( FrameUIReturn::eDecrease );
+	  }
 	if( fTopBar->GetState() ) // Always Stop moving if mouse up
 	  {
 	    fTopBar->NewEvent( event );
+	    returnEvent = FrameUIReturn( FrameUIReturn::eStopMove );
+	  }	
+	if( fTopBarRight->GetState() ) // Always Stop moving if mouse up
+	  {
+	    fTopBarRight->NewEvent( event );
 	    returnEvent = FrameUIReturn( FrameUIReturn::eStopMove );
 	  }
       }

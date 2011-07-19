@@ -53,7 +53,7 @@ public:
   void NewFrame( const std::string& type );
 private:
   FrameUIReturn DispatchEvent( UIEvent& event, int iFrame );
-  void EventHandler( FrameUIReturn& retEvent );
+  void EventHandler( FrameUIReturn& retEvent, UIEvent& event );
   int FindFrame( const sf::Vector2<double>& resolutionCoord );
 
   void DeleteFrame( const int iFrame );
@@ -71,6 +71,7 @@ private:
   Frame* fMasterUI;
   int fFocus;
   bool fMoving;
+  sf::Vector2<double> fMoveOffset;
 };
 
 } // ::Viewer

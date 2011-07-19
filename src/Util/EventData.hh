@@ -58,6 +58,9 @@ public:
   void NextEV();
 
   void PreviousEV();
+
+  void GetEVData( int& currentEV, int& evCount );
+  void GetMCData( int& currentMC, int& mcCount );
 private:
   EventData();
 

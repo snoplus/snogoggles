@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <SNOGoggles resX="1680" resY="1050">
 
-  <Frame pinned="0" posX="840" posY="168" sizeX="168" sizeY="168" type="LambertProjection"/>
+  <Frame pinned="1" posX="840" posY="168" sizeX="840" sizeY="840" type="LambertProjection"/>
 
-  <Frame DisplayAxes="TRUE" pinned="0" posX="504" posY="168" sizeX="168" sizeY="168" type="3D-Combo">
-    <CameraManager3d CameraDist="3.5000e+00" Radius="8.9000e+03" Zoom="8.0000e-01" type="Arcball">
-      <Camera x="3.1148e+04" y="1.5484e+01" z="3.2459e+02"/>
-      <Eye x="0.0000e+00" y="0.0000e+00" z="0.0000e+00"/>
-      <Up x="-1.0420e-02" y="-1.9766e-06" z="9.9995e-01"/>
-    </CameraManager3d>
-    <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
-    <GeoManager3d type="Geodesic"/>
-  </Frame>
+  <Frame pinned="1" posX="336" posY="0" sizeX="168" sizeY="168" type="EventUI"/>
 
-  <Frame pinned="0" posX="672" posY="504" sizeX="336" sizeY="336" type="EventUI"/>
-
-  <Frame DisplayAxes="TRUE" pinned="0" posX="168" posY="336" sizeX="168" sizeY="168" type="3D-Combo">
-    <CameraManager3d CameraDist="3.5000e+00" Radius="8.9000e+03" Zoom="8.0067e-01" type="Arcball">
-      <Camera x="3.1150e+04" y="0.0000e+00" z="0.0000e+00"/>
-      <Eye x="0.0000e+00" y="0.0000e+00" z="0.0000e+00"/>
-      <Up x="0.0000e+00" y="0.0000e+00" z="1.0000e+00"/>
-    </CameraManager3d>
-    <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
-  </Frame>
-
-  <Frame pinned="0" posX="840" posY="0" sizeX="168" sizeY="168" state="0" type="Logo">
+  <Frame pinned="1" posX="840" posY="0" sizeX="336" sizeY="336" state="0" type="Logo">
     <Nested state="0"/>
   </Frame>
+
+  <Frame DisplayAxes="TRUE" pinned="1" posX="0" posY="168" sizeX="504" sizeY="504" type="3D-Combo">
+    <CameraManager3d CameraDist="3.5000e+00" Radius="8.9000e+03" Zoom="7.9995e-01" type="Arcball">
+      <Camera x="3.0628e+04" y="-3.9541e+03" z="4.0829e+03"/>
+      <Eye x="0.0000e+00" y="0.0000e+00" z="0.0000e+00"/>
+      <Up x="-1.3029e-01" y="1.4430e-02" z="9.9137e-01"/>
+    </CameraManager3d>
+    <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
+  </Frame>
+
+  <Frame pinned="1" posX="504" posY="0" sizeX="336" sizeY="336" type="About"/>
 
 </SNOGoggles>

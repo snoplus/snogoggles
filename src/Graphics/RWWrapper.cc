@@ -61,3 +61,9 @@ RWWrapper::DrawObject( sf::Drawable& object )
 {
   fRenderWindow.Draw( object );
 }
+
+unsigned int 
+RWWrapper::GetFrameTime()
+{
+  return fRenderWindow.GetFrameTime();
+}
