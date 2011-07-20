@@ -16,13 +16,13 @@
 #ifndef __Viewer_Frames_Geodesic3d__
 #define __Viewer_Frames_Geodesic3d__
 
-#include <Viewer/Polyhedrons3d.hh>
+#include <Viewer/XML3d.hh>
 #include <string>
 
 namespace Viewer {
 namespace Frames {
 
-class Geodesic3d : public Polyhedrons3d {
+class Geodesic3d : public XML3d {
 
 public:
 
@@ -30,6 +30,12 @@ public:
     std::string GetName() { return Name(); }
 
     std::string GetFilename() { return "data/geodesic.xml"; }
+
+    void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) { }
+    void LoadConfiguration( ConfigurationTable* configTable ) { }
+    void SaveConfiguration( ConfigurationTable* configTable ) { }
+    void EventLoop( const GUIReturn& g ) { }
+    void RenderGeometry() { RenderWireframe(); }
 
 }; // class Geodesic3d
 

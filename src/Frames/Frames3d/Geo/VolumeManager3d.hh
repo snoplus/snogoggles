@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::Polyhedrons3d
+/// \class Viewer::Frames::VolumeManager3d
 ///
 /// \brief   
 ///
@@ -7,33 +7,32 @@
 ///			    <oliviawasalski@triumf.ca>
 ///
 /// REVISION HISTORY:\n
-/// 	12/07/11 : Olivia Wasalski - First Revision, New File \n
+/// 	19/07/11 : Olivia Wasalski - First Revision, New File \n
 ///
 /// \details 	
 ///
 ////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __Viewer_Frames_Polyhedrons3d__
-#define __Viewer_Frames_Polyhedrons3d__
+#ifndef __Viewer_Frames_VolumeManager3d__
+#define __Viewer_Frames_VolumeManager3d__
 
 #include <Viewer/GeoManager3d.hh>
-#include <Viewer/Polyhedron.hh>
-#include <vector>
 #include <string>
 
 namespace Viewer {
+
+    class Volume;
+
 namespace Frames {
 
-class Polyhedrons3d : public GeoManager3d {
+class VolumeManager3d : public GeoManager3d {
 
 public:
 
-    Polyhedrons3d() { }
+    VolumeManager3d() { }
 
-    virtual ~Polyhedrons3d() { }
-
-    virtual std::string GetFilename() = 0;
+    virtual ~VolumeManager3d() { }
 
     /// Creates all the GUI objects for the module.
     virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) { }
@@ -50,15 +49,19 @@ public:
     virtual void EventLoop( const GUIReturn& g ) { }
 
     /// Renders the geometry.
-    void RenderGeometry( );
+    virtual void RenderGeometry( );
 
-private:
+    virtual Volume* GetVolume() = 0;
 
-    std::vector< Polyhedron > fPolyhedrons;
+protected:
 
-}; // class Polyhedrons3d
+    void RenderWireframe();
+
+    Volume* fVolume;
+
+}; // class VolumeManager3d
 
 }; // namespace Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames_Polyhedrons3d__
+#endif // __Viewer_Frames_VolumeManager3d__

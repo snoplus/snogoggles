@@ -7,6 +7,7 @@
 ///
 /// REVISION HISTORY:\n
 ///     13/07/11 : Olivia Wasalski - First Revision, new file. \n
+///     19/07/11 : Olivia Wasalski - Removed colour. \n
 ///
 /// \detail  
 ///
@@ -16,8 +17,6 @@
 #define __Viewer_Polyhedron__
 
 #include <Viewer/Polygon.hh>
-#include <Viewer/Colour.hh>
-#include <SFML/OpenGL.hpp>
 #include <vector>
 
 namespace Viewer
@@ -27,12 +26,12 @@ class Polyhedron
 {
 public:
 
-    Polyhedron( std::vector< Polygon > polygons, const Colour& colour )
-    { fPolygons = polygons;     fColour = colour; }
+    Polyhedron() { }
+
+    Polyhedron( std::vector< Polygon > polygons )
+    { fPolygons = polygons; }
 
     inline void RenderOpenGL();
-
-    static inline std::string ColourTag() { return "colour"; }
 
     std::vector< Polygon > fPolygons;
 
@@ -42,13 +41,8 @@ public:
 
 void Polyhedron::RenderOpenGL()
 {
-    glPushAttrib( GL_COLOR );
-    fColour.SetOpenGL();
-
     for( int i = 0; i < fPolygons.size(); i++ )
         fPolygons.at(i).RenderOpenGL();
-
-    glPopAttrib( );
 }
 
 } // ::Viewer

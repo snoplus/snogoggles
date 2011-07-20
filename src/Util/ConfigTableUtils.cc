@@ -36,24 +36,83 @@ Colour ConfigTableUtils::GetColour( ConfigurationTable* configTable, const std::
     int r = colourTable->GetI( "r" );
     int g = colourTable->GetI( "g" );
     int b = colourTable->GetI( "b" );
-    return Colour( r, g, b );
+    int a = colourTable->GetI( "a" );
+    return Colour( r, g, b, a );
 }
 
-void ConfigTableUtils::SetPolyhedron( ConfigurationTable* configTable, const Polyhedron& value )
+void ConfigTableUtils::SetVolume( ConfigurationTable* configTable, const std::string& name, const Volume* value )
 {
-    SetColour( configTable, Polyhedron::ColourTag(), value.fColour );
+    ConfigurationTable* volumeTable = configTable->NewTable( Volume::Tag() );
+    SetVolume( volumeTable, value );
+}
+
+void ConfigTableUtils::SetVolume( ConfigurationTable* configTable, const Volume* value )
+{
+    configTable->SetS( Volume::NAME_TAG, value->GetName() );
+    SetBoolean( configTable, Volume::VISIBLE_TAG, value->IsVisible() );
+    SetColour( configTable, Volume::COLOUR_TAG, value->GetColour() );
+    SetVector3( configTable, Volume::TRANSLATION_TAG, value->GetTranslation() );
+    SetVector3( configTable, Volume::ROTATION_AXIS_TAG, value->GetRotationAxis() );
+    configTable->SetD( Volume::ROTATION_ANGLE_TAG, value->GetRotationAngle() );
+    SetPolyhedron( configTable, Volume::POLYHEDRON_TAG, *(value->GetPolyhedron()) );
+
+    for( int i = 0; i < value->GetNoDaughters(); i++ )
+    {
+        std::stringstream stream;
+        stream << i;
+        std::string volumeName = Volume::Tag() + stream.str();
+        SetVolume( configTable, volumeName, value->GetDaughter(i) );
+    }
+}
+
+Volume* ConfigTableUtils::GetVolume( ConfigurationTable* configTable, const std::string& name )
+{
+    ConfigurationTable* volumeTable = configTable->GetTable( name );
+    return GetVolume( volumeTable );
+}
+
+Volume* ConfigTableUtils::GetVolume( ConfigurationTable* configTable )
+{
+    std::vector< Volume* > volumes;
+    int i = 0;
+    while( true )
+    {
+        std::stringstream stream;
+        stream << i;
+        std::string volumeName = Volume::Tag() + stream.str();
+        try { volumes.push_back( GetVolume( configTable, volumeName ) ); }
+        catch( ConfigurationTable::NoTableError& e ) { break; }
+        i++;
+    }
+
+    return new Volume(
+        configTable->GetS( Volume::NAME_TAG ),
+        GetBoolean( configTable, Volume::VISIBLE_TAG ),
+        GetColour( configTable, Volume::COLOUR_TAG ),
+        GetVector3( configTable, Volume::TRANSLATION_TAG ),
+        GetVector3( configTable, Volume::ROTATION_AXIS_TAG ),
+        configTable->GetD( Volume::ROTATION_ANGLE_TAG ),
+        volumes,
+        GetPolyhedron( configTable, Volume::POLYHEDRON_TAG )
+    );
+}
+
+void ConfigTableUtils::SetPolyhedron( ConfigurationTable* configTable, const std::string& name, const Polyhedron& value )
+{
+    ConfigurationTable* polyhedronTable = configTable->NewTable( name );
 
     for( int i = 0; i < value.fPolygons.size(); i++ )
     {
         std::stringstream stream;
         stream << i;
         std::string polygonName = Polygon::Tag() + stream.str();
-        SetPolygon( configTable, polygonName, value.fPolygons.at(i) );
+        SetPolygon( polyhedronTable, polygonName, value.fPolygons.at(i) );
     }
 }
 
-Polyhedron ConfigTableUtils::GetPolyhedron( ConfigurationTable* configTable )
+Polyhedron ConfigTableUtils::GetPolyhedron( ConfigurationTable* configTable, const std::string& name )
 {
+    ConfigurationTable* polyhedronTable = configTable->GetTable( name );
     int i = 0;
     std::vector< Polygon > polygons;
 
@@ -62,12 +121,12 @@ Polyhedron ConfigTableUtils::GetPolyhedron( ConfigurationTable* configTable )
         std::stringstream stream;
         stream << i;
         std::string polygonName = Polygon::Tag() + stream.str();
-        try { polygons.push_back( GetPolygon( configTable, polygonName ) ); }
+        try { polygons.push_back( GetPolygon( polyhedronTable, polygonName ) ); }
         catch( ConfigurationTable::NoTableError& e ) { break; }
         i++;
     }
 
-    return Polyhedron( polygons, GetColour( configTable, Polyhedron::ColourTag() ) );
+    return Polyhedron( polygons );
 }
 
 void ConfigTableUtils::SetPolygon( ConfigurationTable* configTable, const std::string& name, const Polygon& value )
