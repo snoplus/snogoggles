@@ -31,10 +31,6 @@ public:
 
     std::string GetFilename() { return "data/geodesic.xml"; }
 
-    void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) { }
-    void LoadConfiguration( ConfigurationTable* configTable ) { }
-    void SaveConfiguration( ConfigurationTable* configTable ) { }
-    void EventLoop( const GUIReturn& g ) { }
     void RenderGeometry() { RenderPolygonMode( GL_LINE ); }
 
 }; // class Geodesic3d

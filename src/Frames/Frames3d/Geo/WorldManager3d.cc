@@ -1,7 +1,7 @@
 #include <Viewer/World.hh>
 #include <Viewer/WorldManager3d.hh>
 #include <Viewer/VisAttributes.hh>
-#include <iostream>
+#include <Viewer/GeoTranslator.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -17,9 +17,31 @@ WorldManager3d::~WorldManager3d()
     fWorld = NULL;
 }
 
+void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
+{
+    // TODO:
+}
+
 void WorldManager3d::LoadFile()
 {
     fWorld = GetWorld();
+    if( fMap.empty() == false )
+        fWorld->SetVisAttributeMap( fMap );
+}
+
+void WorldManager3d::LoadConfiguration( ConfigurationTable* configTable )
+{
+    LoadVisAttributes( configTable );
+}
+
+void WorldManager3d::SaveConfiguration( ConfigurationTable* configTable )
+{
+    SaveVisAttributes( configTable );
+}
+
+void WorldManager3d::EventLoop( const GUIReturn& g )
+{
+    // TODO:
 }
 
 void WorldManager3d::RenderGeometry()
@@ -33,8 +55,20 @@ void WorldManager3d::RenderGeometry()
             RenderPolygonMode( GL_LINE );
             break;
         case OUTLINE:
+            // TODO:
             break;
     }
+}
+
+void WorldManager3d::LoadVisAttributes( ConfigurationTable* configTable )
+{
+    try { fMap = GeoTranslator::GetVisAttributeMap( configTable, "visAttributes" ); }
+    catch( ConfigurationTable::NoTableError& e ) { }
+}
+
+void WorldManager3d::SaveVisAttributes( ConfigurationTable* configTable )
+{
+    GeoTranslator::SetVisAttributeMap( configTable, "visAttributes", fWorld->GetVisAttributeMap() );
 }
 
 void WorldManager3d::RenderPolygonMode( GLenum e )
@@ -48,6 +82,7 @@ void WorldManager3d::RenderPolygonMode( GLenum e )
     glDisable( GL_CULL_FACE );
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
+
 
 }; // namespace Frames
 }; // namespace Viewer

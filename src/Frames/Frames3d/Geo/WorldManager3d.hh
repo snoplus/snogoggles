@@ -25,6 +25,7 @@
 namespace Viewer {
 
     class World;
+    class VisAttributes;
 
 namespace Frames {
 
@@ -34,19 +35,24 @@ public:
 
     WorldManager3d();
     ~WorldManager3d();
-    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) { }
+    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
     void LoadFile( );
-    virtual void LoadConfiguration( ConfigurationTable* configTable ) { }
-    virtual void SaveConfiguration( ConfigurationTable* configTable ) { }
-    virtual void EventLoop( const GUIReturn& g ) { }
+    virtual void LoadConfiguration( ConfigurationTable* configTable );
+    virtual void SaveConfiguration( ConfigurationTable* configTable );
+    virtual void EventLoop( const GUIReturn& g );
     virtual void RenderGeometry( );
 
     virtual World* GetWorld() = 0;
 
 protected:
 
+    virtual void LoadVisAttributes( ConfigurationTable* configTable );
+    virtual void SaveVisAttributes( ConfigurationTable* configTable );
+
     void RenderPolygonMode( GLenum e );
+
     World* fWorld;
+    std::map< std::string, VisAttributes* > fMap;
 
     enum GeoRenderType {
         SOLID,

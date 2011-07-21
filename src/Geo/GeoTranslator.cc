@@ -27,9 +27,9 @@ const std::string GeoTranslator::VIS_ATTRIBUTES_VISIBLE = "visible";
 void 
 GeoTranslator::SetWorld( ConfigurationTable* configTable, World* value )
 {
-    std::map< std::string, VisAttributes* > named = value->fVisAttributeMap;
+    std::map< std::string, VisAttributes* > named = value->GetVisAttributeMap();
     SetVisAttributeMap( configTable, VIS_ATTRIBUTES, named );
-    SetVolume( configTable, VOLUME, value->fVolume );
+    SetVolume( configTable, VOLUME, value->GetVolume() );
 }
 
 World* 

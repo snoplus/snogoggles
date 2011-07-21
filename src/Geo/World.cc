@@ -17,4 +17,10 @@ void World::SetVisAttributes( Volume* volume )
         SetVisAttributes( volume->GetDaughter(i) );
 }
 
+void World::SetVisAttributeMap( std::map< std::string, VisAttributes* >& visAttributeMap )
+{
+    fVisAttributeMap = visAttributeMap;
+    SetVisAttributes( &fVolume );
+}
+
 }; // namespace Viewer

@@ -29,14 +29,21 @@ public:
 
     World( Volume& volume, std::map< std::string, VisAttributes* >& visAttributes );
 
-    inline void Render();
+    inline Volume& GetVolume() { return fVolume; }
+    inline void SetVolume( Volume& volume ) { fVolume = volume; }
 
-    Volume fVolume;
-    std::map< std::string, VisAttributes* > fVisAttributeMap;
+    inline std::map< std::string, VisAttributes* >& GetVisAttributeMap() 
+    { return fVisAttributeMap; }
+    void SetVisAttributeMap( std::map< std::string, VisAttributes* >& visAttributeMap );
+
+    inline void Render();
 
 private:
 
     void SetVisAttributes( Volume* volume );
+
+    Volume fVolume;
+    std::map< std::string, VisAttributes* > fVisAttributeMap;
 
 }; // class World
 
