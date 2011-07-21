@@ -17,26 +17,24 @@
 #ifndef __Viewer_Frames_XML3d__
 #define __Viewer_Frames_XML3d__
 
-#include <Viewer/VolumeManager3d.hh>
+#include <Viewer/WorldManager3d.hh>
 #include <string>
 
 namespace Viewer {
 
-    class Volume;
+    class World;
+    class ConfigurationTable;
 
 namespace Frames {
 
-class XML3d : public VolumeManager3d {
+class XML3d : public WorldManager3d {
 
 public:
 
     virtual ~XML3d() { }
-
-    /// Renders the geometry.
-
-    virtual Volume* GetVolume();
-
+    virtual World* GetWorld();
     virtual std::string GetFilename() = 0;
+
 
 }; // class XML3d
 

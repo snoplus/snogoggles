@@ -21,6 +21,7 @@
 
 #include <Viewer/Volume.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/Colour.hh>
 #include <string>
 
 namespace Viewer {
@@ -37,24 +38,6 @@ public:
     static void SetColour( ConfigurationTable* configTable, 
         const std::string& name, Colour value );
     static Colour GetColour( ConfigurationTable* configTable, 
-        const std::string& name );
-
-    static void SetVolume( ConfigurationTable* configTable, 
-        const std::string& name, const Volume* value );
-    static void SetVolume( ConfigurationTable* configTable, 
-        const Volume* value );
-    static Volume* GetVolume( ConfigurationTable* configTable,
-        const std::string& name );
-    static Volume* GetVolume( ConfigurationTable* configTable );
-
-    static void SetPolyhedron( ConfigurationTable* configTable, 
-        const std::string& name, const Polyhedron& value );
-    static Polyhedron GetPolyhedron( ConfigurationTable* configTable, 
-        const std::string& name );
-
-    static void SetPolygon( ConfigurationTable* configTable, 
-        const std::string& name, const Polygon& value );
-    static Polygon GetPolygon( ConfigurationTable* configTable, 
         const std::string& name );
 
     static void SetVector3( ConfigurationTable* configTable, 
@@ -79,6 +62,15 @@ private:
 
     static const std::string TRUE_TAG;
     static const std::string FALSE_TAG;
+
+    static const std::string VECTOR3_X;
+    static const std::string VECTOR3_Y;
+    static const std::string VECTOR3_Z;
+
+    static const std::string COLOUR_R;
+    static const std::string COLOUR_G;
+    static const std::string COLOUR_B;
+    static const std::string COLOUR_A;
 
 
 }; // class ConfigTableUtils 

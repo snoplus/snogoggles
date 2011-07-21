@@ -26,22 +26,24 @@ class Polygon
 {
 public:
 
-    Polygon( std::vector<Vector3> vertices ) { fVertices = vertices; }
+    Polygon() { }
 
-    inline void RenderOpenGL();
+    inline void AddVertex( const Vector3& vertex ) { fVertices.push_back( vertex ); }
+    inline const int GetNoVertices() const { return fVertices.size(); }
+    inline const Vector3 GetVertex( const int i ) const { return fVertices.at(i); }
 
-    static inline std::string Tag() { return "polygon"; }
+    inline void Render() const;
 
-    std::vector<Vector3> fVertices;
+    std::vector< Vector3 > fVertices;
 
 }; // class Polygon
 
-void Polygon::RenderOpenGL()
+void Polygon::Render() const
 {
     glBegin( GL_POLYGON );
 
     for( int v = 0; v < fVertices.size(); v++ )
-        fVertices.at(v).RenderOpenGL();
+        fVertices.at(v).Render();
 
     glEnd();
 }

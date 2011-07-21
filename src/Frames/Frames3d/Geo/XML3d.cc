@@ -2,19 +2,23 @@
 #include <Viewer/Configuration.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/World.hh>
+#include <Viewer/VisAttributes.hh>
+#include <Viewer/GeoTranslator.hh>
 
 namespace Viewer {
 namespace Frames {
 
-Volume* XML3d::GetVolume()
+World* XML3d::GetWorld()
 {
     Configuration config = Configuration( GetFilename(), false );
 
     std::vector< ConfigurationTable* >::iterator itr;
     itr = config.GetTableBegin();
 
-    return ConfigTableUtils::GetVolume( *itr );
+    return GeoTranslator::GetWorld( *itr );
 }
+
 
 }; // namespace Frames
 }; // namespace Viewer

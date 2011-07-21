@@ -28,21 +28,20 @@ public:
 
     Polyhedron() { }
 
-    Polyhedron( std::vector< Polygon > polygons )
-    { fPolygons = polygons; }
+    inline void AddPolygon( const Polygon& polygon ) { fPolygons.push_back( polygon ); }
+    inline const int GetNoPolygons() const { return fPolygons.size(); }
+    inline const Polygon GetPolygon( int i ) const { return fPolygons.at(i); }
 
-    inline void RenderOpenGL();
+    inline void Render() const;
 
     std::vector< Polygon > fPolygons;
 
-    Colour fColour;
-
 }; // class Polyhedron
 
-void Polyhedron::RenderOpenGL()
+void Polyhedron::Render() const
 {
     for( int i = 0; i < fPolygons.size(); i++ )
-        fPolygons.at(i).RenderOpenGL();
+        fPolygons.at(i).Render();
 }
 
 } // ::Viewer

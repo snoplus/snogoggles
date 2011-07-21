@@ -35,7 +35,7 @@ public:
     void LoadConfiguration( ConfigurationTable* configTable ) { }
     void SaveConfiguration( ConfigurationTable* configTable ) { }
     void EventLoop( const GUIReturn& g ) { }
-    void RenderGeometry() { RenderWireframe(); }
+    void RenderGeometry() { RenderPolygonMode( GL_LINE ); }
 
 }; // class Geodesic3d
 

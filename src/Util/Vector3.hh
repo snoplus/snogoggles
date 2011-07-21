@@ -27,19 +27,13 @@ public:
 
     Vector3( double x = 0.0, double y = 0.0, double z = 0.0 )
         : TVector3( x, y, z ) { }
-
     Vector3( const TVector3& v ) { Vector3( v.x(), v.y(), v.z() ); }
 
-    inline void RenderOpenGL() const;
-
-    static inline std::string Tag() { return "vertex"; }
-    static inline std::string XTag() { return "x"; }
-    static inline std::string YTag() { return "y"; }
-    static inline std::string ZTag() { return "z"; }
+    inline void Render() const;
 
 }; // class Vector3
 
-void Vector3::RenderOpenGL() const
+void Vector3::Render() const
 {
     glVertex3f( (float) x(), (float) y(), (float) z() );
 }

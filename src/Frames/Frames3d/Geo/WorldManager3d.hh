@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::VolumeManager3d
+/// \class Viewer::Frames::WorldManager3d
 ///
 /// \brief   
 ///
@@ -14,54 +14,49 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __Viewer_Frames_VolumeManager3d__
-#define __Viewer_Frames_VolumeManager3d__
+#ifndef __Viewer_Frames_WorldManager3d__
+#define __Viewer_Frames_WorldManager3d__
 
 #include <Viewer/GeoManager3d.hh>
+#include <SFML/OpenGL.hpp>
 #include <string>
+#include <map>
 
 namespace Viewer {
 
-    class Volume;
+    class World;
 
 namespace Frames {
 
-class VolumeManager3d : public GeoManager3d {
+class WorldManager3d : public GeoManager3d {
 
 public:
 
-    VolumeManager3d() { }
-
-    virtual ~VolumeManager3d() { }
-
-    /// Creates all the GUI objects for the module.
+    WorldManager3d();
+    ~WorldManager3d();
     virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) { }
-
     void LoadFile( );
-
-    /// Loads configuration
     virtual void LoadConfiguration( ConfigurationTable* configTable ) { }
-
-    /// Saves configuration
     virtual void SaveConfiguration( ConfigurationTable* configTable ) { }
-
-    /// Event loop for the camera manager.
     virtual void EventLoop( const GUIReturn& g ) { }
-
-    /// Renders the geometry.
     virtual void RenderGeometry( );
 
-    virtual Volume* GetVolume() = 0;
+    virtual World* GetWorld() = 0;
 
 protected:
 
-    void RenderWireframe();
+    void RenderPolygonMode( GLenum e );
+    World* fWorld;
 
-    Volume* fVolume;
+    enum GeoRenderType {
+        SOLID,
+        WIREFRAME,
+        OUTLINE
+    } fGeoRenderType;
 
-}; // class VolumeManager3d
+}; // class WorldManager3d
 
 }; // namespace Frames 
 }; // namespace Viewer
 
-#endif // __Viewer_Frames_VolumeManager3d__
+#endif // __Viewer_Frames_WorldManager3d__
