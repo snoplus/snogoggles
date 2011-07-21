@@ -112,6 +112,14 @@ FrameContainer::NewEvent( UIEvent& event )
   FrameUIReturn returnEvent;
   switch( event.Type )
     {
+    case sf::Event::LostFocus: //No explicit focus for container buttons, so must inform all
+      fTopBar->NewEvent( event );
+      fTopBarRight->NewEvent( event );
+      fExitButton->NewEvent( event );
+      fPinButton->NewEvent( event );
+      fIncreaseButton->NewEvent( event );
+      fDecreaseButton->NewEvent( event );
+      break;
     case sf::Event::MouseButtonPressed:
       {
 	if( fTopBar->ContainsPoint( event.GetResolutionCoord() ) )

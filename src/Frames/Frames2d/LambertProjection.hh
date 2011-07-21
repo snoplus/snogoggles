@@ -18,9 +18,18 @@
 #include <TVector3.h>
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/Frame.hh>
 #include <Viewer/Shape.hh>
+
+namespace RAT
+{
+namespace DS
+{
+  class PMTProperties;
+}
+}
 
 namespace Viewer
 {
@@ -46,7 +55,8 @@ public:
   void Render3d() { }
 private:
   sf::Vector2<double> Project( TVector3 pmtPos );
-  
+
+  sf::Rect<double> fProjectArea;
   Shape fFilledPMT;
   Shape fOpenPMT;
 };

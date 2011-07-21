@@ -13,26 +13,19 @@ using namespace Viewer::Frames;
 #include <iostream>
 using namespace std;
 
+const double kPSUPRadius = 8500.0;
+
 void
 LambertProjection::Initialise()
 {
-  fFilledPMT.AddPoint( -1.0, sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );  
-  fFilledPMT.AddPoint( 1.0, sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fFilledPMT.AddPoint( 2.0, 0.0, sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fFilledPMT.AddPoint( 1.0, -sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fFilledPMT.AddPoint( -1.0, -sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fFilledPMT.AddPoint( -2.0, 0.0, sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fFilledPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 50 * 0.5 / 8500.0, 50 * 0.5 / 8500.0 ) );
+  fProjectArea = sf::Rect<double>( 0.1, 0.0, 0.9, 0.9 );
+  fFilledPMT = sf::Shape::Circle( 0.0, 0.0, 0.5, sf::Color(255, 255, 255) );
+  fFilledPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 137.0 * 0.5 / kPSUPRadius * fProjectArea.Width, 137.0 * 0.5 / kPSUPRadius * fProjectArea.Height ) );
   fFilledPMT.EnableFill( true );
 
 
-  fOpenPMT.AddPoint( -1.0, sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );  
-  fOpenPMT.AddPoint( 1.0, sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fOpenPMT.AddPoint( 2.0, 0.0, sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fOpenPMT.AddPoint( 1.0, -sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fOpenPMT.AddPoint( -1.0, -sqrt(2.0), sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fOpenPMT.AddPoint( -2.0, 0.0, sf::Color(255, 255, 255), sf::Color(255, 255, 255) );
-  fOpenPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 50 * 0.5 / 8500.0, 50 * 0.5 / 8500.0 ) );
+  fOpenPMT= sf::Shape::Circle( 0.0, 0.0, 0.5, sf::Color(255, 255, 255), 0.5, sf::Color(255, 255, 255) );
+  fOpenPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 100.0 * 0.5 / kPSUPRadius * fProjectArea.Width, 100.0 * 0.5 / kPSUPRadius * fProjectArea.Height ) );
   fOpenPMT.EnableFill( false );
   fOpenPMT.EnableOutline( true );
   fOpenPMT.SetOutlineThickness( 0.5 );
@@ -66,12 +59,13 @@ LambertProjection::Project( TVector3 pmtPos )
   pmtPos = pmtPos.Unit();
   const double x = sqrt( 2 / ( 1 - pmtPos.Z() ) ) * pmtPos.X() / 4.0 + 0.5; // Projected circle radius is 2 thus diameter 4
   const double y = sqrt( 2 / ( 1 - pmtPos.Z() ) ) * pmtPos.Y() / 4.0 + 0.5; // +0.5 such that x,y E [0, 1)
-  return sf::Vector2<double>( x, y );
+  return sf::Vector2<double>( fProjectArea.Left + x * fProjectArea.Width, fProjectArea.Top + y * fProjectArea.Height );
 }
 
 void
 LambertProjection::Render2d( RWWrapper& windowApp )
 {
+  const double surfaceDist = 137.0 / kPSUPRadius;
   EventData& events = EventData::GetInstance();
 
   RAT::DS::EV* rEV = events.GetCurrentEV();
@@ -80,9 +74,10 @@ LambertProjection::Render2d( RWWrapper& windowApp )
   
   for( int ipmt = 0; ipmt < rPMTList->GetCorrPMTsNumber(); ipmt++ )
     {
-      const sf::Vector2<double> projPos = Project( rPMTList->GetPos( ipmt ) );
+      TVector3 pmtPos = rPMTList->GetPos( ipmt );
+      const sf::Vector2<double> projPos = Project( pmtPos );
       fOpenPMT.SetPosition( projPos );
-      fOpenPMT.SetColor( ColourPalette::gPalette->GetPrimaryColour( eBlack ) );
+      fOpenPMT.SetColor( ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
       windowApp.Draw( fOpenPMT );
     }
   for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )

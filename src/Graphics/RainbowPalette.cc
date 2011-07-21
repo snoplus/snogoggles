@@ -50,5 +50,7 @@ RainbowPalette::GetPrimaryColour( EColour value )
       return Colour( 111, 0, 255, 255 );
     case eViolet:
       return Colour( 143, 0, 255, 255 );
+    case eGrey:
+      return Colour( 200, 200, 200, 255 );
    }
 }

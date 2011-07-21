@@ -19,6 +19,7 @@ DragArea::NewEvent( UIEvent& event )
 	fCurrentPos = sf::Vector2<double>( event.MouseMove.X, event.MouseMove.Y );
       break;
     case sf::Event::MouseButtonReleased:
+    case sf::Event::LostFocus:
       fPressed = false;
       fStartPos = fCurrentPos = sf::Vector2<double>();
       break;

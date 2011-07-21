@@ -34,6 +34,7 @@ public:
   void SetPosition( float x, float y ) { fRect.Left = x; fRect.Top = y; }
   void SetPosition( const sf::Vector2<double>& position ) { fRect.Left = position.x; fRect.Top = position.y; }
 
+  void SetScale(float factorX, float factorY) { fRect.Width = fRect.Width * factorX, fRect.Height = fRect.Height * factorY; };
 protected:
   sf::Rect<double> fRect;
 private:
@@ -44,7 +45,6 @@ private:
   void SetOrigin( float x, float y ) { fRect.Left = x + fRect.Width / 2.0; fRect.Top = y + fRect.Height / 2.0; }
   void SetOrigin( const sf::Vector2f& origin ) { fRect.Left = origin.x + fRect.Width / 2.0; fRect.Top = origin.y + fRect.Height / 2.0; }
 
-  void SetScale(float factorX, float factorY);
   void SetScaleX(float factor);
   void SetScaleY(float factor);
   const sf::Vector2f& GetScale() const;

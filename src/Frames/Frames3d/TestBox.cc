@@ -40,6 +40,7 @@ TestBox::Render3d()
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(90.f, 1.f, 1.f, 500.f);
+  glCullFace( GL_BACK );
   // Clear color and depth buffer
   //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // NOTE: OpenGL buffers should NOT be cleared in frames!!!!!

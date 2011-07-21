@@ -35,8 +35,8 @@ ViewerWindow::Initialise()
       int resX = loadConfig.GetI( "resX" ); 
       int resY = loadConfig.GetI( "resY" );
       Coord::SetWindowResolution( resX, resY );
-      Coord::SetWindowSize( resX, resY );
       fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles" );
+      Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       DrawSplash();
       fFrameManager.Initialise();
       fFrameManager.LoadConfiguration( loadConfig );
@@ -47,7 +47,7 @@ ViewerWindow::Initialise()
       fWindowApp = new sf::RenderWindow( sf::VideoMode::GetDesktopMode(), "SNO Goggles" ); 
       DrawSplash();
       Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
-      Coord::SetWindowSize( fullScreen.Width, fullScreen.Height );
+      Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       fFrameManager.Initialise();
     }
 }

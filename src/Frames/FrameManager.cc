@@ -13,13 +13,15 @@ using namespace Viewer;
 #include <string>
 using namespace std;
 
+const int kMinFrameWidth = 140; // Minimum frame width 4*20 buttons + 2*20 ends + 20 bar
+
 void
 FrameManager::Initialise()
 {
   fFocus = -1;
   fMoving = false;
-  fCols = 10;
   sf::Vector2<double> resolution = Coord::GetWindowResolution();
+  fCols = resolution.x / kMinFrameWidth;
   fColSize = resolution.x / fCols;
   fRowSize = fColSize;
   fRows = resolution.y / fRowSize;

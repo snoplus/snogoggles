@@ -20,7 +20,7 @@
 namespace Viewer
 {
 
-enum EColour { eBlack = 0, eWhite = 1, eRed = 2, eOrange = 3, eYellow = 4, eGreen = 5, eBlue = 6, eIndigo = 7, eViolet = 8 };
+  enum EColour { eBlack = 0, eWhite = 1, eRed = 2, eOrange = 3, eYellow = 4, eGreen = 5, eBlue = 6, eIndigo = 7, eViolet = 8, eGrey = 9 };
 
 class ColourPalette
 {

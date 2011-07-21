@@ -37,5 +37,7 @@ GreyScalePalette::GetPrimaryColour( EColour value )
       return Colour( 37, 37, 37, 255 );
     case eViolet:
       return Colour( 47, 47, 47, 255 );
+    case eGrey:
+      return Colour( 200, 200, 200, 255 );
    }
 }

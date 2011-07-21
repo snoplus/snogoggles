@@ -25,6 +25,11 @@ GUIManager::NewEvent( UIEvent& event )
 	retEvent = fGUIObjects[fFocus]->NewEvent( event );
       fFocus = FindGUI( event.GetLocalCoord() );
       break;
+    case sf::Event::LostFocus:
+      if( fFocus >= 0 && fFocus < fGUIObjects.size() )
+	retEvent = fGUIObjects[fFocus]->NewEvent( event );
+      fFocus = -1;
+      break;
 
 // Now events that change the focus   
     case sf::Event::MouseMoved:
