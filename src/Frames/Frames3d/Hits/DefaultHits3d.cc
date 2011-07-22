@@ -32,13 +32,9 @@ void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& opt
 
 void DefaultHits3d::LoadConfiguration( ConfigurationTable* configTable )
 {
-    int temp = fPMTType;
-
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
-    ConfigTableUtils::GetISafe( configTable, fPMTTypeTag, temp );
+    ConfigTableUtils::GetEnumSafe< PMTType >( configTable, fPMTTypeTag, fPMTType );
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
-
-    fPMTType = (PMTType) temp;
 }
 
 void DefaultHits3d::SaveConfiguration( ConfigurationTable* configTable )

@@ -17,8 +17,9 @@
 #ifndef __Viewer_Frames_WorldManager3d__
 #define __Viewer_Frames_WorldManager3d__
 
-#include <Viewer/GeoManager3d.hh>
+#include <Viewer/GUIManager.hh>
 #include <SFML/OpenGL.hpp>
+#include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
 
@@ -26,30 +27,29 @@ namespace Viewer {
 
     class World;
     class VisAttributes;
+    class ConfigurationTable;
 
 namespace Frames {
 
-class WorldManager3d : public GeoManager3d {
+class WorldManager3d {
 
 public:
 
     WorldManager3d();
     ~WorldManager3d();
     virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    void LoadFile( );
+    void SetWorld( World* world );
     virtual void LoadConfiguration( ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
     virtual void EventLoop( const GUIReturn& g );
     virtual void RenderGeometry( );
-
-    virtual World* GetWorld() = 0;
+    void RenderOutline();
+    void RenderPolygonMode( GLenum e );
 
 protected:
 
     virtual void LoadVisAttributes( ConfigurationTable* configTable );
     virtual void SaveVisAttributes( ConfigurationTable* configTable );
-
-    void RenderPolygonMode( GLenum e );
 
     World* fWorld;
     std::map< std::string, VisAttributes* > fMap;

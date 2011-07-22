@@ -62,12 +62,6 @@ public:
     virtual VisAttributes* GetVisAttributes()
     { return fVisAttributes; }
 
-    static std::string Tag() { return "volume"; }
-    static const std::string NAME_TAG;
-    static const std::string TRANSLATION_TAG;
-    static const std::string ROTATION_AXIS_TAG;
-    static const std::string ROTATION_ANGLE_TAG;
-    static const std::string POLYHEDRON_TAG;
 
 private:
 

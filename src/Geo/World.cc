@@ -11,6 +11,9 @@ World::World( Volume& volume, std::map< std::string, VisAttributes* >& visAttrib
 
 void World::SetVisAttributes( Volume* volume )
 {
+    if( fVisAttributeMap.count( volume->GetName() ) == 0 )
+        throw NoVisAttributesError( volume->GetName() );
+
     volume->SetVisAttributes( fVisAttributeMap[ volume->GetName() ] );
 
     for( int i = 0; i < volume->GetNoDaughters(); i++ )

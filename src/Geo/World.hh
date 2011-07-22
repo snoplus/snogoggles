@@ -12,12 +12,27 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////
+/// \class Viewer::World::NoVisAttributesError
+///
+/// \brief   
+///
+/// \author  Olivia Wasalski <wasalski@triumf.ca>
+///
+/// REVISION HISTORY:\n
+///     20/07/11 : Olivia Wasalski - First Revision, new file. \n
+///
+/// \detail  
+///
+////////////////////////////////////////////////////////////////////////
+
 #ifndef __Viewer_World__
 #define __Viewer_World__
 
 #include <Viewer/Volume.hh>
 #include <map>
 #include <string>
+#include <stdexcept>
 
 namespace Viewer
 {
@@ -26,6 +41,12 @@ namespace Viewer
 class World
 {
 public:
+    class NoVisAttributesError : public std::runtime_error
+    {
+        public:
+            NoVisAttributesError( const std::string& param ) 
+                : std::runtime_error( param ) {}
+    }; 
 
     World( Volume& volume, std::map< std::string, VisAttributes* >& visAttributes );
 

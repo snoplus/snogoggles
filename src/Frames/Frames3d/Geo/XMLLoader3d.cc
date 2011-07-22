@@ -1,4 +1,4 @@
-#include <Viewer/XML3d.hh>
+#include <Viewer/XMLLoader3d.hh>
 #include <Viewer/Configuration.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ConfigurationTable.hh>
@@ -9,9 +9,9 @@
 namespace Viewer {
 namespace Frames {
 
-World* XML3d::GetWorld()
+World* XMLLoader3d::GetWorld()
 {
-    Configuration config = Configuration( GetFilename(), false );
+    Configuration config = Configuration( fFilename, false );
 
     std::vector< ConfigurationTable* >::iterator itr;
     itr = config.GetTableBegin();

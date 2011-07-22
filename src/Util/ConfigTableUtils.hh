@@ -19,7 +19,7 @@
 #ifndef __Viewer_ConfigTableUtils__
 #define __Viewer_ConfigTableUtils__
 
-#include <Viewer/Volume.hh>
+#include <Viewer/Vector3.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Colour.hh>
 #include <string>
@@ -34,6 +34,9 @@ public:
         const std::string& name, bool value );
     static bool GetBoolean( ConfigurationTable* configTable, 
         const std::string& name );
+
+    template<typename T> static inline T
+        GetEnum( ConfigurationTable* configTable, const std::string& name );
 
     static void SetColour( ConfigurationTable* configTable, 
         const std::string& name, Colour value );
@@ -55,6 +58,8 @@ public:
 
     static void GetBooleanSafe( ConfigurationTable* configTable, 
         const std::string& name, bool& value );
+    template<typename T> static inline void GetEnumSafe( ConfigurationTable* configTable, 
+        const std::string& name, T& value );
     static void GetVector3Safe( ConfigurationTable* configTable, 
         const std::string& name, Vector3& value );
 
@@ -74,6 +79,20 @@ private:
 
 
 }; // class ConfigTableUtils 
+
+template<typename T> inline T 
+ConfigTableUtils::GetEnum( ConfigurationTable* configTable, const std::string& name )
+{
+    int temp = configTable->GetI( name );
+    return static_cast< T >( temp );
+}
+
+template<typename T> inline void 
+ConfigTableUtils::GetEnumSafe( ConfigurationTable* configTable, const std::string& name, T& value )
+{
+    try{ value = GetEnum< T >( configTable, name ); }
+    catch( ConfigurationTable::NoAttributeError& e ) { }
+}
 
 }; // namespace Viewer
 
