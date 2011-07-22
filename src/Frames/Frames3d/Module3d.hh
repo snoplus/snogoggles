@@ -54,8 +54,8 @@ public:
     virtual void SaveConfiguration( ConfigurationTable* configTable ) = 0;
 
     /// Event loop for the camera manager.
-    static void EventLoopSafe( Module3d* module, const GUIReturn& g );
-    virtual void EventLoop( const GUIReturn& g ) = 0;
+    static void EventLoopSafe( Module3d* module );
+    virtual void EventLoop( ) = 0;
 
     static const std::string MODULE_TAG;
 
