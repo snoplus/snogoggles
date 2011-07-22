@@ -64,7 +64,7 @@ public:
     void SaveConfiguration( ConfigurationTable* configTable );
 
     /// Event loop for the camera manager.
-    void EventLoop( const GUIReturn& g );
+    void EventLoop( );
 
     /// Renders hits.
     void RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );

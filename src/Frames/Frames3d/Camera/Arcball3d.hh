@@ -32,7 +32,8 @@ namespace Viewer {
     class GUIManager;
 
     namespace GUIs {
-        class SpriteButton;
+        class SpriteTimer;
+        class Timer;
     }; // namepsace GUIs
 
 namespace Frames {
@@ -61,7 +62,7 @@ public:
     virtual void SaveConfiguration( ConfigurationTable* configTable );
 
     /// Event loop for the camera manager.
-    virtual void EventLoop( const GUIReturn& g );
+    virtual void EventLoop( );
 
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect );
@@ -72,11 +73,11 @@ public:
 
 private:
 
-    void Spin( const TVector3& axis );
+    void Spin( const TVector3& axis, int deltaTime );
+    void Zoom( float speed, int deltaTime );
 
-    void Zoom( float speed );
-
-    void Events( );
+    void SpinButton( const TVector3& axis, GUIs::Timer* timer );
+    void ZoomButton( float speed, GUIs::Timer* timer );
 
     // All tags for saving data to config table.
     static const std::string CAMERA_TAG;        ///< Name used to save fCamera.
@@ -95,18 +96,16 @@ private:
     double fZoom;                       ///< Zoom factor.
 
     // All GUI objects.
-    GUIs::SpriteButton* fSpinLeftButton;
-    GUIs::SpriteButton* fSpinRightButton;
-    GUIs::SpriteButton* fSpinUpButton;
-    GUIs::SpriteButton* fSpinDownButton;
-    GUIs::SpriteButton* fZoomInButton;
-    GUIs::SpriteButton* fZoomOutButton;
+    GUIs::SpriteTimer* fSpinLeftButton;
+    GUIs::SpriteTimer* fSpinRightButton;
+    GUIs::SpriteTimer* fSpinUpButton;
+    GUIs::SpriteTimer* fSpinDownButton;
+    GUIs::SpriteTimer* fZoomInButton;
+    GUIs::SpriteTimer* fZoomOutButton;
 
     // All others.
     static const double MAX_ZOOM = 1.5; ///< Upper limit on fZoom.
     static const double MIN_ZOOM = 0.1; ///< Lower limit on fZoom.
-
-    sf::Clock fClock;                   ///< SFML clock used to rotate the scene.
 
     double fSpinSpeed;                  ///< Speed of rotations.
     double fZoomSpeed;                  ///< Speed of zooming.

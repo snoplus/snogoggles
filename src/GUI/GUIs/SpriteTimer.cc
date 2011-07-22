@@ -1,4 +1,4 @@
-#include <Viewer/SpriteButton.hh>
+#include <Viewer/SpriteTimer.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/RWWrapper.hh>
 #include <SFML/Graphics.hpp>
@@ -12,25 +12,25 @@ namespace Viewer
 namespace GUIs
 {
 
-SpriteButton::SpriteButton( sf::Rect<double>& rect, unsigned int guiID )
-    : GenericButton( rect, guiID )
+SpriteTimer::SpriteTimer( sf::Rect<double>& rect, unsigned int guiID )
+    : GenericTimer( rect, guiID )
 {
 
 }
 
-SpriteButton::~SpriteButton()
+SpriteTimer::~SpriteTimer()
 {
 
 }
 
-void SpriteButton::SetSprite( const std::string& filename )
+void SpriteTimer::SetSprite( const std::string& filename )
 {
     ImageManager& imageManager = ImageManager::GetInstance();
     fSprite = imageManager.NewSprite( filename );
     fSprite.SetBoundingRect( fRect );
 }
 
-void SpriteButton::RenderLabel( RWWrapper& windowApp )
+void SpriteTimer::RenderLabel( RWWrapper& windowApp )
 {
     windowApp.Draw( fSprite );
 }

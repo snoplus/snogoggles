@@ -33,6 +33,8 @@ Manager3d::Manager3d( const std::string& options )
 {
     fDisplayAxis = true;
     fInitialised = false;
+    fViewportArea = sf::Rect< double >( 0, 0, 1.0, 0.9 );
+
     std::vector<std::string> tokens;
     StringUtils::SplitString( options, " ", tokens );
     ModuleFactory3d::GetInstance()->SetAllModules( this, tokens );
@@ -68,9 +70,17 @@ void Manager3d::DeleteAllModules()
 
 void Manager3d::LateInitialise()
 {
-    GeoManager3d::LoadFileSafe( fGeoManager );
-    CreateGUIObjects();
-    fInitialised = true;
+    if( fInitialised == false )
+    {
+        // checks that the camera manager is not null
+        // if the camera manager is null, throws an error
+        if( fCameraManager == NULL )
+            throw NoCameraError();
+
+        GeoManager3d::LoadFileSafe( fGeoManager );
+        CreateGUIObjects();
+        fInitialised = true;
+    }
 }
 
 void Manager3d::CreateGUIObjects()
@@ -112,16 +122,16 @@ void Manager3d::SaveModuleConfigurations( ConfigurationTable& configTable )
 
 void Manager3d::EventLoop() 
 {
-    while( !fEvents.empty() )
-    {
-        Module3d::EventLoopSafe( fCameraManager, fEvents.front() );
-        Module3d::EventLoopSafe( fHitManager, fEvents.front() );
-        Module3d::EventLoopSafe( fTrackManager, fEvents.front() );
-        Module3d::EventLoopSafe( fGeoManager, fEvents.front() );
-        Module3d::EventLoopSafe( fFitterManager, fEvents.front() );
+    LateInitialise();
 
+    while( !fEvents.empty() )
         fEvents.pop();
-    }
+
+    Module3d::EventLoopSafe( fCameraManager );
+    Module3d::EventLoopSafe( fHitManager );
+    Module3d::EventLoopSafe( fTrackManager );
+    Module3d::EventLoopSafe( fGeoManager );
+    Module3d::EventLoopSafe( fFitterManager );
 }
 
 void Manager3d::Render2d( RWWrapper& windowApp )
@@ -131,19 +141,16 @@ void Manager3d::Render2d( RWWrapper& windowApp )
 
 void Manager3d::Render3d( ) 
 {
-    if( fInitialised == false )
-        LateInitialise();
-
-    // checks that the camera manager is not null
-    // if the camera manager is null, throws an error
-    if( fCameraManager == NULL )
-        throw NoCameraError();
+    LateInitialise();
 
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
     RAT::DS::MC* mc = EventData::GetInstance().GetCurrentMC();
     RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetRun()->GetPMTProp();
 
-    fCameraManager->SetUpCameraSystem( fFrameRect.GetViewport() ); 
+    Rect viewportRect;
+    viewportRect.SetFromLocalRect( fViewportArea, fFrameRect );
+
+    fCameraManager->SetUpCameraSystem( viewportRect.GetViewport() ); 
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
     TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );

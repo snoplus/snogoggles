@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::GenericButton
+/// \class Viewer::GUIs::GenericTimer
 ///
 /// \brief   Generic button
 ///
@@ -13,10 +13,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_GenericButton__
-#define __Viewer_GUIs_GenericButton__
+#ifndef __Viewer_GUIs_GenericTimer__
+#define __Viewer_GUIs_GenericTimer__
 
-#include <Viewer/Button.hh>
+#include <Viewer/Timer.hh>
 #include <Viewer/Sprite.hh>
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -26,13 +26,13 @@ namespace Viewer
 namespace GUIs
 {
 
-class GenericButton : public Button
+class GenericTimer : public Timer
 {
 public:
 
-  GenericButton( sf::Rect<double>& rect, unsigned int guiID );
+  GenericTimer( sf::Rect<double>& rect, unsigned int guiID );
   
-  virtual ~GenericButton() { }
+  virtual ~GenericTimer() { }
 
   void RenderT( sf::RenderWindow& windowApp ) { };
   void Render( RWWrapper& windowApp );

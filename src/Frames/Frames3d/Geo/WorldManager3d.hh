@@ -39,7 +39,7 @@ public:
     void LoadFile( );
     virtual void LoadConfiguration( ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
-    virtual void EventLoop( const GUIReturn& g );
+    virtual void EventLoop( );
     virtual void RenderGeometry( );
 
     virtual World* GetWorld() = 0;
