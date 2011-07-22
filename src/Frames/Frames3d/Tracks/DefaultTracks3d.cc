@@ -60,7 +60,7 @@ void DefaultTracks3d::SaveConfiguration( ConfigurationTable* configTable )
     }
 }
 
-void DefaultTracks3d::EventLoop( const GUIReturn& g )
+void DefaultTracks3d::EventLoop( )
 {
     // TODO:
 }

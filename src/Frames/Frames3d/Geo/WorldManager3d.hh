@@ -41,7 +41,7 @@ public:
     void SetWorld( World* world );
     virtual void LoadConfiguration( ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
-    virtual void EventLoop( const GUIReturn& g );
+    virtual void EventLoop( );
     virtual void RenderGeometry( );
     void RenderOutline();
     void RenderPolygonMode( GLenum e );

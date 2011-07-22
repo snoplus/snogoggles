@@ -44,7 +44,7 @@ void DefaultHits3d::SaveConfiguration( ConfigurationTable* configTable )
     ConfigTableUtils::SetBoolean( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
 }
 
-void DefaultHits3d::EventLoop( const GUIReturn& g )
+void DefaultHits3d::EventLoop( )
 {
     // TODO: Needs to be completed
 }

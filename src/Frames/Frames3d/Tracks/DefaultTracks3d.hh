@@ -84,7 +84,7 @@ public:
     virtual void SaveConfiguration( ConfigurationTable* configTable );
 
     /// Event loop for the camera manager.
-    virtual void EventLoop( const GUIReturn& g );
+    virtual void EventLoop( );
 
     /// Renders tracks.
     virtual void RenderTracks( RAT::DS::MC* mc );

@@ -39,10 +39,10 @@ void Module3d::SaveConfigurationSafe( Module3d* module, ConfigurationTable& conf
     }
 }
 
-void Module3d::EventLoopSafe( Module3d* module, const GUIReturn& g )
+void Module3d::EventLoopSafe( Module3d* module )
 {
     if( module != NULL ) 
-        module->EventLoop( g );
+        module->EventLoop( );
 }
 
 }; // namespace Frames

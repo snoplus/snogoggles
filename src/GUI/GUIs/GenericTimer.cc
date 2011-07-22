@@ -1,4 +1,4 @@
-#include <Viewer/GenericButton.hh>
+#include <Viewer/GenericTimer.hh>
 #include <Viewer/Shape.hh>
 #include <Viewer/RWWrapper.hh>
 #include <SFML/Graphics.hpp>
@@ -11,8 +11,8 @@ namespace Viewer
 namespace GUIs
 {
 
-GenericButton::GenericButton( sf::Rect<double>& rect, unsigned int guiID )
-    : Button( rect, guiID )
+GenericTimer::GenericTimer( sf::Rect<double>& rect, unsigned int guiID )
+    : Timer( rect, guiID )
 {
     ImageManager& imageManager = ImageManager::GetInstance();
 
@@ -24,7 +24,7 @@ GenericButton::GenericButton( sf::Rect<double>& rect, unsigned int guiID )
     fExcitedButton.SetColor( sf::Color::Yellow );
 }
 
-void GenericButton::Render( RWWrapper& windowApp )
+void GenericTimer::Render( RWWrapper& windowApp )
 {
     if( fPressed == true )
         windowApp.Draw( fExcitedButton );

@@ -43,7 +43,7 @@ void WorldManager3d::SaveConfiguration( ConfigurationTable* configTable )
     SaveVisAttributes( configTable );
 }
 
-void WorldManager3d::EventLoop( const GUIReturn& g )
+void WorldManager3d::EventLoop( )
 {
     // TODO:
 }

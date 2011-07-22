@@ -146,6 +146,7 @@ private:
     static const std::string DISPLAY_AXIS_TAG;
 
     bool fInitialised;
+    sf::Rect< double > fViewportArea;
 
 }; // class Manager3d
 

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::SpriteButton
+/// \class Viewer::GUIs::SpriteTimer
 ///
 /// \brief   Generic button with a sprite
 ///
@@ -13,10 +13,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_SpriteButton__
-#define __Viewer_GUIs_SpriteButton__
+#ifndef __Viewer_GUIs_SpriteTimer__
+#define __Viewer_GUIs_SpriteTimer__
 
-#include <Viewer/GenericButton.hh>
+#include <Viewer/GenericTimer.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/RWWrapper.hh>
 #include <SFML/Graphics.hpp>
@@ -27,13 +27,13 @@ namespace Viewer
 namespace GUIs
 {
 
-class SpriteButton : public GenericButton
+class SpriteTimer : public GenericTimer
 {
 public:
 
-    SpriteButton( sf::Rect<double>& rect, unsigned int guiID );
+    SpriteTimer( sf::Rect<double>& rect, unsigned int guiID );
 
-    virtual ~SpriteButton();
+    virtual ~SpriteTimer();
 
     void SetSprite( const std::string& filename );
 
