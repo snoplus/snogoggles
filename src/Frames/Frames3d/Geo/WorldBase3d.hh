@@ -35,7 +35,7 @@ public:
     virtual void LoadConfiguration( ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
     virtual void LoadFile();
-    virtual void EventLoop( const GUIReturn& g );
+    virtual void EventLoop();
     virtual void RenderGeometry( );
 
 protected:

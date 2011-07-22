@@ -39,9 +39,9 @@ void WorldBase3d::LoadFile()
     fManager->SetWorld( fLoader->GetWorld() );
 }
 
-void WorldBase3d::EventLoop( const GUIReturn& g )
+void WorldBase3d::EventLoop()
 {
-    fManager->EventLoop( g );
+    fManager->EventLoop();
 }
 
 void WorldBase3d::RenderGeometry( )

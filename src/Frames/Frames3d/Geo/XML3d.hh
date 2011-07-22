@@ -17,7 +17,7 @@
 #define __Viewer_Frames_XML3d__
 
 #include <Viewer/WorldBase3d.hh>
-#include <Viewer/GDMLLoader3d.hh>
+#include <Viewer/XMLLoader3d.hh>
 #include <Viewer/WorldManager3d.hh>
 #include <string>
 
