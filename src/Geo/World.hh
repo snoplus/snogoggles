@@ -30,43 +30,59 @@
 #define __Viewer_World__
 
 #include <Viewer/Volume.hh>
-#include <map>
+#include <Viewer/VisMap.hh>
+#include <Viewer/Serializable.hh>
 #include <string>
 #include <stdexcept>
 
 namespace Viewer
 {
-    class VisAttributes;
 
-class World
+class World : public Serializable
 {
 public:
-    class NoVisAttributesError : public std::runtime_error
-    {
-        public:
-            NoVisAttributesError( const std::string& param ) 
-                : std::runtime_error( param ) {}
-    }; 
 
-    World( Volume& volume, std::map< std::string, VisAttributes* >& visAttributes );
+    World() { }
+    World( Volume& volume, VisMap& visAttributes );
 
-    inline Volume& GetVolume() { return fVolume; }
-    inline void SetVolume( Volume& volume ) { fVolume = volume; }
+    inline const Volume& GetVolume() const;
+    inline void SetVolume( Volume& volume );
 
-    inline std::map< std::string, VisAttributes* >& GetVisAttributeMap() 
-    { return fVisAttributeMap; }
-    void SetVisAttributeMap( std::map< std::string, VisAttributes* >& visAttributeMap );
+    inline const VisMap& GetVisMap() const;
+    void SetVisMap( VisMap& visMap );
 
     inline void Render();
+
+    void Load( ConfigurationTable* configTable );
+    void Save( ConfigurationTable* configTable ) const;
 
 private:
 
     void SetVisAttributes( Volume* volume );
 
     Volume fVolume;
-    std::map< std::string, VisAttributes* > fVisAttributeMap;
+    VisMap fVisMap;
 
 }; // class World
+
+////////////////////////////////////////////////////////////////////////
+// inline methods
+////////////////////////////////////////////////////////////////////////
+
+const Volume& World::GetVolume() const
+{
+    return fVolume;
+}
+
+void World::SetVolume( Volume& volume )
+{
+    fVolume = volume;
+}
+
+const VisMap& World::GetVisMap() const
+{
+    return fVisMap;
+}
 
 void World::Render()
 {

@@ -17,14 +17,17 @@
 #define __Viewer_Volume__
 
 #include <string>
+#include <iostream>
 #include <Viewer/Polyhedron.hh>
+#include <Viewer/Serializable.hh>
 #include <Viewer/Vector3.hh>
 
 namespace Viewer {
 
     class VisAttributes;
+    class ConfigurationTable;
 
-class Volume {
+class Volume : public Serializable {
 
 public:
 
@@ -36,14 +39,7 @@ public:
         const Vector3& rotationAxis,
         double rotationAngle,
         const Polyhedron& polyhedron
-    )
-    {
-        fName = name;
-        fTranslation = translation;
-        fRotationAxis = rotationAxis;
-        fRotationAngle = rotationAngle;
-        fPolyhedron = polyhedron;
-    }
+    );
 
     virtual ~Volume() { }
     virtual const std::string GetName() const { return fName; }
@@ -57,13 +53,23 @@ public:
     virtual const int GetNoDaughters() const { return fDaughterVolumes.size(); }
     virtual Volume* GetDaughter( int n ) { return &fDaughterVolumes.at(n); }
 
-    virtual void SetVisAttributes( VisAttributes* visAttributes )
+    virtual void SetVisAttributes( const VisAttributes* visAttributes )
     { fVisAttributes = visAttributes; }
-    virtual VisAttributes* GetVisAttributes()
+    virtual const VisAttributes* GetVisAttributes()
     { return fVisAttributes; }
 
+    void Load( ConfigurationTable* configTable );
+    void Save( ConfigurationTable* configTable ) const;
 
 private:
+
+    void SetAll(
+        const std::string& name,
+        const Vector3& translation,
+        const Vector3& rotationAxis,
+        double rotationAngle,
+        const Polyhedron& polyhedron
+    );
 
     std::string fName;
     Vector3 fTranslation;
@@ -72,7 +78,7 @@ private:
     std::vector< Volume > fDaughterVolumes;
     Polyhedron fPolyhedron;
 
-    VisAttributes* fVisAttributes;
+    const VisAttributes* fVisAttributes;
 
 }; // class Volume
 

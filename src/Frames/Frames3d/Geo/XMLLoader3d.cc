@@ -1,22 +1,20 @@
 #include <Viewer/XMLLoader3d.hh>
 #include <Viewer/Configuration.hh>
-#include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/SerializableFactory.hh>
 #include <Viewer/World.hh>
-#include <Viewer/VisAttributes.hh>
-#include <Viewer/GeoTranslator.hh>
 
 namespace Viewer {
 namespace Frames {
 
 World* XMLLoader3d::GetWorld()
 {
-    Configuration config = Configuration( fFilename, false );
+    Configuration config = Configuration( "data/" + fFilename, false );
 
     std::vector< ConfigurationTable* >::iterator itr;
     itr = config.GetTableBegin();
 
-    return GeoTranslator::GetWorld( *itr );
+    return SerializableFactory::GetInstance()->NewPtrFromThisTable< World >( *itr );
 }
 
 

@@ -21,12 +21,11 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <map>
 
 namespace Viewer {
 
     class World;
-    class VisAttributes;
+    class VisMap;
     class ConfigurationTable;
 
 namespace Frames {
@@ -48,11 +47,8 @@ public:
 
 protected:
 
-    virtual void LoadVisAttributes( ConfigurationTable* configTable );
-    virtual void SaveVisAttributes( ConfigurationTable* configTable );
-
     World* fWorld;
-    std::map< std::string, VisAttributes* > fMap;
+    VisMap* fVisMap;
 
     enum GeoRenderType {
         SOLID,

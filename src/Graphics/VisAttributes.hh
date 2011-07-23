@@ -19,16 +19,17 @@
 
 namespace Viewer
 {
+    class ConfigurationTable;
 
-class VisAttributes
+class VisAttributes : public Serializable
 {
 public:
 
-    VisAttributes( const Colour& colour, bool visible )
-    {
-        fColour = colour;
-        fVisible = visible;
-    }
+    VisAttributes( ); 
+    VisAttributes( const Colour& colour, bool visible );
+
+    void Load( ConfigurationTable* configTable );
+    void Save( ConfigurationTable* configTable ) const;
 
     inline void SetColour( const Colour& colour ) { fColour = colour; }
     inline Colour GetColour() const { return fColour; }
@@ -36,7 +37,7 @@ public:
     inline void SetVisibility( bool visible ) { fVisible = visible; }
     inline bool IsVisible() const { return fVisible; }
 
-    inline void SetOpenGLColour() { fColour.SetOpenGL(); }
+    inline void SetOpenGLColour() const { fColour.SetOpenGL(); }
 
 private:
 

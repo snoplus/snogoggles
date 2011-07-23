@@ -17,26 +17,52 @@
 #define __Viewer_Polyhedron__
 
 #include <Viewer/Polygon.hh>
+#include <Viewer/Serializable.hh>
 #include <vector>
 
 namespace Viewer
 {
+    class ConfigurationTable;
 
-class Polyhedron
+class Polyhedron : public Serializable
 {
 public:
 
     Polyhedron() { }
 
-    inline void AddPolygon( const Polygon& polygon ) { fPolygons.push_back( polygon ); }
-    inline const int GetNoPolygons() const { return fPolygons.size(); }
-    inline const Polygon GetPolygon( int i ) const { return fPolygons.at(i); }
+    inline void AddPolygon( const Polygon& polygon );
+    inline const int GetNoPolygons() const;
+    inline const Polygon GetPolygon( int i ) const;
 
     inline void Render() const;
+
+    void Load( ConfigurationTable* configTable );
+    void Save( ConfigurationTable* configTable ) const;
+
+private:
 
     std::vector< Polygon > fPolygons;
 
 }; // class Polyhedron
+
+////////////////////////////////////////////////////////////////////////
+// inline methods
+////////////////////////////////////////////////////////////////////////
+
+void Polyhedron::AddPolygon( const Polygon& polygon )
+{
+    fPolygons.push_back( polygon );
+}
+
+const int Polyhedron::GetNoPolygons() const
+{
+    return fPolygons.size();
+}
+
+const Polygon Polyhedron::GetPolygon( int i ) const
+{
+    return fPolygons.at(i);
+}
 
 void Polyhedron::Render() const
 {

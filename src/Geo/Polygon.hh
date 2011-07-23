@@ -16,36 +16,51 @@
 #define __Viewer_Polygon__
 
 #include <Viewer/Vector3.hh>
-#include <SFML/OpenGL.hpp>
+#include <Viewer/Serializable.hh>
 #include <vector>
 
 namespace Viewer
 {
+    class ConfigurationTable;
 
-class Polygon
+class Polygon : public Serializable
 {
 public:
 
     Polygon() { }
 
-    inline void AddVertex( const Vector3& vertex ) { fVertices.push_back( vertex ); }
-    inline const int GetNoVertices() const { return fVertices.size(); }
-    inline const Vector3 GetVertex( const int i ) const { return fVertices.at(i); }
+    inline void AddVertex( const Vector3& vertex );
+    inline const int GetNoVertices() const;
+    inline const Vector3 GetVertex( const int i ) const;
 
-    inline void Render() const;
+    void Render() const;
+
+    void Load( ConfigurationTable* configTable );
+    void Save( ConfigurationTable* configTable ) const;
+
+private:
 
     std::vector< Vector3 > fVertices;
 
 }; // class Polygon
 
-void Polygon::Render() const
+////////////////////////////////////////////////////////////////////////
+// inline methods
+////////////////////////////////////////////////////////////////////////
+
+void Polygon::AddVertex( const Vector3& vertex ) 
+{ 
+    fVertices.push_back( vertex ); 
+}
+
+const int Polygon::GetNoVertices() const 
+{ 
+    return fVertices.size(); 
+}
+
+const Vector3 Polygon::GetVertex( const int i ) const 
 {
-    glBegin( GL_POLYGON );
-
-    for( int v = 0; v < fVertices.size(); v++ )
-        fVertices.at(v).Render();
-
-    glEnd();
+    return fVertices.at(i); 
 }
 
 } // ::Viewer

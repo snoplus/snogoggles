@@ -18,10 +18,13 @@
 #include <SFML/OpenGL.hpp>
 #include <TVector3.h>
 
+#include <Viewer/Serializable.hh>
+
 namespace Viewer
 {
+    class ConfigurationTable;
 
-class Vector3 : public TVector3
+class Vector3 : public TVector3, public Serializable
 {
 public:
 
@@ -30,6 +33,9 @@ public:
     Vector3( const TVector3& v ) { Vector3( v.x(), v.y(), v.z() ); }
 
     inline void Render() const;
+
+    void Load( ConfigurationTable* configTable );
+    void Save( ConfigurationTable* configTable ) const;
 
 }; // class Vector3
 

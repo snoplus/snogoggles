@@ -1,7 +1,7 @@
 #include <Viewer/World.hh>
+#include <Viewer/VisMap.hh>
 #include <Viewer/WorldManager3d.hh>
 #include <Viewer/VisAttributes.hh>
-#include <Viewer/GeoTranslator.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ConfigurationTable.hh>
 
@@ -15,8 +15,8 @@ WorldManager3d::WorldManager3d()
 
 WorldManager3d::~WorldManager3d() 
 {
-    delete fWorld;
-    fWorld = NULL;
+    delete fWorld;      fWorld = NULL;
+    delete fVisMap;     fVisMap = NULL;
 }
 
 void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
@@ -27,20 +27,20 @@ void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& op
 void WorldManager3d::SetWorld( World* world )
 {
     fWorld = world;
-    if( fMap.empty() == false )
-        fWorld->SetVisAttributeMap( fMap );
+    if( fVisMap != NULL )
+        fWorld->SetVisMap( *fVisMap );
 }
 
 void WorldManager3d::LoadConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetEnumSafe< GeoRenderType >( configTable, "geoRenderType", fGeoRenderType );
-    LoadVisAttributes( configTable );
+    fVisMap->LoadSafeFromParentTable( configTable, "visMap" );
 }
 
 void WorldManager3d::SaveConfiguration( ConfigurationTable* configTable )
 {
     configTable->SetI( "geoRenderType", fGeoRenderType );
-    SaveVisAttributes( configTable );
+    fWorld->GetVisMap().SaveToParentTable( configTable, "visMap" );
 }
 
 void WorldManager3d::EventLoop( )
@@ -62,17 +62,6 @@ void WorldManager3d::RenderGeometry()
             RenderOutline();
             break;
     }
-}
-
-void WorldManager3d::LoadVisAttributes( ConfigurationTable* configTable )
-{
-    try { fMap = GeoTranslator::GetVisAttributeMap( configTable, "visAttributes" ); }
-    catch( ConfigurationTable::NoTableError& e ) { }
-}
-
-void WorldManager3d::SaveVisAttributes( ConfigurationTable* configTable )
-{
-    GeoTranslator::SetVisAttributeMap( configTable, "visAttributes", fWorld->GetVisAttributeMap() );
 }
 
 void WorldManager3d::RenderOutline( )

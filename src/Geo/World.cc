@@ -1,29 +1,42 @@
 #include <Viewer/World.hh>
+#include <Viewer/SerializableFactory.hh>
 
 namespace Viewer {
 
-World::World( Volume& volume, std::map< std::string, VisAttributes* >& visAttributes )
+World::World( Volume& volume, VisMap& visAttributes )
 {
     fVolume = volume;
-    fVisAttributeMap = visAttributes;
-    SetVisAttributes( &fVolume );
+    SetVisMap( visAttributes );
 }
 
 void World::SetVisAttributes( Volume* volume )
 {
-    if( fVisAttributeMap.count( volume->GetName() ) == 0 )
-        throw NoVisAttributesError( volume->GetName() );
-
-    volume->SetVisAttributes( fVisAttributeMap[ volume->GetName() ] );
+    volume->SetVisAttributes( fVisMap.GetVisAttributes( volume->GetName() ) );
 
     for( int i = 0; i < volume->GetNoDaughters(); i++ )
         SetVisAttributes( volume->GetDaughter(i) );
 }
 
-void World::SetVisAttributeMap( std::map< std::string, VisAttributes* >& visAttributeMap )
+void World::SetVisMap( VisMap& visAttributeMap )
 {
-    fVisAttributeMap = visAttributeMap;
+    fVisMap = visAttributeMap;
     SetVisAttributes( &fVolume );
+}
+
+void World::Load( ConfigurationTable* configTable )
+{
+    SerializableFactory* s = SerializableFactory::GetInstance();
+    Volume volume = s->New< Volume >( configTable, "volume" );
+    VisMap visMap = s->New< VisMap >( configTable, "visAttributes" );
+
+    fVolume = volume;
+    SetVisMap( visMap );
+}
+
+void World::Save( ConfigurationTable* configTable ) const
+{
+    fVolume.SaveToParentTable( configTable, "volume" );
+    fVisMap.SaveToParentTable( configTable, "visAttributes" );
 }
 
 }; // namespace Viewer

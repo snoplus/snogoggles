@@ -9,6 +9,7 @@
 ///     11/07/11 : P.Jones - First Revision, new file. \n
 ///     14/07/11 : Olivia Wasalski - Added a constructor which accepts an sf::Color. \n
 ///     15/07/11 : Olivia Wasalski - Slight revision to make Colour const correct. \n
+///     22/07/11 : Olivia Wasalski - Colour now also inherits fron Serializable. \n
 ///
 /// \detail  
 ///
@@ -21,10 +22,13 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Config.hpp>
 
+#include <Viewer/Serializable.hh>
+
 namespace Viewer
 {
+    class ConfigurationTable;
 
-class Colour : public sf::Color
+class Colour : public sf::Color, public Serializable
 {
 public:
   Colour() : sf::Color() { };
@@ -34,6 +38,9 @@ public:
   inline void SetOpenGL() const;
 
   inline Colour AddColourFraction( const Colour& newColour, double fraction ) const;
+
+  void Load( ConfigurationTable* configTable );
+  void Save( ConfigurationTable* configTable ) const;
 };
 
 void
