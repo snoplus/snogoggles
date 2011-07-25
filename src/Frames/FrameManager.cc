@@ -25,11 +25,13 @@ FrameManager::Initialise()
   fColSize = resolution.x / fCols;
   fRowSize = fColSize;
   fRows = resolution.y / fRowSize;
-  fFrameGrid.resize( fCols, vector<int>( fRows, -1 ) ); 
+  fFrameGrid.resize( fCols, vector<int>( fRows, -2 ) ); 
   fMasterUI = new Frames::MasterUI( this );
   Rect masterUI;
   masterUI.SetFromResolutionRect( sf::Rect<double>( 0.0, fRowSize * fRows, resolution.x, resolution.y - fRowSize * fRows ) );
   fMasterUI->SetRect( masterUI );
+  CalculateGrid();
+  fMoveStart = sf::Vector2<double>( 0.0, 0.0 );
 }
 
 void 
@@ -44,6 +46,7 @@ FrameManager::LoadConfiguration( Configuration& config )
       fFrameContainers.push_back( currentFrameContainer );
       PositionFrame( fFrameContainers.size() - 1, currentFrameContainer->GetPos() );
     }
+  CalculateGrid();
 }
   
 void 
@@ -98,8 +101,9 @@ FrameManager::NewEvent( UIEvent& event )
 	break;
       }
     }
+  EventHandler( retEvent, event );
 // Focus change
-  if( oldFocus != fFocus ) 
+  if( oldFocus != fFocus && retEvent.fType != FrameUIReturn::eClosed ) 
     {
       if( oldFocus != -1 ) // Signal lost focus and resize
 	{
@@ -115,7 +119,6 @@ FrameManager::NewEvent( UIEvent& event )
 	    ResizeFrame( fFocus, eLarger );
 	}
     }
-  EventHandler( retEvent, event );
 }
 
 FrameUIReturn
@@ -137,12 +140,14 @@ FrameManager::EventHandler( FrameUIReturn& retEvent, UIEvent& event )
       break;
     case FrameUIReturn::eClosed:
       DeleteFrame( fFocus );
+      fFocus = -1;
       break;
     case FrameUIReturn::eStartMove:
       if( !fFrameContainers[fFocus]->IsPinned() )
 	{
 	  fMoving = true;
 	  fMoveOffset = event.GetResolutionCoord() - fFrameContainers[fFocus]->GetPos();
+	  fMoveStart = fFrameContainers[fFocus]->GetPos();
 	}
       break;
     case FrameUIReturn::eStopMove:
@@ -207,6 +212,24 @@ FrameManager::FindFrame( const sf::Vector2<double>& resolutionCoord )
   return -1;
 }
 
+void 
+FrameManager::NewFrame( const std::string& type )
+{
+  FrameContainer* currentFrameContainer = new FrameContainer();
+  currentFrameContainer->Initialise( type );
+  fFrameContainers.push_back( currentFrameContainer );
+  const int frameID = fFrameContainers.size() - 1;
+  // Position new frame
+  for( int iRow = 0; iRow < fRows - 1; iRow++ )
+    for( int iCol = 0; iCol < fCols; iCol++ )
+      if( CheckPosition( frameID, iRow, iCol, 1, 1 ) )
+	{
+	  PositionFrame( frameID, sf::Vector2<double>( iCol * fColSize, iRow * fRowSize ) );
+	  ResizeFrame( frameID, eMinimal );
+	  return;
+	}
+}
+
 void
 FrameManager::DeleteFrame( const int iFrame )
 {
@@ -216,6 +239,7 @@ FrameManager::DeleteFrame( const int iFrame )
   for( unsigned int uFrame = iFrame; uFrame < fFrameContainers.size() - 1; uFrame++ )
     fFrameContainers[uFrame] = fFrameContainers[uFrame+1];
   fFrameContainers.pop_back();
+  CalculateGrid();
 }
 
 void
@@ -223,14 +247,25 @@ FrameManager::PositionFrame( int iFrame, const sf::Vector2<double>& position )
 {
   int col = position.x / fColSize;
   int row = position.y / fRowSize;
+  sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
+  int colSize = currentSize.x / fColSize;
+  int rowSize = currentSize.y / fRowSize;
+  if( !CheckPosition( iFrame, row, col, rowSize, colSize ) )
+    {
+      fFrameContainers[iFrame]->Move( fMoveStart );
+      return;
+    }
   sf::Vector2<double> gridPos( col * fColSize, row * fRowSize );
   fFrameContainers[iFrame]->Move( gridPos );
-  (fFrameGrid[col])[row] = iFrame;
+  CalculateGrid();
 }
 
 void
 FrameManager::ResizeFrame( int iFrame, ESize size )
 {
+  sf::Vector2<double> position = fFrameContainers[iFrame]->GetPos();
+  int col = position.x / fColSize;
+  int row = position.y / fRowSize;
   switch( size )
     {
     case eMinimal:
@@ -242,10 +277,9 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
 	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
 	int rowSize = currentSize.y / fRowSize;
 	rowSize++;
-	if( rowSize > fRowSize )
-	  rowSize = fRowSize;
 	int colSize = aspectRatio * rowSize;
-	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
+	if( CheckPosition( iFrame, row, col, rowSize, colSize ) )
+	  fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
 	break;
       }
     case eSmaller:
@@ -254,21 +288,50 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
 	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
 	int rowSize = currentSize.y / fRowSize;
 	rowSize--;
-	if( rowSize < 1.0 )
-	  rowSize = 1.0;
 	int colSize = aspectRatio * rowSize;
-	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
+	if( CheckPosition( iFrame, row, col, rowSize, colSize ) )
+	  fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
 	break;
       }
     }
+  CalculateGrid();
 }
 
-void 
-FrameManager::NewFrame( const std::string& type )
+bool 
+FrameManager::CheckPosition( int iFrame, int row, int col, int rowSize, int colSize )
 {
-  FrameContainer* currentFrameContainer = new FrameContainer();
-  currentFrameContainer->Initialise( type );
-  fFrameContainers.push_back( currentFrameContainer );
-  PositionFrame( fFrameContainers.size() - 1, sf::Vector2<double>( 0.0, 0.0 ) );
-  ResizeFrame( fFrameContainers.size() - 1, eMinimal );
+  if( row + rowSize > fRows - 1 || col + colSize > fCols )
+    return false;
+
+  for( int iCol = col; iCol < col + colSize; iCol++ )
+    for( int iRow = row; iRow < row + rowSize; iRow++ )
+      {
+	if( (fFrameGrid[iCol])[iRow] != iFrame && (fFrameGrid[iCol])[iRow] != -1 )
+	  return false;
+      }
+
+  return true;
+}
+
+void
+FrameManager::CalculateGrid()
+{
+  // Reset the grid
+  for( int iCol = 0; iCol < fCols; iCol++ )
+    for( int iRow = 0; iRow < fRows - 1; iRow++ )
+      (fFrameGrid[iCol])[iRow] = -1;
+
+  // Fill the grid
+  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
+    {
+      sf::Vector2<double> framePos = fFrameContainers[uFrame]->GetPos();
+      sf::Vector2<double> frameSize = fFrameContainers[uFrame]->GetSize();
+      int cols = frameSize.x / fColSize;
+      int rows = frameSize.y / fRowSize;
+      int col = framePos.x / fColSize;
+      int row = framePos.y / fRowSize;
+      for( int iCol = col; iCol < col + cols; iCol++ )
+	for( int iRow = row; iRow < row + rows; iRow++ )
+	  (fFrameGrid[iCol])[iRow] = uFrame;
+    }
 }

@@ -187,8 +187,8 @@ FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
   configTable.SetS( "type", fFrame->GetName() );
   Rect full = GetContainerRect();
   sf::Rect<double> rect = full.GetResolutionRect();
-  configTable.SetI( "posX", static_cast<int>( rect.Left ) );
-  configTable.SetI( "posY", static_cast<int>( rect.Top ) );
+  configTable.SetI( "posX", static_cast<int>( rect.Left + 1 ) ); //+1 to allow safer positioning on load
+  configTable.SetI( "posY", static_cast<int>( rect.Top + 1 ) );
   configTable.SetI( "sizeX", static_cast<int>( rect.Width ) );
   configTable.SetI( "sizeY", static_cast<int>( rect.Height ) );
   configTable.SetI( "pinned", IsPinned() );

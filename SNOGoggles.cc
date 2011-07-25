@@ -29,21 +29,25 @@ int main( int argc, char *argv[] )
   ViewerWindow& viewer = ViewerWindow::GetInstance();
 
   viewer.Initialise();
-  Semaphore sema;
-  if( argc < 2 )
-    {
-      cout << "Wrong number of arguments, try snogoggles File.root" << endl;
-      return 1;
-    }
-  LoadRootFileThread loadData( argv[1], sema );
-  // Wait for first event to be loaded
-  sema.Wait();
+  LoadRootFileThread* loadData;
+  { // Scoping to protect semaphore from runtime errors and seg faults
+    Semaphore sema;
+    if( argc < 2 )
+      {
+	cout << "Wrong number of arguments, try snogoggles File.root" << endl;
+	return 1;
+      }
+    loadData = new LoadRootFileThread( argv[1], sema );
+    // Wait for first event to be loaded
+    sema.Wait();
+  }
 
   viewer.Run();
   viewer.Destruct();
 
-  loadData.KillAndWait();
+  loadData->KillAndWait();
 
+  delete loadData;
   XMLPlatformUtils::Terminate();
   return 0;
 }
