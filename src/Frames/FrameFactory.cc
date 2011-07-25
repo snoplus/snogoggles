@@ -1,9 +1,11 @@
 #include <Viewer/FrameFactory.hh>
 #include <Viewer/Logo.hh>
-#include <Viewer/Hist.hh>
 #include <Viewer/Manager3d.hh>
 #include <Viewer/TestBox.hh>
 #include <Viewer/LambertProjection.hh>
+#include <Viewer/IcosahedralProjection.hh>
+#include <Viewer/TimeHist.hh>
+#include <Viewer/ChargeHist.hh>
 #include <Viewer/EventUI.hh>
 #include <Viewer/About.hh>
 using namespace Viewer;
@@ -16,9 +18,14 @@ FrameFactory::FrameFactory()
 {
   Register( Frames::About::Name(), new Alloc<Frame, Frames::About>() );
   Register( Frames::Logo::Name(), new Alloc<Frame, Frames::Logo>() );
-  Register( Frames::Hist::Name(),new Alloc<Frame,Frames::Hist>() );
   Register( Frames::TestBox::Name(), new Alloc<Frame, Frames::TestBox>() );
   Register( Frames::LambertProjection::Name(), new Alloc<Frame, Frames::LambertProjection>() );
+  //Icosahedral Projection KC - 21/07/11
+  Register(Frames::IcosahedralProjection::Name(),new Alloc<Frame,Frames::IcosahedralProjection>());
+  //Time Histogram KC - 24/07/11
+  Register( Frames::TimeHist::Name(),new Alloc<Frame,Frames::TimeHist>() );
+  //Charge Histogram KC - 24/07/11
+  Register( Frames::ChargeHist::Name(),new Alloc<Frame,Frames::ChargeHist>() );
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   
   // Combo 3D frame added by Olivia Wasalski 05/07/11

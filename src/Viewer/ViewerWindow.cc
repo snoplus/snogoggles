@@ -37,6 +37,7 @@ ViewerWindow::Initialise()
       Coord::SetWindowResolution( resX, resY );
       fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles" );
       Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      Coord::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       DrawSplash();
       fFrameManager.Initialise();
       fFrameManager.LoadConfiguration( loadConfig );
@@ -123,7 +124,7 @@ ViewerWindow::EventLoop()
 //Drop through
 	default:
 	  Rect windowRect;
-	  windowRect.SetFromResolutionRect( sf::Rect<double>( 0.0, 0.0, Coord::GetWindowResolution().x, Coord::GetWindowResolution().y ) );
+       	  windowRect.SetFromResolutionRect( sf::Rect<double>( 0.0, 0.0, Coord::GetWindowResolution().x, Coord::GetWindowResolution().y ) );
 	  UIEvent uiEvent( event, windowRect );
 	  fFrameManager.NewEvent( uiEvent );
 	}
