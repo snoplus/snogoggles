@@ -61,6 +61,9 @@ private:
   enum ESize { eMinimal, eLarger, eSmaller };
   void ResizeFrame( int iFrame, ESize size );
 
+  bool CheckPosition( int iFrame, int row, int col, int rowSize, int colSize );
+  void CalculateGrid();
+
   std::vector< std::vector<int> > fFrameGrid;
   int fCols;
   int fRows;
@@ -72,6 +75,7 @@ private:
   int fFocus;
   bool fMoving;
   sf::Vector2<double> fMoveOffset;
+  sf::Vector2<double> fMoveStart;
 };
 
 } // ::Viewer

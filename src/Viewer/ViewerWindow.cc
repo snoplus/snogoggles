@@ -45,9 +45,9 @@ ViewerWindow::Initialise()
     {
       sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
       fWindowApp = new sf::RenderWindow( sf::VideoMode::GetDesktopMode(), "SNO Goggles" ); 
-      DrawSplash();
       Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
       Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      DrawSplash();
       fFrameManager.Initialise();
     }
 }
@@ -57,12 +57,16 @@ ViewerWindow::DrawSplash()
 {
   // Draw a splash background
   ImageManager& im = ImageManager::GetInstance();
-  sf::Sprite sp = im.NewSprite( "Logo.png" );
+  sf::Sprite snoSplash = im.NewSprite( "Logo.png" );
   sf::Vector2<double> windowResolution = Coord::GetWindowResolution();
-  sp.SetPosition( windowResolution.x / 2 - sp.GetSize().x / 2.0, windowResolution.y / 2 - sp.GetSize().y / 2.0 );
+  snoSplash.SetPosition( windowResolution.x / 2 - snoSplash.GetSize().x / 2.0, windowResolution.y / 2 - snoSplash.GetSize().y / 2.0 );
+
+  sf::Sprite sfmlSplash = im.NewSprite( "sfml.png" );
+  sfmlSplash.SetPosition( windowResolution.x - sfmlSplash.GetSize().x, windowResolution.y - sfmlSplash.GetSize().y );
 
   fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
-  fWindowApp->Draw( sp );
+  fWindowApp->Draw( snoSplash );
+  fWindowApp->Draw( sfmlSplash );
   fWindowApp->Display();
 }
 
