@@ -1,10 +1,19 @@
+#include <stdexcept>
+
 #include <Viewer/Semaphore.hh>
 using namespace Viewer;
 
 Semaphore::Semaphore()
 {
 #ifdef __APPLE__
-  fSemaphore = sem_open( "Sema", O_CREAT | O_EXCL, 0644, 0 ); //Must be hard coded name, or get Apple weirdness
+  fSemaphore = sem_open( "Sema", O_CREAT | O_EXCL, 0, 0 ); //Must be hard coded name, or get Apple weirdness
+  if( fSemaphore == SEM_FAILED )
+    {
+      sem_unlink( "Sema" );
+      fSemaphore = sem_open( "Sema", O_CREAT | O_EXCL, 0, 0 );
+      if( fSemaphore == SEM_FAILED )
+	throw std::runtime_error( "Semaphore cannot be created" );
+    }
 #else
   sem_init( &fSemaphore, 0, 0 );
 #endif
