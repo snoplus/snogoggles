@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::Hist
+/// \class Viewer::Frames::TimeHist
 ///
-/// \brief   Displays histogram of information from events
+/// \brief   Displays histogram of time information from events
 ///
 /// \author  Ken Clark <k.clark1@physics.ox.ac.uk>
 ///
@@ -12,8 +12,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Hist__
-#define __Viewer_Hist__
+#ifndef __Viewer_TimeHist__
+#define __Viewer_TimeHist__
 #endif
 
 #include <Viewer/Frame.hh>
@@ -23,7 +23,7 @@
 namespace Viewer {
   namespace Frames {
 
-    class Hist: public Frame {
+    class TimeHist: public Frame {
       
     public:
       void Initialise();
@@ -31,14 +31,29 @@ namespace Viewer {
       virtual void Render3d();
       virtual void EventLoop();
       void SaveConfiguration(ConfigurationTable& configTable);
-      void LoadConfiguration(ConfigurationTable& configTable);
-      virtual std::string GetName(){return Hist::Name();}
-      static std::string Name(){return std::string("Hist");}
+      virtual std::string GetName(){return TimeHist::Name();}
+      static std::string Name(){return std::string("TimeHist");}
 
     private:
-      Shape fHistBox;
+      int pmtTimes[400];
+      Shape vertLine;
+      Shape horizLine;
+      Shape horizMarker1;
+      Shape horizMarker2;
+      Shape horizMarker3;
+      Shape horizMarker4;
+      Text horizLabel1;
+      Text horizLabel2;
+      Text horizLabel3;
+      Text horizLabel4;
+      Text vertLabel1;
+      Text vertLabel2;
+      Text vertLabel3;
+      Text vertLabel4;
+       Shape histBar;
+      //Shape fHistBox;
       //bool fState;
-      Text fMessage;
+      //Text fMessage;
     };
 
 
