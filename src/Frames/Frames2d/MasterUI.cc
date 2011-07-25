@@ -5,7 +5,7 @@
 using namespace std;
 
 #include <Viewer/MasterUI.hh>
-#include <Viewer/TopBarButton.hh>
+#include <Viewer/NewFrameButton.hh>
 #include <Viewer/FrameFactory.hh>
 #include <Viewer/FrameManager.hh>
 using namespace Viewer;
@@ -20,7 +20,7 @@ MasterUI::MasterUI( FrameManager* manager )
     {
       double width = 1.0 / ( 1.5 * (double)fFrameNames.size() );
       sf::Rect<double> pos( 1.5 * width * (double)uLoop, 0.1, width, 0.8 );
-      GUIs::TopBarButton* button = fGUIManager.NewGUI<GUIs::TopBarButton>( pos );
+      GUIs::NewFrameButton* button = fGUIManager.NewGUI<GUIs::NewFrameButton>( pos );
       button->SetTitle( fFrameNames[uLoop] );
       fButtons.push_back( button );
     }
@@ -31,7 +31,8 @@ MasterUI::EventLoop()
 {
   while( !fEvents.empty() )
     {
-      if( !fButtons[fEvents.front().fguiID]->GetState() )
+      GUIReturn event = fEvents.front();
+      if( !event.IsNULL() && !fButtons[event.fguiID]->GetState() )
 	fFrameManager->NewFrame( fFrameNames[fEvents.front().fguiID] );
       fEvents.pop();
     }

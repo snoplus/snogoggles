@@ -43,7 +43,7 @@ RWWrapper::Draw( Sprite& object )
   DrawObject( newObject );
 }
 void 
-RWWrapper::Draw( Text& object )
+RWWrapper::Draw( Text& object, ETextAspect textScaling )
 {
   sf::Text newObject( object );
   sf::Rect<float> textRect = newObject.GetRect();
@@ -52,7 +52,18 @@ RWWrapper::Draw( Text& object )
   drawRect.SetFromLocalRect( oldObjectRect, fMotherRect );
   sf::Rect<double> objectRect = drawRect.GetResolutionRect();
   newObject.SetPosition( objectRect.Left, objectRect.Top );
-  newObject.Scale( objectRect.Width / textRect.Width, objectRect.Height / textRect.Height );
+  switch( textScaling )
+    {
+    case eNone:
+      newObject.Scale( objectRect.Width / textRect.Width, objectRect.Height / textRect.Height );
+      break;
+    case eWidth:
+      newObject.Scale( objectRect.Width / textRect.Width, objectRect.Width / textRect.Width ) ;
+      break;
+    case eHeight:
+      newObject.Scale( objectRect.Height / textRect.Height, objectRect.Height / textRect.Height );
+      break;
+    }
   DrawObject( newObject );
 }
 

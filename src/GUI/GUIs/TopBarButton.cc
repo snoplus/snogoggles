@@ -84,5 +84,5 @@ TopBarButton::Render( RWWrapper& windowApp )
 
   windowApp.Draw( fBar );
   windowApp.Draw( fLeft );
-  windowApp.Draw( fTitle );
+  windowApp.Draw( fTitle, RWWrapper::eHeight );
 }

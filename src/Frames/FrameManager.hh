@@ -58,7 +58,7 @@ private:
 
   void DeleteFrame( const int iFrame );
   void PositionFrame( int iFrame, const sf::Vector2<double>& position );
-  enum ESize { eMinimal, eLarger, eSmaller };
+  enum ESize { eMinimal, eLargest, eSmaller, eLarger };
   void ResizeFrame( int iFrame, ESize size );
 
   bool CheckPosition( int iFrame, int row, int col, int rowSize, int colSize );

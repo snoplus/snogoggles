@@ -16,9 +16,9 @@ Button::NewEvent( UIEvent& event )
       retEvent = GUIReturn( fID, fGlobalID );
       break;
     case sf::Event::MouseButtonReleased:
+      retEvent = GUIReturn( fID, fGlobalID );
     case sf::Event::LostFocus:
       fPressed = false;
-      retEvent = GUIReturn( fID, fGlobalID );
       break;
     }
   return retEvent;

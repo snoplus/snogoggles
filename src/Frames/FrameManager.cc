@@ -55,6 +55,12 @@ FrameManager::NewEvent( UIEvent& event )
 // Drop out to MasterUI frame if required FIRST
   if( fMasterUI->ContainsResolutionPoint( event.GetResolutionCoord() ) )
     fMasterUI->NewEvent( event );
+  else
+    {
+      UIEvent lostFocus = event;
+      lostFocus.Type = sf::Event::LostFocus;
+      fMasterUI->NewEvent( lostFocus );
+    }
 
   FrameUIReturn retEvent; // Returned event
   int oldFocus = fFocus;
@@ -116,7 +122,7 @@ FrameManager::NewEvent( UIEvent& event )
       if( fFocus != -1 )
 	{
 	  if( !fFrameContainers[fFocus]->IsPinned() )
-	    ResizeFrame( fFocus, eLarger );
+	    ResizeFrame( fFocus, eLargest );
 	}
     }
 }
@@ -271,6 +277,22 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
     case eMinimal:
       fFrameContainers[iFrame]->Resize( sf::Vector2<double>( fColSize, fRowSize ) );
       break;
+    case eLargest:
+      {
+	double aspectRatio = 1.0;//fFrameContainers[iFrame]->GetAspectRatio();
+	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
+	int rowSize = currentSize.y / fRowSize;
+	int colSize = aspectRatio * rowSize;
+	while( CheckPosition( iFrame, row, col, rowSize, colSize ) )
+	  {
+	    rowSize++;
+	    colSize = aspectRatio * rowSize;
+	  }
+	rowSize--;
+	colSize = aspectRatio * rowSize;
+	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );	
+	break;
+      }
     case eLarger:
       {
 	double aspectRatio = 1.0;//fFrameContainers[iFrame]->GetAspectRatio();

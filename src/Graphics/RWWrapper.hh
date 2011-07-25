@@ -33,11 +33,13 @@ namespace Viewer
 class RWWrapper
 {
 public:
+  enum ETextAspect { eNone, eWidth, eHeight };
+
   RWWrapper( sf::RenderWindow& renderWindow, Rect& motherRect );
 
   void Draw( Shape& object );
   void Draw( Sprite& object );
-  void Draw( Text& object );
+  void Draw( Text& object, ETextAspect textScaling = eNone );
   unsigned int GetFrameTime();
 
 protected:

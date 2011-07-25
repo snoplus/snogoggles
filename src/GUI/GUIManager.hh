@@ -32,6 +32,8 @@ namespace Viewer
 class GUIManager
 {
 public:
+  inline GUIManager();
+
   GUIReturn NewEvent( UIEvent& event );
   void Render( RWWrapper& windowApp );
   
@@ -45,6 +47,11 @@ private:
   std::vector<GUI*> fGUIObjects;
   int fFocus;
 };
+
+GUIManager::GUIManager()
+{
+  fFocus = -1;
+}
 
 template<class T>
 T* 

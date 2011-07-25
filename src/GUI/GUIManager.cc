@@ -39,6 +39,12 @@ GUIManager::NewEvent( UIEvent& event )
 	retEvent = fGUIObjects[fFocus]->NewEvent( event );
       break;
     }
+// Focus change
+  if( oldFocus != fFocus && oldFocus != -1 ) 
+    {
+      event.Type = sf::Event::LostFocus;
+      fGUIObjects[oldFocus]->NewEvent( event );
+    }
   return retEvent;
 }
   
