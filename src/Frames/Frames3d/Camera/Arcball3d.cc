@@ -23,9 +23,9 @@ Arcball3d::Arcball3d()
 {
     fRadius = 8900.0;
     fCameraDist = 3.5;
-    fCamera = Vector3(fCameraDist*fRadius, 0, 0);
-    fEye = Vector3(0,0,0);
-    fUp = Vector3(0,0,1);
+    fCamera.SetXYZ(fCameraDist*fRadius, 0, 0);
+    fEye.SetXYZ(0,0,0);
+    fUp.SetXYZ(0,0,1);
     fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
     fSpinSpeed = 0.001;
     fZoomSpeed = 0.0001;
@@ -71,19 +71,14 @@ void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggable
 
 void Arcball3d::LoadConfiguration( ConfigurationTable* configTable )
 {
-    ConfigTableUtils::GetVector3Safe( configTable, CAMERA_TAG, fCamera );
-    ConfigTableUtils::GetVector3Safe( configTable, EYE_TAG, fEye );
-    ConfigTableUtils::GetVector3Safe( configTable, UP_TAG, fUp );
     ConfigTableUtils::GetDSafe( configTable, RADIUS_TAG, fRadius );
     ConfigTableUtils::GetDSafe( configTable, CAMERA_DIST_TAG, fCameraDist );
     ConfigTableUtils::GetDSafe( configTable, ZOOM_TAG, fZoom );
+    fCamera.SetXYZ(fCameraDist*fRadius, 0, 0);
 }
 
 void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-    ConfigTableUtils::SetVector3( configTable, CAMERA_TAG, fCamera );
-    ConfigTableUtils::SetVector3( configTable, EYE_TAG, fEye );
-    ConfigTableUtils::SetVector3( configTable, UP_TAG, fUp );
     configTable->SetD( RADIUS_TAG, fRadius );
     configTable->SetD( CAMERA_DIST_TAG, fCameraDist );
     configTable->SetD( ZOOM_TAG, fZoom );

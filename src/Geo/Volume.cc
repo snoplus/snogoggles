@@ -23,9 +23,9 @@ Volume::Volume(
 void Volume::Render() const
 {
     glPushMatrix();
-    glTranslatef( fTranslation.x(), fTranslation.y(), fTranslation.z() );
+    glTranslatef( fTranslation.x, fTranslation.y, fTranslation.z );
     // TODO: Fix volume rotations!!!!!!!!!
-    glRotatef( fRotationAngle, fRotationAxis.x(), fRotationAxis.y(), fRotationAxis.z() );
+    glRotatef( fRotationAngle, fRotationAxis.x, fRotationAxis.y, fRotationAxis.z );
 
     if( fVisAttributes->IsVisible() == true )
     {

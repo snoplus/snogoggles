@@ -1,5 +1,4 @@
 #include <Viewer/DefaultHits3d.hh>
-#include <Viewer/OpenGLUtils.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/HitRenderer3d.hh>
@@ -92,7 +91,7 @@ void DefaultHits3d::RenderCalHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtL
 void DefaultHits3d::DisplayAllPMTs( RAT::DS::PMTProperties* pmtList )
 {
     glPushAttrib( GL_COLOR );
-    OpenGLUtils::SetColour( sf::Color( 200, 200, 200) );
+    ColourPalette::gPalette->GetPrimaryColour( eGrey ).SetOpenGL();
 
     for( int i = 0; i < pmtList->GetCorrPMTsNumber(); i++ )
     {

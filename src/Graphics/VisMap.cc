@@ -1,4 +1,5 @@
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/SerializableFactory.hh>
 #include <Viewer/StringUtils.hh>
 #include <Viewer/VisMap.hh>
@@ -31,14 +32,48 @@ void VisMap::Save( ConfigurationTable* configTable ) const
     configTable->SetS( "names", names );
 }
 
+void VisMap::LoadVisibilitySafe( ConfigurationTable* configTable )
+{
+    try { LoadVisibility( configTable ); }
+    catch( ConfigurationTable::NoAttributeError& e ) { }
+}
+
+void VisMap::LoadVisibility( ConfigurationTable* configTable )
+{
+    std::map< std::string, VisAttributes >::iterator itr;
+    for( itr = fVisAttributeMap.begin(); itr != fVisAttributeMap.end(); itr++ )
+        itr->second.SetVisibility( ConfigTableUtils::GetBoolean( configTable, itr->first ) );
+}
+
+void VisMap::SaveVisibility( ConfigurationTable* configTable ) const
+{
+    std::map< std::string, VisAttributes >::const_iterator itr;
+    for( itr = fVisAttributeMap.begin(); itr != fVisAttributeMap.end(); itr++ )
+        ConfigTableUtils::SetBoolean( configTable, itr->first, itr->second.IsVisible() );
+}
+
 const VisAttributes* VisMap::GetVisAttributes( const std::string& name ) const
 {
-    if( fVisAttributeMap.count( name ) == 0 )
-        throw NoVisAttributesError( name );
-
+    CheckValidity( name );
     std::map< std::string, VisAttributes >::const_iterator itr;
     itr = fVisAttributeMap.find( name );
     return &( itr->second );
+}
+
+void VisMap::SetOpenGLColour( const std::string& name ) const
+{
+    CheckValidity( name );
+    std::map< std::string, VisAttributes >::const_iterator itr;
+    itr = fVisAttributeMap.find( name );
+    itr->second.SetOpenGLColour();
+}
+
+bool VisMap::IsVisible( const std::string& name ) const
+{
+    CheckValidity( name );
+    std::map< std::string, VisAttributes >::const_iterator itr;
+    itr = fVisAttributeMap.find( name );
+    return itr->second.IsVisible();
 }
 
 }; // namespace Viewer

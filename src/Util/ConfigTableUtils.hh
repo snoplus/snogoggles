@@ -38,16 +38,6 @@ public:
     template<typename T> static inline T
         GetEnum( ConfigurationTable* configTable, const std::string& name );
 
-    static void SetColour( ConfigurationTable* configTable, 
-        const std::string& name, Colour value );
-    static Colour GetColour( ConfigurationTable* configTable, 
-        const std::string& name );
-
-    static void SetVector3( ConfigurationTable* configTable, 
-        const std::string& name, const Vector3& value );
-    static Vector3 GetVector3( ConfigurationTable* configTable, 
-        const std::string& name );
-
     // These methods catch the exception.
     static void GetISafe( ConfigurationTable* configTable, 
         const std::string& name, int& value );
@@ -60,22 +50,11 @@ public:
         const std::string& name, bool& value );
     template<typename T> static inline void GetEnumSafe( ConfigurationTable* configTable, 
         const std::string& name, T& value );
-    static void GetVector3Safe( ConfigurationTable* configTable, 
-        const std::string& name, Vector3& value );
 
 private:
 
     static const std::string TRUE_TAG;
     static const std::string FALSE_TAG;
-
-    static const std::string VECTOR3_X;
-    static const std::string VECTOR3_Y;
-    static const std::string VECTOR3_Z;
-
-    static const std::string COLOUR_R;
-    static const std::string COLOUR_G;
-    static const std::string COLOUR_B;
-    static const std::string COLOUR_A;
 
 
 }; // class ConfigTableUtils 

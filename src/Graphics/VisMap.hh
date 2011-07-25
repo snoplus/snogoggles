@@ -55,13 +55,22 @@ public:
     void Load( ConfigurationTable* configTable );
     void Save( ConfigurationTable* configTable ) const;
 
+    void LoadVisibility( ConfigurationTable* configTable );
+    void LoadVisibilitySafe( ConfigurationTable* configTable );
+    void SaveVisibility( ConfigurationTable* configTable ) const;
+
     const VisAttributes* GetVisAttributes( const std::string& name ) const;
     inline void AddVisAttributes( const std::string& name, const VisAttributes& visAttributes );
 
-    inline const bool IsEmpty();
+    void SetOpenGLColour( const std::string& name ) const;
+    bool IsVisible( const std::string& name ) const;
+
+    inline const int Count( const std::string& name ) const;
+    inline const bool IsEmpty() const;
 
 private:
 
+    inline void CheckValidity( const std::string& name ) const;
     std::map< std::string, VisAttributes > fVisAttributeMap;
 
 }; // class VisMap
@@ -75,11 +84,21 @@ void VisMap::AddVisAttributes( const std::string& name, const VisAttributes& vis
     fVisAttributeMap[ name ] = visAttributes;
 }
 
-const bool VisMap::IsEmpty()
+const bool VisMap::IsEmpty() const
 {
     return fVisAttributeMap.empty();
 }
 
+const int VisMap::Count( const std::string& name ) const
+{
+    return fVisAttributeMap.count( name );
+}
+
+void VisMap::CheckValidity( const std::string& name ) const
+{
+    if( fVisAttributeMap.count( name ) == 0 )
+        throw NoVisAttributesError( name );
+}
 
 } // ::Viewer
 
