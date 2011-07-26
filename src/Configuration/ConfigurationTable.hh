@@ -48,7 +48,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace xercesc_2_8
+namespace xercesc_3_1
 {
   class DOMDocument;
   class DOMElement;
@@ -74,7 +74,7 @@ public:
     NoAttributeError( const std::string& param ) : std::runtime_error( param ) {}
   };
 
-  ConfigurationTable( xercesc_2_8::DOMElement* element, bool output, xercesc_2_8::DOMDocument* domDocument );
+  ConfigurationTable( xercesc_3_1::DOMElement* element, bool output, xercesc_3_1::DOMDocument* domDocument );
 
   ConfigurationTable* GetTable( const std::string& name );
   inline unsigned int GetNumTables();
@@ -89,8 +89,8 @@ public:
   void SetS( const std::string& name, const std::string& value );
 private:
   std::map< std::string, ConfigurationTable* > fConfigTables;
-  xercesc_2_8::DOMDocument* fDOMDocument;
-  xercesc_2_8::DOMElement* fDOMElement;
+  xercesc_3_1::DOMDocument* fDOMDocument;
+  xercesc_3_1::DOMElement* fDOMElement;
   bool fOutput;
 };
 

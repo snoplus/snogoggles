@@ -188,7 +188,7 @@ void IcosahedralProjection::Render2d(RWWrapper& windowApp){
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
   RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
-  for( int ipmt=0;ipmt<rPMTList->GetCorrPMTsNumber();ipmt++){
+  for( int ipmt=0;ipmt<rPMTList->GetPMTCount();ipmt++){
     const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(ipmt));
     fOpenPMT.SetPosition(projPos);
     //fOpenPMT.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
@@ -196,7 +196,7 @@ void IcosahedralProjection::Render2d(RWWrapper& windowApp){
     windowApp.Draw(fOpenPMT);
   }
   for(int ipmt=0;ipmt<rEV->GetPMTCalCount();ipmt++){
-    const sf::Vector2<double> projPos = Projection(rEV->GetPMTCal(ipmt)->GetPos(rPMTList));
+    const sf::Vector2<double> projPos = Projection( rPMTList->GetPos( rEV->GetPMTCal(ipmt)->GetID() ) );
     fFilledPMT.SetPosition(projPos);
     double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
     if(pmtHitTime<250.0)

@@ -76,10 +76,20 @@ Configuration::SaveConfiguration()
   XMLCh* ls = XMLString::transcode( "LS" );
   DOMImplementation* domImplementation = DOMImplementationRegistry::getDOMImplementation( ls );
   XMLString::release( &ls );
-  DOMWriter* serializer = reinterpret_cast<DOMImplementationLS*>( domImplementation)->createDOMWriter();
-  serializer->setFeature( XMLUni::fgDOMWRTFormatPrettyPrint, true );
-  XMLFormatTarget* target = new LocalFileFormatTarget( fFileName.c_str() );
-  serializer->writeNode( target, *fDOMDocument );
+  DOMLSSerializer* serializer = reinterpret_cast<DOMImplementationLS*>( domImplementation )->createLSSerializer();
+  DOMLSOutput *pOutput = reinterpret_cast<DOMImplementationLS*>( domImplementation )->createLSOutput();
+  DOMConfiguration *pConfiguration = serializer->getDomConfig();
+  // Have a nice output
+  if( pConfiguration->canSetParameter( XMLUni::fgDOMWRTFormatPrettyPrint, true ) )
+    pConfiguration->setParameter( XMLUni::fgDOMWRTFormatPrettyPrint, true );
+ 
+  LocalFileFormatTarget* pTarget = new LocalFileFormatTarget( fFileName.c_str() );
+  pOutput->setByteStream(pTarget);
+ 
+  serializer->write( fDOMDocument, pOutput );
+  delete pTarget;
+  pOutput->release();
+  serializer->release();
 }
 
 ConfigurationTable*

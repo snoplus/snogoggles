@@ -116,7 +116,7 @@ ViewerWindow::EventLoop()
 
 // Now events to use and then pass to frames
 	case sf::Event::KeyPressed:
-	  if( event.Key.Code == sf::Key::Escape )
+	  if( event.Key.Code == sf::Keyboard::Escape )
 	    {
 	      fWindowApp->Close();
 	      break;

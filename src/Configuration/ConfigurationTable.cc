@@ -10,7 +10,7 @@ using namespace Viewer;
 using namespace xercesc;
 
 
-ConfigurationTable::ConfigurationTable( xercesc_2_8::DOMElement* element, bool output, DOMDocument* domDocument )
+ConfigurationTable::ConfigurationTable( xercesc_3_1::DOMElement* element, bool output, DOMDocument* domDocument )
 {
   fDOMDocument = domDocument;
   fDOMElement = element;

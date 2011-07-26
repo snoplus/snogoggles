@@ -93,7 +93,7 @@ void DefaultHits3d::DisplayAllPMTs( RAT::DS::PMTProperties* pmtList )
     glPushAttrib( GL_COLOR );
     ColourPalette::gPalette->GetPrimaryColour( eGrey ).SetOpenGL();
 
-    for( int i = 0; i < pmtList->GetCorrPMTsNumber(); i++ )
+    for( int i = 0; i < pmtList->GetPMTCount(); i++ )
     {
         if( fDisplayFrontPMTsOnly == true )
             RenderFrontHollowHitOnly( pmtList->GetPos( i ) );
@@ -117,21 +117,21 @@ void DefaultHits3d::SetColour( RAT::DS::PMTCal* pmt )
 void DefaultHits3d::RenderHit( RAT::DS::PMTUnCal* pmt, RAT::DS::PMTProperties* pmtList )
 {
     if( fDisplayFrontPMTsOnly == true )
-        RenderFrontSolidHitOnly( pmt->GetPos( pmtList ) );
+      RenderFrontSolidHitOnly( pmtList->GetPos( pmt->GetID() ) );
     else if( fDisplayAllPMTs == true )
-        HitRenderer3d::RenderSolidHit( pmt->GetPos( pmtList ) );
+        HitRenderer3d::RenderSolidHit( pmtList->GetPos( pmt->GetID() ) );
     else
-        RenderSolidOrHollowHit( pmt->GetPos( pmtList ) );
+        RenderSolidOrHollowHit( pmtList->GetPos( pmt->GetID() ) );
 }
 
 void DefaultHits3d::RenderHit( RAT::DS::PMTCal* pmt, RAT::DS::PMTProperties* pmtList )
 {
     if( fDisplayFrontPMTsOnly == true )
-        RenderFrontSolidHitOnly( pmt->GetPos( pmtList ) );
+        RenderFrontSolidHitOnly( pmtList->GetPos( pmt->GetID() ) );
     else if( fDisplayAllPMTs == true )
-        HitRenderer3d::RenderSolidHit( pmt->GetPos( pmtList ) );
+        HitRenderer3d::RenderSolidHit( pmtList->GetPos( pmt->GetID() ) );
     else
-        RenderSolidOrHollowHit( pmt->GetPos( pmtList ) );
+        RenderSolidOrHollowHit( pmtList->GetPos( pmt->GetID() ) );
 }
 
 void DefaultHits3d::RenderFrontSolidHitOnly( const TVector3& pos )

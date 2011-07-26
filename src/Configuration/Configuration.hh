@@ -34,7 +34,7 @@
 #include <string>
 #include <stdexcept>
 
-namespace xercesc_2_8
+namespace xercesc_3_1
 {
   class DOMDocument;
   class DOMElement;
@@ -76,8 +76,8 @@ public:
 private:
   std::string fFileName;
   std::vector< ConfigurationTable* > fConfigTables;
-  xercesc_2_8::DOMDocument* fDOMDocument;
-  xercesc_2_8::DOMElement* fRootElement;
+  xercesc_3_1::DOMDocument* fDOMDocument;
+  xercesc_3_1::DOMElement* fRootElement;
   bool fOutput;
 
 };

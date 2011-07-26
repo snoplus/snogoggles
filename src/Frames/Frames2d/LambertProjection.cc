@@ -72,7 +72,7 @@ LambertProjection::Render2d( RWWrapper& windowApp )
 
   RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
   
-  for( int ipmt = 0; ipmt < rPMTList->GetCorrPMTsNumber(); ipmt++ )
+  for( int ipmt = 0; ipmt < rPMTList->GetPMTCount(); ipmt++ )
     {
       TVector3 pmtPos = rPMTList->GetPos( ipmt );
       const sf::Vector2<double> projPos = Project( pmtPos );
@@ -82,7 +82,7 @@ LambertProjection::Render2d( RWWrapper& windowApp )
     }
   for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
     {
-      const sf::Vector2<double> projPos = Project( rEV->GetPMTCal( ipmt )->GetPos( rPMTList ) );
+      const sf::Vector2<double> projPos = Project( rPMTList->GetPos( rEV->GetPMTCal( ipmt )->GetID() ) );
       fFilledPMT.SetPosition( projPos );
       double pmtHitTime = rEV->GetPMTCal( ipmt )->GetTime();
       if( pmtHitTime < 250.0 )
