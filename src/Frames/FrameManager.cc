@@ -279,7 +279,7 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
       break;
     case eLargest:
       {
-	double aspectRatio = 1.0;//fFrameContainers[iFrame]->GetAspectRatio();
+	double aspectRatio = fFrameContainers[iFrame]->GetAspectRatio();
 	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
 	int rowSize = currentSize.y / fRowSize;
 	int colSize = aspectRatio * rowSize;
@@ -295,7 +295,7 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
       }
     case eLarger:
       {
-	double aspectRatio = 1.0;//fFrameContainers[iFrame]->GetAspectRatio();
+	double aspectRatio = fFrameContainers[iFrame]->GetAspectRatio();
 	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
 	int rowSize = currentSize.y / fRowSize;
 	rowSize++;
@@ -306,7 +306,7 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
       }
     case eSmaller:
       {
-	double aspectRatio = 1.0;//fFrameContainers[iFrame]->GetAspectRatio();
+	double aspectRatio = fFrameContainers[iFrame]->GetAspectRatio();
 	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
 	int rowSize = currentSize.y / fRowSize;
 	rowSize--;
@@ -322,7 +322,7 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
 bool 
 FrameManager::CheckPosition( int iFrame, int row, int col, int rowSize, int colSize )
 {
-  if( row + rowSize > fRows - 1 || col + colSize > fCols )
+  if( row + rowSize > fRows || col + colSize > fCols )
     return false;
 
   for( int iCol = col; iCol < col + colSize; iCol++ )
@@ -340,7 +340,7 @@ FrameManager::CalculateGrid()
 {
   // Reset the grid
   for( int iCol = 0; iCol < fCols; iCol++ )
-    for( int iRow = 0; iRow < fRows - 1; iRow++ )
+    for( int iRow = 0; iRow < fRows; iRow++ )
       (fFrameGrid[iCol])[iRow] = -1;
 
   // Fill the grid

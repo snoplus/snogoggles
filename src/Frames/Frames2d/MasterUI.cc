@@ -32,7 +32,7 @@ MasterUI::EventLoop()
   while( !fEvents.empty() )
     {
       GUIReturn event = fEvents.front();
-      if( !event.IsNULL() && !fButtons[event.fguiID]->GetState() )
+      if( !fButtons[event.fguiID]->GetState() )
 	fFrameManager->NewFrame( fFrameNames[fEvents.front().fguiID] );
       fEvents.pop();
     }

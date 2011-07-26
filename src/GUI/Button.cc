@@ -13,7 +13,6 @@ Button::NewEvent( UIEvent& event )
     {
     case sf::Event::MouseButtonPressed:
       fPressed = true;
-      retEvent = GUIReturn( fID, fGlobalID );
       break;
     case sf::Event::MouseMoved:
       fHover = true;

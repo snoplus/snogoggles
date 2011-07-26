@@ -65,6 +65,8 @@ public:
   sf::Vector2<double> GetPos();
   sf::Vector2<double> GetSize();
 
+  inline double GetAspectRatio();
+
   inline bool IsPinned();
 private:
   Rect fContainerRect;
@@ -78,6 +80,12 @@ private:
   GUIs::TopBarButton* fTopBar;
   GUIs::Button* fTopBarRight;
 };
+
+double
+FrameContainer::GetAspectRatio()
+{
+  return fFrame->GetAspectRatio();
+}
 
 bool
 FrameContainer::IsPinned()

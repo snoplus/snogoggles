@@ -43,6 +43,9 @@ public:
   //actually draw it
   virtual void Render2d(RWWrapper& windowApp);
 
+  /// 1.5 cols to every row
+  double GetAspectRatio() { return 1.5; }
+
 private:
   //figure out where PMT should be
   sf::Vector2<double> Projection(TVector3 pmtPos);
