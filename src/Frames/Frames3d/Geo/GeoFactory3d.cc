@@ -6,6 +6,7 @@
 #include <Viewer/Geodesic3d.hh>
 #include <Viewer/XML3d.hh>
 #include <Viewer/GDML3d.hh>
+#include <Viewer/RATGeo3d.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -27,6 +28,7 @@ GeoFactory3d::GeoFactory3d()
     fFactory.Register( Geodesic3d::Name(), new Alloc<GeoManager3d, Geodesic3d>() );
     fFactory.Register( XML3d::Name(), new Alloc<GeoManager3d, XML3d>() );
     fFactory.Register( GDML3d::Name(), new Alloc<GeoManager3d, GDML3d>() );
+    fFactory.Register( RATGeo3d::Name(), new Alloc<GeoManager3d, RATGeo3d>() );
 }
 
 GeoManager3d* GeoFactory3d::GetGeoManager( const std::string name )

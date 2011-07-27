@@ -11,12 +11,16 @@ namespace Frames {
 WorldManager3d::WorldManager3d() 
 {
     fGeoRenderType = WIREFRAME;
+    fWorld = NULL;
 }
 
 WorldManager3d::~WorldManager3d() 
 {
-    delete fWorld;
-    fWorld = NULL;
+    if( fWorld != NULL )
+    {
+        delete fWorld;
+        fWorld = NULL;
+    }
 }
 
 void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
