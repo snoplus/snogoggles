@@ -91,9 +91,13 @@ void Manager3d::CreateGUIObjects()
 void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
 {
     ModuleFactory3d::GetInstance()->SetAllModuleTypes( this, configTable );
+    LoadWithoutSettingModules( configTable );
+}
+
+void Manager3d::LoadWithoutSettingModules( ConfigurationTable& configTable )
+{
     LoadModuleConfigurations( configTable );
     ConfigTableUtils::GetBooleanSafe( &configTable, DISPLAY_AXIS_TAG, fDisplayAxis );
-    Initialise();
 }
 
 void Manager3d::LoadModuleConfigurations( ConfigurationTable& configTable )

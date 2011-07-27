@@ -110,6 +110,7 @@ public:
     void CreateGUIObjects();
 
     void LoadConfiguration( ConfigurationTable& configTable );
+    void LoadWithoutSettingModules( ConfigurationTable& configTable );
 
     /// Saves all necessary configurations of the Manager3d class
     void SaveConfiguration( ConfigurationTable& configTable );

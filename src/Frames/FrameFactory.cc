@@ -8,6 +8,7 @@
 #include <Viewer/EventUI.hh>
 #include <Viewer/About.hh>
 #include <Viewer/Combo3d.hh>
+#include <Viewer/TracksFrame3d.hh>
 using namespace Viewer;
 
 #include <vector>
@@ -28,8 +29,9 @@ FrameFactory::FrameFactory()
   Register( Frames::ChargeHist::Name(),new Alloc<Frame,Frames::ChargeHist>() );
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   
-  // Combo 3D frame added by Olivia Wasalski 05/07/11
+  // 3D Frames
   Register( Frames::Combo3d::Name(), new OptionsAlloc<Frame, Frames::Combo3d>() );
+  Register( Frames::TracksFrame3d::Name(), new Alloc<Frame, Frames::TracksFrame3d>() );
 }
 
 vector<string>
