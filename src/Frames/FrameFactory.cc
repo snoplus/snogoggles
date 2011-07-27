@@ -1,6 +1,5 @@
 #include <Viewer/FrameFactory.hh>
 #include <Viewer/Logo.hh>
-#include <Viewer/Manager3d.hh>
 #include <Viewer/TestBox.hh>
 #include <Viewer/LambertProjection.hh>
 #include <Viewer/IcosahedralProjection.hh>
@@ -8,6 +7,7 @@
 #include <Viewer/ChargeHist.hh>
 #include <Viewer/EventUI.hh>
 #include <Viewer/About.hh>
+#include <Viewer/Combo3d.hh>
 using namespace Viewer;
 
 #include <vector>
@@ -29,7 +29,7 @@ FrameFactory::FrameFactory()
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   
   // Combo 3D frame added by Olivia Wasalski 05/07/11
-  Register( Frames::Manager3d::Name(), new OptionsAlloc<Frame, Frames::Manager3d>() );
+  Register( Frames::Combo3d::Name(), new OptionsAlloc<Frame, Frames::Combo3d>() );
 }
 
 vector<string>

@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<SNOGoggles resX="1680" resY="1050"/>
+<SNOGoggles resX="1680" resY="1050">
+
+  <Frame pinned="1" posX="1" posY="1" sizeX="280" sizeY="280" type="About"/>
+
+  <Frame pinned="1" posX="981" posY="1" sizeX="420" sizeY="420" type="ChargeHist"/>
+
+  <Frame pinned="1" posX="1401" posY="1" sizeX="280" sizeY="280" type="EventUI"/>
+
+  <Frame DisplayAxes="TRUE" pinned="1" posX="281" posY="1" sizeX="700" sizeY="700" type="3D-Combo">
+    <CameraManager3d CameraDist="3.5000e+00" Radius="8.9000e+03" Zoom="8.0000e-01" type="Arcball"/>
+    <HitManager3d DisplayAllPMTs="FALSE" DisplayFrontPMTsOnly="FALSE" PMTType="0" type="DefaultHits"/>
+  </Frame>
+
+</SNOGoggles>
