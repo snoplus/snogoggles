@@ -8,7 +8,9 @@
 #include <Viewer/EventUI.hh>
 #include <Viewer/About.hh>
 #include <Viewer/Combo3d.hh>
+#include <Viewer/HitsFrame3d.hh>
 #include <Viewer/TracksFrame3d.hh>
+#include <Viewer/RATFrame3d.hh>
 using namespace Viewer;
 
 #include <vector>
@@ -31,7 +33,9 @@ FrameFactory::FrameFactory()
   
   // 3D Frames
   Register( Frames::Combo3d::Name(), new OptionsAlloc<Frame, Frames::Combo3d>() );
+  Register( Frames::HitsFrame3d::Name(), new Alloc<Frame, Frames::HitsFrame3d>() );
   Register( Frames::TracksFrame3d::Name(), new Alloc<Frame, Frames::TracksFrame3d>() );
+  Register( Frames::RATFrame3d::Name(), new Alloc<Frame, Frames::RATFrame3d>() );
 }
 
 vector<string>

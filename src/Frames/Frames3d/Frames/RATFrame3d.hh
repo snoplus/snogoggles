@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class TracksFrame3d
+/// \class RATFrame3d
 ///
 /// \brief   
 ///
@@ -13,28 +13,28 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames3d_TracksFrame3d__
-#define __Viewer_Frames3d_TracksFrame3d__
+#ifndef __Viewer_Frames3d_RATFrame3d__
+#define __Viewer_Frames3d_RATFrame3d__
 
 #include <Viewer/Specialized3d.hh>
 
 namespace Viewer {
 namespace Frames {
 
-class TracksFrame3d : public Specialized3d {
+class RATFrame3d : public Specialized3d {
 public:
-    TracksFrame3d();
+    RATFrame3d();
     static inline std::string Name();
     inline std::string GetName();
 
-}; // class TracksFrame3d
+}; // class RATFrame3d
 
-std::string TracksFrame3d::Name()
+std::string RATFrame3d::Name()
 {
-    return "Tracks";
+    return "RATGeometry";
 }
 
-std::string TracksFrame3d::GetName()
+std::string RATFrame3d::GetName()
 {
     return Name();
 }
@@ -42,4 +42,4 @@ std::string TracksFrame3d::GetName()
 } // ::Frames3d
 } // ::Viewer
 
-#endif // __Viewer_Frames3d_TracksFrame3d__
+#endif // __Viewer_Frames3d_RATFrame3d__

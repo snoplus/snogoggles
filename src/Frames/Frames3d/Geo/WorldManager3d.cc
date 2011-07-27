@@ -10,7 +10,7 @@ namespace Frames {
 
 WorldManager3d::WorldManager3d() 
 {
-    fGeoRenderType = SOLID;
+    fGeoRenderType = WIREFRAME;
 }
 
 WorldManager3d::~WorldManager3d() 

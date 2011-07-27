@@ -7,12 +7,7 @@ namespace Viewer {
 namespace Frames {
 
 TracksFrame3d::TracksFrame3d()
-    : Manager3d( Arcball3d::Name() + " NULL " + DefaultTracks3d::Name() + " " + Geodesic3d::Name() ) { }
-
-void TracksFrame3d::LoadConfiguration( ConfigurationTable& configTable )
-{
-    LoadWithoutSettingModules( configTable );
-}
+    : Specialized3d( Arcball3d::Name() + " NULL " + DefaultTracks3d::Name() + " " + Geodesic3d::Name() ) { }
 
 }; // namespace Frames
 }; // namespace Viewer
