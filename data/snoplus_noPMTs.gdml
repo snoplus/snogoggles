@@ -1,0 +1,2285 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+  <define/>
+
+  <materials>
+    <element Z="1" name="Hydrogen0x1ac9ff30">
+      <atom unit="g/mole" value="1.008"/>
+    </element>
+    <element Z="6" name="Carbon0x1acb34e0">
+      <atom unit="g/mole" value="12.01"/>
+    </element>
+    <element Z="8" name="Oxygen0x1aca2980">
+      <atom unit="g/mole" value="16"/>
+    </element>
+    <material name="acrylic_black0x1af479b0" state="solid">
+      <D unit="g/cm3" value="1.14"/>
+      <fraction n="0.0703" ref="Hydrogen0x1ac9ff30"/>
+      <fraction n="0.558" ref="Carbon0x1acb34e0"/>
+      <fraction n="0.3717" ref="Oxygen0x1aca2980"/>
+    </material>
+    <material name="acrylic_sno0x1af47ed0" state="solid">
+      <D unit="g/cm3" value="1.14"/>
+      <fraction n="0.0703" ref="Hydrogen0x1ac9ff30"/>
+      <fraction n="0.558" ref="Carbon0x1acb34e0"/>
+      <fraction n="0.3717" ref="Oxygen0x1aca2980"/>
+    </material>
+    <element Z="7" name="Nitrogen0x1aca2430">
+      <atom unit="g/mole" value="14.01"/>
+    </element>
+    <material name="labppo_scintillator0x1af866c0" state="solid">
+      <D unit="g/cm3" value="0.867"/>
+      <fraction n="0.87819666834" ref="Carbon0x1acb34e0"/>
+      <fraction n="0.12149122166" ref="Hydrogen0x1ac9ff30"/>
+      <fraction n="0.00014559" ref="Nitrogen0x1aca2430"/>
+      <fraction n="0.00016629" ref="Oxygen0x1aca2980"/>
+    </material>
+    <material name="kevlar0x1af60d10" state="solid">
+      <D unit="g/cm3" value="1.44"/>
+      <fraction n="0.043" ref="Hydrogen0x1ac9ff30"/>
+      <fraction n="0.7058" ref="Carbon0x1acb34e0"/>
+      <fraction n="0.1343" ref="Oxygen0x1aca2980"/>
+      <fraction n="0.1176" ref="Nitrogen0x1aca2430"/>
+    </material>
+    <material name="lightwater_sno0x1af642c0" state="solid">
+      <D unit="g/cm3" value="1"/>
+      <fraction n="0.1119" ref="Hydrogen0x1ac9ff30"/>
+      <fraction n="0.8881" ref="Oxygen0x1aca2980"/>
+    </material>
+    <element Z="14" name="Silicon0x1aca33b0">
+      <atom unit="g/mole" value="28.09"/>
+    </element>
+    <material name="rock0x1af7ac70" state="solid">
+      <D unit="g/cm3" value="2.7"/>
+      <fraction n="0.4675" ref="Silicon0x1aca33b0"/>
+      <fraction n="0.5325" ref="Oxygen0x1aca2980"/>
+    </material>
+  </materials>
+
+  <solids>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="avneck0x1b048830" rmax="793.75" rmin="728.97998046875" startphi="0" z="6421"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04afd0" rmax="25.4" rmin="19.05" startphi="0" z="611.35"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04bd20" rmax="25.4" rmin="19.05" startphi="0" z="720.725"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04c340" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04c990" rmax="25.4" rmin="19.05" startphi="0" z="1597.025"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04d9f0" rmax="25.4" rmin="19.05" startphi="0" z="820.9"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04e3f0" rmax="25.4" rmin="19.05" startphi="0" z="720.725"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04e6d0" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04e960" rmax="25.4" rmin="19.05" startphi="0" z="1597.025"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04ebf0" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04ee90" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b04f120" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b050120" rmax="47.625" rmin="38.1" startphi="0" z="789.15"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b050e60" rmax="47.625" rmin="38.1" startphi="0" z="714.375"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b0514a0" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b051ac0" rmax="47.625" rmin="38.1" startphi="0" z="1584.325"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b051d80" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b052040" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b0523b0" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b052620" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b0528e0" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b052ba0" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b052e50" rmax="47.625" rmin="38.1" startphi="0" z="1787.525"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b053a70" rmax="25.4" rmin="19.05" startphi="0" z="611.35"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b0543f0" rmax="25.4" rmin="19.05" startphi="0" z="720.725"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b0546d0" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b054990" rmax="25.4" rmin="19.05" startphi="0" z="1597.025"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b054c50" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b054f00" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b055190" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b055420" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="AVPPipe0x1b0556b0" rmax="25.4" rmin="19.05" startphi="0" z="1800.225"/>
+    <box lunit="mm" name="Box0x1b04fa10" x="82.5500030517578" y="85.0899963378906" z="146.050003051758"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b056770" rmax="27.2399997711182" rmin="0" startphi="0" z="94.1775512695312"/>
+    <subtraction name="Tmp10x1b0568b0">
+      <first ref="Box0x1b04fa10"/>
+      <second ref="Hcylinder0x1b056770"/>
+      <position name="Tmp10x1b0568b0_pos" unit="mm" x="41.2750015258789" y="0" z="30.1599998474121"/>
+      <rotation name="Tmp10x1b0568b0_rot" unit="deg" x="180" y="-77.0000002074245" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b056680" rmax="27.2399997711182" rmin="0" startphi="0" z="86.0702514648438"/>
+    <subtraction name="AVPSupSolid0x1b056ab0">
+      <first ref="Tmp10x1b0568b0"/>
+      <second ref="Lcylinder0x1b056680"/>
+      <position name="AVPSupSolid0x1b056ab0_pos" unit="mm" x="-41.2750015258789" y="0" z="20.6399993896484"/>
+      <rotation name="AVPSupSolid0x1b056ab0_rot" unit="deg" x="0" y="-89.5000000038732" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b057420" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b057930" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="Tmp10x1b057a70">
+      <first ref="Box0x1b057420"/>
+      <second ref="Hcylinder0x1b057930"/>
+      <position name="Tmp10x1b057a70_pos" unit="mm" x="41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="Tmp10x1b057a70_rot" unit="deg" x="180" y="-82.4999997912935" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b056e50" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="AVPSupSolid0x1b057cb0">
+      <first ref="Tmp10x1b057a70"/>
+      <second ref="Lcylinder0x1b056e50"/>
+      <position name="AVPSupSolid0x1b057cb0_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b057cb0_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b058790" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b058d60" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="Tmp10x1b058ea0">
+      <first ref="Box0x1b058790"/>
+      <second ref="Hcylinder0x1b058d60"/>
+      <position name="Tmp10x1b058ea0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b058ea0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b058c70" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="AVPSupSolid0x1b0590a0">
+      <first ref="Tmp10x1b058ea0"/>
+      <second ref="Lcylinder0x1b058c70"/>
+      <position name="AVPSupSolid0x1b0590a0_pos" unit="mm" x="-41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="AVPSupSolid0x1b0590a0_rot" unit="deg" x="0" y="-82.4999997912935" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b059a50" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05a020" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="Tmp10x1b05a110">
+      <first ref="Box0x1b059a50"/>
+      <second ref="Hcylinder0x1b05a020"/>
+      <position name="Tmp10x1b05a110_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b05a110_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b059f30" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="AVPSupSolid0x1b05a350">
+      <first ref="Tmp10x1b05a110"/>
+      <second ref="Lcylinder0x1b059f30"/>
+      <position name="AVPSupSolid0x1b05a350_pos" unit="mm" x="-41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="AVPSupSolid0x1b05a350_rot" unit="deg" x="0" y="-82.4999997912935" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b0537f0" x="82.5500030517578" y="82.5500030517578" z="95.25"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05b270" rmax="27.2399997711182" rmin="0" startphi="0" z="90.5591583251953"/>
+    <subtraction name="Tmp10x1b05b3b0">
+      <first ref="Box0x1b0537f0"/>
+      <second ref="Hcylinder0x1b05b270"/>
+      <position name="Tmp10x1b05b3b0_pos" unit="mm" x="41.2750015258789" y="0" z="4.76000022888184"/>
+      <rotation name="Tmp10x1b05b3b0_rot" unit="deg" x="180" y="-74.999999582587" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05b180" rmax="27.2399997711182" rmin="0" startphi="0" z="95.230598449707"/>
+    <subtraction name="AVPSupSolid0x1af8cdd0">
+      <first ref="Tmp10x1b05b3b0"/>
+      <second ref="Lcylinder0x1b05b180"/>
+      <position name="AVPSupSolid0x1af8cdd0_pos" unit="mm" x="-41.2750015258789" y="0" z="-3.17499995231628"/>
+      <rotation name="AVPSupSolid0x1af8cdd0_rot" unit="deg" x="0" y="-86.4999999737514" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05c2b0" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05c7c0" rmax="27.2399997711182" rmin="0" startphi="0" z="79.8243179321289"/>
+    <subtraction name="Tmp10x1b05c900">
+      <first ref="Box0x1b05c2b0"/>
+      <second ref="Hcylinder0x1b05c7c0"/>
+      <position name="Tmp10x1b05c900_pos" unit="mm" x="41.2750015258789" y="0" z="-0.795000016689301"/>
+      <rotation name="Tmp10x1b05c900_rot" unit="deg" x="180" y="-86.4999999737514" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05bce0" rmax="27.2399997711182" rmin="0" startphi="0" z="98.1808624267578"/>
+    <subtraction name="AVPSupSolid0x1b05cb40">
+      <first ref="Tmp10x1b05c900"/>
+      <second ref="Lcylinder0x1b05bce0"/>
+      <position name="AVPSupSolid0x1b05cb40_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b05cb40_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05bc40" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05d060" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="Tmp10x1b05d1a0">
+      <first ref="Box0x1b05bc40"/>
+      <second ref="Hcylinder0x1b05d060"/>
+      <position name="Tmp10x1b05d1a0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b05d1a0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05cf70" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="AVPSupSolid0x1b05d3e0">
+      <first ref="Tmp10x1b05d1a0"/>
+      <second ref="Lcylinder0x1b05cf70"/>
+      <position name="AVPSupSolid0x1b05d3e0_pos" unit="mm" x="-41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="AVPSupSolid0x1b05d3e0_rot" unit="deg" x="0" y="-82.4999997912935" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05d820" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05d960" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="Tmp10x1b05daa0">
+      <first ref="Box0x1b05d820"/>
+      <second ref="Hcylinder0x1b05d960"/>
+      <position name="Tmp10x1b05daa0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b05daa0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05d870" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="AVPSupSolid0x1b05dce0">
+      <first ref="Tmp10x1b05daa0"/>
+      <second ref="Lcylinder0x1b05d870"/>
+      <position name="AVPSupSolid0x1b05dce0_pos" unit="mm" x="-41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="AVPSupSolid0x1b05dce0_rot" unit="deg" x="0" y="-82.4999997912935" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05e6c0" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05ec90" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b05edd0">
+      <first ref="Box0x1b05e6c0"/>
+      <second ref="Hcylinder0x1b05ec90"/>
+      <position name="Tmp10x1b05edd0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b05edd0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05eba0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b05efd0">
+      <first ref="Tmp10x1b05edd0"/>
+      <second ref="Lcylinder0x1b05eba0"/>
+      <position name="AVPSupSolid0x1b05efd0_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b05efd0_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05e0b0" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05f4b0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b05f5f0">
+      <first ref="Box0x1b05e0b0"/>
+      <second ref="Hcylinder0x1b05f4b0"/>
+      <position name="Tmp10x1b05f5f0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b05f5f0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05f3c0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b05f830">
+      <first ref="Tmp10x1b05f5f0"/>
+      <second ref="Lcylinder0x1b05f3c0"/>
+      <position name="AVPSupSolid0x1b05f830_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b05f830_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05e160" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b05fd90" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b05fed0">
+      <first ref="Box0x1b05e160"/>
+      <second ref="Hcylinder0x1b05fd90"/>
+      <position name="Tmp10x1b05fed0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b05fed0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05fca0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b060110">
+      <first ref="Tmp10x1b05fed0"/>
+      <second ref="Lcylinder0x1b05fca0"/>
+      <position name="AVPSupSolid0x1b060110_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b060110_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b060df0" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b061100" rmax="49.4650001525879" rmin="0" startphi="0" z="117.8583984375"/>
+    <subtraction name="Tmp10x1b05fbd0">
+      <first ref="Box0x1b060df0"/>
+      <second ref="Hcylinder0x1b061100"/>
+      <position name="Tmp10x1b05fbd0_pos" unit="mm" x="53.9749984741211" y="0" z="5.59999990463257"/>
+      <rotation name="Tmp10x1b05fbd0_rot" unit="deg" x="180" y="-74.999999582587" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b061010" rmax="49.4650001525879" rmin="0" startphi="0" z="133.951873779297"/>
+    <subtraction name="AVPSupSolid0x1b0613d0">
+      <first ref="Tmp10x1b05fbd0"/>
+      <second ref="Lcylinder0x1b061010"/>
+      <position name="AVPSupSolid0x1b0613d0_pos" unit="mm" x="-53.9749984741211" y="0" z="-3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b0613d0_rot" unit="deg" x="0" y="-86.4999999737514" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b061840" x="107.949996948242" y="117.474998474121" z="134.940002441406"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b0623c0" rmax="49.4650001525879" rmin="0" startphi="0" z="121.062507629395"/>
+    <subtraction name="Tmp10x1b062500">
+      <first ref="Box0x1b061840"/>
+      <second ref="Hcylinder0x1b0623c0"/>
+      <position name="Tmp10x1b062500_pos" unit="mm" x="53.9749984741211" y="0" z="-0.790000021457672"/>
+      <rotation name="Tmp10x1b062500_rot" unit="deg" x="180" y="-86.4999999737514" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b0622d0" rmax="49.4650001525879" rmin="0" startphi="0" z="117.520164489746"/>
+    <subtraction name="AVPSupSolid0x1b062700">
+      <first ref="Tmp10x1b062500"/>
+      <second ref="Lcylinder0x1b0622d0"/>
+      <position name="AVPSupSolid0x1b062700_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b062700_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b061770" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b063600" rmax="49.4650001525879" rmin="0" startphi="0" z="127.948127746582"/>
+    <subtraction name="Tmp10x1b063740">
+      <first ref="Box0x1b061770"/>
+      <second ref="Hcylinder0x1b063600"/>
+      <position name="Tmp10x1b063740_pos" unit="mm" x="53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b063740_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b063510" rmax="49.4650001525879" rmin="0" startphi="0" z="118.917572021484"/>
+    <subtraction name="AVPSupSolid0x1b063980">
+      <first ref="Tmp10x1b063740"/>
+      <second ref="Lcylinder0x1b063510"/>
+      <position name="AVPSupSolid0x1b063980_pos" unit="mm" x="-53.9749984741211" y="0" z="2.38000011444092"/>
+      <rotation name="AVPSupSolid0x1b063980_rot" unit="deg" x="0" y="-82.250000353519" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b062a10" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b0648c0" rmax="49.4650001525879" rmin="0" startphi="0" z="118.917572021484"/>
+    <subtraction name="Tmp10x1b064a00">
+      <first ref="Box0x1b062a10"/>
+      <second ref="Hcylinder0x1b0648c0"/>
+      <position name="Tmp10x1b064a00_pos" unit="mm" x="53.9749984741211" y="0" z="2.38000011444092"/>
+      <rotation name="Tmp10x1b064a00_rot" unit="deg" x="180" y="-82.250000353519" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b0647d0" rmax="49.4650001525879" rmin="0" startphi="0" z="127.948127746582"/>
+    <subtraction name="AVPSupSolid0x1b064c00">
+      <first ref="Tmp10x1b064a00"/>
+      <second ref="Lcylinder0x1b0647d0"/>
+      <position name="AVPSupSolid0x1b064c00_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b064c00_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b062ac0" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b065b10" rmax="49.4650001525879" rmin="0" startphi="0" z="124.447952270508"/>
+    <subtraction name="Tmp10x1b065c50">
+      <first ref="Box0x1b062ac0"/>
+      <second ref="Hcylinder0x1b065b10"/>
+      <position name="Tmp10x1b065c50_pos" unit="mm" x="53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b065c50_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b065a20" rmax="49.4650001525879" rmin="0" startphi="0" z="124.447952270508"/>
+    <subtraction name="AVPSupSolid0x1b065e90">
+      <first ref="Tmp10x1b065c50"/>
+      <second ref="Lcylinder0x1b065a20"/>
+      <position name="AVPSupSolid0x1b065e90_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b065e90_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b063d80" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b066350" rmax="49.4650001525879" rmin="0" startphi="0" z="124.447952270508"/>
+    <subtraction name="Tmp10x1b066490">
+      <first ref="Box0x1b063d80"/>
+      <second ref="Hcylinder0x1b066350"/>
+      <position name="Tmp10x1b066490_pos" unit="mm" x="53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b066490_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b066260" rmax="49.4650001525879" rmin="0" startphi="0" z="124.447952270508"/>
+    <subtraction name="AVPSupSolid0x1b0666d0">
+      <first ref="Tmp10x1b066490"/>
+      <second ref="Lcylinder0x1b066260"/>
+      <position name="AVPSupSolid0x1b0666d0_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b0666d0_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b065000" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b066c30" rmax="49.4650001525879" rmin="0" startphi="0" z="124.447952270508"/>
+    <subtraction name="Tmp10x1b066d70">
+      <first ref="Box0x1b065000"/>
+      <second ref="Hcylinder0x1b066c30"/>
+      <position name="Tmp10x1b066d70_pos" unit="mm" x="53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b066d70_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b066b40" rmax="49.4650001525879" rmin="0" startphi="0" z="124.447952270508"/>
+    <subtraction name="AVPSupSolid0x1b066fb0">
+      <first ref="Tmp10x1b066d70"/>
+      <second ref="Lcylinder0x1b066b40"/>
+      <position name="AVPSupSolid0x1b066fb0_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b066fb0_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b066aa0" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b067510" rmax="49.4650001525879" rmin="0" startphi="0" z="118.917572021484"/>
+    <subtraction name="Tmp10x1b067650">
+      <first ref="Box0x1b066aa0"/>
+      <second ref="Hcylinder0x1b067510"/>
+      <position name="Tmp10x1b067650_pos" unit="mm" x="53.9749984741211" y="0" z="2.38000011444092"/>
+      <rotation name="Tmp10x1b067650_rot" unit="deg" x="180" y="-82.250000353519" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b067420" rmax="49.4650001525879" rmin="0" startphi="0" z="127.948127746582"/>
+    <subtraction name="AVPSupSolid0x1b067890">
+      <first ref="Tmp10x1b067650"/>
+      <second ref="Lcylinder0x1b067420"/>
+      <position name="AVPSupSolid0x1b067890_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b067890_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05b860" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b068590" rmax="49.4650001525879" rmin="0" startphi="0" z="118.917572021484"/>
+    <subtraction name="Tmp10x1b068650">
+      <first ref="Box0x1b05b860"/>
+      <second ref="Hcylinder0x1b068590"/>
+      <position name="Tmp10x1b068650_pos" unit="mm" x="53.9749984741211" y="0" z="2.38000011444092"/>
+      <rotation name="Tmp10x1b068650_rot" unit="deg" x="180" y="-82.250000353519" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b05b930" rmax="49.4650001525879" rmin="0" startphi="0" z="127.948127746582"/>
+    <subtraction name="AVPSupSolid0x1b068850">
+      <first ref="Tmp10x1b068650"/>
+      <second ref="Lcylinder0x1b05b930"/>
+      <position name="AVPSupSolid0x1b068850_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b068850_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05b780" x="107.949996948242" y="117.474998474121" z="141.289993286133"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b068d10" rmax="49.4650001525879" rmin="0" startphi="0" z="118.917572021484"/>
+    <subtraction name="Tmp10x1b068e50">
+      <first ref="Box0x1b05b780"/>
+      <second ref="Hcylinder0x1b068d10"/>
+      <position name="Tmp10x1b068e50_pos" unit="mm" x="53.9749984741211" y="0" z="2.38000011444092"/>
+      <rotation name="Tmp10x1b068e50_rot" unit="deg" x="180" y="-82.250000353519" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b068c20" rmax="49.4650001525879" rmin="0" startphi="0" z="127.948127746582"/>
+    <subtraction name="AVPSupSolid0x1b069090">
+      <first ref="Tmp10x1b068e50"/>
+      <second ref="Lcylinder0x1b068c20"/>
+      <position name="AVPSupSolid0x1b069090_pos" unit="mm" x="-53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b069090_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b05ba20" x="107.949996948242" y="117.459999084473" z="134.940002441406"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06a1c0" rmax="49.4650001525879" rmin="0" startphi="0" z="181.014007568359"/>
+    <subtraction name="Tmp10x1b06a2b0">
+      <first ref="Box0x1b05ba20"/>
+      <second ref="Hcylinder0x1b06a1c0"/>
+      <position name="Tmp10x1b06a2b0_pos" unit="mm" x="53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b06a2b0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06a0d0" rmax="38.0999984741211" rmin="0" startphi="0" z="91.4280014038086"/>
+    <subtraction name="Tmp20x1b06a4b0">
+      <first ref="Tmp10x1b06a2b0"/>
+      <second ref="Lcylinder0x1b06a0d0"/>
+      <position name="Tmp20x1b06a4b0_pos" unit="mm" x="53.9749984741211" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp20x1b06a4b0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Trans10x1b06a920" rmax="19.0499992370605" rmin="0" startphi="0" z="119.459999084473"/>
+    <subtraction name="Tmp30x1b06aee0">
+      <first ref="Tmp20x1b06a4b0"/>
+      <second ref="Trans10x1b06a920"/>
+      <position name="Tmp30x1b06aee0_pos" unit="mm" x="-22.225" y="0" z="28.894"/>
+      <rotation name="Tmp30x1b06aee0_rot" unit="deg" x="-90" y="0" z="0"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Trans20x1b06ab50" rmax="23.8125" rmin="0" startphi="0" z="119.459999084473"/>
+    <subtraction name="Tmp40x1b06b330">
+      <first ref="Tmp30x1b06aee0"/>
+      <second ref="Trans20x1b06ab50"/>
+      <position name="Tmp40x1b06b330_pos" unit="mm" x="-17.46" y="0" z="-21.431"/>
+      <rotation name="Tmp40x1b06b330_rot" unit="deg" x="-90" y="0" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Trans30x1b06a700" x="38.0999984741211" y="119.459999084473" z="50.3250007629395"/>
+    <subtraction name="AVPSupSolid0x1b06b630">
+      <first ref="Tmp40x1b06b330"/>
+      <second ref="Trans30x1b06a700"/>
+      <position name="AVPSupSolid0x1b06b630_pos" unit="mm" x="-22.225" y="0" z="3.7315"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b069430" x="82.5500030517578" y="85.0899963378906" z="146.050003051758"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06b9c0" rmax="27.2399997711182" rmin="0" startphi="0" z="94.1775512695312"/>
+    <subtraction name="Tmp10x1b06bab0">
+      <first ref="Box0x1b069430"/>
+      <second ref="Hcylinder0x1b06b9c0"/>
+      <position name="Tmp10x1b06bab0_pos" unit="mm" x="41.2750015258789" y="0" z="30.1599998474121"/>
+      <rotation name="Tmp10x1b06bab0_rot" unit="deg" x="180" y="-77.0000002074245" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06b8d0" rmax="27.2399997711182" rmin="0" startphi="0" z="86.0702514648438"/>
+    <subtraction name="AVPSupSolid0x1b06bcf0">
+      <first ref="Tmp10x1b06bab0"/>
+      <second ref="Lcylinder0x1b06b8d0"/>
+      <position name="AVPSupSolid0x1b06bcf0_pos" unit="mm" x="-41.2750015258789" y="0" z="20.6399993896484"/>
+      <rotation name="AVPSupSolid0x1b06bcf0_rot" unit="deg" x="0" y="-89.5000000038732" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06c130" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06c270" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="Tmp10x1b06c3b0">
+      <first ref="Box0x1b06c130"/>
+      <second ref="Hcylinder0x1b06c270"/>
+      <position name="Tmp10x1b06c3b0_pos" unit="mm" x="41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="Tmp10x1b06c3b0_rot" unit="deg" x="180" y="-82.4999997912935" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06c180" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="AVPSupSolid0x1b06c5f0">
+      <first ref="Tmp10x1b06c3b0"/>
+      <second ref="Lcylinder0x1b06c180"/>
+      <position name="AVPSupSolid0x1b06c5f0_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b06c5f0_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06c0c0" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06cb30" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="Tmp10x1b06cc70">
+      <first ref="Box0x1b06c0c0"/>
+      <second ref="Hcylinder0x1b06cb30"/>
+      <position name="Tmp10x1b06cc70_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b06cc70_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06ca40" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="AVPSupSolid0x1b06ceb0">
+      <first ref="Tmp10x1b06cc70"/>
+      <second ref="Lcylinder0x1b06ca40"/>
+      <position name="AVPSupSolid0x1b06ceb0_pos" unit="mm" x="-41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="AVPSupSolid0x1b06ceb0_rot" unit="deg" x="0" y="-82.4999997912935" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06c9c0" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06d410" rmax="27.2399997711182" rmin="0" startphi="0" z="96.0556259155273"/>
+    <subtraction name="Tmp10x1b06d550">
+      <first ref="Box0x1b06c9c0"/>
+      <second ref="Hcylinder0x1b06d410"/>
+      <position name="Tmp10x1b06d550_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b06d550_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06d320" rmax="27.2399997711182" rmin="0" startphi="0" z="86.2993774414062"/>
+    <subtraction name="AVPSupSolid0x1b06d790">
+      <first ref="Tmp10x1b06d550"/>
+      <second ref="Lcylinder0x1b06d320"/>
+      <position name="AVPSupSolid0x1b06d790_pos" unit="mm" x="-41.2750015258789" y="0" z="2.38000011444092"/>
+      <rotation name="AVPSupSolid0x1b06d790_rot" unit="deg" x="0" y="-82.4999997912935" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06d280" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06dcf0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b06de30">
+      <first ref="Box0x1b06d280"/>
+      <second ref="Hcylinder0x1b06dcf0"/>
+      <position name="Tmp10x1b06de30_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b06de30_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06dc00" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b06e070">
+      <first ref="Tmp10x1b06de30"/>
+      <second ref="Lcylinder0x1b06dc00"/>
+      <position name="AVPSupSolid0x1b06e070_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b06e070_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06db60" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06e5d0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b06e710">
+      <first ref="Box0x1b06db60"/>
+      <second ref="Hcylinder0x1b06e5d0"/>
+      <position name="Tmp10x1b06e710_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b06e710_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06e4e0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b06e950">
+      <first ref="Tmp10x1b06e710"/>
+      <second ref="Lcylinder0x1b06e4e0"/>
+      <position name="AVPSupSolid0x1b06e950_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b06e950_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06e440" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06eeb0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b06eff0">
+      <first ref="Box0x1b06e440"/>
+      <second ref="Hcylinder0x1b06eeb0"/>
+      <position name="Tmp10x1b06eff0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b06eff0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06edc0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b06f230">
+      <first ref="Tmp10x1b06eff0"/>
+      <second ref="Lcylinder0x1b06edc0"/>
+      <position name="AVPSupSolid0x1b06f230_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b06f230_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06ed20" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b06f790" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b06f8d0">
+      <first ref="Box0x1b06ed20"/>
+      <second ref="Hcylinder0x1b06f790"/>
+      <position name="Tmp10x1b06f8d0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b06f8d0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06f6a0" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b06fb10">
+      <first ref="Tmp10x1b06f8d0"/>
+      <second ref="Lcylinder0x1b06f6a0"/>
+      <position name="AVPSupSolid0x1b06fb10_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b06fb10_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <box lunit="mm" name="Box0x1b06f600" x="82.5500030517578" y="82.5500030517578" z="90.4899978637695"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Hcylinder0x1b070070" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="Tmp10x1b0701b0">
+      <first ref="Box0x1b06f600"/>
+      <second ref="Hcylinder0x1b070070"/>
+      <position name="Tmp10x1b0701b0_pos" unit="mm" x="41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="Tmp10x1b0701b0_rot" unit="deg" x="180" y="-81.2500000411003" z="180"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="Lcylinder0x1b06ff80" rmax="27.2399997711182" rmin="0" startphi="0" z="91.9073486328125"/>
+    <subtraction name="AVPSupSolid0x1b0703f0">
+      <first ref="Tmp10x1b0701b0"/>
+      <second ref="Lcylinder0x1b06ff80"/>
+      <position name="AVPSupSolid0x1b0703f0_pos" unit="mm" x="-41.2750015258789" y="0" z="3.97000002861023"/>
+      <rotation name="AVPSupSolid0x1b0703f0_rot" unit="deg" x="0" y="-81.2500000411003" z="0"/>
+    </subtraction>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="NeckPipeV0x1b070d50" rmax="25.275" rmin="20.195" startphi="0" z="6000"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="NeckPipeV0x1b071b70" rmax="25.275" rmin="20.195" startphi="0" z="6000"/>
+    <torus aunit="deg" deltaphi="90" lunit="mm" name="NeckPipeT0x1b072030" rmax="25.4" rmin="19.05" rtor="81.2799987792969" startphi="90"/>
+    <union name="tmp10x1b0723f0">
+      <first ref="NeckPipeV0x1b071b70"/>
+      <second ref="NeckPipeT0x1b072030"/>
+      <position name="tmp10x1b0723f0_pos" unit="mm" x="81.2799987792969" y="0" z="-2999.999"/>
+      <rotation name="tmp10x1b0723f0_rot" unit="deg" x="-90" y="0" z="0"/>
+    </union>
+    <union name="tmp10x1b072940">
+      <first ref="NeckPipeV0x1b071b70"/>
+      <second ref="NeckPipeT0x1b072030"/>
+      <position name="tmp10x1b072940_pos" unit="mm" x="81.2799987792969" y="0" z="-2999.999"/>
+      <rotation name="tmp10x1b072940_rot" unit="deg" x="-90" y="0" z="0"/>
+    </union>
+    <union name="tmp10x1b058090">
+      <first ref="NeckPipeV0x1b071b70"/>
+      <second ref="NeckPipeT0x1b072030"/>
+      <position name="tmp10x1b058090_pos" unit="mm" x="81.2799987792969" y="0" z="-2999.999"/>
+      <rotation name="tmp10x1b058090_rot" unit="deg" x="-90" y="0" z="0"/>
+    </union>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="NeckPipeV0x1b0735d0" rmax="44.45" rmin="36.83" startphi="0" z="6000"/>
+    <torus aunit="deg" deltaphi="90" lunit="mm" name="NeckPipeT0x1b073a40" rmax="47.625" rmin="38.1" rtor="81.2799987792969" startphi="90"/>
+    <union name="tmp10x1b073e80">
+      <first ref="NeckPipeV0x1b0735d0"/>
+      <second ref="NeckPipeT0x1b073a40"/>
+      <position name="tmp10x1b073e80_pos" unit="mm" x="81.2799987792969" y="0" z="-2999.999"/>
+      <rotation name="tmp10x1b073e80_rot" unit="deg" x="-90" y="0" z="0"/>
+    </union>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="cylinder0x1b072160" rmax="38.0999984741211" rmin="0" startphi="0" z="57.1500015258789"/>
+    <sphere aunit="deg" deltaphi="360" deltatheta="180" lunit="mm" name="sphere0x1b049160" rmax="6005.2998046875" rmin="0" startphi="0" starttheta="0"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="tube0x1b0491e0" rmax="728.97998046875" rmin="0" startphi="0" z="12842"/>
+    <union name="scint0x1b0492a0">
+      <first ref="sphere0x1b049160"/>
+      <second ref="tube0x1b0491e0"/>
+      <position name="scint0x1b0492a0_pos" unit="mm" x="0" y="0" z="6005.2998046875"/>
+    </union>
+    <sphere aunit="deg" deltaphi="360" deltatheta="180" lunit="mm" name="sphere0x1b0448e0" rmax="6060.39990234375" rmin="0" startphi="0" starttheta="0"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="tube0x1b044960" rmax="793.75" rmin="0" startphi="0" z="12842"/>
+    <union name="av0x1b044a20">
+      <first ref="sphere0x1b0448e0"/>
+      <second ref="tube0x1b044960"/>
+      <position name="av0x1b044a20_pos" unit="mm" x="0" y="0" z="6060.39990234375"/>
+    </union>
+    <torus aunit="deg" deltaphi="93.5781541955403" lunit="mm" name="torusTop0x1b045940" rmax="19.0499992370605" rmin="0" rtor="6079.44970703125" startphi="223.21092290223"/>
+    <torus aunit="deg" deltaphi="42.3008846620739" lunit="mm" name="torusSide10x1b0459e0" rmax="19.0499992370605" rmin="0" rtor="6079.44970703125" startphi="47.6991153379261"/>
+    <union name="solid10x1b045d20">
+      <first ref="torusTop0x1b045940"/>
+      <second ref="torusSide10x1b0459e0"/>
+      <rotation name="solid10x1b045d20_rot" unit="deg" x="180" y="-89.6703665922314" z="-80.4999666454779"/>
+      <firstrotation name="solid10x1b045d20_frot" unit="deg" x="-100.595150773635" y="0" z="-180"/>
+    </union>
+    <union name="solid20x1b045f20">
+      <first ref="solid10x1b045d20"/>
+      <second ref="torusSide10x1b0459e0"/>
+      <rotation name="solid20x1b045f20_rot" unit="deg" x="0" y="-89.6703665922314" z="-99.5000333545221"/>
+    </union>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="tube0x1b045a80" rmax="19.0499992370605" rmin="0" startphi="0" z="12017.009765625"/>
+    <union name="solid30x1b046160">
+      <first ref="solid20x1b045f20"/>
+      <second ref="tube0x1b045a80"/>
+      <position name="solid30x1b046160_pos" unit="mm" x="5995.775390625" y="-976.494995117188" z="-6008.44482421875"/>
+      <rotation name="solid30x1b046160_rot" unit="deg" x="0" y="-0.256656152653355" z="90"/>
+    </union>
+    <union name="solid40x1b0463a0">
+      <first ref="solid30x1b046160"/>
+      <second ref="tube0x1b045a80"/>
+      <position name="solid40x1b0463a0_pos" unit="mm" x="-5995.775390625" y="-976.494995117188" z="-6008.44482421875"/>
+      <rotation name="solid40x1b0463a0_rot" unit="deg" x="0" y="-0.256677232837836" z="90.7343228406375"/>
+    </union>
+    <torus aunit="deg" deltaphi="14.464536867803" lunit="mm" name="torusSling0x1b046a30" rmax="19.0499992370605" rmin="0" rtor="6079.44970703125" startphi="-7.23226843390147"/>
+    <union name="solid50x1b046b20">
+      <first ref="solid40x1b0463a0"/>
+      <second ref="torusSling0x1b046a30"/>
+      <rotation name="solid50x1b046b20_rot" unit="deg" x="0" y="-42.7195378929445" z="0"/>
+    </union>
+    <sphere aunit="deg" deltaphi="360" deltatheta="180" lunit="mm" name="sphere0x1b043ce0" rmax="8300" rmin="0" startphi="0" starttheta="0"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="tube0x1b043d60" rmax="793.75" rmin="0" startphi="0" z="9000"/>
+    <union name="h2o_sub0x1b043e20">
+      <first ref="sphere0x1b043ce0"/>
+      <second ref="tube0x1b043d60"/>
+      <position name="h2o_sub0x1b043e20_pos" unit="mm" x="0" y="0" z="8300"/>
+    </union>
+    <sphere aunit="deg" deltaphi="360" deltatheta="180" lunit="mm" name="sphere0x1b0430c0" rmax="8800" rmin="0" startphi="0" starttheta="0"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="tube0x1b043140" rmax="793.75" rmin="0" startphi="0" z="7800"/>
+    <union name="h2o0x1b043200">
+      <first ref="sphere0x1b0430c0"/>
+      <second ref="tube0x1b043140"/>
+      <position name="h2o0x1b043200_pos" unit="mm" x="0" y="0" z="8800"/>
+    </union>
+    <sphere aunit="deg" deltaphi="360" deltatheta="180" lunit="mm" name="sphere0x1b0424a0" rmax="8900" rmin="0" startphi="0" starttheta="0"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="tube0x1b042520" rmax="793.75" rmin="0" startphi="0" z="7800"/>
+    <union name="psup0x1b0425e0">
+      <first ref="sphere0x1b0424a0"/>
+      <second ref="tube0x1b042520"/>
+      <position name="psup0x1b0425e0_pos" unit="mm" x="0" y="0" z="8900"/>
+    </union>
+    <box lunit="mm" name="cavity0x1b0417e0" x="26000" y="26000" z="26000"/>
+    <box lunit="mm" name="world0x1b0410b0" x="40000" y="40000" z="40000"/>
+  </solids>
+
+  <structure>
+    <volume name="avneck0x1b07ae10">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="avneck0x1b048830"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07af80">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04afd0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b060">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04bd20"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b140">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04c340"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b220">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04c990"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b300">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04d9f0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b450">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04e3f0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b550">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04e6d0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b650">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04e960"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b750">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04ebf0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b8e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04ee90"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b990">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b04f120"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07ba90">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b050120"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07bb90">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b050e60"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07bc90">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b0514a0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07bd90">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b051ac0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07be90">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b051d80"/>
+    </volume>
+    <volume name="AVPPipe_log0x1af8c940">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b052040"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07b850">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b0523b0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1af8cb30">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b052620"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b0765b0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b0528e0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b0766b0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b052ba0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b0767b0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b052e50"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b0768b0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b053a70"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b0769b0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b0543f0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b076ab0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b0546d0"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07d220">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b054990"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07d2d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b054c50"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07d3d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b054f00"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07d4d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b055190"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07d5d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b055420"/>
+    </volume>
+    <volume name="AVPPipe_log0x1b07d6d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPPipe0x1b0556b0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07d7d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b056ab0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07d8d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b057cb0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1af8ca20">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b0590a0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07dbe0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b05a350"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07dce0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1af8cdd0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07dde0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b05cb40"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07dee0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b05d3e0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07dfe0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b05dce0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e0e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b05efd0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e1e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b05f830"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e2e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b060110"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e3e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b0613d0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e4e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b062700"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e5e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b063980"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e6e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b064c00"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e7e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b065e90"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e8e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b0666d0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07e9e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b066fb0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07eae0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b067890"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07ebe0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b068850"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07ece0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b069090"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07ede0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06b630"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07eee0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06bcf0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07efe0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06c5f0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07f0e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06ceb0"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07f1e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06d790"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07f2e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06e070"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07f3e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06e950"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07f4e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06f230"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07f5e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b06fb10"/>
+    </volume>
+    <volume name="AVPSupport_log0x1b07f6e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="AVPSupSolid0x1b0703f0"/>
+    </volume>
+    <volume name="NeckPipe_log0x1b07f7e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="NeckPipeV0x1b070d50"/>
+    </volume>
+    <volume name="NeckPipe_log0x1b07f8e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="tmp10x1b0723f0"/>
+    </volume>
+    <volume name="NeckPipe_log0x1b07f9e0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="tmp10x1b072940"/>
+    </volume>
+    <volume name="NeckPipe_log0x1b07d9d0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="tmp10x1b058090"/>
+    </volume>
+    <volume name="NeckPipe_log0x1b07dad0">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="tmp10x1b073e80"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07fef0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07fff0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0800f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0801f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0802f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0803f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0804f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0805f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0806f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0807f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0808f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0809f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b080af0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b080bf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b080cf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b080df0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b080ef0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b080ff0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0810f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0811f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0812f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0813f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0814f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0815f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0816f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0817f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0818f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0819f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b081af0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b081bf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b081cf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b081df0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b081ef0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b081ff0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0820f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0821f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0822f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0823f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0824f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0825f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0826f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0827f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0828f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0829f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b082af0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b082bf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b082cf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b082df0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b082ef0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07bf40">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07c040">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07c140">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07c240">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07c340">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07c440">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b083c30">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b083ce0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b083de0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b083ee0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b083fe0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0840e0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0841e0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07fae0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07fbe0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07fce0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b07fde0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b084af0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b084bf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b084cf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b084df0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b084ef0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b084ff0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0850f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0851f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0852f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0853f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0854f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0855f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0856f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0857f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0858f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0859f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b085af0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b085bf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b085cf0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b085df0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b085ef0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b085ff0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0860f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0861f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0862f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0863f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0864f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0865f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0866f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="ncd_anchors0x1b0867f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="cylinder0x1b072160"/>
+    </volume>
+    <volume name="scint0x1b07aef0">
+      <materialref ref="labppo_scintillator0x1af866c0"/>
+      <solidref ref="scint0x1b0492a0"/>
+      <physvol name="AVPPipe0x1b07b010">
+        <volumeref ref="AVPPipe_log0x1b07af80"/>
+        <position name="AVPPipe0x1b07b010_pos" unit="mm" x="-209.368" y="1011.453" z="5759.956"/>
+        <rotation name="AVPPipe0x1b07b010_rot" unit="deg" x="90" y="7.00004028045017" z="90"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b0f0">
+        <volumeref ref="AVPPipe_log0x1b07b060"/>
+        <position name="AVPPipe0x1b07b0f0_pos" unit="mm" x="-288.958801269531" y="1680.27844238281" z="5682.06773416173"/>
+        <rotation name="AVPPipe0x1b07b0f0_rot" unit="deg" x="-77.4646918046853" y="-6.83473271284963" z="-91.5156881152241"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b1d0">
+        <volumeref ref="AVPPipe_log0x1b07b140"/>
+        <position name="AVPPipe0x1b07b1d0_pos" unit="mm" x="-429.182022094727" y="2822.30548095703" z="5166.59122930957"/>
+        <rotation name="AVPPipe0x1b07b1d0_rot" unit="deg" x="-61.0805839113696" y="-6.13422381152262" z="-93.3785941484215"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b2b0">
+        <volumeref ref="AVPPipe_log0x1b07b220"/>
+        <position name="AVPPipe0x1b07b2b0_pos" unit="mm" x="-595.171783447266" y="4174.18420410156" z="4159.64100149789"/>
+        <rotation name="AVPPipe0x1b07b2b0_rot" unit="deg" x="-44.5116083476042" y="-4.91980797852577" z="-94.9856354833173"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b3b0">
+        <volumeref ref="AVPPipe_log0x1b07b300"/>
+        <position name="AVPPipe0x1b07b3b0_pos" unit="mm" x="-137.7" y="1121.464" z="5760.616"/>
+        <rotation name="AVPPipe0x1b07b3b0_rot" unit="deg" x="90" y="6.75447105134237" z="90"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b500">
+        <volumeref ref="AVPPipe_log0x1b07b450"/>
+        <position name="AVPPipe0x1b07b500_pos" unit="mm" x="-230.171546936035" y="1874.59759521484" z="5644.65638750211"/>
+        <rotation name="AVPPipe0x1b07b500_rot" unit="deg" x="-71.3706193642998" y="-6.63659246376299" z="-92.2311215829073"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b600">
+        <volumeref ref="AVPPipe_log0x1b07b550"/>
+        <position name="AVPPipe0x1b07b600_pos" unit="mm" x="-367.201141357422" y="2990.61474609375" z="5064.52164162896"/>
+        <rotation name="AVPPipe0x1b07b600_rot" unit="deg" x="-59.0613006742739" y="-6.01191346157421" z="-93.5922502072871"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b700">
+        <volumeref ref="AVPPipe_log0x1b07b650"/>
+        <position name="AVPPipe0x1b07b700_pos" unit="mm" x="-528.746002197266" y="4306.29235839844" z="4010.66812278034"/>
+        <rotation name="AVPPipe0x1b07b700_rot" unit="deg" x="-42.5064020183111" y="-4.74251920961144" z="-95.1545329914412"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b800">
+        <volumeref ref="AVPPipe_log0x1b07b750"/>
+        <position name="AVPPipe0x1b07b800_pos" unit="mm" x="-644.159698486328" y="5246.26196289062" z="2606.67145955497"/>
+        <rotation name="AVPPipe0x1b07b800_rot" unit="deg" x="-26.053930034625" y="-3.08691494339928" z="-96.2856303927133"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07b400">
+        <volumeref ref="AVPPipe_log0x1b07b8e0"/>
+        <position name="AVPPipe0x1b07b400_pos" unit="mm" x="-709.822784423828" y="5781.04516601562" z="896.470134788389"/>
+        <rotation name="AVPPipe0x1b07b400_rot" unit="deg" x="-8.68577381102211" y="-1.06227717446442" z="-96.9193257318917"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07ba40">
+        <volumeref ref="AVPPipe_log0x1b07b990"/>
+        <position name="AVPPipe0x1b07ba40_pos" unit="mm" x="-709.822784423828" y="5781.04516601562" z="-896.470134788389"/>
+        <rotation name="AVPPipe0x1b07ba40_rot" unit="deg" x="8.68577381102209" y="1.06227717446442" z="83.0806742681083"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07bb40">
+        <volumeref ref="AVPPipe_log0x1b07ba90"/>
+        <position name="AVPPipe0x1b07bb40_pos" unit="mm" x="48.883" y="1119.607" z="5740.803"/>
+        <rotation name="AVPPipe0x1b07bb40_rot" unit="deg" x="90" y="-2.50002562862799" z="90"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07bc40">
+        <volumeref ref="AVPPipe_log0x1b07bb90"/>
+        <position name="AVPPipe0x1b07bc40_pos" unit="mm" x="82.0865821838379" y="1880.09417724609" z="5624.36230718553"/>
+        <rotation name="AVPPipe0x1b07bc40_rot" unit="deg" x="-71.4835805021662" y="2.37073028386278" z="-89.2062865364543"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07bd40">
+        <volumeref ref="AVPPipe_log0x1b07bc90"/>
+        <position name="AVPPipe0x1b07bd40_pos" unit="mm" x="130.981468200684" y="2999.97241210938" z="5047.30420152036"/>
+        <rotation name="AVPPipe0x1b07bd40_rot" unit="deg" x="-59.2260197994456" y="2.14833512705716" z="-88.7211693574097"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07be40">
+        <volumeref ref="AVPPipe_log0x1b07bd90"/>
+        <position name="AVPPipe0x1b07be40_pos" unit="mm" x="188.613098144531" y="4319.95556640625" z="3997.13017868448"/>
+        <rotation name="AVPPipe0x1b07be40_rot" unit="deg" x="-42.7228048636389" y="1.69670933868774" z="-88.1636590250693"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b075a10">
+        <volumeref ref="AVPPipe_log0x1b07be90"/>
+        <position name="AVPPipe0x1b075a10_pos" unit="mm" x="229.75804901123" y="5262.33081054688" z="2597.56680256455"/>
+        <rotation name="AVPPipe0x1b075a10_rot" unit="deg" x="-26.2283555442958" y="1.1054380004706" z="-87.7575420022261"/>
+      </physvol>
+      <physvol name="AVPPipe0x1af8c9d0">
+        <volumeref ref="AVPPipe_log0x1af8c940"/>
+        <position name="AVPPipe0x1af8c9d0_pos" unit="mm" x="253.195365905762" y="5799.13403320312" z="893.422478573833"/>
+        <rotation name="AVPPipe0x1af8c9d0_rot" unit="deg" x="-8.74180911547621" y="0.380190968269906" z="-87.5290599320462"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b075410">
+        <volumeref ref="AVPPipe_log0x1b07b850"/>
+        <position name="AVPPipe0x1b075410_pos" unit="mm" x="253.195365905762" y="5799.13403320312" z="-893.422478573833"/>
+        <rotation name="AVPPipe0x1b075410_rot" unit="deg" x="8.74180911547621" y="-0.380190968269905" z="92.4709400679538"/>
+      </physvol>
+      <physvol name="AVPPipe0x1af8cbc0">
+        <volumeref ref="AVPPipe_log0x1af8cb30"/>
+        <position name="AVPPipe0x1af8cbc0_pos" unit="mm" x="229.769302368164" y="5262.58862304688" z="-2597.74744553401"/>
+        <rotation name="AVPPipe0x1af8cbc0_rot" unit="deg" x="26.2086338696132" y="-1.10466599994205" z="92.2428387235294"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b076660">
+        <volumeref ref="AVPPipe_log0x1b0765b0"/>
+        <position name="AVPPipe0x1b076660_pos" unit="mm" x="185.061302185059" y="4238.60583496094" z="-4061.51436185618"/>
+        <rotation name="AVPPipe0x1b076660_rot" unit="deg" x="43.7030178036675" y="-1.72787216732584" z="91.8070508611957"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b076760">
+        <volumeref ref="AVPPipe_log0x1b0766b0"/>
+        <position name="AVPPipe0x1b076760_pos" unit="mm" x="122.15837097168" y="2797.89007568359" z="-5158.08501262528"/>
+        <rotation name="AVPPipe0x1b076760_rot" unit="deg" x="61.457933065538" y="-2.19648181891895" z="91.1942156763622"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b076860">
+        <volumeref ref="AVPPipe_log0x1b0767b0"/>
+        <position name="AVPPipe0x1b076860_pos" unit="mm" x="48.9132151603699" y="1120.29820251465" z="-5768.92510413288"/>
+        <rotation name="AVPPipe0x1b076860_rot" unit="deg" x="78.9897770867269" y="-2.45403652561343" z="90.4773137806752"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b076960">
+        <volumeref ref="AVPPipe_log0x1b0768b0"/>
+        <position name="AVPPipe0x1b076960_pos" unit="mm" x="151.344" y="1015.577" z="5759.956"/>
+        <rotation name="AVPPipe0x1b076960_rot" unit="deg" x="90" y="-2.50003163134433" z="90"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b076a60">
+        <volumeref ref="AVPPipe_log0x1b0769b0"/>
+        <position name="AVPPipe0x1b076a60_pos" unit="mm" x="180.131744384766" y="1684.24737548828" z="5682.06773416173"/>
+        <rotation name="AVPPipe0x1b076a60_rot" unit="deg" x="-77.5532778048415" y="2.44130976234634" z="-89.4613347495282"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b076b60">
+        <volumeref ref="AVPPipe_log0x1b076ab0"/>
+        <position name="AVPPipe0x1b076b60_pos" unit="mm" x="230.342636108398" y="2834.26715087891" z="5166.59122930957"/>
+        <rotation name="AVPPipe0x1b076b60_rot" unit="deg" x="-61.2456627189742" y="2.19204554644587" z="-88.7976566680153"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b076bb0">
+        <volumeref ref="AVPPipe_log0x1b07d220"/>
+        <position name="AVPPipe0x1b076bb0_pos" unit="mm" x="289.766616821289" y="4195.30224609375" z="4159.64100149789"/>
+        <rotation name="AVPPipe0x1b076bb0_rot" unit="deg" x="-44.7021949656623" y="1.75911613778607" z="-88.2233504007506"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07d380">
+        <volumeref ref="AVPPipe_log0x1b07d2d0"/>
+        <position name="AVPPipe0x1b07d380_pos" unit="mm" x="333.199691772461" y="5190.08422851562" z="2789.55044156579"/>
+        <rotation name="AVPPipe0x1b07d380_rot" unit="deg" x="-28.2058426721257" y="1.18218243500595" z="-87.7970214494648"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07d480">
+        <volumeref ref="AVPPipe_log0x1b07d3d0"/>
+        <position name="AVPPipe0x1b07d480_pos" unit="mm" x="359.296112060547" y="5787.79150390625" z="1099.19475164239"/>
+        <rotation name="AVPPipe0x1b07d480_rot" unit="deg" x="-10.7417799690623" y="0.466242437172947" z="-87.5438390429952"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07d580">
+        <volumeref ref="AVPPipe_log0x1b07d4d0"/>
+        <position name="AVPPipe0x1b07d580_pos" unit="mm" x="362.324508666992" y="5857.1533203125" z="-667.553429520964"/>
+        <rotation name="AVPPipe0x1b07d580_rot" unit="deg" x="6.49492667979904" y="-0.282964818118705" z="92.4839395825934"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07d680">
+        <volumeref ref="AVPPipe_log0x1b07d5d0"/>
+        <position name="AVPPipe0x1b07d680_pos" unit="mm" x="341.420639038086" y="5378.37524414062" z="-2395.28527406923"/>
+        <rotation name="AVPPipe0x1b07d680_rot" unit="deg" x="23.9839580280443" y="-1.01673931190521" z="92.2840251443678"/>
+      </physvol>
+      <physvol name="AVPPipe0x1b07d780">
+        <volumeref ref="AVPPipe_log0x1b07d6d0"/>
+        <position name="AVPPipe0x1b07d780_pos" unit="mm" x="298.516418457031" y="4395.70568847656" z="-3924.07138589223"/>
+        <rotation name="AVPPipe0x1b07d780_rot" unit="deg" x="41.7314789510488" y="-1.66468725731596" z="91.86541658876"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07d880">
+        <volumeref ref="AVPSupport_log0x1b07d7d0"/>
+        <position name="AVPSupport0x1b07d880_pos" unit="mm" x="-246.216094970703" y="1332.16687011719" z="5780.2310809205"/>
+        <rotation name="AVPSupport0x1b07d880_rot" unit="deg" x="-166.904426563266" y="-1.5935592718686" z="-83.1829242406549"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07d980">
+        <volumeref ref="AVPSupport_log0x1b07d8d0"/>
+        <position name="AVPSupport0x1b07d980_pos" unit="mm" x="-332.123504638672" y="2031.82690429688" z="5600.6198681585"/>
+        <rotation name="AVPSupport0x1b07d980_rot" unit="deg" x="-159.954956577507" y="-2.40989759913457" z="-83.4259705958645"/>
+      </physvol>
+      <physvol name="AVPSupport0x1af8cc10">
+        <volumeref ref="AVPSupport_log0x1af8ca20"/>
+        <position name="AVPSupport0x1af8cc10_pos" unit="mm" x="-525.964111328125" y="3610.53247070312" z="4728.42968202612"/>
+        <rotation name="AVPSupport0x1af8cc10_rot" unit="deg" x="-142.551950198971" y="-4.26967403777012" z="-84.44779670373"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07dc90">
+        <volumeref ref="AVPSupport_log0x1b07dbe0"/>
+        <position name="AVPSupport0x1b07dc90_pos" unit="mm" x="-663.9072265625" y="4733.98974609375" z="3586.85074360028"/>
+        <rotation name="AVPSupport0x1b07dc90_rot" unit="deg" x="-127.088270774692" y="-5.59405552190519" z="-85.785382665273"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07dd90">
+        <volumeref ref="AVPSupport_log0x1b07dce0"/>
+        <position name="AVPSupport0x1b07dd90_pos" unit="mm" x="-187.917526245117" y="1530.46618652344" z="5754.67195847934"/>
+        <rotation name="AVPSupport0x1b07dd90_rot" unit="deg" x="-165.106821587472" y="-1.80752865401168" z="-83.2362739528656"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07de90">
+        <volumeref ref="AVPSupport_log0x1b07dde0"/>
+        <position name="AVPSupport0x1b07de90_pos" unit="mm" x="-272.094635009766" y="2216.03393554688" z="5526.06693131159"/>
+        <rotation name="AVPSupport0x1b07de90_rot" unit="deg" x="-158.14849029337" y="-2.61663597533792" z="-83.5051921129321"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07df90">
+        <volumeref ref="AVPSupport_log0x1b07dee0"/>
+        <position name="AVPSupport0x1b07df90_pos" unit="mm" x="-462.013946533203" y="3762.80322265625" z="4598.92509198003"/>
+        <rotation name="AVPSupport0x1b07df90_rot" unit="deg" x="-140.710247390592" y="-4.44593749494214" z="-84.5877501767579"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e090">
+        <volumeref ref="AVPSupport_log0x1b07dfe0"/>
+        <position name="AVPSupport0x1b07e090_pos" unit="mm" x="-594.989196777344" y="4845.80029296875" z="3418.54720818022"/>
+        <rotation name="AVPSupport0x1b07e090_rot" unit="deg" x="-125.20166685913" y="-5.72935122414223" z="-85.9715216612292"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e190">
+        <volumeref ref="AVPSupport_log0x1b07e0e0"/>
+        <position name="AVPSupport0x1b07e190_pos" unit="mm" x="-692.730102539062" y="5641.83642578125" z="1792.22315672288"/>
+        <rotation name="AVPSupport0x1b07e190_rot" unit="deg" x="-107.623315726754" y="-6.67450594052995" z="-87.8854849423305"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e290">
+        <volumeref ref="AVPSupport_log0x1b07e1e0"/>
+        <position name="AVPSupport0x1b07e290_pos" unit="mm" x="-726.34765625" y="5915.6298828125" z="3.64948124688106e-13"/>
+        <rotation name="AVPSupport0x1b07e290_rot" unit="deg" x="-90" y="-6.9999970074466" z="-90"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e390">
+        <volumeref ref="AVPSupport_log0x1b07e2e0"/>
+        <position name="AVPSupport0x1b07e390_pos" unit="mm" x="-692.730102539062" y="5641.83642578125" z="-1792.22315672288"/>
+        <rotation name="AVPSupport0x1b07e390_rot" unit="deg" x="-72.3766842732465" y="-6.67450594052995" z="-92.1145150576695"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e490">
+        <volumeref ref="AVPSupport_log0x1b07e3e0"/>
+        <position name="AVPSupport0x1b07e490_pos" unit="mm" x="66.9993743896484" y="1534.53979492188" z="5732.43632709242"/>
+        <rotation name="AVPSupport0x1b07e490_rot" unit="deg" x="-165.013633683078" y="0.64685529789051" z="-92.4149142854374"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e590">
+        <volumeref ref="AVPSupport_log0x1b07e4e0"/>
+        <position name="AVPSupport0x1b07e590_pos" unit="mm" x="97.0246810913086" y="2222.2333984375" z="5505.46017959855"/>
+        <rotation name="AVPSupport0x1b07e590_rot" unit="deg" x="-158.018941702327" y="0.936259954734709" z="-92.3181632066927"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e690">
+        <volumeref ref="AVPSupport_log0x1b07e5e0"/>
+        <position name="AVPSupport0x1b07e690_pos" unit="mm" x="164.658828735352" y="3771.31176757812" z="4579.32552614613"/>
+        <rotation name="AVPSupport0x1b07e690_rot" unit="deg" x="-140.526775890659" y="1.5898931278986" z="-91.929554497491"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e790">
+        <volumeref ref="AVPSupport_log0x1b07e6e0"/>
+        <position name="AVPSupport0x1b07e790_pos" unit="mm" x="212.050369262695" y="4856.7578125" z="3403.97814264361"/>
+        <rotation name="AVPSupport0x1b07e790_rot" unit="deg" x="-125.025637483155" y="2.04766378894645" z="-91.4345501928832"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e890">
+        <volumeref ref="AVPSupport_log0x1b07e7e0"/>
+        <position name="AVPSupport0x1b07e890_pos" unit="mm" x="246.88459777832" y="5654.59375" z="1784.58511195227"/>
+        <rotation name="AVPSupport0x1b07e890_rot" unit="deg" x="-107.515653137119" y="2.38422105104676" z="-90.7521978340655"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07e990">
+        <volumeref ref="AVPSupport_log0x1b07e8e0"/>
+        <position name="AVPSupport0x1b07e990_pos" unit="mm" x="258.865692138672" y="5929.00634765625" z="3.63392799334306e-13"/>
+        <rotation name="AVPSupport0x1b07e990_rot" unit="deg" x="-90" y="2.49999699590824" z="-90"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07ea90">
+        <volumeref ref="AVPSupport_log0x1b07e9e0"/>
+        <position name="AVPSupport0x1b07ea90_pos" unit="mm" x="246.88459777832" y="5654.59375" z="-1784.58511195227"/>
+        <rotation name="AVPSupport0x1b07ea90_rot" unit="deg" x="-72.484346862881" y="2.38422105104676" z="-89.2478021659345"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07eb90">
+        <volumeref ref="AVPSupport_log0x1b07eae0"/>
+        <position name="AVPSupport0x1b07eb90_pos" unit="mm" x="212.050369262695" y="4856.7578125" z="-3403.97814264361"/>
+        <rotation name="AVPSupport0x1b07eb90_rot" unit="deg" x="-54.9743625168451" y="2.04766378894645" z="-88.5654498071168"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07ec90">
+        <volumeref ref="AVPSupport_log0x1b07ebe0"/>
+        <position name="AVPSupport0x1b07ec90_pos" unit="mm" x="157.587448120117" y="3609.35034179688" z="-4708.27819727907"/>
+        <rotation name="AVPSupport0x1b07ec90_rot" unit="deg" x="-37.4736532596407" y="1.52159772079032" z="-88.016152550439"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07ed90">
+        <volumeref ref="AVPSupport_log0x1b07ece0"/>
+        <position name="AVPSupport0x1b07ed90_pos" unit="mm" x="86.4111404418945" y="1979.14294433594" z="-5594.25183579702"/>
+        <rotation name="AVPSupport0x1b07ed90_rot" unit="deg" x="-19.4828385777946" y="0.83428083856378" z="-87.6432324979666"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07ee90">
+        <volumeref ref="AVPSupport_log0x1b07ede0"/>
+        <position name="AVPSupport0x1b07ee90_pos" unit="mm" x="11.2976045608521" y="258.757995605469" z="-5932.17857960604"/>
+        <rotation name="AVPSupport0x1b07ee90_rot" unit="deg" x="-2.49762357075608" y="0.109013804264585" z="-87.5023794326476"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07ef90">
+        <volumeref ref="AVPSupport_log0x1b07eee0"/>
+        <position name="AVPSupport0x1b07ef90_pos" unit="mm" x="164.8212890625" y="1333.57971191406" z="5780.2310809205"/>
+        <rotation name="AVPSupport0x1b07ef90_rot" unit="deg" x="-166.924961672304" y="0.565907510615969" z="-92.4351440456493"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f090">
+        <volumeref ref="AVPSupport_log0x1b07efe0"/>
+        <position name="AVPSupport0x1b07f090_pos" unit="mm" x="195.593475341797" y="2038.37939453125" z="5600.6198681585"/>
+        <rotation name="AVPSupport0x1b07f090_rot" unit="deg" x="-159.933774999757" y="0.858244673535938" z="-92.3481510815802"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f190">
+        <volumeref ref="AVPSupport_log0x1b07f0e0"/>
+        <position name="AVPSupport0x1b07f190_pos" unit="mm" x="264.992828369141" y="3627.88793945312" z="4728.42968202612"/>
+        <rotation name="AVPSupport0x1b07f190_rot" unit="deg" x="-142.455492521204" y="1.52404997384844" z="-91.9819644870393"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f290">
+        <volumeref ref="AVPSupport_log0x1b07f1e0"/>
+        <position name="AVPSupport0x1b07f290_pos" unit="mm" x="314.371398925781" y="4758.8447265625" z="3586.85074360028"/>
+        <rotation name="AVPSupport0x1b07f290_rot" unit="deg" x="-126.972442827674" y="1.99776827578511" z="-91.5032707030675"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f390">
+        <volumeref ref="AVPSupport_log0x1b07f2e0"/>
+        <position name="AVPSupport0x1b07f390_pos" unit="mm" x="351.817169189453" y="5616.4951171875" z="1989.50729908752"/>
+        <rotation name="AVPSupport0x1b07f390_rot" unit="deg" x="-109.487326594582" y="2.35695183356267" z="-90.8337596785027"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f490">
+        <volumeref ref="AVPSupport_log0x1b07f3e0"/>
+        <position name="AVPSupport0x1b07f490_pos" unit="mm" x="366.572998046875" y="5954.45947265625" z="208.002925953902"/>
+        <rotation name="AVPSupport0x1b07f490_rot" unit="deg" x="-91.9987829079186" y="2.49847784619468" z="-90.0871679319674"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f590">
+        <volumeref ref="AVPSupport_log0x1b07f4e0"/>
+        <position name="AVPSupport0x1b07f590_pos" unit="mm" x="357.871551513672" y="5755.1630859375" z="-1542.57578935404"/>
+        <rotation name="AVPSupport0x1b07f590_rot" unit="deg" x="-75.0094977643482" y="2.41502139326935" z="-89.3535449219937"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f690">
+        <volumeref ref="AVPSupport_log0x1b07f5e0"/>
+        <position name="AVPSupport0x1b07f690_pos" unit="mm" x="324.781982421875" y="4997.28662109375" z="-3246.07869957382"/>
+        <rotation name="AVPSupport0x1b07f690_rot" unit="deg" x="-57.0237571776226" y="2.09763257339363" z="-88.6395774381613"/>
+      </physvol>
+      <physvol name="AVPSupport0x1b07f790">
+        <volumeref ref="AVPSupport_log0x1b07f6e0"/>
+        <position name="AVPSupport0x1b07f790_pos" unit="mm" x="272.097412109375" y="3790.61010742188" z="-4598.92509198003"/>
+        <rotation name="AVPSupport0x1b07f790_rot" unit="deg" x="-39.5421450675198" y="1.59221301560477" z="-88.0723591307685"/>
+      </physvol>
+      <physvol name="NeckPipe0x1b07f890">
+        <volumeref ref="NeckPipe_log0x1b07f7e0"/>
+        <position name="NeckPipe0x1b07f890_pos" unit="mm" x="-242.632690555486" y="600.536982602908" z="8917.88"/>
+      </physvol>
+      <physvol name="NeckPipe0x1b07f990">
+        <volumeref ref="NeckPipe_log0x1b07f8e0"/>
+        <position name="NeckPipe0x1b07f990_pos" unit="mm" x="-162.171128626062" y="627.0692266729" z="8841.8959987793"/>
+        <rotation name="NeckPipe0x1b07f990_rot" unit="deg" x="0" y="0" z="-97"/>
+      </physvol>
+      <physvol name="NeckPipe0x1b07fa90">
+        <volumeref ref="NeckPipe_log0x1b07f9e0"/>
+        <position name="NeckPipe0x1b07fa90_pos" unit="mm" x="-78.934773723514" y="642.872142418084" z="8841.8959987793"/>
+        <rotation name="NeckPipe0x1b07fa90_rot" unit="deg" x="0" y="0" z="-97"/>
+      </physvol>
+      <physvol name="NeckPipe0x1b07da80">
+        <volumeref ref="NeckPipe_log0x1b07d9d0"/>
+        <position name="NeckPipe0x1b07da80_pos" unit="mm" x="134.664402142663" y="633.546200995286" z="8841.8959987793"/>
+        <rotation name="NeckPipe0x1b07da80_rot" unit="deg" x="0" y="0" z="-87.5"/>
+      </physvol>
+      <physvol name="NeckPipe0x1af8cad0">
+        <volumeref ref="NeckPipe_log0x1b07dad0"/>
+        <position name="NeckPipe0x1af8cad0_pos" unit="mm" x="28.2522771965281" y="647.083533118569" z="8822.0829987793"/>
+        <rotation name="NeckPipe0x1af8cad0_rot" unit="deg" x="0" y="0" z="-87.5"/>
+      </physvol>
+      <physvol name="ncd_anchors_00x1b07ffa0">
+        <volumeref ref="ncd_anchors0x1b07fef0"/>
+        <position name="ncd_anchors_00x1b07ffa0_pos" unit="mm" x="5412.78224888199" y="486.100006103516" z="-2468.08391916378"/>
+        <rotation name="ncd_anchors_00x1b07ffa0_rot" unit="deg" x="-11.0902771685959" y="65.0784595447585" z="167.803599852573"/>
+      </physvol>
+      <physvol name="ncd_anchors_10x1b0800a0">
+        <volumeref ref="ncd_anchors0x1b07fff0"/>
+        <position name="ncd_anchors_10x1b0800a0_pos" unit="mm" x="479.367903492856" y="5446.60009765625" z="-2464.31617055959"/>
+        <rotation name="ncd_anchors_10x1b0800a0_rot" unit="deg" x="-65.5527953069027" y="4.82844882485984" z="92.1914134774559"/>
+      </physvol>
+      <physvol name="ncd_anchors_20x1b0801a0">
+        <volumeref ref="ncd_anchors0x1b0800f0"/>
+        <position name="ncd_anchors_20x1b0801a0_pos" unit="mm" x="-520.128110693469" y="5445.7998046875" z="-2465.70727172973"/>
+        <rotation name="ncd_anchors_20x1b0801a0_rot" unit="deg" x="-65.5374190949453" y="-4.72110245509812" z="87.8556236108902"/>
+      </physvol>
+      <physvol name="ncd_anchors_30x1b0802a0">
+        <volumeref ref="ncd_anchors0x1b0801f0"/>
+        <position name="ncd_anchors_30x1b0802a0_pos" unit="mm" x="-5460.01178596961" y="502.100006103516" z="-2469.77141813261"/>
+        <rotation name="ncd_anchors_30x1b0802a0_rot" unit="deg" x="-11.4381918486098" y="-65.0175877571647" z="12.5829229901322"/>
+      </physvol>
+      <physvol name="ncd_anchors_40x1b0803a0">
+        <volumeref ref="ncd_anchors0x1b0802f0"/>
+        <position name="ncd_anchors_40x1b0803a0_pos" unit="mm" x="-5465.51843061677" y="-495.200012207031" z="-2468.28604090836"/>
+        <rotation name="ncd_anchors_40x1b0803a0_rot" unit="deg" x="11.2917159540015" y="-65.0642782471303" z="-12.4181140553645"/>
+      </physvol>
+      <physvol name="ncd_anchors_50x1b0804a0">
+        <volumeref ref="ncd_anchors0x1b0803f0"/>
+        <position name="ncd_anchors_50x1b0804a0_pos" unit="mm" x="-518.870739987164" y="-5408.39990234375" z="-2535.0658883272"/>
+        <rotation name="ncd_anchors_50x1b0804a0_rot" unit="deg" x="64.7809205013405" y="-4.71429377063736" z="-87.7833149846417"/>
+      </physvol>
+      <physvol name="ncd_anchors_60x1b0805a0">
+        <volumeref ref="ncd_anchors0x1b0804f0"/>
+        <position name="ncd_anchors_60x1b0805a0_pos" unit="mm" x="466.373351791876" y="-5443.7001953125" z="-2465.50409319237"/>
+        <rotation name="ncd_anchors_60x1b0805a0_rot" unit="deg" x="65.5308334993038" y="4.70649344068508" z="-92.1384132428091"/>
+      </physvol>
+      <physvol name="ncd_anchors_70x1b0806a0">
+        <volumeref ref="ncd_anchors0x1b0805f0"/>
+        <position name="ncd_anchors_70x1b0806a0_pos" unit="mm" x="5412.18672186914" y="-495.799987792969" z="-2470.47508083606"/>
+        <rotation name="ncd_anchors_70x1b0806a0_rot" unit="deg" x="11.295283216656" y="65.039340680259" z="-167.575546977325"/>
+      </physvol>
+      <physvol name="ncd_anchors_80x1b0807a0">
+        <volumeref ref="ncd_anchors0x1b0806f0"/>
+        <position name="ncd_anchors_80x1b0807a0_pos" unit="mm" x="4465.63379819712" y="2492.60009765625" z="-3083.93746969421"/>
+        <rotation name="ncd_anchors_80x1b0807a0_rot" unit="deg" x="-38.8132647931008" y="48.4692193613972" z="132.942140700824"/>
+      </physvol>
+      <physvol name="ncd_anchors_90x1b0808a0">
+        <volumeref ref="ncd_anchors0x1b0807f0"/>
+        <position name="ncd_anchors_90x1b0808a0_pos" unit="mm" x="2478.10866171929" y="4498.5" z="-3079.3793560191"/>
+        <rotation name="ncd_anchors_90x1b0808a0_rot" unit="deg" x="-55.4795317894189" y="24.6250306440025" z="105.991987644149"/>
+      </physvol>
+      <physvol name="ncd_anchors_100x1b0809a0">
+        <volumeref ref="ncd_anchors0x1b0808f0"/>
+        <position name="ncd_anchors_100x1b0809a0_pos" unit="mm" x="-2513.28238425904" y="4505.89990234375" z="-3083.56417693501"/>
+        <rotation name="ncd_anchors_100x1b0809a0_rot" unit="deg" x="-55.4872129201503" y="-24.4717101392247" z="74.1010286915579"/>
+      </physvol>
+      <physvol name="ncd_anchors_110x1b080aa0">
+        <volumeref ref="ncd_anchors0x1b0809f0"/>
+        <position name="ncd_anchors_110x1b080aa0_pos" unit="mm" x="-4515.66352745222" y="2499.80004882812" z="-3088.03265064078"/>
+        <rotation name="ncd_anchors_110x1b080aa0_rot" unit="deg" x="-38.8569827478212" y="-48.4211093536932" z="47.1237566707525"/>
+      </physvol>
+      <physvol name="ncd_anchors_120x1b080ba0">
+        <volumeref ref="ncd_anchors0x1b080af0"/>
+        <position name="ncd_anchors_120x1b080ba0_pos" unit="mm" x="-4524.77365607096" y="-2491.60009765625" z="-3085.44999296644"/>
+        <rotation name="ncd_anchors_120x1b080ba0_rot" unit="deg" x="38.7884963897177" y="-48.5298599117264" z="-47.0058051283932"/>
+      </physvol>
+      <physvol name="ncd_anchors_130x1b080ca0">
+        <volumeref ref="ncd_anchors0x1b080bf0"/>
+        <position name="ncd_anchors_130x1b080ca0_pos" unit="mm" x="-2522.47596579197" y="-4497.89990234375" z="-3085.05359952152"/>
+        <rotation name="ncd_anchors_130x1b080ca0_rot" unit="deg" x="55.426706171519" y="-24.5742596081368" z="-74.0074292980688"/>
+      </physvol>
+      <physvol name="ncd_anchors_140x1b080da0">
+        <volumeref ref="ncd_anchors0x1b080cf0"/>
+        <position name="ncd_anchors_140x1b080da0_pos" unit="mm" x="2483.91737793579" y="-4489.10009765625" z="-3080.36453973619"/>
+        <rotation name="ncd_anchors_140x1b080da0_rot" unit="deg" x="55.4148996479535" y="24.703899513854" z="-106.074308078536"/>
+      </physvol>
+      <physvol name="ncd_anchors_150x1b080ea0">
+        <volumeref ref="ncd_anchors0x1b080df0"/>
+        <position name="ncd_anchors_150x1b080ea0_pos" unit="mm" x="4470.91754926197" y="-2501.60009765625" z="-3081.76415743226"/>
+        <rotation name="ncd_anchors_150x1b080ea0_rot" unit="deg" x="38.9340476127916" y="48.4746355316554" z="-132.821271902261"/>
+      </physvol>
+      <physvol name="ncd_anchors_160x1b080fa0">
+        <volumeref ref="ncd_anchors0x1b080ef0"/>
+        <position name="ncd_anchors_160x1b080fa0_pos" unit="mm" x="3476.43800787321" y="3500" z="-3380.03322003601"/>
+        <rotation name="ncd_anchors_160x1b080fa0_rot" unit="deg" x="-45.862338053113" y="35.6658200344423" z="119.499656069905"/>
+      </physvol>
+      <physvol name="ncd_anchors_170x1b0810a0">
+        <volumeref ref="ncd_anchors0x1b080ff0"/>
+        <position name="ncd_anchors_170x1b0810a0_pos" unit="mm" x="-3518.95724932264" y="3504.19995117188" z="-3381.92659859396"/>
+        <rotation name="ncd_anchors_170x1b0810a0_rot" unit="deg" x="-45.8806622479389" y="-35.6060174625906" z="60.5517827392866"/>
+      </physvol>
+      <physvol name="ncd_anchors_180x1b0811a0">
+        <volumeref ref="ncd_anchors0x1b0810f0"/>
+        <position name="ncd_anchors_180x1b0811a0_pos" unit="mm" x="-3527.05956636592" y="-3496.10009765625" z="-3380.92983169518"/>
+        <rotation name="ncd_anchors_180x1b0811a0_rot" unit="deg" x="45.8228242411121" y="-35.7050398370783" z="-60.4430206317992"/>
+      </physvol>
+      <physvol name="ncd_anchors_190x1b0812a0">
+        <volumeref ref="ncd_anchors0x1b0811f0"/>
+        <position name="ncd_anchors_190x1b0812a0_pos" unit="mm" x="3476.83296004319" y="-3507.69995117188" z="-3381.74038814301"/>
+        <rotation name="ncd_anchors_190x1b0812a0_rot" unit="deg" x="45.9109345231406" y="35.6316025379281" z="-119.437574561649"/>
+      </physvol>
+      <physvol name="ncd_anchors_200x1b0813a0">
+        <volumeref ref="ncd_anchors0x1b0812f0"/>
+        <position name="ncd_anchors_200x1b0813a0_pos" unit="mm" x="4478.02002481851" y="1496.69995117188" z="-3660.88787849599"/>
+        <rotation name="ncd_anchors_200x1b0813a0_rot" unit="deg" x="-22.1408601270006" y="48.5754687204232" z="151.513837602227"/>
+      </physvol>
+      <physvol name="ncd_anchors_210x1b0814a0">
+        <volumeref ref="ncd_anchors0x1b0813f0"/>
+        <position name="ncd_anchors_210x1b0814a0_pos" unit="mm" x="1484.51345962032" y="4502.7001953125" z="-3662.19623827613"/>
+        <rotation name="ncd_anchors_210x1b0814a0_rot" unit="deg" x="-50.7435938542367" y="14.5298501416222" z="101.586660265937"/>
+      </physvol>
+      <physvol name="ncd_anchors_220x1b0815a0">
+        <volumeref ref="ncd_anchors0x1b0814f0"/>
+        <position name="ncd_anchors_220x1b0815a0_pos" unit="mm" x="-1514.16508498002" y="4500" z="-3665.66865040339"/>
+        <rotation name="ncd_anchors_220x1b0815a0_rot" unit="deg" x="-50.7000562020655" y="-14.3863501968149" z="78.5050213079803"/>
+      </physvol>
+      <physvol name="ncd_anchors_230x1b0816a0">
+        <volumeref ref="ncd_anchors0x1b0815f0"/>
+        <position name="ncd_anchors_230x1b0816a0_pos" unit="mm" x="-4521.17163649082" y="1503.09997558594" z="-3664.67692907973"/>
+        <rotation name="ncd_anchors_230x1b0816a0_rot" unit="deg" x="-22.2056288693884" y="-48.5203821596849" z="28.5843541780665"/>
+      </physvol>
+      <physvol name="ncd_anchors_240x1b0817a0">
+        <volumeref ref="ncd_anchors0x1b0816f0"/>
+        <position name="ncd_anchors_240x1b0817a0_pos" unit="mm" x="-4522.1557787602" y="-1490.40002441406" z="-3669.15652167422"/>
+        <rotation name="ncd_anchors_240x1b0817a0_rot" unit="deg" x="22.0117101114701" y="-48.5310673696202" z="-28.3473707462653"/>
+      </physvol>
+      <physvol name="ncd_anchors_250x1b0818a0">
+        <volumeref ref="ncd_anchors0x1b0817f0"/>
+        <position name="ncd_anchors_250x1b0818a0_pos" unit="mm" x="-1538.27185225525" y="-4495.39990234375" z="-3665.2774933614"/>
+        <rotation name="ncd_anchors_250x1b0818a0_rot" unit="deg" x="50.6743810794832" y="-14.618095598921" z="-78.3184064361273"/>
+      </physvol>
+      <physvol name="ncd_anchors_260x1b0819a0">
+        <volumeref ref="ncd_anchors0x1b0818f0"/>
+        <position name="ncd_anchors_260x1b0819a0_pos" unit="mm" x="1472.52401400062" y="-4505.5" z="-3665.88257871541"/>
+        <rotation name="ncd_anchors_260x1b0819a0_rot" unit="deg" x="50.732830249541" y="14.4082926712763" z="-101.49861189295"/>
+      </physvol>
+      <physvol name="ncd_anchors_270x1b081aa0">
+        <volumeref ref="ncd_anchors0x1b0819f0"/>
+        <position name="ncd_anchors_270x1b081aa0_pos" unit="mm" x="4475.13094630908" y="-1504.59997558594" z="-3665.37393110038"/>
+        <rotation name="ncd_anchors_270x1b081aa0_rot" unit="deg" x="22.2218195611207" y="48.506008526166" z="-151.390863711835"/>
+      </physvol>
+      <physvol name="ncd_anchors_280x1b081ba0">
+        <volumeref ref="ncd_anchors0x1b081af0"/>
+        <position name="ncd_anchors_280x1b081ba0_pos" unit="mm" x="4474.56434613576" y="495.399993896484" z="-3926.01861983432"/>
+        <rotation name="ncd_anchors_280x1b081ba0_rot" unit="deg" x="-7.15790594761734" y="48.5145003712362" z="170.483425907656"/>
+      </physvol>
+      <physvol name="ncd_anchors_290x1b081ca0">
+        <volumeref ref="ncd_anchors0x1b081bf0"/>
+        <position name="ncd_anchors_290x1b081ca0_pos" unit="mm" x="439.144372335858" y="4507.10009765625" z="-3923.94135158805"/>
+        <rotation name="ncd_anchors_290x1b081ca0_rot" unit="deg" x="-48.8213665199767" y="4.39934595949763" z="93.8389040283785"/>
+      </physvol>
+      <physvol name="ncd_anchors_300x1b081da0">
+        <volumeref ref="ncd_anchors0x1b081cf0"/>
+        <position name="ncd_anchors_300x1b081da0_pos" unit="mm" x="-518.160588416845" y="4507.10009765625" z="-3925.14698366659"/>
+        <rotation name="ncd_anchors_300x1b081da0_rot" unit="deg" x="-48.8127261976214" y="-4.74003551962807" z="85.8641996719899"/>
+      </physvol>
+      <physvol name="ncd_anchors_310x1b081ea0">
+        <volumeref ref="ncd_anchors0x1b081df0"/>
+        <position name="ncd_anchors_310x1b081ea0_pos" unit="mm" x="-4513.9196982361" y="502.100006103516" z="-3930.20029113647"/>
+        <rotation name="ncd_anchors_310x1b081ea0_rot" unit="deg" x="-7.24605575705049" y="-48.4553006707278" z="9.64146502150189"/>
+      </physvol>
+      <physvol name="ncd_anchors_320x1b081fa0">
+        <volumeref ref="ncd_anchors0x1b081ef0"/>
+        <position name="ncd_anchors_320x1b081fa0_pos" unit="mm" x="-4515.32354863135" y="-492.299987792969" z="-3928.80490903678"/>
+        <rotation name="ncd_anchors_320x1b081fa0_rot" unit="deg" x="7.10858100791496" y="-48.4828365387442" z="-9.45605404210092"/>
+      </physvol>
+      <physvol name="ncd_anchors_330x1b0820a0">
+        <volumeref ref="ncd_anchors0x1b081ff0"/>
+        <position name="ncd_anchors_330x1b0820a0_pos" unit="mm" x="-530.648499017694" y="-4498.5" z="-3924.03323978318"/>
+        <rotation name="ncd_anchors_330x1b0820a0_rot" unit="deg" x="48.7664088050352" y="-4.86459920570654" z="-85.7492616384866"/>
+      </physvol>
+      <physvol name="ncd_anchors_340x1b0821a0">
+        <volumeref ref="ncd_anchors0x1b0820f0"/>
+        <position name="ncd_anchors_340x1b0821a0_pos" unit="mm" x="478.336416508149" y="-4503" z="-3920.65042771593"/>
+        <rotation name="ncd_anchors_340x1b0821a0_rot" unit="deg" x="48.8193006413865" y="4.77619053239868" z="-94.1662018365108"/>
+      </physvol>
+      <physvol name="ncd_anchors_350x1b0822a0">
+        <volumeref ref="ncd_anchors0x1b0821f0"/>
+        <position name="ncd_anchors_350x1b0822a0_pos" unit="mm" x="4473.06800649854" y="-504.200012207031" z="-3927.11427701538"/>
+        <rotation name="ncd_anchors_350x1b0822a0_rot" unit="deg" x="7.28169297199056" y="48.489303692308" z="-170.316504046119"/>
+      </physvol>
+      <physvol name="ncd_anchors_360x1b0823a0">
+        <volumeref ref="ncd_anchors0x1b0822f0"/>
+        <position name="ncd_anchors_360x1b0823a0_pos" unit="mm" x="3467.94870474197" y="2502.10009765625" z="-4169.24326204972"/>
+        <rotation name="ncd_anchors_360x1b0823a0_rot" unit="deg" x="-30.8487714494134" y="35.5611109070421" z="134.236827725836"/>
+      </physvol>
+      <physvol name="ncd_anchors_370x1b0824a0">
+        <volumeref ref="ncd_anchors0x1b0823f0"/>
+        <position name="ncd_anchors_370x1b0824a0_pos" unit="mm" x="2484.41327465066" y="3500.89990234375" z="-4165.87924359182"/>
+        <rotation name="ncd_anchors_370x1b0824a0_rot" unit="deg" x="-39.9082807899265" y="24.6569043196462" z="116.509997309671"/>
+      </physvol>
+      <physvol name="ncd_anchors_380x1b0825a0">
+        <volumeref ref="ncd_anchors0x1b0824f0"/>
+        <position name="ncd_anchors_380x1b0825a0_pos" unit="mm" x="-2515.35890221109" y="3500.19995117188" z="-4171.25126067853"/>
+        <rotation name="ncd_anchors_380x1b0825a0_rot" unit="deg" x="-39.8662933611841" y="-24.5554576519617" z="63.54435947996"/>
+      </physvol>
+      <physvol name="ncd_anchors_390x1b0826a0">
+        <volumeref ref="ncd_anchors0x1b0825f0"/>
+        <position name="ncd_anchors_390x1b0826a0_pos" unit="mm" x="-3509.54097430144" y="2505.10009765625" z="-4175.83230032221"/>
+        <rotation name="ncd_anchors_390x1b0826a0_rot" unit="deg" x="-30.8392915790817" y="-35.526566371224" z="45.776575165704"/>
+      </physvol>
+      <physvol name="ncd_anchors_400x1b0827a0">
+        <volumeref ref="ncd_anchors0x1b0826f0"/>
+        <position name="ncd_anchors_400x1b0827a0_pos" unit="mm" x="-3521.7628985216" y="-2497.10009765625" z="-4171.75520970147"/>
+        <rotation name="ncd_anchors_400x1b0827a0_rot" unit="deg" x="30.7833092095159" y="-35.6635322239636" z="-45.6173207778456"/>
+      </physvol>
+      <physvol name="ncd_anchors_410x1b0828a0">
+        <volumeref ref="ncd_anchors0x1b0827f0"/>
+        <position name="ncd_anchors_410x1b0828a0_pos" unit="mm" x="-2518.86254111582" y="-3496.10009765625" z="-4168.45470033711"/>
+        <rotation name="ncd_anchors_410x1b0828a0_rot" unit="deg" x="39.8520966312272" y="-24.6048102836381" z="-63.4897768455969"/>
+      </physvol>
+      <physvol name="ncd_anchors_420x1b0829a0">
+        <volumeref ref="ncd_anchors0x1b0828f0"/>
+        <position name="ncd_anchors_420x1b0829a0_pos" unit="mm" x="2476.83173716554" y="-3503.80004882812" z="-4171.5606197116"/>
+        <rotation name="ncd_anchors_420x1b0829a0_rot" unit="deg" x="39.8932580765532" y="24.5662188946939" z="-116.443176346648"/>
+      </physvol>
+      <physvol name="ncd_anchors_430x1b082aa0">
+        <volumeref ref="ncd_anchors0x1b0829f0"/>
+        <position name="ncd_anchors_430x1b082aa0_pos" unit="mm" x="3470.14444613595" y="-2508.30004882812" z="-4172.64772963934"/>
+        <rotation name="ncd_anchors_430x1b082aa0_rot" unit="deg" x="30.8907487490505" y="35.5443417426569" z="-134.177460647278"/>
+      </physvol>
+      <physvol name="ncd_anchors_440x1b082ba0">
+        <volumeref ref="ncd_anchors0x1b082af0"/>
+        <position name="ncd_anchors_440x1b082ba0_pos" unit="mm" x="3477.69067806527" y="1497.69995117188" z="-4619.89612343557"/>
+        <rotation name="ncd_anchors_440x1b082ba0_rot" unit="deg" x="-17.8818334896774" y="35.6291924610055" z="151.019906960229"/>
+      </physvol>
+      <physvol name="ncd_anchors_450x1b082ca0">
+        <volumeref ref="ncd_anchors0x1b082bf0"/>
+        <position name="ncd_anchors_450x1b082ca0_pos" unit="mm" x="1487.96681160247" y="3500.39990234375" z="-4618.91563828066"/>
+        <rotation name="ncd_anchors_450x1b082ca0_rot" unit="deg" x="-37.0248394647956" y="14.5253117764628" z="108.393668341421"/>
+      </physvol>
+      <physvol name="ncd_anchors_460x1b082da0">
+        <volumeref ref="ncd_anchors0x1b082cf0"/>
+        <position name="ncd_anchors_460x1b082da0_pos" unit="mm" x="-1510.11350061829" y="3504" z="-4624.59970292085"/>
+        <rotation name="ncd_anchors_460x1b082da0_rot" unit="deg" x="-37.0193438812403" y="-14.3790734178136" z="71.772161245574"/>
+      </physvol>
+      <physvol name="ncd_anchors_470x1b082ea0">
+        <volumeref ref="ncd_anchors0x1b082df0"/>
+        <position name="ncd_anchors_470x1b082ea0_pos" unit="mm" x="-3510.99881801187" y="1501.80004882812" z="-4623.08775717826"/>
+        <rotation name="ncd_anchors_470x1b082ea0_rot" unit="deg" x="-17.9160963289885" y="-35.5827537396969" z="29.0572980740952"/>
+      </physvol>
+      <physvol name="ncd_anchors_480x1b07db80">
+        <volumeref ref="ncd_anchors0x1b082ef0"/>
+        <position name="ncd_anchors_480x1b07db80_pos" unit="mm" x="-3514.602369954" y="-1494.40002441406" z="-4622.09058494392"/>
+        <rotation name="ncd_anchors_480x1b07db80_rot" unit="deg" x="17.8370171284107" y="-35.6286057400158" z="-28.9154131952258"/>
+      </physvol>
+      <physvol name="ncd_anchors_490x1b07bff0">
+        <volumeref ref="ncd_anchors0x1b07bf40"/>
+        <position name="ncd_anchors_490x1b07bff0_pos" unit="mm" x="-1441.02600761684" y="-3533.19995117188" z="-4619.9097441949"/>
+        <rotation name="ncd_anchors_490x1b07bff0_rot" unit="deg" x="37.2761209051161" y="-13.707466357529" z="-72.7070791560537"/>
+      </physvol>
+      <physvol name="ncd_anchors_500x1b07c0f0">
+        <volumeref ref="ncd_anchors0x1b07c040"/>
+        <position name="ncd_anchors_500x1b07c0f0_pos" unit="mm" x="1482.98672996604" y="-3499.30004882812" z="-4623.7992009586"/>
+        <rotation name="ncd_anchors_500x1b07c0f0_rot" unit="deg" x="36.9871241344762" y="14.4713673077509" z="-108.354734677007"/>
+      </physvol>
+      <physvol name="ncd_anchors_510x1b07c1f0">
+        <volumeref ref="ncd_anchors0x1b07c140"/>
+        <position name="ncd_anchors_510x1b07c1f0_pos" unit="mm" x="3477.39291079834" y="-1502.59997558594" z="-4622.89425438387"/>
+        <rotation name="ncd_anchors_510x1b07c1f0_rot" unit="deg" x="17.9257519141329" y="35.6026229430259" z="-150.940486107398"/>
+      </physvol>
+      <physvol name="ncd_anchors_520x1b07c2f0">
+        <volumeref ref="ncd_anchors0x1b07c240"/>
+        <position name="ncd_anchors_520x1b07c2f0_pos" unit="mm" x="2420.27108106245" y="2446.10009765625" z="-4890.12003217432"/>
+        <rotation name="ncd_anchors_520x1b07c2f0_rot" unit="deg" x="-26.4656152009919" y="23.9387333572422" z="129.181835320232"/>
+      </physvol>
+      <physvol name="ncd_anchors_530x1b07c3f0">
+        <volumeref ref="ncd_anchors0x1b07c340"/>
+        <position name="ncd_anchors_530x1b07c3f0_pos" unit="mm" x="-2447.11988889425" y="2449.39990234375" z="-4891.41356271074"/>
+        <rotation name="ncd_anchors_530x1b07c3f0_rot" unit="deg" x="-26.4903926552259" y="-23.8762122434424" z="50.9176029619609"/>
+      </physvol>
+      <physvol name="ncd_anchors_540x1b07c4f0">
+        <volumeref ref="ncd_anchors0x1b07c440"/>
+        <position name="ncd_anchors_540x1b07c4f0_pos" unit="mm" x="-2481.13108821766" y="-2418.60009765625" z="-4889.82182060456"/>
+        <rotation name="ncd_anchors_540x1b07c4f0_rot" unit="deg" x="26.2094429160623" y="-24.2311704796489" z="-50.1808482778933"/>
+      </physvol>
+      <physvol name="ncd_anchors_550x1b07c540">
+        <volumeref ref="ncd_anchors0x1b083c30"/>
+        <position name="ncd_anchors_550x1b07c540_pos" unit="mm" x="2405.39163409546" y="-2454.80004882812" z="-4893.10567174371"/>
+        <rotation name="ncd_anchors_550x1b07c540_rot" unit="deg" x="26.5328781892179" y="23.7833811927904" z="-128.92757856669"/>
+      </physvol>
+      <physvol name="ncd_anchors_560x1b083d90">
+        <volumeref ref="ncd_anchors0x1b083ce0"/>
+        <position name="ncd_anchors_560x1b083d90_pos" unit="mm" x="3398.38738563731" y="486.399993896484" z="-4892.50855446496"/>
+        <rotation name="ncd_anchors_560x1b083d90_rot" unit="deg" x="-5.65069538596444" y="34.6548812770002" z="170.129133531424"/>
+      </physvol>
+      <physvol name="ncd_anchors_570x1b083e90">
+        <volumeref ref="ncd_anchors0x1b083de0"/>
+        <position name="ncd_anchors_570x1b083e90_pos" unit="mm" x="483.381098795795" y="3414.19995117188" z="-4891.61302172788"/>
+        <rotation name="ncd_anchors_570x1b083e90_rot" unit="deg" x="-34.7857385186147" y="4.77403783351604" z="96.8320739638569"/>
+      </physvol>
+      <physvol name="ncd_anchors_580x1b083f90">
+        <volumeref ref="ncd_anchors0x1b083ee0"/>
+        <position name="ncd_anchors_580x1b083f90_pos" unit="mm" x="-508.011415743227" y="3413.80004882812" z="-4892.7078702668"/>
+        <rotation name="ncd_anchors_580x1b083f90_rot" unit="deg" x="-34.7765862482762" y="-4.69553808018385" z="83.2767077919779"/>
+      </physvol>
+      <physvol name="ncd_anchors_590x1b084090">
+        <volumeref ref="ncd_anchors0x1b083fe0"/>
+        <position name="ncd_anchors_590x1b084090_pos" unit="mm" x="-3424.6045981111" y="519.700012207031" z="-4893.70312718139"/>
+        <rotation name="ncd_anchors_590x1b084090_rot" unit="deg" x="-6.03332797833181" y="-34.5782158975179" z="10.549454998865"/>
+      </physvol>
+      <physvol name="ncd_anchors_600x1b084190">
+        <volumeref ref="ncd_anchors0x1b0840e0"/>
+        <position name="ncd_anchors_600x1b084190_pos" unit="mm" x="-3431.00282837443" y="-473" z="-4894.00158843892"/>
+        <rotation name="ncd_anchors_600x1b084190_rot" unit="deg" x="5.4943228149709" y="-34.6522720079183" z="-9.60181122631658"/>
+      </physvol>
+      <physvol name="ncd_anchors_610x1b084290">
+        <volumeref ref="ncd_anchors0x1b0841e0"/>
+        <position name="ncd_anchors_610x1b084290_pos" unit="mm" x="-541.317736787277" y="-3410.19995117188" z="-4891.81239103265"/>
+        <rotation name="ncd_anchors_610x1b084290_rot" unit="deg" x="34.7531811389178" y="-5.0143627761977" z="-82.8197313887672"/>
+      </physvol>
+      <physvol name="ncd_anchors_620x1b07fb90">
+        <volumeref ref="ncd_anchors0x1b07fae0"/>
+        <position name="ncd_anchors_620x1b07fb90_pos" unit="mm" x="431.960047674827" y="-3425.80004882812" z="-4888.52772151202"/>
+        <rotation name="ncd_anchors_620x1b07fb90_rot" unit="deg" x="34.8938105358392" y="4.28209286410333" z="-96.1106611118751"/>
+      </physvol>
+      <physvol name="ncd_anchors_630x1b07fc90">
+        <volumeref ref="ncd_anchors0x1b07fbe0"/>
+        <position name="ncd_anchors_630x1b07fc90_pos" unit="mm" x="3394.58941157122" y="-509.399993896484" z="-4892.80739180323"/>
+        <rotation name="ncd_anchors_630x1b07fc90_rot" unit="deg" x="5.91568361212936" y="34.6108630988395" z="-169.661575217737"/>
+      </physvol>
+      <physvol name="ncd_anchors_640x1b07fd90">
+        <volumeref ref="ncd_anchors0x1b07fce0"/>
+        <position name="ncd_anchors_640x1b07fd90_pos" unit="mm" x="2488.37596395513" y="1517.09997558594" z="-5219.14713131852"/>
+        <rotation name="ncd_anchors_640x1b07fd90_rot" unit="deg" x="-16.1349730683751" y="24.6252606892701" z="145.228264081152"/>
+      </physvol>
+      <physvol name="ncd_anchors_650x1b07fe90">
+        <volumeref ref="ncd_anchors0x1b07fde0"/>
+        <position name="ncd_anchors_650x1b07fe90_pos" unit="mm" x="1503.77515515448" y="2502.10009765625" z="-5219.04743050354"/>
+        <rotation name="ncd_anchors_650x1b07fe90_rot" unit="deg" x="-25.5074799312756" y="14.6389621725532" z="117.909093237755"/>
+      </physvol>
+      <physvol name="ncd_anchors_660x1b084ba0">
+        <volumeref ref="ncd_anchors0x1b084af0"/>
+        <position name="ncd_anchors_660x1b084ba0_pos" unit="mm" x="-1499.81090630082" y="2517.69995117188" z="-5220.639768457"/>
+        <rotation name="ncd_anchors_660x1b084ba0_rot" unit="deg" x="-25.6393360180603" y="-14.3256907732038" z="62.7277659199876"/>
+      </physvol>
+      <physvol name="ncd_anchors_670x1b084ca0">
+        <volumeref ref="ncd_anchors0x1b084bf0"/>
+        <position name="ncd_anchors_670x1b084ca0_pos" unit="mm" x="-2504.42196475263" y="1535.59997558594" z="-5219.44575306896"/>
+        <rotation name="ncd_anchors_670x1b084ca0_rot" unit="deg" x="-16.3204300766807" y="-24.5012208239303" z="35.2239770892079"/>
+      </physvol>
+      <physvol name="ncd_anchors_680x1b084da0">
+        <volumeref ref="ncd_anchors0x1b084cf0"/>
+        <position name="ncd_anchors_680x1b084da0_pos" unit="mm" x="-2530.40346324206" y="-1484.90002441406" z="-5221.53553768897"/>
+        <rotation name="ncd_anchors_680x1b084da0_rot" unit="deg" x="15.8029338969743" y="-24.7744649189488" z="-34.0352910501632"/>
+      </physvol>
+      <physvol name="ncd_anchors_690x1b084ea0">
+        <volumeref ref="ncd_anchors0x1b084df0"/>
+        <position name="ncd_anchors_690x1b084ea0_pos" unit="mm" x="-1537.61667923924" y="-2496.5" z="-5220.04292988949"/>
+        <rotation name="ncd_anchors_690x1b084ea0_rot" unit="deg" x="25.4533794723151" y="-14.6979810076271" z="-61.9397544277523"/>
+      </physvol>
+      <physvol name="ncd_anchors_700x1b084fa0">
+        <volumeref ref="ncd_anchors0x1b084ef0"/>
+        <position name="ncd_anchors_700x1b084fa0_pos" unit="mm" x="1471.95861208446" y="-2525.19995117188" z="-5217.15680816072"/>
+        <rotation name="ncd_anchors_700x1b084fa0_rot" unit="deg" x="25.7208295276363" y="14.3254646246361" z="-117.186977398945"/>
+      </physvol>
+      <physvol name="ncd_anchors_710x1b0850a0">
+        <volumeref ref="ncd_anchors0x1b084ff0"/>
+        <position name="ncd_anchors_710x1b0850a0_pos" unit="mm" x="2485.36816906111" y="-1525.19995117188" z="-5218.25158022549"/>
+        <rotation name="ncd_anchors_710x1b0850a0_rot" unit="deg" x="16.2192400805166" y="24.5937056859179" z="-145.048246855587"/>
+      </physvol>
+      <physvol name="ncd_anchors_720x1b0851a0">
+        <volumeref ref="ncd_anchors0x1b0850f0"/>
+        <position name="ncd_anchors_720x1b0851a0_pos" unit="mm" x="2490.55500013064" y="501.100006103516" z="-5410.03427200525"/>
+        <rotation name="ncd_anchors_720x1b0851a0_rot" unit="deg" x="-5.26683745214892" y="24.6294825446172" z="167.527192894313"/>
+      </physvol>
+      <physvol name="ncd_anchors_730x1b0852a0">
+        <volumeref ref="ncd_anchors0x1b0851f0"/>
+        <position name="ncd_anchors_730x1b0852a0_pos" unit="mm" x="507.895472322186" y="2511.60009765625" z="-5404.16241557949"/>
+        <rotation name="ncd_anchors_730x1b0852a0_rot" unit="deg" x="-24.8224979342267" y="4.96843619270877" z="100.605343999257"/>
+      </physvol>
+      <physvol name="ncd_anchors_740x1b0853a0">
+        <volumeref ref="ncd_anchors0x1b0852f0"/>
+        <position name="ncd_anchors_740x1b0853a0_pos" unit="mm" x="-500.689764903614" y="2514.80004882812" z="-5405.65545898654"/>
+        <rotation name="ncd_anchors_740x1b0853a0_rot" unit="deg" x="-24.8442716609991" y="-4.6658428071786" z="80.0354752485014"/>
+      </physvol>
+      <physvol name="ncd_anchors_750x1b0854a0">
+        <volumeref ref="ncd_anchors0x1b0853f0"/>
+        <position name="ncd_anchors_750x1b0854a0_pos" unit="mm" x="-2515.26219888661" y="517.200012207031" z="-5408.34262461716"/>
+        <rotation name="ncd_anchors_750x1b0854a0_rot" unit="deg" x="-5.43674950407429" y="-24.633710974655" z="12.8623090067172"/>
+      </physvol>
+      <physvol name="ncd_anchors_760x1b0855a0">
+        <volumeref ref="ncd_anchors0x1b0854f0"/>
+        <position name="ncd_anchors_760x1b0855a0_pos" unit="mm" x="-2519.24801842643" y="-481.899993896484" z="-5409.7358619327"/>
+        <rotation name="ncd_anchors_760x1b0855a0_rot" unit="deg" x="5.06638361490757" y="-24.6757064601964" z="-11.9892009588621"/>
+      </physvol>
+      <physvol name="ncd_anchors_770x1b0856a0">
+        <volumeref ref="ncd_anchors0x1b0855f0"/>
+        <position name="ncd_anchors_770x1b0856a0_pos" unit="mm" x="-529.86951391717" y="-2504.60009765625" z="-5407.64591141175"/>
+        <rotation name="ncd_anchors_770x1b0856a0_rot" unit="deg" x="24.7475847930193" y="-4.94542372423454" z="-79.4070410559968"/>
+      </physvol>
+      <physvol name="ncd_anchors_780x1b0857a0">
+        <volumeref ref="ncd_anchors0x1b0856f0"/>
+        <position name="ncd_anchors_780x1b0857a0_pos" unit="mm" x="476.309287333211" y="-2515" z="-5405.55580837089"/>
+        <rotation name="ncd_anchors_780x1b0857a0_rot" unit="deg" x="24.8464111510394" y="4.66584809981192" z="-99.963579521143"/>
+      </physvol>
+      <physvol name="ncd_anchors_790x1b0858a0">
+        <volumeref ref="ncd_anchors0x1b0857f0"/>
+        <position name="ncd_anchors_790x1b0858a0_pos" unit="mm" x="2492.43798598267" y="-509.899993896484" z="-5408.34262952913"/>
+        <rotation name="ncd_anchors_790x1b0858a0_rot" unit="deg" x="5.36046269113773" y="24.6494511555307" z="-167.320670101447"/>
+      </physvol>
+      <physvol name="ncd_anchors_800x1b0859a0">
+        <volumeref ref="ncd_anchors0x1b0858f0"/>
+        <position name="ncd_anchors_800x1b0859a0_pos" unit="mm" x="1479.04517239018" y="1499.30004882812" z="-5594.55225150414"/>
+        <rotation name="ncd_anchors_800x1b0859a0_rot" unit="deg" x="-14.9341460044365" y="14.3569393443291" z="132.912967375486"/>
+      </physvol>
+      <physvol name="ncd_anchors_810x1b085aa0">
+        <volumeref ref="ncd_anchors0x1b0859f0"/>
+        <position name="ncd_anchors_810x1b085aa0_pos" unit="mm" x="-1507.33873363037" y="1516.09997558594" z="-5587.88426417007"/>
+        <rotation name="ncd_anchors_810x1b085aa0_rot" unit="deg" x="-15.1110774302912" y="-14.4368128060999" z="47.2842616831803"/>
+      </physvol>
+      <physvol name="ncd_anchors_820x1b085ba0">
+        <volumeref ref="ncd_anchors0x1b085af0"/>
+        <position name="ncd_anchors_820x1b085ba0_pos" unit="mm" x="-1525.12502360498" y="-1494.19995117188" z="-5588.97914433016"/>
+        <rotation name="ncd_anchors_820x1b085ba0_rot" unit="deg" x="14.8997871657068" y="-14.6122374284206" z="-46.5249522071722"/>
+      </physvol>
+      <physvol name="ncd_anchors_830x1b085ca0">
+        <volumeref ref="ncd_anchors0x1b085bf0"/>
+        <position name="ncd_anchors_830x1b085ca0_pos" unit="mm" x="1485.64627490449" y="-1521.90002441406" z="-5586.68976300099"/>
+        <rotation name="ncd_anchors_830x1b085ca0_rot" unit="deg" x="15.1693221626137" y="14.4230307246444" z="-132.573926424187"/>
+      </physvol>
+      <physvol name="ncd_anchors_840x1b085da0">
+        <volumeref ref="ncd_anchors0x1b085cf0"/>
+        <position name="ncd_anchors_840x1b085da0_pos" unit="mm" x="1496.74654875912" y="507" z="-5764.14161578979"/>
+        <rotation name="ncd_anchors_840x1b085da0_rot" unit="deg" x="-5.00286564822378" y="14.5068026979029" z="160.737298167289"/>
+      </physvol>
+      <physvol name="ncd_anchors_850x1b085ea0">
+        <volumeref ref="ncd_anchors0x1b085df0"/>
+        <position name="ncd_anchors_850x1b085ea0_pos" unit="mm" x="474.523692284748" y="1517.5" z="-5762.84758597068"/>
+        <rotation name="ncd_anchors_850x1b085ea0_rot" unit="deg" x="-14.6853441416438" y="4.60458680004518" z="107.031056939288"/>
+      </physvol>
+      <physvol name="ncd_anchors_860x1b085fa0">
+        <volumeref ref="ncd_anchors0x1b085ef0"/>
+        <position name="ncd_anchors_860x1b085fa0_pos" unit="mm" x="-502.157018565382" y="1509.19995117188" z="-5763.94238342575"/>
+        <rotation name="ncd_anchors_860x1b085fa0_rot" unit="deg" x="-14.6058105064601" y="-4.72425470689667" z="72.4605959714229"/>
+      </physvol>
+      <physvol name="ncd_anchors_870x1b0860a0">
+        <volumeref ref="ncd_anchors0x1b085ff0"/>
+        <position name="ncd_anchors_870x1b0860a0_pos" unit="mm" x="-1513.75701704624" y="503.700012207031" z="-5763.9423980729"/>
+        <rotation name="ncd_anchors_870x1b0860a0_rot" unit="deg" x="-4.97063734922518" y="-14.5255136529581" z="19.1247110551084"/>
+      </physvol>
+      <physvol name="ncd_anchors_880x1b0861a0">
+        <volumeref ref="ncd_anchors0x1b0860f0"/>
+        <position name="ncd_anchors_880x1b0861a0_pos" unit="mm" x="-1515.4438707472" y="-489.700012207031" z="-5764.73858100088"/>
+        <rotation name="ncd_anchors_880x1b0861a0_rot" unit="deg" x="4.83248138143481" y="-14.5421708075616" z="-18.6084673149879"/>
+      </physvol>
+      <physvol name="ncd_anchors_890x1b0862a0">
+        <volumeref ref="ncd_anchors0x1b0861f0"/>
+        <position name="ncd_anchors_890x1b0862a0_pos" unit="mm" x="-497.368944834746" y="-1513.40002441406" z="-5763.24546641017"/>
+        <rotation name="ncd_anchors_890x1b0862a0_rot" unit="deg" x="14.6464077079575" y="-4.67831295419423" z="-72.6677950451997"/>
+      </physvol>
+      <physvol name="ncd_anchors_900x1b0863a0">
+        <volumeref ref="ncd_anchors0x1b0862f0"/>
+        <position name="ncd_anchors_900x1b0863a0_pos" unit="mm" x="468.83453672261" y="-1516.90002441406" z="-5763.44470057589"/>
+        <rotation name="ncd_anchors_900x1b0863a0_rot" unit="deg" x="14.6783332924417" y="4.55005108997332" z="-106.849159598198"/>
+      </physvol>
+      <physvol name="ncd_anchors_910x1b0864a0">
+        <volumeref ref="ncd_anchors0x1b0863f0"/>
+        <position name="ncd_anchors_910x1b0864a0_pos" unit="mm" x="1496.539872012" y="-511.899993896484" z="-5763.74303596268"/>
+        <rotation name="ncd_anchors_910x1b0864a0_rot" unit="deg" x="5.05131522480593" y="14.5048817399704" z="-160.561453622049"/>
+      </physvol>
+      <physvol name="ncd_anchors_920x1b0865a0">
+        <volumeref ref="ncd_anchors0x1b0864f0"/>
+        <position name="ncd_anchors_920x1b0865a0_pos" unit="mm" x="496.633413689128" y="500" z="-5931.62401076238"/>
+        <rotation name="ncd_anchors_920x1b0865a0_rot" unit="deg" x="-4.79546383658662" y="4.77875510107477" z="134.79978444513"/>
+      </physvol>
+      <physvol name="ncd_anchors_930x1b0866a0">
+        <volumeref ref="ncd_anchors0x1b0865f0"/>
+        <position name="ncd_anchors_930x1b0866a0_pos" unit="mm" x="-503.366586310872" y="500" z="-5931.62401076238"/>
+        <rotation name="ncd_anchors_930x1b0866a0_rot" unit="deg" x="-4.79546383658662" y="-4.77875510107477" z="45.2002155548698"/>
+      </physvol>
+      <physvol name="ncd_anchors_940x1b0867a0">
+        <volumeref ref="ncd_anchors0x1b0866f0"/>
+        <position name="ncd_anchors_940x1b0867a0_pos" unit="mm" x="-503.366586310872" y="-500" z="-5931.62401076238"/>
+        <rotation name="ncd_anchors_940x1b0867a0_rot" unit="deg" x="4.79546383658662" y="-4.77875510107477" z="-45.2002155548698"/>
+      </physvol>
+      <physvol name="ncd_anchors_950x1b0868a0">
+        <volumeref ref="ncd_anchors0x1b0867f0"/>
+        <position name="ncd_anchors_950x1b0868a0_pos" unit="mm" x="496.633413689128" y="-500" z="-5931.62401076238"/>
+        <rotation name="ncd_anchors_950x1b0868a0_rot" unit="deg" x="4.79546383658662" y="4.77875510107477" z="-134.79978444513"/>
+      </physvol>
+    </volume>
+    <volume name="av0x1b074440">
+      <materialref ref="acrylic_sno0x1af47ed0"/>
+      <solidref ref="av0x1b044a20"/>
+      <physvol name="avneck0x1b07aea0">
+        <volumeref ref="avneck0x1b07ae10"/>
+        <position name="avneck0x1b07aea0_pos" unit="mm" x="0" y="0" z="9345"/>
+      </physvol>
+      <physvol name="scint0x1b0868f0">
+        <volumeref ref="scint0x1b07aef0"/>
+      </physvol>
+    </volume>
+    <volume name="avHD0x1b0869b0">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b086ab0">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b086b90">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b086c70">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b086dc0">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b086ec0">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b086fc0">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b0870c0">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b087250">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="avHD0x1b087300">
+      <materialref ref="kevlar0x1af60d10"/>
+      <solidref ref="solid50x1b046b20"/>
+    </volume>
+    <volume name="h2o_sub0x1b0743b0">
+      <materialref ref="lightwater_sno0x1af642c0"/>
+      <solidref ref="h2o_sub0x1b043e20"/>
+      <physvol name="av0x1b086960">
+        <volumeref ref="av0x1b074440"/>
+      </physvol>
+      <physvol name="avHD_00x1b086a40">
+        <volumeref ref="avHD0x1b0869b0"/>
+      </physvol>
+      <physvol name="avHD_10x1b086b40">
+        <volumeref ref="avHD0x1b086ab0"/>
+        <rotation name="avHD_10x1b086b40_rot" unit="deg" x="0" y="0" z="36"/>
+      </physvol>
+      <physvol name="avHD_20x1b086c20">
+        <volumeref ref="avHD0x1b086b90"/>
+        <rotation name="avHD_20x1b086c20_rot" unit="deg" x="0" y="0" z="72"/>
+      </physvol>
+      <physvol name="avHD_30x1b086d20">
+        <volumeref ref="avHD0x1b086c70"/>
+        <rotation name="avHD_30x1b086d20_rot" unit="deg" x="0" y="0" z="108"/>
+      </physvol>
+      <physvol name="avHD_40x1b086e70">
+        <volumeref ref="avHD0x1b086dc0"/>
+        <rotation name="avHD_40x1b086e70_rot" unit="deg" x="0" y="0" z="144"/>
+      </physvol>
+      <physvol name="avHD_50x1b086f70">
+        <volumeref ref="avHD0x1b086ec0"/>
+        <rotation name="avHD_50x1b086f70_rot" unit="deg" x="0" y="0" z="180"/>
+      </physvol>
+      <physvol name="avHD_60x1b087070">
+        <volumeref ref="avHD0x1b086fc0"/>
+        <rotation name="avHD_60x1b087070_rot" unit="deg" x="0" y="0" z="-144"/>
+      </physvol>
+      <physvol name="avHD_70x1b087170">
+        <volumeref ref="avHD0x1b0870c0"/>
+        <rotation name="avHD_70x1b087170_rot" unit="deg" x="0" y="0" z="-108"/>
+      </physvol>
+      <physvol name="avHD_80x1b086d70">
+        <volumeref ref="avHD0x1b087250"/>
+        <rotation name="avHD_80x1b086d70_rot" unit="deg" x="0" y="0" z="-72"/>
+      </physvol>
+      <physvol name="avHD_90x1b0873b0">
+        <volumeref ref="avHD0x1b087300"/>
+        <rotation name="avHD_90x1b0873b0_rot" unit="deg" x="0" y="0" z="-36"/>
+      </physvol>
+    </volume>
+    <volume name="h2o0x1b075380">
+      <materialref ref="lightwater_sno0x1af642c0"/>
+      <solidref ref="h2o0x1b043200"/>
+      <physvol name="h2o_sub0x1b087400">
+        <volumeref ref="h2o_sub0x1b0743b0"/>
+      </physvol>
+    </volume>
+    <volume name="psup0x1b0752f0">
+      <materialref ref="acrylic_black0x1af479b0"/>
+      <solidref ref="psup0x1b0425e0"/>
+      <physvol name="h2o0x1b087470">
+        <volumeref ref="h2o0x1b075380"/>
+      </physvol>
+    </volume>
+    <volume name="cavity0x1b075980">
+      <materialref ref="lightwater_sno0x1af642c0"/>
+      <solidref ref="cavity0x1b0417e0"/>
+      <physvol name="psup0x1b0874c0">
+        <volumeref ref="psup0x1b0752f0"/>
+      </physvol>
+    </volume>
+    <volume name="world0x1b0758f0">
+      <materialref ref="rock0x1af7ac70"/>
+      <solidref ref="world0x1b0410b0"/>
+      <physvol name="cavity0x1b087510">
+        <volumeref ref="cavity0x1b075980"/>
+      </physvol>
+    </volume>
+  </structure>
+
+  <setup name="Default" version="1.0">
+    <world ref="world0x1b0758f0"/>
+  </setup>
+
+</gdml>

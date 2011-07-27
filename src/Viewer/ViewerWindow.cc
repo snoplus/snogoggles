@@ -26,6 +26,12 @@ ViewerWindow::ViewerWindow()
 void
 ViewerWindow::Initialise()
 {
+  // Attempt to initialize the size of the depth and stencil buffers.
+  // Fails on Linux, not sure about Mac.
+  sf::ContextSettings Settings;
+  Settings.DepthBits         = 24; // Request a 24 bits depth buffer
+  Settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
+
   // Load the configuration
   try
     {
@@ -35,7 +41,7 @@ ViewerWindow::Initialise()
       int resX = loadConfig.GetI( "resX" ); 
       int resY = loadConfig.GetI( "resY" );
       Coord::SetWindowResolution( resX, resY );
-      fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles" );
+      fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles", sf::Style::Default, Settings );
       Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       Coord::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       DrawSplash();
@@ -45,7 +51,7 @@ ViewerWindow::Initialise()
   catch( Configuration::NoFileError& e )
     {
       sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
-      fWindowApp = new sf::RenderWindow( sf::VideoMode::GetDesktopMode(), "SNO Goggles" ); 
+      fWindowApp = new sf::RenderWindow( sf::VideoMode::GetDesktopMode(), "SNO Goggles", sf::Style::Default, Settings  ); 
       Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
       Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       DrawSplash();

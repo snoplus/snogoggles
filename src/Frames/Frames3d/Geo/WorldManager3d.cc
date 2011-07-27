@@ -15,8 +15,8 @@ WorldManager3d::WorldManager3d()
 
 WorldManager3d::~WorldManager3d() 
 {
-    delete fWorld;      fWorld = NULL;
-    delete fVisMap;     fVisMap = NULL;
+    delete fWorld;
+    fWorld = NULL;
 }
 
 void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
@@ -27,14 +27,14 @@ void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& op
 void WorldManager3d::SetWorld( World* world )
 {
     fWorld = world;
-    if( fVisMap != NULL )
-        fWorld->SetVisMap( *fVisMap );
+    if( fVisMap.IsEmpty() == false )
+        fWorld->SetVisMap( fVisMap );
 }
 
 void WorldManager3d::LoadConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetEnumSafe< GeoRenderType >( configTable, "geoRenderType", fGeoRenderType );
-    fVisMap->LoadSafeFromParentTable( configTable, "visMap" );
+    fVisMap.LoadSafeFromParentTable( configTable, "visMap" );
 }
 
 void WorldManager3d::SaveConfiguration( ConfigurationTable* configTable )
