@@ -196,7 +196,7 @@ void IcosahedralProjection::Render2d(RWWrapper& windowApp){
     windowApp.Draw(fOpenPMT);
   }
   for(int ipmt=0;ipmt<rEV->GetPMTCalCount();ipmt++){
-    const sf::Vector2<double> projPos = Projection( rPMTList->GetPos( rEV->GetPMTCal(ipmt)->GetID() ) );
+    const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(rEV->GetPMTCal(ipmt)->GetID()));
     fFilledPMT.SetPosition(projPos);
     double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
     if(pmtHitTime<250.0)
