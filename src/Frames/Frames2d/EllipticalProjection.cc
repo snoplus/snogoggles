@@ -1,5 +1,7 @@
 //C++ includes
 #include <iostream>
+//ROOT
+#include <TMath.h>
 //RAT includes
 #include <RAT/DS/Root.hh>
 #include <RAT/DS/EV.hh>

@@ -75,14 +75,12 @@ void DefaultHits3d::SaveAllPMTs( RAT::DS::PMTProperties* pmtList )
 {
     fAllPMTs.clear();
     for( int i = 0; i < pmtList->GetPMTCount(); i++ )
-    {
         fAllPMTs.push_back( Hit( pmtList->GetPos( i ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) ) );
-    }
-
 }
 
 void DefaultHits3d::FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
 {
+    fFilteredHits.clear();
     if( fPMTType == CAL )
         FilterPMTCal( ev, pmtList );
     else
