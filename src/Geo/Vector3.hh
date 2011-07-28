@@ -16,9 +16,8 @@
 #ifndef __Viewer_Vector3__
 #define __Viewer_Vector3__
 
-#include <TVector3.h>
-#include <SFML/OpenGL.hpp>
 #include <Viewer/Serializable.hh>
+class TVector3;
 
 namespace Viewer
 {
@@ -31,9 +30,7 @@ public:
     Vector3( double x = 0.0, double y = 0.0, double z = 0.0 );
     Vector3( const TVector3& v );
     void SetXYZ( double x = 0.0, double y = 0.0, double z = 0.0 );
-
-    inline void Render() const;
-
+    void Render() const;
     void Load( ConfigurationTable* configTable );
     void Save( ConfigurationTable* configTable ) const;
 
@@ -41,13 +38,6 @@ public:
 
 }; // class Vector3
 
-void Vector3::Render() const
-{
-    glVertex3f( static_cast< float >( x ), 
-                static_cast< float >( y ), 
-                static_cast< float >( z ) 
-    );
-}
 
 } // ::Viewer
 

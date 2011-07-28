@@ -28,6 +28,8 @@ class Polygon : public Serializable
 public:
 
     Polygon() { }
+    Polygon( std::vector< Vector3> vertices ) 
+        : fVertices( vertices ) { }
 
     inline void AddVertex( const Vector3& vertex );
     inline const int GetNoVertices() const;
