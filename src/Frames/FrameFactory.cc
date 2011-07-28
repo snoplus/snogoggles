@@ -4,6 +4,7 @@
 #include <Viewer/TestBox.hh>
 #include <Viewer/LambertProjection.hh>
 #include <Viewer/IcosahedralProjection.hh>
+#include <Viewer/EllipticalProjection.hh>
 #include <Viewer/TimeHist.hh>
 #include <Viewer/ChargeHist.hh>
 #include <Viewer/EventUI.hh>
@@ -26,6 +27,9 @@ FrameFactory::FrameFactory()
   Register( Frames::TimeHist::Name(),new Alloc<Frame,Frames::TimeHist>() );
   //Charge Histogram KC - 24/07/11
   Register( Frames::ChargeHist::Name(),new Alloc<Frame,Frames::ChargeHist>() );
+  //Elliptical Projection KC - 26/07/11
+  Register(Frames::EllipticalProjection::Name(),new Alloc<Frame,Frames::EllipticalProjection>());
+    
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   
   // Combo 3D frame added by Olivia Wasalski 05/07/11

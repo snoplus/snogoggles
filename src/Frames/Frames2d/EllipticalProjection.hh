@@ -1,19 +1,19 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::IcosahedralProjection
+/// \class Viewer::Frames::EllipticalProjection
 ///
-/// \brief   Event display using the "flattened" icosahedral projection
+/// \brief   Event display using the elliptical or "Mollweide" projection
 ///
 /// \author  Ken Clark <k.clark1@physics.ox.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     13.07.11 - Start
+///     25.07.11 - Start
 ///
 /// \detail  Not much more detail to go into here.
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames_IcosahedralProjection__
-#define __Viewer_Frames_IcosahedralProjection__
+#ifndef __Viewer_Frames_EllipticalProjection__
+#define __Viewer_Frames_EllipticalProjection__
 
 #include <TVector3.h>
 
@@ -27,7 +27,7 @@ namespace Viewer
 namespace Frames
 {
 
-class IcosahedralProjection:public Frame{
+class EllipticalProjection:public Frame{
 public:
   //empty classes
   void SaveConfiguration( ConfigurationTable& configTable );
@@ -38,15 +38,14 @@ public:
   //standard getting event stuff
   virtual void EventLoop();
   //classes dealing with name
-  virtual std::string GetName() {return IcosahedralProjection::Name();}
-  static std::string Name() {return std::string("IcosahedralProjection");}
+  virtual std::string GetName() {return EllipticalProjection::Name();}
+  static std::string Name() {return std::string("EllipticalProjection");}
   //actually draw it
   virtual void Render2d(RWWrapper& windowApp);
 
 private:
   //figure out where PMT should be
   sf::Vector2<double> Projection(TVector3 pmtPos);
-  sf::Vector2<double> Transform(int vertex3d_1, int vertex3d_2, int vertex3d_3, int vertex2d_1, int vertex2d_2, int vertex2d_3, TVector3 pmtPos);
   //use Phil's convention here 
   Shape fFilledPMT;
   Shape fOpenPMT;
@@ -55,7 +54,6 @@ private:
   std::vector<TVector2> vertex_edges;
   std::vector<TVector3> vertices_3d;
   std::vector<TVector2> vertices_2d;
-  std::vector<TVector2> icosPMTpos;
 };
 
 } //end Frames

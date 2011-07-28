@@ -104,17 +104,13 @@ void TimeHist::Render2d(RWWrapper& windowApp){
   }
   histBar = Shape::Rectangle(0.0,0.0,barWidth,1.0,ColourPalette::gPalette->GetPrimaryColour(eGrey));
   //create the individual bars of the histogram
-  //printf("************* %i PMTs **************\n",rEV->GetPMTCalCount());
-  for (int i=0;i<numBars;i++){
+   for (int i=0;i<numBars;i++){
     if (pmtTimes[i]!=0){
-      //printf("Time Bin %i: %i Y position: %0.2f, bar height: %0.2f\n",i,pmtTimes[i],i*barWidth,pmtTimes[i]*barHeight);
       histBar.SetBoundingRect(sf::Rect<double>(barWidth,pmtTimes[i]*barHeight,(i+1)*barWidth,0.9));
       histBar.SetPosition(0.1+(i*barWidth),0.9-(pmtTimes[i]*barHeight));
       histBar.SetWidth(1.0);
       histBar.SetHeight(pmtTimes[i]*barHeight);
-      //histBar.SetHeight(pmtTimes[i]*barHeight);
-      //histBar.SetScale(1,pmtTimes[i]*barHeight);
-      //histBar.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+      histBar.SetColor(ColourPalette::gPalette->GetColour((100.0+static_cast<double>(i)*divisor)/500.0));
       windowApp.Draw(histBar);
     }
   }
