@@ -16,12 +16,11 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-
 #ifndef __Viewer_Frames_DefaultHits3d__
 #define __Viewer_Frames_DefaultHits3d__
 
 #include <Viewer/HitManager3d.hh>
-#include <Viewer/GUIReturn.hh>
+#include <Viewer/Hit.hh>
 #include <TVector3.h>
 
 #include <string>
@@ -43,53 +42,40 @@ namespace Viewer {
 
 namespace Frames {
 
-    class FrontChecker3d;
-
 class DefaultHits3d : public HitManager3d {
-
 public:
 
     DefaultHits3d();
 
     static std::string Name() { return "DefaultHits"; }
     std::string GetName() { return Name(); }
-
-    /// Creates all the GUI objects.
     void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-
-    /// Loads configuration
     void LoadConfiguration( ConfigurationTable* configTable );
-
-    /// Saves configuration
     void SaveConfiguration( ConfigurationTable* configTable );
-
-    /// Event loop for the camera manager.
     void EventLoop( );
-
-    /// Renders hits.
     void RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
 
 private:
 
-    void DisplayAllPMTs( RAT::DS::PMTProperties* pmtList );
+    void SaveAllPMTs( RAT::DS::PMTProperties* pmtList );
+    void FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
 
-    void RenderUnCalHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
+    void FilterPMTCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
+    void FilterPMTUnCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
 
-    void RenderCalHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
+    Colour AssignColour( RAT::DS::PMTUnCal* pmt );
+    Colour AssignColour( RAT::DS::PMTCal* pmt );
 
-    void SetColour( RAT::DS::PMTUnCal* pmt );
+    bool PassesFilters( const TVector3& pos );
+    bool FilterByFront( const TVector3& pos );
 
-    void SetColour( RAT::DS::PMTCal* pmt );
+    void DisplayHits( const std::vector< Hit >& hits, bool forceHollow );
 
-    void RenderHit( RAT::DS::PMTUnCal* pmt, RAT::DS::PMTProperties* pmtList );
+    RAT::DS::EV* fCurrentEV;
+    RAT::DS::PMTProperties* fCurrentPMTList;
 
-    void RenderHit( RAT::DS::PMTCal* pmt, RAT::DS::PMTProperties* pmtList );
-
-    void RenderFrontSolidHitOnly( const TVector3& pos );
-
-    void RenderFrontHollowHitOnly( const TVector3& pos );
-
-    void RenderSolidOrHollowHit( const TVector3& pos );
+    std::vector< Hit > fFilteredHits;
+    std::vector< Hit > fAllPMTs;
 
     static const std::string fDisplayAllPMTsTag;
     static const std::string fPMTTypeTag;

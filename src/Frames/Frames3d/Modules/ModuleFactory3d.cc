@@ -10,6 +10,7 @@
 
 #include <Viewer/Arcball3d.hh>
 #include <Viewer/DefaultHits3d.hh>
+#include <Viewer/Geodesic3d.hh>
 
 #include <vector>
 #include <string>
@@ -35,7 +36,7 @@ ModuleFactory3d::ModuleFactory3d( )
     fDefaultCameraManager = Arcball3d::Name();
     fDefaultHitManager = DefaultHits3d::Name();
     fDefaultTrackManager = Module3d::NullTag();
-    fDefaultGeoManager = Module3d::NullTag();
+    fDefaultGeoManager = Geodesic3d::Name();
     fDefaultFitterManager = Module3d::NullTag();
 }
 

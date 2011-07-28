@@ -35,12 +35,14 @@ public:
   inline virtual bool GetState();
 protected:
   bool fPressed;
+  bool fHover;
 };
 
 Button::Button( sf::Rect<double>& rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false; 
+  fHover = false;
 }
 
 bool

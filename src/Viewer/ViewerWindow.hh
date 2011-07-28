@@ -53,7 +53,6 @@ private:
 
   FrameManager fFrameManager;
   sf::RenderWindow* fWindowApp;
-  //Configuration fConfiugration;
   
   static ViewerWindow* fViewer;
 };

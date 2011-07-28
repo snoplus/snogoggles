@@ -1,3 +1,5 @@
+#include <TVector3.h>
+#include <SFML/OpenGL.hpp>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Vector3.hh>
 
@@ -18,6 +20,14 @@ void Vector3::SetXYZ( double x, double y, double z )
     this->x = x;
     this->y = y;
     this->z = z;
+}
+
+void Vector3::Render() const
+{
+    glVertex3f( static_cast< float >( x ), 
+                static_cast< float >( y ), 
+                static_cast< float >( z ) 
+    );
 }
 
 void Vector3::Load( ConfigurationTable* configTable )

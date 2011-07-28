@@ -20,17 +20,18 @@ namespace Viewer
 class GUIReturn
 {
 public:
-  GUIReturn() : fguiID( -1 ), fGlobalID( -1 ) { }
+  GUIReturn() : fguiID( -1 ), fGlobalID( -1 ), fNULL( true ) { }
   inline GUIReturn( unsigned int guiID, unsigned int globalID );
 
   inline bool IsNULL();
 
   unsigned int fguiID;
   unsigned int fGlobalID;
+  bool fNULL;
 };
 
 GUIReturn::GUIReturn( unsigned int guiID, unsigned int globalID )
-  : fguiID( guiID ), fGlobalID( globalID )
+  : fguiID( guiID ), fGlobalID( globalID ), fNULL( false )
 {
   
 }
@@ -38,7 +39,7 @@ GUIReturn::GUIReturn( unsigned int guiID, unsigned int globalID )
 bool
 GUIReturn::IsNULL()
 {
-  return fguiID == -1;
+  return fNULL;
 }
 
 } // ::Viewer

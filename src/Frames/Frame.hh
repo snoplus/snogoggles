@@ -51,11 +51,13 @@ public:
   
   virtual std::string GetName() = 0;
   
-  /// Only the GUIManager needs the RWWrapper, if overload RenderGUI then you should know what todo...
+  /// Only the GUIManager needs the RenderWindow, if overload RenderGUI then you should know what todo...
   virtual void RenderGUI( sf::RenderWindow& windowApp );
   inline virtual void Render2dT( sf::RenderWindow& windowApp );
   virtual void Render2d( RWWrapper& windowApp ) = 0;
   virtual void Render3d() = 0;
+
+  inline virtual double GetAspectRatio();
 
   inline void SetRect( const Rect& rect );
   inline Rect GetRect(); 
@@ -72,6 +74,12 @@ Frame::Render2dT( sf::RenderWindow& windowApp )
 { 
   RWWrapper wrapper = RWWrapper( windowApp, fFrameRect );
   Render2d( wrapper ); 
+}
+
+double
+Frame::GetAspectRatio()
+{
+  return 1.0;
 }
 
 void

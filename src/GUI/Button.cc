@@ -13,12 +13,15 @@ Button::NewEvent( UIEvent& event )
     {
     case sf::Event::MouseButtonPressed:
       fPressed = true;
-      retEvent = GUIReturn( fID, fGlobalID );
+      break;
+    case sf::Event::MouseMoved:
+      fHover = true;
       break;
     case sf::Event::MouseButtonReleased:
       retEvent = GUIReturn( fID, fGlobalID );
     case sf::Event::LostFocus:
       fPressed = false;
+      fHover = false;
       break;
     }
   return retEvent;

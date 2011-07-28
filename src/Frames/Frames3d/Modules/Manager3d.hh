@@ -105,17 +105,12 @@ public:
 
     void DeleteAllModules();
 
-    /// Static Name function for the Manager3d class. 
-    static std::string Name() { return "3D-Combo"; }
-
-    /// Returns the name of the type of 3d frame.
-    std::string GetName() { return Name(); }
-
     void Initialise() { }
 
     void CreateGUIObjects();
 
     void LoadConfiguration( ConfigurationTable& configTable );
+    void LoadWithoutSettingModules( ConfigurationTable& configTable );
 
     /// Saves all necessary configurations of the Manager3d class
     void SaveConfiguration( ConfigurationTable& configTable );

@@ -21,7 +21,7 @@ const std::string DefaultTracks3d::VIS_MAP = "particleTypes";
 DefaultTracks3d::DefaultTracks3d()
 {
     fAllParticles = true;
-    fPrimaryTracksOnly = true;
+    fPrimaryTracksOnly = false;
     fRenderFullTrack = false;
     fCurrentMC = NULL;
 
@@ -106,7 +106,7 @@ bool DefaultTracks3d::FilterByParticleType( RAT::DS::MCTrack* tr )
 
 void DefaultTracks3d::AddParticleType( const std::string& name, int eColour )
 {
-    fVisMap.AddVisAttributes( name, VisAttributes( ColourPalette::gPalette->GetPrimaryColour( static_cast< EColour >(eColour) ), false ) );
+    fVisMap.AddVisAttributes( name, VisAttributes( ColourPalette::gPalette->GetPrimaryColour( static_cast< EColour >(eColour) ), true ) );
 }
 
 }; // namespace Frames

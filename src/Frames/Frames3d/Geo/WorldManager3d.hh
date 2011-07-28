@@ -18,6 +18,7 @@
 #define __Viewer_Frames_WorldManager3d__
 
 #include <Viewer/GUIManager.hh>
+#include <Viewer/VisMap.hh>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -48,7 +49,7 @@ public:
 protected:
 
     World* fWorld;
-    VisMap* fVisMap;
+    VisMap fVisMap;
 
     enum GeoRenderType {
         SOLID,

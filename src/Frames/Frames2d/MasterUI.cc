@@ -19,7 +19,7 @@ MasterUI::MasterUI( FrameManager* manager )
   for( unsigned int uLoop = 0; uLoop < fFrameNames.size(); uLoop++ )
     {
       double width = 1.0 / ( 1.5 * (double)fFrameNames.size() );
-      sf::Rect<double> pos( 1.5 * width * (double)uLoop, 0.1, width, 0.8 );
+      sf::Rect<double> pos( 1.5 * width * (double)uLoop, 0.1, width, 0.9 );
       GUIs::NewFrameButton* button = fGUIManager.NewGUI<GUIs::NewFrameButton>( pos );
       button->SetTitle( fFrameNames[uLoop] );
       fButtons.push_back( button );
@@ -32,7 +32,7 @@ MasterUI::EventLoop()
   while( !fEvents.empty() )
     {
       GUIReturn event = fEvents.front();
-      if( !event.IsNULL() && !fButtons[event.fguiID]->GetState() )
+      if( !fButtons[event.fguiID]->GetState() )
 	fFrameManager->NewFrame( fFrameNames[fEvents.front().fguiID] );
       fEvents.pop();
     }
