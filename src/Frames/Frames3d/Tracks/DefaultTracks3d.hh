@@ -22,6 +22,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 namespace RAT {
     namespace DS {
@@ -31,6 +32,9 @@ namespace RAT {
 };
 
 namespace Viewer {
+    namespace GUIs {
+        class CheckBoxLabel;
+    };
 
     class ConfigurationTable;
     class GUIManager;
@@ -64,6 +68,7 @@ private:
     bool fAllParticles;
     bool fPrimaryTracksOnly;
     bool fRenderFullTrack;
+    bool fRefilter;
 
     static const std::string ALL_PARTICLES;
     static const std::string PRIMARY_TRACKS_ONLY;
@@ -72,12 +77,13 @@ private:
 
     /// Map containing the supported particle types.
     VisMap fVisMap; 
+    std::map< std::string, GUIs::CheckBoxLabel* > fGUIs;
+    GUIs::CheckBoxLabel* fFullTrackGUI;
 
     RAT::DS::MC* fCurrentMC;
     std::vector< LineStrip > fLineStrips;
 
 }; // class DefaultTracks3d
-
 
 }; // namesapce Frames 
 }; // namespace Viewer

@@ -2,6 +2,7 @@
 #include <Viewer/GUIManager.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ColourPalette.hh>
+#include <Viewer/CheckBoxLabel.hh>
 
 #include <RAT/DS/MC.hh>
 #include <SFML/Graphics/Rect.hpp>
@@ -23,6 +24,7 @@ DefaultTracks3d::DefaultTracks3d()
     fAllParticles = true;
     fPrimaryTracksOnly = false;
     fRenderFullTrack = false;
+    fRefilter = false;
     fCurrentMC = NULL;
 
     AddParticleType( "opticalphoton", eRed );
@@ -35,7 +37,20 @@ DefaultTracks3d::DefaultTracks3d()
 
 void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    // TODO:
+    std::vector< std::string > names = fVisMap.GetNames();
+    int numGUIs = names.size() + 1;
+    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width);
+
+    fFullTrackGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fFullTrackGUI->SetLabel( "Render All Track Steps" );
+
+    for( int i = 0; i < names.size(); i++ )
+    {
+        rect.Top += optionsArea.Height / numGUIs;
+        fGUIs[ names.at(i) ] = g.NewGUI< GUIs::CheckBoxLabel >( rect );
+        fGUIs[ names.at(i) ]->SetLabel( names.at(i) );
+        fGUIs[ names.at(i) ]->SetState( fVisMap.IsVisible( names.at(i) ) );
+    }
 }
 
 void DefaultTracks3d::LoadConfiguration( ConfigurationTable* configTable )
@@ -55,14 +70,28 @@ void DefaultTracks3d::SaveConfiguration( ConfigurationTable* configTable )
 
 void DefaultTracks3d::EventLoop( )
 {
-    // TODO:
+    if( fFullTrackGUI != NULL )
+        if( fFullTrackGUI->GetState() != fRenderFullTrack )
+            fRenderFullTrack = fFullTrackGUI->GetState();
+
+    if( fGUIs.empty() == false )
+    {
+        std::map< std::string, GUIs::CheckBoxLabel* >::iterator itr;
+        for( itr = fGUIs.begin(); itr != fGUIs.end(); itr++ )
+            if( fVisMap.IsVisible( itr->first ) != itr->second->GetState() )
+            {
+                fVisMap.SetVisibility( itr->first, itr->second->GetState() );
+                fRefilter = true;
+            }
+    }
 }
 
 void DefaultTracks3d::RenderTracks( RAT::DS::MC* mc )
 {
-    if( fCurrentMC != mc )
+    if( fCurrentMC != mc || fRefilter == true )
     {
         fCurrentMC = mc;
+        fRefilter = false;
         fLineStrips.clear();
         for( int i = 0; i < mc->GetMCTrackCount(); i++ )
         {

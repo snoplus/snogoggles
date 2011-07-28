@@ -26,6 +26,8 @@ public:
     TracksFrame3d();
     static inline std::string Name();
     inline std::string GetName();
+    inline sf::Rect< double > GetViewportRect();
+    void CreateGUIObjects();
 
 }; // class TracksFrame3d
 
@@ -37,6 +39,11 @@ std::string TracksFrame3d::Name()
 std::string TracksFrame3d::GetName()
 {
     return Name();
+}
+
+sf::Rect< double > TracksFrame3d::GetViewportRect()
+{
+    return sf::Rect< double >( 0, 0.05, 0.8, 0.8 );
 }
 
 } // ::Frames3d

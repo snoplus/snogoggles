@@ -60,10 +60,14 @@
 #ifndef __Viewer_Frames_Manager3d__
 #define __Viewer_Frames_Manager3d__
 
-#include <Viewer/Frame.hh>
 #include <string>
+#include <SFML/Graphics/Rect.hpp>
+#include <Viewer/Frame.hh>
 
 namespace Viewer {
+    namespace GUIs {
+        class CheckBoxLabel;
+    };
 
     class RWWrapper;
     class ConfigurationTable;
@@ -88,13 +92,9 @@ public:
         NoCameraError( ) { }
     };
 
-    //Manager3d();
-
     Manager3d( const std::string& options );
 
-    /// The destructor for the Manager3d class deletes the insances of the modules that it holds.
-    ~Manager3d();
-
+    virtual ~Manager3d();
     void SetAllModules( 
         CameraManager3d* camera, 
         HitManager3d* hits, 
@@ -104,31 +104,24 @@ public:
        );
 
     void DeleteAllModules();
+    virtual void Initialise() { }
+    virtual void LoadWithoutSettingModules( ConfigurationTable& configTable );
+    virtual void SaveConfiguration( ConfigurationTable& configTable );
+    virtual void EventLoop();
+    virtual void Render2d( RWWrapper& windowApp );
+    virtual void Render3d();
+    virtual inline double GetAspectRatio();
 
-    void Initialise() { }
+    virtual void LoadConfiguration( ConfigurationTable& configTable ) = 0;
+    virtual void CreateGUIObjects() = 0;
+    virtual sf::Rect< double > GetViewportRect() = 0;
 
-    void CreateGUIObjects();
-
-    void LoadConfiguration( ConfigurationTable& configTable );
-    void LoadWithoutSettingModules( ConfigurationTable& configTable );
-
-    /// Saves all necessary configurations of the Manager3d class
-    void SaveConfiguration( ConfigurationTable& configTable );
-
-    /// Calls all of the event loops of all of the modules.
-    void EventLoop();
-
-    void Render2d( RWWrapper& windowApp );
-
-    void Render3d();
-
-private:
+protected:
 
     void LateInitialise();
-
     void LoadModuleConfigurations( ConfigurationTable& configTable );
-
     void SaveModuleConfigurations( ConfigurationTable& configTable );
+    void CreateAxesGUIObject( sf::Rect< double > rect );
 
     CameraManager3d*    fCameraManager;     ///< The camera manager	
     HitManager3d*       fHitManager;        ///< The hit manager.
@@ -139,14 +132,19 @@ private:
     bool fDisplayAxis;
     Axes3d* fAxes;
     static const std::string DISPLAY_AXIS_TAG;
+    GUIs::CheckBoxLabel* fCheckBoxLabel;
 
     bool fInitialised;
     sf::Rect< double > fViewportArea;
 
 }; // class Manager3d
 
-}; // namespace Frames
+double Manager3d::GetAspectRatio()
+{
+    return 1.2;
+}
 
+}; // namespace Frames
 }; // namespace Viewer
 
 #endif // __Viewer_Frames_Manager3d__

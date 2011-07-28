@@ -36,6 +36,9 @@ namespace RAT {
 };
 
 namespace Viewer {
+    namespace GUIs {
+        class CheckBoxLabel;
+    };
 
     class ConfigurationTable;
     class GUIManager;
@@ -81,11 +84,12 @@ private:
     static const std::string fPMTTypeTag;
     static const std::string fDisplayFrontPMTsOnlyTag;
 
-    bool fDisplayAllPMTs;                   ///< Stores whether to render all (including unhit) PMTs.
     enum PMTType { UNCAL, CAL } fPMTType;   ///< Stores whether the PMTs are UnCal or Cal.
-    bool fDisplayFrontPMTsOnly;             ///< Stores whether to only display front hits.
+    bool fDisplayAllPMTs;
+    bool fDisplayFrontPMTsOnly;
 
-
+    GUIs::CheckBoxLabel* fAllPMTsGUI;
+    GUIs::CheckBoxLabel* fFrontGUI;
 
 }; // class DefaultHits3d
 

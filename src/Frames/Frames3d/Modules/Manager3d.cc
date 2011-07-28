@@ -12,6 +12,8 @@
 #include <Viewer/EventData.hh>
 #include <Viewer/Axes3d.hh>
 #include <Viewer/ConfigTableUtils.hh>
+#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/GUIManager.hh>
 
 #include <vector>
 #include <string>
@@ -33,7 +35,7 @@ Manager3d::Manager3d( const std::string& options )
 {
     fDisplayAxis = true;
     fInitialised = false;
-    fViewportArea = sf::Rect< double >( 0, 0, 1.0, 0.9 );
+    fCheckBoxLabel = NULL;
 
     std::vector<std::string> tokens;
     StringUtils::SplitString( options, " ", tokens );
@@ -79,19 +81,9 @@ void Manager3d::LateInitialise()
 
         GeoManager3d::LoadFileSafe( fGeoManager );
         CreateGUIObjects();
+        fViewportArea = GetViewportRect();
         fInitialised = true;
     }
-}
-
-void Manager3d::CreateGUIObjects()
-{
-    Module3d::CreateGUIObjectsSafe( fCameraManager, fGUIManager, sf::Rect<double>(0,0,1,1) );
-}
-
-void Manager3d::LoadConfiguration( ConfigurationTable& configTable )
-{
-    ModuleFactory3d::GetInstance()->SetAllModuleTypes( this, configTable );
-    LoadWithoutSettingModules( configTable );
 }
 
 void Manager3d::LoadWithoutSettingModules( ConfigurationTable& configTable )
@@ -131,6 +123,9 @@ void Manager3d::EventLoop()
     while( !fEvents.empty() )
         fEvents.pop();
 
+    if( fCheckBoxLabel != NULL )
+        fDisplayAxis = fCheckBoxLabel->GetState();
+
     Module3d::EventLoopSafe( fCameraManager );
     Module3d::EventLoopSafe( fHitManager );
     Module3d::EventLoopSafe( fTrackManager );
@@ -162,6 +157,13 @@ void Manager3d::Render3d( )
 
     if( fDisplayAxis == true )
         Axes3d::RenderAxesSafe( fAxes );
+}
+
+void Manager3d::CreateAxesGUIObject( sf::Rect< double > rect )
+{
+    fCheckBoxLabel = fGUIManager.NewGUI< GUIs::CheckBoxLabel >( rect );
+    fCheckBoxLabel->SetLabel( "Display Axes" );
+    fCheckBoxLabel->SetState( fDisplayAxis );
 }
 
 }; // namespace Frames

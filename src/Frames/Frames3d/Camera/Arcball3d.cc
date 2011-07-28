@@ -33,34 +33,30 @@ Arcball3d::Arcball3d()
 
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    // TODO: Needs to be completed.
-    float width = 0.1;
-    float height = width;
-    float left = 0;
-    float top = 1 - height;
+    double shift = optionsArea.Width / 6;
 
-    sf::Rect<double> leftRect( left, top, width, height); 
-    fSpinLeftButton = g.NewGUI<GUIs::SpriteTimer>( leftRect );
+    sf::Rect<double> rect( 0, optionsArea.Top, optionsArea.Height, optionsArea.Height); 
+    fSpinLeftButton = g.NewGUI<GUIs::SpriteTimer>( rect );
     fSpinLeftButton->SetSprite("Arrows/RotateLeft.png");
 
-    sf::Rect<double> rightRect( left + width, top, width, height); 
-    fSpinRightButton = g.NewGUI<GUIs::SpriteTimer>( rightRect );
+    rect.Left += shift;
+    fSpinRightButton = g.NewGUI<GUIs::SpriteTimer>( rect );
     fSpinRightButton->SetSprite("Arrows/RotateRight.png");
 
-    sf::Rect<double> upRect( left + 2*width, top, width, height);
-    fSpinUpButton = g.NewGUI<GUIs::SpriteTimer>( upRect );
+    rect.Left += shift;
+    fSpinUpButton = g.NewGUI<GUIs::SpriteTimer>( rect );
     fSpinUpButton->SetSprite("Arrows/RotateUp.png");
 
-    sf::Rect<double> downRect( left + 3*width, top, width, height);
-    fSpinDownButton = g.NewGUI<GUIs::SpriteTimer>( downRect );
+    rect.Left += shift;
+    fSpinDownButton = g.NewGUI<GUIs::SpriteTimer>( rect );
     fSpinDownButton->SetSprite("Arrows/RotateDown.png");
 
-    sf::Rect<double> zoomInRect( left + 4*width, top, width, height);
-    fZoomInButton = g.NewGUI<GUIs::SpriteTimer>( zoomInRect );
+    rect.Left += shift;
+    fZoomInButton = g.NewGUI<GUIs::SpriteTimer>( rect );
     fZoomInButton->SetSprite("ZoomIn.png");
 
-    sf::Rect<double> zoomOutRect( left + 5*width, top, width, height);
-    fZoomOutButton = g.NewGUI<GUIs::SpriteTimer>( zoomOutRect );
+    rect.Left += shift;
+    fZoomOutButton = g.NewGUI<GUIs::SpriteTimer>( rect );
     fZoomOutButton->SetSprite("ZoomOut.png");
 }
 

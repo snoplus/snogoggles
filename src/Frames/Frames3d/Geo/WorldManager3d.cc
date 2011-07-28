@@ -4,6 +4,8 @@
 #include <Viewer/VisAttributes.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/GUIManager.hh>
+#include <Viewer/CheckBoxLabel.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -25,7 +27,16 @@ WorldManager3d::~WorldManager3d()
 
 void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    // TODO:
+    std::vector< std::string > names = fWorld->GetVisMap().GetNames();
+    double shift = optionsArea.Height / names.size() + 2;
+    sf::Rect< double > rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width );
+    for( int i = 0; i < names.size(); i++ )
+    {
+        fGUIs[ names.at(i) ] = g.NewGUI< GUIs::CheckBoxLabel >( rect );
+        fGUIs[ names.at(i) ]->SetLabel( names.at(i) );
+        fGUIs[ names.at(i) ]->SetState( fVisMap.IsVisible( names.at(i) ) );
+        rect.Top += shift;
+    }
 }
 
 void WorldManager3d::SetWorld( World* world )
@@ -49,7 +60,10 @@ void WorldManager3d::SaveConfiguration( ConfigurationTable* configTable )
 
 void WorldManager3d::EventLoop( )
 {
-    // TODO:
+    std::map< std::string, GUIs::CheckBoxLabel* >::iterator itr;
+    if( fGUIs.empty() == false )
+        for( itr = fGUIs.begin(); itr != fGUIs.end(); itr++ )
+            fWorld->SetVisibility( itr->first, itr->second->GetState() );
 }
 
 void WorldManager3d::RenderGeometry()
@@ -104,7 +118,6 @@ void WorldManager3d::RenderPolygonMode( GLenum e )
     glDisable( GL_CULL_FACE );
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
-
 
 }; // namespace Frames
 }; // namespace Viewer

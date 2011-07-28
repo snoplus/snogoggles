@@ -17,27 +17,31 @@
 #define __Viewer_Frames_Geodesic3d__
 
 #include <Viewer/WorldBase3d.hh>
-#include <Viewer/XMLLoader3d.hh>
-#include <Viewer/WorldManager3d.hh>
 #include <string>
 
 namespace Viewer {
+    namespace GUIs {
+        class CheckBoxLabel;
+    };
+
 namespace Frames {
 
 class Geodesic3d : public WorldBase3d {
 
 public:
 
-    Geodesic3d() : WorldBase3d( new XMLLoader3d( "geodesic.xml" ), new WorldManager3d ) { }
-
+    Geodesic3d();
     static std::string Name() { return "Geodesic"; }
     std::string GetName() { return Name(); }
 
-    void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) { }
+    void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
     virtual void LoadConfiguration( ConfigurationTable* configTable ) { }
     virtual void SaveConfiguration( ConfigurationTable* configTable ) { }
-    virtual void EventLoop( const GUIReturn& g ) { }
-    void RenderGeometry() { fManager->RenderPolygonMode( GL_LINE ); }
+    virtual void EventLoop() { }
+    void RenderGeometry();
+
+private:
+    GUIs::CheckBoxLabel* fDisplayGUI;
 
 }; // class Geodesic3d
 

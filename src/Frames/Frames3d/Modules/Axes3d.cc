@@ -27,6 +27,7 @@ void Axes3d::RenderAxes( )
 
 void Axes3d::RenderAxis( const TVector3& p, Colour& colour )
 {
+    glDisable( GL_DEPTH_TEST );
     glPushAttrib( GL_COLOR );
     colour.SetOpenGL();
 
@@ -36,6 +37,7 @@ void Axes3d::RenderAxis( const TVector3& p, Colour& colour )
     glEnd();
 
     glPopAttrib();
+    glEnable( GL_DEPTH_TEST );
 }
 
 }; // namespace Frames

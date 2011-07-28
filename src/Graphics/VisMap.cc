@@ -76,4 +76,22 @@ bool VisMap::IsVisible( const std::string& name ) const
     return itr->second.IsVisible();
 }
 
+int VisMap::GetNoEntries() const 
+{
+    int entries = 0;
+    std::map< std::string, VisAttributes >::const_iterator itr;
+    for( itr = fVisAttributeMap.begin(); itr != fVisAttributeMap.end(); itr++ )
+        entries++;
+    return entries;
+}
+
+std::vector< std::string > VisMap::GetNames() const 
+{
+    std::vector< std::string > names;
+    std::map< std::string, VisAttributes >::const_iterator itr;
+    for( itr = fVisAttributeMap.begin(); itr != fVisAttributeMap.end(); itr++ )
+        names.push_back( itr->first );
+    return names;
+}
+
 }; // namespace Viewer

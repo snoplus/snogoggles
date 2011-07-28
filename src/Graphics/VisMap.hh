@@ -50,7 +50,7 @@ public:
                 : std::runtime_error( param ) {}
     }; 
 
-    VisMap( ) { }
+    VisMap() { }
 
     void Load( ConfigurationTable* configTable );
     void Save( ConfigurationTable* configTable ) const;
@@ -64,9 +64,12 @@ public:
 
     void SetOpenGLColour( const std::string& name ) const;
     bool IsVisible( const std::string& name ) const;
+    inline void SetVisibility( const std::string& name, bool visible );
 
     inline const int Count( const std::string& name ) const;
     inline const bool IsEmpty() const;
+    int GetNoEntries() const;
+    std::vector< std::string > GetNames() const;
 
 private:
 
@@ -78,6 +81,7 @@ private:
 ////////////////////////////////////////////////////////////////////////
 // inline methods
 ////////////////////////////////////////////////////////////////////////
+
 
 void VisMap::AddVisAttributes( const std::string& name, const VisAttributes& visAttributes )
 {
@@ -98,6 +102,11 @@ void VisMap::CheckValidity( const std::string& name ) const
 {
     if( fVisAttributeMap.count( name ) == 0 )
         throw NoVisAttributesError( name );
+}
+
+void VisMap::SetVisibility( const std::string& name, bool visible )
+{
+    fVisAttributeMap[ name ].SetVisibility( visible );
 }
 
 } // ::Viewer

@@ -26,6 +26,8 @@ public:
     RATFrame3d();
     static inline std::string Name();
     inline std::string GetName();
+    void CreateGUIObjects();
+    inline sf::Rect< double > GetViewportRect();
 
 }; // class RATFrame3d
 
@@ -37,6 +39,11 @@ std::string RATFrame3d::Name()
 std::string RATFrame3d::GetName()
 {
     return Name();
+}
+
+sf::Rect< double > RATFrame3d::GetViewportRect()
+{
+    return sf::Rect< double >( 0, 0.05, 0.8, 0.8 );
 }
 
 } // ::Frames3d

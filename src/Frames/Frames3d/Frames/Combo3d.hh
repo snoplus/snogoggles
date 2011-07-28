@@ -27,6 +27,9 @@ public:
         : Manager3d( options ) { }
     static inline std::string Name();
     inline std::string GetName();
+    void LoadConfiguration( ConfigurationTable& configTable );
+    void CreateGUIObjects();
+    inline sf::Rect< double > GetViewportRect();
 
 }; // class Combo3d
 
@@ -38,6 +41,11 @@ std::string Combo3d::Name()
 std::string Combo3d::GetName()
 {
     return Name();
+}
+
+sf::Rect< double > Combo3d::GetViewportRect()
+{
+    return sf::Rect< double >( 0, 0, 1, 0.92 );
 }
 
 } // ::Frames3d

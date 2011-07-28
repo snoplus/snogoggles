@@ -50,6 +50,8 @@ public:
 
     inline const VisMap& GetVisMap() const;
     void SetVisMap( VisMap& visMap );
+    inline void SetVisibility( const std::string& name, bool visible );
+    inline bool IsVisible( const std::string& name ) const;
 
     inline void Render();
 
@@ -87,6 +89,16 @@ const VisMap& World::GetVisMap() const
 void World::Render()
 {
     fVolume.Render();
+}
+
+void World::SetVisibility( const std::string& name, bool visible )
+{
+    fVisMap.SetVisibility( name, visible );
+}
+
+bool World::IsVisible( const std::string& name ) const
+{
+    return fVisMap.IsVisible( name );
 }
 
 } // ::Viewer

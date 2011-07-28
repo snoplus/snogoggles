@@ -2,6 +2,8 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIManager.hh>
+#include <Viewer/CheckBoxLabel.hh>
 
 #include <RAT/DS/EV.hh>
 #include <RAT/DS/PMTProperties.hh>
@@ -25,11 +27,21 @@ DefaultHits3d::DefaultHits3d()
     fDisplayFrontPMTsOnly = false;
     fCurrentEV = NULL;
     fCurrentPMTList = NULL;
+    fAllPMTsGUI = NULL;
+    fFrontGUI = NULL;
 }
 
 void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    // TODO: Needs to be completed
+    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Height, optionsArea.Height); 
+    fAllPMTsGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fAllPMTsGUI->SetLabel( "Display All PMTs" );
+    fAllPMTsGUI->SetState( fDisplayAllPMTs );
+
+    rect.Left += optionsArea.Width/2;
+    fFrontGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fFrontGUI->SetLabel( "Show Front PMTs Only" );
+    fFrontGUI->SetState( fDisplayFrontPMTsOnly );
 }
 
 void DefaultHits3d::LoadConfiguration( ConfigurationTable* configTable )
@@ -42,8 +54,8 @@ void DefaultHits3d::LoadConfiguration( ConfigurationTable* configTable )
 void DefaultHits3d::SaveConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::SetBoolean( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
-    configTable->SetI( fPMTTypeTag, fPMTType );
     ConfigTableUtils::SetBoolean( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
+    configTable->SetI( fPMTTypeTag, fPMTType );
 }
 
 void DefaultHits3d::EventLoop( )
@@ -65,6 +77,15 @@ void DefaultHits3d::RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList
         fCurrentEV = ev;
     }
 
+    if( fAllPMTsGUI != NULL && fFrontGUI != NULL )
+    {
+        if( fAllPMTsGUI->GetState() != fDisplayAllPMTs || fFrontGUI->GetState() != fDisplayFrontPMTsOnly )
+        {
+            fDisplayAllPMTs = fAllPMTsGUI->GetState();
+            fDisplayFrontPMTsOnly = fFrontGUI->GetState();
+        }
+    }
+
     if( fDisplayAllPMTs == true )
         DisplayHits( fAllPMTs, true );
 
@@ -75,7 +96,8 @@ void DefaultHits3d::SaveAllPMTs( RAT::DS::PMTProperties* pmtList )
 {
     fAllPMTs.clear();
     for( int i = 0; i < pmtList->GetPMTCount(); i++ )
-        fAllPMTs.push_back( Hit( pmtList->GetPos( i ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) ) );
+        if( PassesFilters( pmtList->GetPos( i ) ) == true )
+            fAllPMTs.push_back( Hit( pmtList->GetPos( i ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) ) );
 }
 
 void DefaultHits3d::FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
@@ -93,8 +115,7 @@ void DefaultHits3d::FilterPMTCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtLi
     {
         RAT::DS::PMTCal* pmt = ev->GetPMTCal( i );
         TVector3 pos = pmtList->GetPos( pmt->GetID() );
-        if( PassesFilters( pos ) )
-            fFilteredHits.push_back( Hit( pos, AssignColour( pmt ) ) );
+        fFilteredHits.push_back( Hit( pos, AssignColour( pmt ) ) );
     }
 }
 
@@ -104,8 +125,7 @@ void DefaultHits3d::FilterPMTUnCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmt
     {
         RAT::DS::PMTUnCal* pmt = ev->GetPMTUnCal( i );
         TVector3 pos = pmtList->GetPos( pmt->GetID() );
-        if( PassesFilters( pos ) )
-            fFilteredHits.push_back( Hit( pos, AssignColour( pmt ) ) );
+        fFilteredHits.push_back( Hit( pos, AssignColour( pmt ) ) );
     }
 }
 
@@ -137,7 +157,8 @@ void DefaultHits3d::DisplayHits( const std::vector< Hit >& hits, bool forceHollo
     {
         bool fill = fFront->IsFront( hits.at(i).GetPos() );;
         if( forceHollow ) fill = false;
-        hits.at(i).Render( fill );
+        if( PassesFilters( hits.at(i).GetPos() ) == true )
+            hits.at(i).Render( fill );
     }
 }
 

@@ -22,8 +22,12 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <map>
 
 namespace Viewer {
+    namespace GUIs {
+        class CheckBoxLabel;
+    };
 
     class World;
     class VisMap;
@@ -45,11 +49,13 @@ public:
     virtual void RenderGeometry( );
     void RenderOutline();
     void RenderPolygonMode( GLenum e );
+    inline VisMap* GetVisMap();
 
 protected:
 
     World* fWorld;
     VisMap fVisMap;
+    std::map< std::string, GUIs::CheckBoxLabel* > fGUIs;
 
     enum GeoRenderType {
         SOLID,
@@ -58,6 +64,11 @@ protected:
     } fGeoRenderType;
 
 }; // class WorldManager3d
+
+VisMap* WorldManager3d::GetVisMap()
+{
+    return &fVisMap;
+}
 
 }; // namespace Frames 
 }; // namespace Viewer
