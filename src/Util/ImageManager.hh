@@ -54,6 +54,7 @@ class ImageManager
   };
 public:
   inline static ImageManager& GetInstance();
+  inline static void Destruct();
 
   ~ImageManager();
 
@@ -66,6 +67,14 @@ private:
   static ImageManager* fImageManager;
   std::map< std::string, sf::Image* > fImages;
 };
+
+void
+ImageManager::Destruct()
+{
+  if( fImageManager != NULL )
+    delete fImageManager;
+  fImageManager = NULL;
+}
 
 ImageManager& 
 ImageManager::GetInstance()

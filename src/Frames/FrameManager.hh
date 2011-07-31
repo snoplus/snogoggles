@@ -63,6 +63,7 @@ private:
 
   bool CheckPosition( int iFrame, int row, int col, int rowSize, int colSize );
   void CalculateGrid();
+  void DrawGrid( sf::RenderWindow& windowApp );  
 
   std::vector< std::vector<int> > fFrameGrid;
   int fCols;

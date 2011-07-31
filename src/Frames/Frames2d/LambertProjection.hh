@@ -21,7 +21,7 @@
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/Frame.hh>
-#include <Viewer/Shape.hh>
+#include <Viewer/ProjectionImage.hh>
 
 namespace RAT
 {
@@ -57,8 +57,7 @@ private:
   sf::Vector2<double> Project( TVector3 pmtPos );
 
   sf::Rect<double> fProjectArea;
-  Shape fFilledPMT;
-  Shape fOpenPMT;
+  ProjectionImage fImage;
 };
 
 } // ::Frames

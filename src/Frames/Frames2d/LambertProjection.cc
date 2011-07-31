@@ -14,21 +14,12 @@ using namespace Viewer::Frames;
 using namespace std;
 
 const double kPSUPRadius = 8500.0;
+const double kLocalSize = 137.0 * 0.3 / kPSUPRadius;
 
 void
 LambertProjection::Initialise()
 {
-  fProjectArea = sf::Rect<double>( 0.1, 0.0, 0.9, 0.9 );
-  fFilledPMT = sf::Shape::Circle( 0.0, 0.0, 0.5, sf::Color(255, 255, 255) );
-  fFilledPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 137.0 * 0.5 / kPSUPRadius * fProjectArea.Width, 137.0 * 0.5 / kPSUPRadius * fProjectArea.Height ) );
-  fFilledPMT.EnableFill( true );
-
-
-  fOpenPMT= sf::Shape::Circle( 0.0, 0.0, 0.5, sf::Color(255, 255, 255), 0.5, sf::Color(255, 255, 255) );
-  fOpenPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 100.0 * 0.5 / kPSUPRadius * fProjectArea.Width, 100.0 * 0.5 / kPSUPRadius * fProjectArea.Height ) );
-  fOpenPMT.EnableFill( false );
-  fOpenPMT.EnableOutline( true );
-  fOpenPMT.SetOutlineThickness( 0.5 );
+  fProjectArea = sf::Rect<double>( 0.1, 0.0, 0.8, 0.9 );
 }
 
 void 
@@ -48,7 +39,6 @@ LambertProjection::EventLoop()
 {
   while( !fEvents.empty() )
     {
-      
       fEvents.pop();
     }
 }
@@ -59,13 +49,16 @@ LambertProjection::Project( TVector3 pmtPos )
   pmtPos = pmtPos.Unit();
   const double x = sqrt( 2 / ( 1 - pmtPos.Z() ) ) * pmtPos.X() / 4.0 + 0.5; // Projected circle radius is 2 thus diameter 4
   const double y = sqrt( 2 / ( 1 - pmtPos.Z() ) ) * pmtPos.Y() / 4.0 + 0.5; // +0.5 such that x,y E [0, 1)
-  return sf::Vector2<double>( fProjectArea.Left + x * fProjectArea.Width, fProjectArea.Top + y * fProjectArea.Height );
+  return sf::Vector2<double>( x, y );
 }
 
 void
 LambertProjection::Render2d( RWWrapper& windowApp )
 {
-  const double surfaceDist = 137.0 / kPSUPRadius;
+  Rect projection;
+  projection.SetFromLocalRect( fProjectArea, fFrameRect );
+  fImage.Clear( projection );
+
   EventData& events = EventData::GetInstance();
 
   RAT::DS::EV* rEV = events.GetCurrentEV();
@@ -76,19 +69,19 @@ LambertProjection::Render2d( RWWrapper& windowApp )
     {
       TVector3 pmtPos = rPMTList->GetPos( ipmt );
       const sf::Vector2<double> projPos = Project( pmtPos );
-      fOpenPMT.SetPosition( projPos );
-      fOpenPMT.SetColor( ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
-      windowApp.Draw( fOpenPMT );
+      fImage.DrawHollowSquare( projPos, 
+			       sf::Vector2<double>( kLocalSize,
+						    kLocalSize ),
+			       ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
   for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
     {
       const sf::Vector2<double> projPos = Project( rPMTList->GetPos( rEV->GetPMTCal( ipmt )->GetID() ) );
-      fFilledPMT.SetPosition( projPos );
       double pmtHitTime = rEV->GetPMTCal( ipmt )->GetTime();
-      if( pmtHitTime < 250.0 )
-	fFilledPMT.SetColor( ColourPalette::gPalette->GetPrimaryColour( eWhite ) );
-      else
-	fFilledPMT.SetColor( ColourPalette::gPalette->GetColour( ( 500.0 - pmtHitTime ) / 250.0 ) );
-      windowApp.Draw( fFilledPMT );
+      fImage.DrawSquare( projPos, 
+			 sf::Vector2<double>( 1.5 * kLocalSize, 
+					      1.5 * kLocalSize ),
+			 ColourPalette::gPalette->GetColour( pmtHitTime / 500.0 ) );
     }
+  windowApp.Draw( fImage );
 }

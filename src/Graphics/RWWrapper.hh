@@ -29,6 +29,7 @@ namespace Viewer
   class Shape;
   class Sprite;
   class Text;
+  class ProjectionImage;
 
 class RWWrapper
 {
@@ -39,6 +40,7 @@ public:
 
   void Draw( Shape& object );
   void Draw( Sprite& object );
+  void Draw( ProjectionImage& object );
   void Draw( Text& object, ETextAspect textScaling = eNone );
   unsigned int GetFrameTime();
 

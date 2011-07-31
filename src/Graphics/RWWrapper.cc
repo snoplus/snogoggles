@@ -5,6 +5,7 @@
 #include <Viewer/Rect.hh>
 #include <Viewer/Shape.hh>
 #include <Viewer/Sprite.hh>
+#include <Viewer/ProjectionImage.hh>
 #include <Viewer/Text.hh>
 using namespace Viewer;
 
@@ -65,6 +66,13 @@ RWWrapper::Draw( Text& object, ETextAspect textScaling )
       break;
     }
   DrawObject( newObject );
+}
+
+void
+RWWrapper::Draw( ProjectionImage& object )
+{
+  Sprite sprite = object.ToSprite();
+  Draw( sprite );
 }
 
 void 

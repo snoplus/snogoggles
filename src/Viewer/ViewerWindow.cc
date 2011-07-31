@@ -98,6 +98,7 @@ ViewerWindow::Destruct()
   fFrameManager.SaveConfiguration( saveConfig );
   saveConfig.SaveConfiguration();
   
+  ImageManager::Destruct();
   delete fWindowApp;
 }
 

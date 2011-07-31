@@ -14,6 +14,7 @@ using namespace Viewer;
 using namespace std;
 
 const int kMinFrameWidth = 140; // Minimum frame width 4*20 buttons + 2*20 ends + 20 bar
+const int kMasterUIHeight = 80; 
 
 void
 FrameManager::Initialise()
@@ -24,11 +25,11 @@ FrameManager::Initialise()
   fCols = resolution.x / kMinFrameWidth;
   fColSize = resolution.x / fCols;
   fRowSize = fColSize;
-  fRows = resolution.y / fRowSize;
+  fRows = ( resolution.y - kMasterUIHeight ) / fRowSize;
   fFrameGrid.resize( fCols, vector<int>( fRows, -2 ) ); 
   fMasterUI = new Frames::MasterUI( this );
   Rect masterUI;
-  masterUI.SetFromResolutionRect( sf::Rect<double>( 0.0, fRowSize * fRows, resolution.x, resolution.y - fRowSize * fRows ) );
+  masterUI.SetFromResolutionRect( sf::Rect<double>( 0.0, resolution.y - kMasterUIHeight, resolution.x, kMasterUIHeight ) );
   fMasterUI->SetRect( masterUI );
   CalculateGrid();
   fMoveStart = sf::Vector2<double>( 0.0, 0.0 );
@@ -154,6 +155,7 @@ FrameManager::EventHandler( FrameUIReturn& retEvent, UIEvent& event )
 	  fMoving = true;
 	  fMoveOffset = event.GetResolutionCoord() - fFrameContainers[fFocus]->GetPos();
 	  fMoveStart = fFrameContainers[fFocus]->GetPos();
+	  ResizeFrame( retEvent.fFrameID, eMinimal );
 	}
       break;
     case FrameUIReturn::eStopMove:
@@ -175,6 +177,7 @@ FrameManager::RenderGUI( sf::RenderWindow& windowApp )
   fMasterUI->RenderGUI( windowApp );
   for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
     fFrameContainers[uFrame]->RenderGUI( windowApp );
+  //DrawGrid( windowApp );
 }
 
 void
@@ -226,7 +229,7 @@ FrameManager::NewFrame( const std::string& type )
   fFrameContainers.push_back( currentFrameContainer );
   const int frameID = fFrameContainers.size() - 1;
   // Position new frame
-  for( int iRow = 0; iRow < fRows - 1; iRow++ )
+  for( int iRow = 0; iRow < fRows; iRow++ )
     for( int iCol = 0; iCol < fCols; iCol++ )
       if( CheckPosition( frameID, iRow, iCol, 1, 1 ) )
 	{
@@ -234,6 +237,8 @@ FrameManager::NewFrame( const std::string& type )
 	  ResizeFrame( frameID, eMinimal );
 	  return;
 	}
+  // If get here then frame cannot be placed, so delete it
+  DeleteFrame( frameID );
 }
 
 void
@@ -322,7 +327,7 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
 bool 
 FrameManager::CheckPosition( int iFrame, int row, int col, int rowSize, int colSize )
 {
-  if( row + rowSize > fRows || col + colSize > fCols )
+  if( row + rowSize > fRows || col + colSize > fCols || rowSize < 1 || colSize < 1 )
     return false;
 
   for( int iCol = col; iCol < col + colSize; iCol++ )
@@ -355,5 +360,34 @@ FrameManager::CalculateGrid()
       for( int iCol = col; iCol < col + cols; iCol++ )
 	for( int iRow = row; iRow < row + rows; iRow++ )
 	  (fFrameGrid[iCol])[iRow] = uFrame;
+    }
+}
+
+#include <SFML/Graphics.hpp>
+
+void
+FrameManager::DrawGrid( sf::RenderWindow& windowApp )
+{
+  stringstream text;
+  for( int iCol = 0; iCol < fCols; iCol++ )
+    for( int iRow = 0; iRow < fRows; iRow++ )
+      {
+	text.str("");
+	text << (fFrameGrid[iCol])[iRow];
+	sf::Text label( text.str() );
+	label.SetColor( sf::Color( 0, 0, 0 ) );
+	label.SetPosition( iCol * fColSize, iRow * fRowSize );
+	windowApp.Draw( label );
+      }
+  return;
+  
+  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
+    {
+      text.str("");
+      text << uFrame;
+      sf::Text label( text.str() );
+      label.SetColor( sf::Color( 0, 0, 0 ) );
+      label.SetPosition( fFrameContainers[uFrame]->GetPos().x, fFrameContainers[uFrame]->GetPos().y );
+      windowApp.Draw( label );
     }
 }

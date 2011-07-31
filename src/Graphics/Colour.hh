@@ -31,7 +31,8 @@ namespace Viewer
 class Colour : public sf::Color, public Serializable
 {
 public:
-  Colour() : sf::Color() { };
+  /// Important that default colour is white
+  Colour() : sf::Color( 255, 255, 255, 255 ) { };
   Colour( sf::Uint8 red, sf::Uint8 green, sf::Uint8 blue, sf::Uint8 alpha = 255 ) : sf::Color( red, green, blue, alpha ) { }
   Colour( const sf::Color& color ) : sf::Color( color ) { }
 
