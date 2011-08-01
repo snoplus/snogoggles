@@ -33,10 +33,12 @@ class GUIManager
 {
 public:
   inline GUIManager();
+  ~GUIManager();
 
   GUIReturn NewEvent( UIEvent& event );
   void Render( RWWrapper& windowApp );
-  
+
+  /// Make a GUI object under management, deleted by this class
   template<class T> inline
   T* NewGUI( sf::Rect<double>& rect );
 

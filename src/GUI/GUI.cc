@@ -6,6 +6,7 @@ unsigned int GUI::fsNextID = 0;
 GUI::GUI( sf::Rect<double>& rect, unsigned int guiID )
   : fRect( rect ), fID( guiID )
 {
+  fHidden = false;
   fGlobalID = fsNextID++;
 }
 

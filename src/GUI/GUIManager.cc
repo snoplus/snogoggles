@@ -5,6 +5,13 @@
 #include <Viewer/GUI.hh>
 using namespace Viewer;
 
+GUIManager::~GUIManager()
+{
+  for( unsigned int uGUI = 0; uGUI < fGUIObjects.size(); uGUI++ )
+    delete fGUIObjects[uGUI];
+  fGUIObjects.clear();
+}
+
 GUIReturn 
 GUIManager::NewEvent( UIEvent& event )
 {
@@ -52,7 +59,8 @@ void
 GUIManager::Render( RWWrapper& windowApp )
 {
   for( unsigned int uGUI = 0; uGUI < fGUIObjects.size(); uGUI++ )
-    fGUIObjects[uGUI]->Render( windowApp );
+    if( !fGUIObjects[uGUI]->Hidden() )
+      fGUIObjects[uGUI]->Render( windowApp );
 }
   
 
@@ -66,7 +74,7 @@ int
 GUIManager::FindGUI( sf::Vector2<double> localCoord )
 {
   for( unsigned int uGUI = 0; uGUI < fGUIObjects.size(); uGUI++ )
-    if( fGUIObjects[uGUI]->ContainsPoint( localCoord ) )
+    if( !fGUIObjects[uGUI]->Hidden() && fGUIObjects[uGUI]->ContainsPoint( localCoord ) )
       return uGUI;
   return -1;
 }
