@@ -15,7 +15,12 @@ using namespace Viewer;
 using namespace Viewer::Frames;
 using namespace std;
 
+//const double kLocalSize = 1.0;
+const double kPSUPRadius = 8500.0;
+const double kLocalSize = 137.0*0.3/kPSUPRadius;
+
 void IcosahedralProjection::Initialise(){
+  /*
   //set up shapes for the PMTs (use the convention of open and filled)
   fFilledPMT = sf::Shape::Circle(0,0,2.0,sf::Color(255,255,255));
   fFilledPMT.EnableFill(true);
@@ -23,6 +28,11 @@ void IcosahedralProjection::Initialise(){
   fOpenPMT.EnableFill(true);
   fOpenPMT.EnableOutline(true);
   fOpenPMT.SetOutlineThickness(0.4);
+  */
+
+  fProjectArea = sf::Rect<double>(0.1,0.0,0.8,0.9);
+  projFilled = false;
+
   //set up the geometry for the transformation
   //need to know the vertices
   double phi = (1.0+sqrt(5.0))/2.0;
@@ -183,8 +193,42 @@ sf::Vector2<double> IcosahedralProjection::Transform(int vertex3d_1, int vertex3
  return transformPos;
 }
 
+void IcosahedralProjection::FillPMTLocations(){
+
+ EventData& tempEvents = EventData::GetInstance();
+ RAT::DS::PMTProperties *pmtProps = tempEvents.GetRun()->GetPMTProp();
+ projPosVec.resize(pmtProps->GetPMTCount());
+ for(int ipmt=0;ipmt<pmtProps->GetPMTCount();ipmt++){
+   projPosVec[ipmt]=Projection(pmtProps->GetPos(ipmt));
+ }
+ projFilled = true;
+}
+
 void IcosahedralProjection::Render2d(RWWrapper& windowApp){
 
+ Rect projection;
+  projection.SetFromLocalRect(fProjectArea,fFrameRect);
+  fImage.Clear(projection);
+
+  if (!projFilled) FillPMTLocations();
+
+  EventData& events = EventData::GetInstance();
+  RAT::DS::EV* rEV = events.GetCurrentEV();
+  RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
+  for( int ipmt=0;ipmt<rPMTList->GetPMTCount();ipmt++){
+    //const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(ipmt));
+    //printf("PMT %i has X position %0.2f\n",rEV->GetPMTCal(ipmt)->GetID(),(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID())).x);
+    //printf("drawing pmt %i\n",ipmt);
+    fImage.DrawHollowSquare(projPosVec.at(ipmt),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetPrimaryColour(eGrey));
+  }
+  //printf("finished with empty pmts\n");
+  for(int ipmt=0;ipmt<rEV->GetPMTCalCount();ipmt++){
+    //const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(rEV->GetPMTCal(ipmt)->GetID()));
+    double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
+    fImage.DrawSquare(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetColour((500.0-pmtHitTime)/250.0));
+  }
+  windowApp.Draw(fImage);
+  /*
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
   RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
@@ -205,4 +249,5 @@ void IcosahedralProjection::Render2d(RWWrapper& windowApp){
       fFilledPMT.SetColor(ColourPalette::gPalette->GetColour((500.0-pmtHitTime)/250.0));
     windowApp.Draw(fFilledPMT);
   }
+  */
 }

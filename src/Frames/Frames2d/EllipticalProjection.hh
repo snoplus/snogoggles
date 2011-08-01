@@ -21,6 +21,7 @@
 
 #include <Viewer/Frame.hh>
 #include <Viewer/Shape.hh>
+#include <Viewer/ProjectionImage.hh>
 
 namespace Viewer
 {
@@ -42,6 +43,7 @@ public:
   static std::string Name() {return std::string("EllipticalProjection");}
   //actually draw it
   virtual void Render2d(RWWrapper& windowApp);
+  virtual void FillPMTLocations();
 
 private:
   //figure out where PMT should be
@@ -49,11 +51,17 @@ private:
   //use Phil's convention here 
   Shape fFilledPMT;
   Shape fOpenPMT;
+  bool projFilled;
 
   std::vector<TVector3> vertex_centres;
   std::vector<TVector2> vertex_edges;
   std::vector<TVector3> vertices_3d;
   std::vector<TVector2> vertices_2d;
+  std::vector<sf::Vector2<double> > projPosVec;
+ 
+  sf::Rect<double> fProjectArea; 
+  ProjectionImage fImage;
+
 };
 
 } //end Frames
