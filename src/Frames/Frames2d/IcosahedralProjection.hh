@@ -21,6 +21,7 @@
 
 #include <Viewer/Frame.hh>
 #include <Viewer/Shape.hh>
+#include <Viewer/ProjectionImage.hh>
 
 namespace Viewer
 {
@@ -45,6 +46,8 @@ public:
 
   /// 1.5 cols to every row
   double GetAspectRatio() { return 1.5; }
+  virtual void FillPMTLocations();
+
 
 private:
   //figure out where PMT should be
@@ -53,12 +56,19 @@ private:
   //use Phil's convention here 
   Shape fFilledPMT;
   Shape fOpenPMT;
+  bool projFilled;
 
   std::vector<TVector3> vertex_centres;
   std::vector<TVector2> vertex_edges;
   std::vector<TVector3> vertices_3d;
   std::vector<TVector2> vertices_2d;
   std::vector<TVector2> icosPMTpos;
+  
+  std::vector<sf::Vector2<double> > projPosVec;
+  sf::Rect<double> fProjectArea; 
+  ProjectionImage fImage;
+
+
 };
 
 } //end Frames

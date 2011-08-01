@@ -18,18 +18,13 @@ using namespace Viewer::Frames;
 using namespace std;
 
 const double kPSUPRadius = 8500.0;
+const double kLocalSize = 137.0*0.3/kPSUPRadius;
 
 void EllipticalProjection::Initialise(){
 
-  fFilledPMT = sf::Shape::Circle(0.0,0.0,0.5,sf::Color(255,255,255));
-  //fFilledPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 137.0 * 0.5 / kPSUPRadius * fProjectArea.Width, 137.0 * 0.5 / kPSUPRadius * fProjectArea.Height ) );
-  fFilledPMT.EnableFill(true);
-
-  fOpenPMT= sf::Shape::Circle(0.0,0.0,0.5,sf::Color(255,255,255),0.5,sf::Color(255,255,255));
-  //fOpenPMT.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 100.0 * 0.5 / kPSUPRadius * fProjectArea.Width, 100.0 * 0.5 / kPSUPRadius * fProjectArea.Height ) );
-  fOpenPMT.EnableFill(false);
-  fOpenPMT.EnableOutline(true);
-  fOpenPMT.SetOutlineThickness(0.5);
+ fProjectArea = sf::Rect<double>(0.1,0.0,0.8,0.9);
+ projFilled = false;
+ 
 }
 
 void EllipticalProjection::SaveConfiguration( ConfigurationTable& configTable ){
@@ -41,6 +36,21 @@ void EllipticalProjection::EventLoop(){
     fEvents.pop();
   }
 }
+
+void EllipticalProjection::FillPMTLocations(){
+
+ EventData& tempEvents = EventData::GetInstance();
+ RAT::DS::PMTProperties *pmtProps = tempEvents.GetRun()->GetPMTProp();
+ projPosVec.resize(pmtProps->GetPMTCount());
+ for(int ipmt=0;ipmt<pmtProps->GetPMTCount();ipmt++){
+   //if (!pmtProps->GetIsInvalid(ipmt)){
+   if (pmtProps->GetIsNormal(ipmt)){
+       projPosVec[ipmt]=Projection(pmtProps->GetPos(ipmt));
+   }
+ }
+ projFilled = true;
+}
+
 
 sf::Vector2<double> EllipticalProjection::Projection(TVector3 pmtPos){
   double pi = 3.141592653589793;
@@ -82,27 +92,24 @@ sf::Vector2<double> EllipticalProjection::Projection(TVector3 pmtPos){
 
 void EllipticalProjection::Render2d( RWWrapper& windowApp ){
  
+  Rect projection;
+  projection.SetFromLocalRect(fProjectArea,fFrameRect);
+  fImage.Clear(projection);
+
+  if (!projFilled) FillPMTLocations();
+
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
   RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
-  //printf("There are %i PMTs\n",rPMTList->GetCorrPMTsNumber());
   for( int ipmt=0;ipmt<rPMTList->GetPMTCount();ipmt++){
-    //printf("Trying to transform PMT %i\n",ipmt);
-    const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(ipmt));
-    fOpenPMT.SetPosition(projPos);
-    //fOpenPMT.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
-    fOpenPMT.SetColor(sf::Color(220,220,220,255));
-    windowApp.Draw(fOpenPMT);
+    //const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(ipmt));
+    //printf("PMT %i has X position %0.2f\n",rEV->GetPMTCal(ipmt)->GetID(),(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID())).x);
+    fImage.DrawHollowSquare(projPosVec.at(ipmt),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetPrimaryColour(eGrey));
   }
   for(int ipmt=0;ipmt<rEV->GetPMTCalCount();ipmt++){
-    //const sf::Vector2<double> projPos = Projection(rEV->GetPMTCal(ipmt)->GetPos(rPMTList));
-    const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(rEV->GetPMTCal(ipmt)->GetID()));
-    fFilledPMT.SetPosition(projPos);
+    //const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(rEV->GetPMTCal(ipmt)->GetID()));
     double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
-    if(pmtHitTime<250.0)
-      fFilledPMT.SetColor(ColourPalette::gPalette->GetPrimaryColour(eWhite));
-    else
-      fFilledPMT.SetColor(ColourPalette::gPalette->GetColour((500.0-pmtHitTime)/250.0));
-    windowApp.Draw(fFilledPMT);
+    fImage.DrawSquare(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetColour((500.0-pmtHitTime)/250.0));
   }
+  windowApp.Draw(fImage);
 }
