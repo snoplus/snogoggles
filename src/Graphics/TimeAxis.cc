@@ -9,10 +9,12 @@ using namespace Viewer;
 double
 TimeAxis::ScaleTime( double time )
 {
-  if( time < 250.0 ) 
-    return time / 250.0 * 0.1; 
+  if( time < 240.0 ) 
+    return time / 240.0 * 0.1;
+  else if( time < 340.0 )
+    return ( time - 240.0 ) / 100.0 * 0.5 + 0.1;
   else
-    return ( time - 250.0 ) / 250.0 * 0.9 + 0.1;
+    return ( time - 340.0 ) / 160.0 * 0.4 + 0.6;
 }
 
 void

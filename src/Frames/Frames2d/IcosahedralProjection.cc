@@ -227,7 +227,7 @@ void IcosahedralProjection::Render2d(RWWrapper& windowApp){
     double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
     fImage.DrawSquare(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetColour((500.0-pmtHitTime)/250.0));
   }
-  windowApp.Draw(fImage);
+  windowApp.Draw(&fImage);
   /*
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
