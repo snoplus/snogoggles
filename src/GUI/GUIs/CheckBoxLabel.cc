@@ -16,8 +16,13 @@ CheckBoxLabel::CheckBoxLabel( sf::Rect<double>& rect, unsigned int guiID )
   fBox = imageManager.NewSprite( "FrameUI.png" );
   fBox.SetSubRect( sf::Rect<int>( 301, 0, 21, 20 ) );
 
-  sf::Rect<double> lRect( rect.Left, rect.Top, rect.Height, rect.Height );
-  sf::Rect<double> rRect( rect.Left + rect.Height, rect.Top, rect.Width - rect.Height, rect.Height );
+  double buttonLength = rect.Height;
+  if( rect.Height > rect.Width )
+    buttonLength = rect.Width;
+  else if( rect.Height == rect.Width ) // Difficult to scale
+    buttonLength = rect.Width * 0.5;
+  sf::Rect<double> lRect( rect.Left, rect.Top, buttonLength, buttonLength );
+  sf::Rect<double> rRect( rect.Left + lRect.Width, rect.Top, rect.Width - lRect.Width, rect.Height );
   fBox.SetBoundingRect( lRect );
   
 
