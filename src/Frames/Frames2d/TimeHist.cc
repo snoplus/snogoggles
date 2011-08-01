@@ -10,6 +10,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/EventData.hh>
 #include <Viewer/ColourPalette.hh>
+#include <Viewer/TimeAxis.hh>
 
 using namespace Viewer;
 using namespace Viewer::Frames;
@@ -110,7 +111,7 @@ void TimeHist::Render2d(RWWrapper& windowApp){
       histBar.SetPosition(0.1+(i*barWidth),0.9-(pmtTimes[i]*barHeight));
       histBar.SetWidth(1.0);
       histBar.SetHeight(pmtTimes[i]*barHeight);
-      histBar.SetColor(ColourPalette::gPalette->GetColour((100.0+static_cast<double>(i)*divisor)/500.0));
+      histBar.SetColor(ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime(100.0 + static_cast<double>(i) * divisor) ) );
       windowApp.Draw(histBar);
     }
   }

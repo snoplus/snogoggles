@@ -28,6 +28,7 @@ class UIEvent : public sf::Event
 public:
   UIEvent( sf::Event& event, Rect& motherRect );
 
+  Coord GetCoord() { return fCoord; }
   sf::Vector2<double> GetLocalCoord();
   sf::Vector2<double> GetResolutionCoord();
 private:

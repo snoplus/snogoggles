@@ -23,6 +23,7 @@
 #include <Viewer/Frame.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/TimeAxis.hh>
+#include <Viewer/Text.hh>
 
 namespace RAT
 {
@@ -34,6 +35,10 @@ namespace DS
 
 namespace Viewer
 {
+namespace GUIs
+{
+  class MapArea;
+}
 namespace Frames
 {
 
@@ -61,6 +66,9 @@ private:
   sf::Rect<double> fAxisArea;
   ProjectionImage fImage;
   TimeAxis fTimeAxis;
+
+  Text fInfoText;
+  GUIs::MapArea* fMapArea; 
 };
 
 } // ::Frames

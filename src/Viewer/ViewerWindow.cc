@@ -13,14 +13,14 @@ using namespace std;
 #include <Viewer/Coord.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/UIEvent.hh>
-#include <Viewer/RainbowPalette.hh>
+#include <Viewer/RainbowDiscretePalette.hh>
 using namespace Viewer;
 
 ViewerWindow* ViewerWindow::fViewer = NULL;
 
 ViewerWindow::ViewerWindow()
 {
-  ColourPalette::gPalette = new RainbowPalette();
+  ColourPalette::gPalette = new RainbowDiscretePalette();
 }
 
 void

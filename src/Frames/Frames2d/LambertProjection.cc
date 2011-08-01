@@ -7,6 +7,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/EventData.hh>
 #include <Viewer/ColourPalette.hh>
+#include <Viewer/MapArea.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -21,6 +22,9 @@ LambertProjection::Initialise()
 {
   fProjectArea = sf::Rect<double>( 0.0, 0.0, 0.8, 0.9 );
   fAxisArea = sf::Rect<double>( 0.85, 0.0, 0.1, 0.9 );
+  fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( fProjectArea );
+  fInfoText.SetBoundingRect( sf::Rect<double>( 0.0, 0.9, 1.0, 0.1 ) );
+  fInfoText.SetColor( ColourPalette::gPalette->GetPrimaryColour( eBlack ) );
 }
 
 void 
@@ -62,10 +66,10 @@ LambertProjection::Render2d( RWWrapper& windowApp )
   localRect.SetFromLocalRect( fAxisArea, fFrameRect );
   fTimeAxis.Clear( localRect );
 
+  sf::Vector2<double> mapPosition = fMapArea->GetPosition();
+
   EventData& events = EventData::GetInstance();
-
   RAT::DS::EV* rEV = events.GetCurrentEV();
-
   RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
   
   for( int ipmt = 0; ipmt < rPMTList->GetPMTCount(); ipmt++ )
@@ -77,16 +81,25 @@ LambertProjection::Render2d( RWWrapper& windowApp )
 						    kLocalSize ),
 			       ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
+  stringstream infoText;
   for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
     {
-      const sf::Vector2<double> projPos = Project( rPMTList->GetPos( rEV->GetPMTCal( ipmt )->GetID() ) );
-      double pmtHitTime = rEV->GetPMTCal( ipmt )->GetTime();
+      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
+      const sf::Vector2<double> projPos = Project( rPMTList->GetPos( rPMTCal->GetID() ) );
+      double pmtHitTime = rPMTCal->GetTime();
       fImage.DrawSquare( projPos, 
 			 sf::Vector2<double>( 1.5 * kLocalSize, 
 					      1.5 * kLocalSize ),
 			 ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime( pmtHitTime ) ) );
+      const double distToMouse2 = ( projPos.x - mapPosition.x ) * ( projPos.x - mapPosition.x ) + 
+	( projPos.y - mapPosition.y ) * ( projPos.y - mapPosition.y );
+      if( distToMouse2 < kLocalSize * kLocalSize )
+	infoText << rPMTCal->GetID() << " Time: " << rPMTCal->GetTime() << " Charge: " << rPMTCal->GetCharge() << endl;
     }
   fTimeAxis.Fill();
+  fInfoText.SetString( infoText.str() );
+
+  windowApp.Draw( fInfoText );
   windowApp.Draw( &fTimeAxis );
   windowApp.Draw( &fImage );
 }

@@ -10,6 +10,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/EventData.hh>
 #include <Viewer/ColourPalette.hh>
+#include <Viewer/TimeAxis.hh>
 
 using namespace Viewer;
 using namespace Viewer::Frames;
@@ -225,7 +226,7 @@ void IcosahedralProjection::Render2d(RWWrapper& windowApp){
   for(int ipmt=0;ipmt<rEV->GetPMTCalCount();ipmt++){
     //const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(rEV->GetPMTCal(ipmt)->GetID()));
     double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
-    fImage.DrawSquare(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetColour((500.0-pmtHitTime)/250.0));
+    fImage.DrawSquare(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime(pmtHitTime)));
   }
   windowApp.Draw(&fImage);
   /*

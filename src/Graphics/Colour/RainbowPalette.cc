@@ -4,10 +4,10 @@
 using namespace Viewer;
 
 Colour 
-RainbowPalette::GetColour( double value )
+RainbowPalette::GetColour( double value ) // [0.0,1.0)
 {
-  const int region = value * 6;
-  const double regionFraction = ( value * 6.0 - (double) region );
+  const int region = value * 6; // [0, 6)
+  const double regionFraction = ( value - (double) region / 6.0 ) * 6.0;
   switch( region )
     {
     case 0: //eViolet to eIndigo

@@ -2,6 +2,7 @@
 
 #include <Viewer/MapArea.hh>
 #include <Viewer/UIEvent.hh>
+#include <Viewer/Coord.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
@@ -12,8 +13,9 @@ MapArea::NewEvent( UIEvent& event )
   switch( event.Type )
     {
     case sf::Event::MouseMoved:
-	fCurrentPos = sf::Vector2<double>( event.GetLocalCoord() );
-	ret = GUIReturn( fID, fGlobalID );
+      sf::Vector2<double> localPos = event.GetLocalCoord();
+      fCurrentPos = sf::Vector2<double>( ( localPos.x - fRect.Left ) / fRect.Width, ( localPos.y - fRect.Top ) / fRect.Height );
+      ret = GUIReturn( fID, fGlobalID );
       break;
     }
   return ret;
