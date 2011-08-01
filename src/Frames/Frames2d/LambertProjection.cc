@@ -19,7 +19,8 @@ const double kLocalSize = 137.0 * 0.3 / kPSUPRadius;
 void
 LambertProjection::Initialise()
 {
-  fProjectArea = sf::Rect<double>( 0.1, 0.0, 0.8, 0.9 );
+  fProjectArea = sf::Rect<double>( 0.0, 0.0, 0.8, 0.9 );
+  fAxisArea = sf::Rect<double>( 0.85, 0.0, 0.1, 0.9 );
 }
 
 void 
@@ -55,9 +56,11 @@ LambertProjection::Project( TVector3 pmtPos )
 void
 LambertProjection::Render2d( RWWrapper& windowApp )
 {
-  Rect projection;
-  projection.SetFromLocalRect( fProjectArea, fFrameRect );
-  fImage.Clear( projection );
+  Rect localRect;
+  localRect.SetFromLocalRect( fProjectArea, fFrameRect );
+  fImage.Clear( localRect );
+  localRect.SetFromLocalRect( fAxisArea, fFrameRect );
+  fTimeAxis.Clear( localRect );
 
   EventData& events = EventData::GetInstance();
 
@@ -81,7 +84,9 @@ LambertProjection::Render2d( RWWrapper& windowApp )
       fImage.DrawSquare( projPos, 
 			 sf::Vector2<double>( 1.5 * kLocalSize, 
 					      1.5 * kLocalSize ),
-			 ColourPalette::gPalette->GetColour( pmtHitTime / 500.0 ) );
+			 ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime( pmtHitTime ) ) );
     }
-  windowApp.Draw( fImage );
+  fTimeAxis.Fill();
+  windowApp.Draw( &fTimeAxis );
+  windowApp.Draw( &fImage );
 }
