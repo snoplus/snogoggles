@@ -233,8 +233,8 @@ FrameManager::NewFrame( const std::string& type )
     for( int iCol = 0; iCol < fCols; iCol++ )
       if( CheckPosition( frameID, iRow, iCol, 1, 1 ) )
 	{
-	  PositionFrame( frameID, sf::Vector2<double>( iCol * fColSize, iRow * fRowSize ) );
 	  ResizeFrame( frameID, eMinimal );
+	  PositionFrame( frameID, sf::Vector2<double>( iCol * fColSize, iRow * fRowSize ) );
 	  return;
 	}
   // If get here then frame cannot be placed, so delete it

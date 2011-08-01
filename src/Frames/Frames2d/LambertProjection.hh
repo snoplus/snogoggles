@@ -22,6 +22,7 @@
 
 #include <Viewer/Frame.hh>
 #include <Viewer/ProjectionImage.hh>
+#include <Viewer/TimeAxis.hh>
 
 namespace RAT
 {
@@ -57,7 +58,9 @@ private:
   sf::Vector2<double> Project( TVector3 pmtPos );
 
   sf::Rect<double> fProjectArea;
+  sf::Rect<double> fAxisArea;
   ProjectionImage fImage;
+  TimeAxis fTimeAxis;
 };
 
 } // ::Frames
