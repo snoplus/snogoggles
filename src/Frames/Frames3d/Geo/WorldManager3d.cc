@@ -6,6 +6,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/EnumCheckBoxes.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -28,15 +29,25 @@ WorldManager3d::~WorldManager3d()
 void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     std::vector< std::string > names = fWorld->GetVisMap().GetNames();
-    double shift = optionsArea.Height / names.size() + 2;
-    sf::Rect< double > rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width );
+    double shift = optionsArea.Height / ( names.size() + 4 );
+    sf::Rect< double > rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width/5 );
     for( int i = 0; i < names.size(); i++ )
     {
         fGUIs[ names.at(i) ] = g.NewGUI< GUIs::CheckBoxLabel >( rect );
         fGUIs[ names.at(i) ]->SetLabel( names.at(i) );
-        fGUIs[ names.at(i) ]->SetState( fVisMap.IsVisible( names.at(i) ) );
+        fGUIs[ names.at(i) ]->SetState( fWorld->GetVisMap().IsVisible( names.at(i) ) );
         rect.Top += shift;
     }
+
+    std::vector< std::string > labels;
+    labels.push_back( "Solid" );
+    labels.push_back( "Wireframe" );
+    labels.push_back( "Outline" );
+
+    rect.Height = 3 * rect.Height;
+    fRenderTypeGUI = g.NewGUI< GUIs::EnumCheckBoxes >( rect );
+    fRenderTypeGUI->SetLabels( labels );
+    fRenderTypeGUI->SetState( fGeoRenderType );
 }
 
 void WorldManager3d::SetWorld( World* world )
@@ -64,6 +75,9 @@ void WorldManager3d::EventLoop( )
     if( fGUIs.empty() == false )
         for( itr = fGUIs.begin(); itr != fGUIs.end(); itr++ )
             fWorld->SetVisibility( itr->first, itr->second->GetState() );
+
+    if( fRenderTypeGUI != NULL )
+        fGeoRenderType = fRenderTypeGUI->GetEnumState< GeoRenderType >();
 }
 
 void WorldManager3d::RenderGeometry()
