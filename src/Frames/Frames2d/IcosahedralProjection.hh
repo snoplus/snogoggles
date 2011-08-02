@@ -22,9 +22,14 @@
 #include <Viewer/Frame.hh>
 #include <Viewer/Shape.hh>
 #include <Viewer/ProjectionImage.hh>
+#include <Viewer/Text.hh>
 
 namespace Viewer
 {
+namespace GUIs
+{
+  class MapArea;
+}
 namespace Frames
 {
 
@@ -67,6 +72,9 @@ private:
   std::vector<sf::Vector2<double> > projPosVec;
   sf::Rect<double> fProjectArea; 
   ProjectionImage fImage;
+
+  Text fInfoText;
+  GUIs::MapArea* fMapArea; 
 
 
 };
