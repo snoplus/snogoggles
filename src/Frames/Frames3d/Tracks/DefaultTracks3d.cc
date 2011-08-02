@@ -39,7 +39,7 @@ void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& o
 {
     std::vector< std::string > names = fVisMap.GetNames();
     int numGUIs = names.size() + 1;
-    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width);
+    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width / 5);
 
     fFullTrackGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
     fFullTrackGUI->SetLabel( "Render All Track Steps" );

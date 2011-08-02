@@ -85,7 +85,7 @@ void Arcball3d::EventLoop( )
     SpinButton( fUp, fSpinLeftButton );
     SpinButton( -fUp, fSpinRightButton );
     SpinButton( fCamera.Cross( fUp ), fSpinUpButton );
-    SpinButton( fCamera.Cross( fUp ), fSpinDownButton );
+    SpinButton( -fCamera.Cross( fUp ), fSpinDownButton );
     ZoomButton( -fZoomSpeed, fZoomInButton );
     ZoomButton( fZoomSpeed, fZoomOutButton );
 }

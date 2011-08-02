@@ -36,10 +36,10 @@ FrameFactory::FrameFactory()
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   
   // 3D Frames
-  Register( Frames::Combo3d::Name(), new OptionsAlloc<Frame, Frames::Combo3d>() );
+  // Register( Frames::Combo3d::Name(), new OptionsAlloc<Frame, Frames::Combo3d>() );
   Register( Frames::HitsFrame3d::Name(), new Alloc<Frame, Frames::HitsFrame3d>() );
   Register( Frames::TracksFrame3d::Name(), new Alloc<Frame, Frames::TracksFrame3d>() );
-  Register( Frames::RATFrame3d::Name(), new Alloc<Frame, Frames::RATFrame3d>() );
+  // Register( Frames::RATFrame3d::Name(), new Alloc<Frame, Frames::RATFrame3d>() );
 }
 
 vector<string>

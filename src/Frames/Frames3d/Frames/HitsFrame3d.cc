@@ -12,8 +12,8 @@ HitsFrame3d::HitsFrame3d()
 void HitsFrame3d::CreateGUIObjects()
 {
     fCameraManager->CreateGUIObjects( fGUIManager, sf::Rect<double>( 0 , 0.88 , 0.48 , 0.08 ) );
-    CreateAxesGUIObject( sf::Rect< double >( 0, 0.96, 0.04, 0.04 ) );
-    fGeoManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.25, 0.96, 0.04, 0.04 ) );
+    CreateAxesGUIObject( sf::Rect< double >( 0, 0.96, 0.23, 0.04 ) );
+    fGeoManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.25, 0.96, 0.23, 0.04 ) );
     fHitManager->CreateGUIObjects( fGUIManager, sf::Rect<double>( 0.5 , 0.96 , 0.5 , 0.04 ) );
 }
 

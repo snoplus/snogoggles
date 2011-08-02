@@ -33,7 +33,7 @@ DefaultHits3d::DefaultHits3d()
 
 void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Height, optionsArea.Height); 
+    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width / 2.2, optionsArea.Height); 
     fAllPMTsGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
     fAllPMTsGUI->SetLabel( "Display All PMTs" );
     fAllPMTsGUI->SetState( fDisplayAllPMTs );
