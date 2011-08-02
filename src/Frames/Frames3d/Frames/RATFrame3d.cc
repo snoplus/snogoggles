@@ -11,7 +11,7 @@ RATFrame3d::RATFrame3d()
 void RATFrame3d::CreateGUIObjects()
 {
     fCameraManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0, 0.92, 0.48, 0.08 ) );
-    fGeoManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.8, 0, 0.04, 1 ) );
+    fGeoManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.8, 0, 0.2, 1 ) );
 }
 
 }; // namespace Frames
