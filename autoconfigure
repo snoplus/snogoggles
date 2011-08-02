@@ -10,18 +10,18 @@ SCONS_LIB=$RAT_SCONS/engine:
 #Now make env.sh file
 cat > env.sh << EOF
 #!/bin/bash
-VIEWERROOT=`pwd`
+export VIEWERROOT=`pwd`
 export PATH=\$VIEWERROOT/bin:$SCONS_BIN:\$PATH
-source $G4SYSTEM/env.sh
+source $GEANT4_BASE/env.sh
 export RATROOT=$RATROOT
 export ROOTSYS=$ROOTSYS
 export SFMLROOT=$SFMLROOT
 export XERCESCROOT=$XERCESCROOT
 export GLEWROOT=/usr
 
-export LD_LIBRARY_PATH=\$RATROOT/lib:\$SFMLROOT/lib:\$XERCESCROOT/lib:\$GLEWROOT/lib:\$G4LIB/\$G4SYSTEM:\$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=\$RATROOT/lib:\$ROOTSYS/lib:\$SFMLROOT/lib:\$XERCESCROOT/lib:\$GLEWROOT/lib:\$G4LIB/\$G4SYSTEM:\$LD_LIBRARY_PATH
 # For Mac OS X
-export DYLD_LIBRARY_PATH=\$RATROOT/lib:\$SFMLROOT/lib:\$XERCESCROOT/lib:\$GLEWROOT/lib:\$G4LIB/\$G4SYSTEM:\$DYLD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH=\$RATROOT/lib:\$ROOTSYS/lib:\$SFMLROOT/lib:\$XERCESCROOT/lib:\$GLEWROOT/lib:\$G4LIB/\$G4SYSTEM:\$DYLD_LIBRARY_PATH
 export PYTHONPATH=\$VIEWERROOT/python:$SCONS_LIB\$PYTHONPATH
 EOF
 [[ -e env.sh ]] && chmod +x env.sh && printf "OK\n"
@@ -37,14 +37,14 @@ setenv SFMLROOT "${SFMLROOT}"
 setenv XERCESCROOT "${XERCESCROOT}"
 setenv GLEWROOT "/usr"
 if ({\$?LD_LIBRARY_PATH}) then
- setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}:\$LD_LIBRARY_PATH"
+ setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${ROOTSYS}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}:\$LD_LIBRARY_PATH"
 else
- setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}"
+ setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${ROOTSYS}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}"
 endif
 if ({\$?LD_LIBRARY_PATH}) then
- setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}:\$LD_LIBRARY_PATH"
+ setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${ROOTSYS}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}:\$LD_LIBRARY_PATH"
 else
- setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}"
+ setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${ROOTSYS}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}"
 endif 
 if ({\$?PYTHONPATH}) then
  setenv PYTHONPATH "\${VIEWERROOT}/python:$SCONS_LIB:\$PYTHONPATH"
