@@ -233,7 +233,7 @@ FrameManager::NewFrame( const std::string& type )
     for( int iCol = 0; iCol < fCols; iCol++ )
       if( CheckPosition( frameID, iRow, iCol, 1, 1 ) )
 	{
-	  ResizeFrame( frameID, eMinimal );
+	  ResizeFrame( frameID, eMinimal, false );
 	  PositionFrame( frameID, sf::Vector2<double>( iCol * fColSize, iRow * fRowSize ) );
 	  return;
 	}
@@ -272,7 +272,7 @@ FrameManager::PositionFrame( int iFrame, const sf::Vector2<double>& position )
 }
 
 void
-FrameManager::ResizeFrame( int iFrame, ESize size )
+FrameManager::ResizeFrame( int iFrame, ESize size, bool calcGrid )
 {
   sf::Vector2<double> position = fFrameContainers[iFrame]->GetPos();
   int col = position.x / fColSize;
@@ -321,7 +321,8 @@ FrameManager::ResizeFrame( int iFrame, ESize size )
 	break;
       }
     }
-  CalculateGrid();
+  if( calcGrid )
+    CalculateGrid();
 }
 
 bool 
