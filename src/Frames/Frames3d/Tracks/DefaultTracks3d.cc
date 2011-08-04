@@ -26,6 +26,7 @@ DefaultTracks3d::DefaultTracks3d()
     fRenderFullTrack = false;
     fRefilter = false;
     fCurrentMC = NULL;
+	fFullTrackGUI = NULL;
 
     AddParticleType( "opticalphoton", eRed );
     AddParticleType( "gamma", eYellow );
