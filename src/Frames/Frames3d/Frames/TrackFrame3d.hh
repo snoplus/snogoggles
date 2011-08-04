@@ -47,7 +47,7 @@ std::string TrackFrame3d::GetName()
 
 sf::Rect< double > TrackFrame3d::GetViewportArea()
 {
-	return sf::Rect< double >( 0, 0, 0.88, 0.88 );
+	return sf::Rect< double >( 0, 0.05, 0.8, 0.8 );
 }
 
 }; // namespace Frames
