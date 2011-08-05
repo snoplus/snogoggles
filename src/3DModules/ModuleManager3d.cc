@@ -93,8 +93,6 @@ void ModuleManager3d::SaveModuleConfigurations( ConfigurationTable& configTable 
 
 void ModuleManager3d::EventLoop()
 {
-	LateInitialise();
-
 	Module3d::EventLoopSafe( fCameraManager );
 	Module3d::EventLoopSafe( fHitManager );
 	Module3d::EventLoopSafe( fTrackManager );
