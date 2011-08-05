@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <Viewer/ModuleManager3d.hh>
 #include <Viewer/BaseFrame3d.hh>
 
@@ -13,30 +11,30 @@ BaseFrame3d::BaseFrame3d()
 
 BaseFrame3d::~BaseFrame3d()
 {
-
+	delete fModuleManager;
+	fModuleManager = NULL;
 }
 
 void BaseFrame3d::Initialise()
 {
-	std::cout << "in initialise()\n";
 	fModuleManager = CreateModuleManager();
 }
 
 void BaseFrame3d::LoadConfiguration( ConfigurationTable& configTable )
 {
-	std::cout << "in load configuration\n";
 	fModuleManager->LoadModuleConfigurations( configTable );
 }
 
 void BaseFrame3d::SaveConfiguration( ConfigurationTable& configTable )
 {
-	std::cout << "in save configuration\n";
 	fModuleManager->SaveModuleConfigurations( configTable );
 }
 
 void BaseFrame3d::EventLoop()
 {
-	std::cout << "in event loop\n";
+	while( fEvents.empty() == false )
+		fEvents.pop();
+
 	LateInitialise();
 	fModuleManager->EventLoop();
 }
@@ -48,7 +46,6 @@ void BaseFrame3d::Render2d( RWWrapper& windowApp )
 
 void BaseFrame3d::Render3d()
 {
-	std::cout << "in render3d\n";
 	fViewportRect.SetFromLocalRect( GetViewportArea(), fFrameRect );
 	fModuleManager->Render3d( fViewportRect );
 }
