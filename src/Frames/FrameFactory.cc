@@ -10,6 +10,7 @@
 #include <Viewer/About.hh>
 #include <Viewer/HitFrame3d.hh>
 #include <Viewer/TrackFrame3d.hh>
+#include <Viewer/RATGeoFrame3d.hh>
 using namespace Viewer;
 
 #include <vector>
@@ -36,6 +37,7 @@ FrameFactory::FrameFactory()
   // 3D Frames
   Register( Frames::HitFrame3d::Name(), new Alloc<Frame, Frames::HitFrame3d>() );
   Register( Frames::TrackFrame3d::Name(), new Alloc<Frame, Frames::TrackFrame3d>() );
+  Register( Frames::RATGeoFrame3d::Name(), new Alloc<Frame, Frames::RATGeoFrame3d>() );
 }
 
 vector<string>

@@ -59,7 +59,7 @@ Volume GDMLLoader3d::CreateVolume( G4VPhysicalVolume* vol )
     }
 
     Volume volume(
-        solid->GetName(),
+        log->GetName(),
         Vector3( pos.x(), pos.y(), pos.z() ),
         Vector3( axis.x(), axis.y(), axis.z() ),
         rotationAngle,
