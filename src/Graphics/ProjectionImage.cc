@@ -13,14 +13,14 @@ ProjectionImage::DrawSquare( const sf::Vector2<int>& position,
   const int startX = position.x;
   int endX = startX + size.x;
   if( endX > fWidth )
-    endX = fWidth - 1;
+    endX = fWidth;
   const int startY = position.y;
   int endY = startY + size.y;
   if( endY > fHeight )
-    endY = fHeight - 1;
+    endY = fHeight;
 
-  for( int xPixel = startX; xPixel < endX; xPixel++ )
-    for( int yPixel = startY; yPixel < endY; yPixel++ )
+  for( int xPixel = startX; xPixel <= endX; xPixel++ )
+    for( int yPixel = startY; yPixel <= endY; yPixel++ )
       {
 	int pixel = ( xPixel + yPixel * fWidth ) * 4;
 	fPixels[pixel] = colour.r;
@@ -73,8 +73,8 @@ ProjectionImage::DrawHollowSquare( const sf::Vector2<double>& position,
   sf::Vector2<int> sizePixel( static_cast<int>( size.x * fWidth ), 
 			      static_cast<int>( size.y * fHeight ) ); 
   DrawSquare( posPixel, sizePixel, colour );
-  sf::Vector2<double> newPos( posPixel.x + 1, posPixel.y + 1 );
-  sf::Vector2<double> newSize( sizePixel.x - 2, sizePixel.y - 2 );
+  sf::Vector2<int> newPos( posPixel.x + 1, posPixel.y + 1 );
+  sf::Vector2<int> newSize( sizePixel.x - 2, sizePixel.y - 2 );
   DrawSquare( newPos, newSize, Colour() );
 }
 

@@ -19,6 +19,8 @@ PixelImage::Clear( Rect& rect )
   if( fPixels != NULL )
     delete fPixels;
   fPixels = new sf::Uint8[ pixelSize ];
+  fWidth--; // Allows [0,1] rather than [0,1)
+  fHeight--; // Allows [0,1] rather than [0,1)
   memset( fPixels, ~0, pixelSize * sizeof( sf::Uint8 ) );
 }
 
