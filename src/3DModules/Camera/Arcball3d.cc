@@ -29,6 +29,7 @@ Arcball3d::Arcball3d()
     fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
     fSpinSpeed = 0.001;
     fZoomSpeed = 0.0001;
+	fSpinLeftButton = NULL;
 }
 
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
@@ -82,12 +83,15 @@ void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
 
 void Arcball3d::EventLoop( )
 {
-    SpinButton( fUp, fSpinLeftButton );
-    SpinButton( -fUp, fSpinRightButton );
-    SpinButton( fCamera.Cross( fUp ), fSpinUpButton );
-    SpinButton( fCamera.Cross( fUp ), fSpinDownButton );
-    ZoomButton( -fZoomSpeed, fZoomInButton );
-    ZoomButton( fZoomSpeed, fZoomOutButton );
+	if( fSpinLeftButton != NULL )
+	{
+    	SpinButton( fUp, fSpinLeftButton );
+    	SpinButton( -fUp, fSpinRightButton );
+    	SpinButton( fCamera.Cross( fUp ), fSpinUpButton );
+    	SpinButton( -fCamera.Cross( fUp ), fSpinDownButton );
+    	ZoomButton( -fZoomSpeed, fZoomInButton );
+    	ZoomButton( fZoomSpeed, fZoomOutButton );
+	}
 }
 
 void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )

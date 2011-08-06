@@ -20,25 +20,32 @@
 #include <cstddef>
 #include <TVector3.h>
 #include <Viewer/Colour.hh>
+#include <Viewer/Module3d.hh>
 
 namespace Viewer {
+	namespace GUIs {
+		class CheckBoxLabel;
+	}; // namespace GUIs
+
 namespace Frames {
 
-class Axes3d {
+class Axes3d : public Module3d {
 
 public:
-
     Axes3d( double length );
-
-    virtual ~Axes3d() { }
-
+	virtual ~Axes3d() { }
+	inline std::string GetName();
+	inline std::string GetTableName();
+	void CreateGUIObjects( GUIManager& g, const sf::Rect< double >& optionsArea );
+	void LoadConfiguration( ConfigurationTable* configTable );
+	void SaveConfiguration( ConfigurationTable* configTable );
+	void EventLoop();
     void RenderAxes();
 
     static inline void RenderAxesSafe( Axes3d* axes )
     { if( axes != NULL ) axes->RenderAxes(); }
 
 private:
-
     void RenderAxis( const TVector3& farPoint, Colour& colour );
 
     Colour fXColour;
@@ -49,10 +56,25 @@ private:
     TVector3 fYPoint;
     TVector3 fZPoint;
 
+	bool fDisplay;
+	GUIs::CheckBoxLabel* fDisplayGUI;
+
 }; // class Axes3d
 
-}; // namespace Frames
+////////////////////////////////////////////////////////////////////////
+// Inline methods
+////////////////////////////////////////////////////////////////////////
+std::string Axes3d::GetName()
+{
+	return "Axes";
+}
 
+std::string Axes3d::GetTableName()
+{
+	return "Axes";
+}
+
+}; // namespace Frames
 }; // namespace Viewer
 
 #endif // __Viewer_Frames_Axes3d__

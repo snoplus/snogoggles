@@ -3,7 +3,7 @@
 
 #### Add new source module names here ####
 
-directories = Split("""Graphics Graphics/Colour Viewer Frames Frames/Frames2d Frames/Frames3d/Camera  Frames/Frames3d/Fitter Frames/Frames3d/Frames Frames/Frames3d/Geo Frames/Frames3d/Hits Frames/Frames3d/Modules Frames/Frames3d/Tracks Util Geo Configuration GUI GUI/GUIs Thread""")
+directories = Split("""Graphics Graphics/Colour Viewer Frames Frames/Frames2d Frames/Frames3d 3DModules 3DModules/Camera  3DModules/Fitter 3DModules/Geo 3DModules/Hits 3DModules/Tracks Util Geo Configuration GUI GUI/GUIs Thread""")
 
 ############### You should not need to edit below this line ############
 

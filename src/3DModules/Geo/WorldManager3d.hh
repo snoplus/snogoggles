@@ -27,6 +27,7 @@
 namespace Viewer {
     namespace GUIs {
         class CheckBoxLabel;
+        class EnumCheckBoxes;
     };
 
     class World;
@@ -56,6 +57,7 @@ protected:
     World* fWorld;
     VisMap fVisMap;
     std::map< std::string, GUIs::CheckBoxLabel* > fGUIs;
+    GUIs::EnumCheckBoxes* fRenderTypeGUI;
 
     enum GeoRenderType {
         SOLID,

@@ -9,10 +9,9 @@
 #include <Viewer/CrateView.hh>
 #include <Viewer/EventUI.hh>
 #include <Viewer/About.hh>
-#include <Viewer/Combo3d.hh>
-#include <Viewer/HitsFrame3d.hh>
-#include <Viewer/TracksFrame3d.hh>
-#include <Viewer/RATFrame3d.hh>
+#include <Viewer/HitFrame3d.hh>
+#include <Viewer/TrackFrame3d.hh>
+#include <Viewer/RATGeoFrame3d.hh>
 using namespace Viewer;
 
 #include <vector>
@@ -39,10 +38,9 @@ FrameFactory::FrameFactory()
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   
   // 3D Frames
-  Register( Frames::Combo3d::Name(), new OptionsAlloc<Frame, Frames::Combo3d>() );
-  Register( Frames::HitsFrame3d::Name(), new Alloc<Frame, Frames::HitsFrame3d>() );
-  Register( Frames::TracksFrame3d::Name(), new Alloc<Frame, Frames::TracksFrame3d>() );
-  Register( Frames::RATFrame3d::Name(), new Alloc<Frame, Frames::RATFrame3d>() );
+  Register( Frames::HitFrame3d::Name(), new Alloc<Frame, Frames::HitFrame3d>() );
+  Register( Frames::TrackFrame3d::Name(), new Alloc<Frame, Frames::TrackFrame3d>() );
+  Register( Frames::RATGeoFrame3d::Name(), new Alloc<Frame, Frames::RATGeoFrame3d>() );
 }
 
 vector<string>
