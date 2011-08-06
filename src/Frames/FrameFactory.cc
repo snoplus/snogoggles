@@ -6,6 +6,7 @@
 #include <Viewer/EllipticalProjection.hh>
 #include <Viewer/TimeHist.hh>
 #include <Viewer/ChargeHist.hh>
+#include <Viewer/CrateView.hh>
 #include <Viewer/EventUI.hh>
 #include <Viewer/About.hh>
 #include <Viewer/Combo3d.hh>
@@ -32,7 +33,9 @@ FrameFactory::FrameFactory()
   Register( Frames::ChargeHist::Name(),new Alloc<Frame,Frames::ChargeHist>() );
   //Elliptical Projection KC - 26/07/11
   Register(Frames::EllipticalProjection::Name(),new Alloc<Frame,Frames::EllipticalProjection>());
-    
+  //Crate View KC - 05/08/11
+  Register(Frames::CrateView::Name(),new Alloc<Frame,Frames::CrateView>());
+
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   
   // 3D Frames
