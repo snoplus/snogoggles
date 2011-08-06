@@ -29,10 +29,16 @@ public:
   void SetFromResolutionCoord( const sf::Vector2<double>& resolutionCoord );
   void SetFromLocalCoord( const sf::Vector2<double>& localCoord, Rect& motherRect );
 
+  /// Return the coord in local coordinates of the passed motherRect
   sf::Vector2<double> GetLocalCoord( Rect& motherRect );
+  /// Return the resolution coord
   sf::Vector2<double> GetResolutionCoord();
+  /// Return the actual mouse coord in window coords
   sf::Vector2<double> GetWindowCoord();
-
+  /// Return the GL coord
+  sf::Vector2<double> GetGLCoord();
+  /// Return the GL coord relative to a mother rect i.e. a local coord in the GL definition of space
+  sf::Vector2<double> GetGLRelativeCoord( Rect& motherRect );
 protected:
   sf::Vector2<double> fPosition;
   
