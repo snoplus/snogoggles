@@ -7,6 +7,12 @@ using namespace Viewer;
 
 GUIManager::~GUIManager()
 {
+  Clear();
+}
+
+void
+GUIManager::Clear()
+{
   for( unsigned int uGUI = 0; uGUI < fGUIObjects.size(); uGUI++ )
     delete fGUIObjects[uGUI];
   fGUIObjects.clear();
