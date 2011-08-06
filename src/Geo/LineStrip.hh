@@ -39,7 +39,7 @@ public:
 
     inline void AddVector3( const Vector3& vertex );
     inline const int GetNoVertices() const;
-    inline const Vector3 GetVector3( const int i ) const;
+    inline const Vector3& GetVector3( const int i ) const;
 
     void RenderFull() const;
     void RenderSymbolic() const;
@@ -71,7 +71,7 @@ const int LineStrip::GetNoVertices() const
     return fVertices.size(); 
 }
 
-const Vector3 LineStrip::GetVector3( const int i ) const 
+const Vector3& LineStrip::GetVector3( const int i ) const 
 {
     return fVertices.at(i); 
 }

@@ -33,7 +33,7 @@ public:
 
     inline void AddVertex( const Vector3& vertex );
     inline const int GetNoVertices() const;
-    inline const Vector3 GetVertex( const int i ) const;
+    inline const Vector3& GetVertex( const int i ) const;
 
     void Render() const;
 
@@ -60,7 +60,7 @@ const int Polygon::GetNoVertices() const
     return fVertices.size(); 
 }
 
-const Vector3 Polygon::GetVertex( const int i ) const 
+const Vector3& Polygon::GetVertex( const int i ) const 
 {
     return fVertices.at(i); 
 }
