@@ -8,7 +8,8 @@
 /// REVISION HISTORY:\n
 ///     29/06/11 : P.Jones - First Revision, new file. \n
 ///
-/// \detail  
+/// \detail  Frames should use this to manage GUI objects, unless explicity
+///          requied to do something else.
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -34,16 +35,19 @@ class GUIManager
 public:
   inline GUIManager();
   ~GUIManager();
-
+  /// Handle an event
   GUIReturn NewEvent( UIEvent& event );
+  /// Render the GUI objects
   void Render( RWWrapper& windowApp );
-
   /// Make a GUI object under management, deleted by this class
   template<class T> inline
   T* NewGUI( sf::Rect<double>& rect );
-
+  /// Return a GUI object given the local guiID
   GUI* GetGUI( unsigned int guiID );
+  /// Delete all GUI objects
+  void Clear();
 private:
+  /// Find which GUI contains the localCoord point
   int FindGUI( sf::Vector2<double> localCoord );
 
   std::vector<GUI*> fGUIObjects;
