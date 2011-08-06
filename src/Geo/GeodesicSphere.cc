@@ -3,6 +3,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/SerializableFactory.hh>
 #include <Viewer/Polyhedron.hh>
+#include <Viewer/ColourPalette.hh>
 #include <Viewer/GeodesicSphere.hh>
 
 namespace Viewer {
@@ -18,6 +19,7 @@ GeodesicSphere* GeodesicSphere::GetInstance()
 }
 
 GeodesicSphere::GeodesicSphere()
+	: fColour( ColourPalette::gPalette->GetPrimaryColour( eGrey ) )
 {
 	Configuration config = Configuration( "data/geodesic.xml", false );
 	std::vector< ConfigurationTable* >::iterator itr;
@@ -29,6 +31,11 @@ GeodesicSphere::GeodesicSphere()
 const Polyhedron& GeodesicSphere::GetPolyhedron()
 {
 	return *fPolyhedron;
+}
+
+const Colour& GeodesicSphere::GetColour()
+{
+	return fColour;
 }
 
 }; // namespace Viewer

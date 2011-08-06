@@ -18,14 +18,17 @@
 
 namespace Viewer {
 	class Polyhedron;
+	class Colour;
 
 class GeodesicSphere {
 private:
 	GeodesicSphere();
+	const Colour& GetColour();
 public:
 	const Polyhedron& GetPolyhedron();
 private:
 	Polyhedron* fPolyhedron;
+	const Colour& fColour;
 
 ////////////////////////////////////////////////////////////////////////
 // Static Section
