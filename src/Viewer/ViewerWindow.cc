@@ -51,7 +51,8 @@ ViewerWindow::Initialise()
   catch( Configuration::NoFileError& e )
     {
       sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
-      fWindowApp = new sf::RenderWindow( sf::VideoMode::GetDesktopMode(), "SNO Goggles", sf::Style::Default, Settings  ); 
+      fullScreen.Height -= 40.0; // Mac systems require this
+      fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, Settings  ); 
       Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
       Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       DrawSplash();

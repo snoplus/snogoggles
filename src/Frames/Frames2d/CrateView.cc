@@ -47,7 +47,7 @@ void CrateView::Render2d(RWWrapper& windowApp){
       fImage.DrawHollowSquare(sf::Vector2<double>(xPos,yPos),sf::Vector2<double>(crateWidth,crateHeight),ColourPalette::gPalette->GetPrimaryColour(eGrey));
     }
   }
-  
+
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
   RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();

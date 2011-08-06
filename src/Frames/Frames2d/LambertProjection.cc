@@ -63,6 +63,7 @@ LambertProjection::Render2d( RWWrapper& windowApp )
   Rect localRect;
   localRect.SetFromLocalRect( fProjectArea, fFrameRect );
   fImage.Clear( localRect );
+  fImage.SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize, 1.5 * kLocalSize ) );
   localRect.SetFromLocalRect( fAxisArea, fFrameRect );
   fTimeAxis.Clear( localRect );
 
@@ -77,8 +78,6 @@ LambertProjection::Render2d( RWWrapper& windowApp )
       TVector3 pmtPos = rPMTList->GetPos( ipmt );
       const sf::Vector2<double> projPos = Project( pmtPos );
       fImage.DrawHollowSquare( projPos, 
-			       sf::Vector2<double>( kLocalSize,
-						    kLocalSize ),
 			       ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
   stringstream infoText;
@@ -88,8 +87,6 @@ LambertProjection::Render2d( RWWrapper& windowApp )
       const sf::Vector2<double> projPos = Project( rPMTList->GetPos( rPMTCal->GetID() ) );
       double pmtHitTime = rPMTCal->GetTime();
       fImage.DrawSquare( projPos, 
-			 sf::Vector2<double>( 1.5 * kLocalSize, 
-					      1.5 * kLocalSize ),
 			 ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime( pmtHitTime ) ) );
       const double distToMouse2 = ( projPos.x - mapPosition.x ) * ( projPos.x - mapPosition.x ) + 
 	( projPos.y - mapPosition.y ) * ( projPos.y - mapPosition.y );
