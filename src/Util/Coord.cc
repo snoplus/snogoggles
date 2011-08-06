@@ -49,3 +49,18 @@ Coord::GetWindowCoord()
   return sf::Vector2<double>( fPosition.x / fsResolutionWidth * fsWindowWidth, 
 			      fPosition.y / fsResolutionHeight * fsWindowHeight );
 }
+
+sf::Vector2<double>
+Coord::GetGLCoord()
+{
+  sf::Vector2<double> windowCoord = GetWindowCoord();
+  return sf::Vector2<double>( windowCoord.x, fsWindowHeight - windowCoord.y );
+}
+
+sf::Vector2<double>
+Coord::GetGLRelativeCoord( Rect& motherRect )
+{
+  sf::Vector2<double> glCoord = GetGLCoord();
+  sf::Rect<double> glRect = motherRect.GetViewport();
+  return sf::Vector2<double>( ( glCoord.x - glRect.Left ) / glRect.Width, ( glCoord.y - glRect.Top ) / glRect.Height );
+}
