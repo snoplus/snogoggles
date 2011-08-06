@@ -62,7 +62,7 @@ void CrateView::Render2d(RWWrapper& windowApp){
     
     double pmtX = hitWidth+(crate%10)*(crateWidth+hitWidth)+card*hitWidth;
     double pmtY = int(crate/10)*(crateHeight+hitHeight)+(crateHeight-channel*hitHeight+0.005);
-    //if (crate==9){
+    //if (card==9){
     //printf("Crate: %i Card: %i Channel: %i\n",crate,card,channel);  
     //printf("pmtX: %0.4f pmtY: %0.4f\n",pmtX,pmtY);
       fImage.DrawSquare(sf::Vector2<double>(pmtX,pmtY),sf::Vector2<double>(hitHeight,hitWidth),ColourPalette::gPalette->GetColour(TimeAxis::ScaleTime(pmtHitTime)));
