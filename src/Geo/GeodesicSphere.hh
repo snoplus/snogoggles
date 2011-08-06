@@ -23,7 +23,7 @@ class GeodesicSphere {
 private:
 	GeodesicSphere();
 public:
-	const Polyhedron* GetPolyhedron();
+	const Polyhedron& GetPolyhedron();
 private:
 	Polyhedron* fPolyhedron;
 

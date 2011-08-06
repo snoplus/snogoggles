@@ -46,7 +46,7 @@ public:
     virtual const Vector3 GetTranslation() const { return fTranslation; }
     virtual const Vector3 GetRotationAxis() const { return fRotationAxis; }
     virtual const double GetRotationAngle() const { return fRotationAngle; }
-    virtual const Polyhedron* GetPolyhedron() const { return &fPolyhedron; }
+    virtual const Polyhedron& GetPolyhedron() const { return fPolyhedron; }
     virtual void Render() const;
 
     virtual void AddDaughter( Volume& volume ) { fDaughterVolumes.push_back( volume ); }

@@ -26,9 +26,9 @@ GeodesicSphere::GeodesicSphere()
 	fPolyhedron = SerializableFactory::GetInstance()->NewPtr< Polyhedron >( volumeTable, "polyhedron" );
 }
 
-const Polyhedron* GeodesicSphere::GetPolyhedron()
+const Polyhedron& GeodesicSphere::GetPolyhedron()
 {
-	return fPolyhedron;
+	return *fPolyhedron;
 }
 
 }; // namespace Viewer

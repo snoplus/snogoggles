@@ -32,7 +32,7 @@ public:
 
     inline void AddPolygon( const Polygon& polygon );
     inline const int GetNoPolygons() const;
-    inline const Polygon* GetPolygon( int i ) const;
+    inline const Polygon& GetPolygon( int i ) const;
 
     inline void Render() const;
 
@@ -59,9 +59,9 @@ const int Polyhedron::GetNoPolygons() const
     return fPolygons.size();
 }
 
-const Polygon* Polyhedron::GetPolygon( int i ) const
+const Polygon& Polyhedron::GetPolygon( int i ) const
 {
-    return &fPolygons.at(i);
+    return fPolygons.at(i);
 }
 
 void Polyhedron::Render() const
