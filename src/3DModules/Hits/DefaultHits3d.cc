@@ -65,6 +65,8 @@ void DefaultHits3d::EventLoop( )
 
 void DefaultHits3d::RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
 {
+	FilterHits( ev, pmtList ); // Added just to change colour right away for the collaboration meeting on August 9th, do not want to leave it like this because its hightly inefficient.
+
     if( fCurrentPMTList != pmtList )
     {
         SaveAllPMTs( pmtList );
