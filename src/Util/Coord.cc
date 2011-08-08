@@ -64,3 +64,11 @@ Coord::GetGLRelativeCoord( Rect& motherRect )
   sf::Rect<double> glRect = motherRect.GetViewport();
   return sf::Vector2<double>( ( glCoord.x - glRect.Left ) / glRect.Width, ( glCoord.y - glRect.Top ) / glRect.Height );
 }
+
+sf::Vector2<double>
+Coord::GetViewportCoord( Rect& viewportRect )
+{
+  sf::Vector2<double> glCoord = GetGLCoord();
+  sf::Rect<double> glViewport = viewportRect.GetViewport();
+  return sf::Vector2<double>( glCoord.x - glViewport.Left, glCoord.y - glViewport.Top );
+}

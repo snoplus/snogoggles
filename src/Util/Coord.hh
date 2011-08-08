@@ -39,6 +39,7 @@ public:
   sf::Vector2<double> GetGLCoord();
   /// Return the GL coord relative to a mother rect i.e. a local coord in the GL definition of space
   sf::Vector2<double> GetGLRelativeCoord( Rect& motherRect );
+  sf::Vector2<double> GetViewportCoord( Rect& viewportRect );
 protected:
   sf::Vector2<double> fPosition;
   
