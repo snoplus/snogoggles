@@ -3,7 +3,7 @@ using namespace Viewer;
 
 unsigned int GUI::fsNextID = 0;
 
-GUI::GUI( sf::Rect<double>& rect, unsigned int guiID )
+GUI::GUI( const sf::Rect<double>& rect, unsigned int guiID )
   : fRect( rect ), fID( guiID )
 {
   fHidden = false;

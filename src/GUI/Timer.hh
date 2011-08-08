@@ -28,7 +28,7 @@ namespace GUIs
 class Timer : public GUI
 {
 public:
-    inline Timer( sf::Rect<double>& rect, unsigned int guiID );
+    inline Timer( const sf::Rect<double>& rect, unsigned int guiID );
     virtual ~Timer() {};
  
     virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
@@ -44,7 +44,7 @@ protected:
     bool fPressed;
 };
 
-Timer::Timer( sf::Rect<double>& rect, unsigned int guiID ) 
+Timer::Timer( const sf::Rect<double>& rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false; 

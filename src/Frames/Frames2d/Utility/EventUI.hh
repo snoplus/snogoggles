@@ -15,15 +15,17 @@
 #ifndef __Viewer_Frames_EventUI__
 #define __Viewer_Frames_EventUI__
 
+#include <SFML/System/Clock.hpp>
+
 #include <Viewer/Frame.hh>
-#include <Viewer/Sprite.hh>
 #include <Viewer/Text.hh>
 
 namespace Viewer
 {
 namespace GUIs
 {
-  class Button;
+  class GUIImageButton;
+  class CheckBoxLabel;
 }
 
 namespace Frames
@@ -38,12 +40,13 @@ public:
   
   virtual std::string GetName() { return EventUI::Name(); }
   
-  static std::string Name() { return std::string( "EventUI" ); }
+  static std::string Name() { return std::string( "Event Control" ); }
 
   virtual void Render2d( RWWrapper& windowApp );
 
   void Render3d() { }
 private:
+  sf::Clock fClock;
   Text fEVInfoText;
   Text fMCInfoText;
   int fEVID;
@@ -51,8 +54,9 @@ private:
   int fMCID;
   int fMCCount;
 
-  GUIs::Button* fNextButton;
-  GUIs::Button* fPrevButton;
+  GUIs::GUIImageButton* fNextButton;
+  GUIs::GUIImageButton* fPrevButton;
+  GUIs::CheckBoxLabel* fContinuous;
 };
 
 } // ::Frames

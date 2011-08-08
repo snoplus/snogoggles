@@ -5,8 +5,8 @@
 using namespace std;
 
 #include <Viewer/EventUI.hh>
-#include <Viewer/IncreaseButton.hh>
-#include <Viewer/DecreaseButton.hh>
+#include <Viewer/GUIImageButton.hh>
+#include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/EventData.hh>
 using namespace Viewer;
 using namespace Frames;
@@ -14,20 +14,23 @@ using namespace Frames;
 void 
 EventUI::Initialise()
 {
-  sf::Rect<double> forward( 0.7, 0.7, 0.2, 0.2 );
-  fNextButton = fGUIManager.NewGUI<GUIs::IncreaseButton>( forward );
-  sf::Rect<double> back( 0.1, 0.7, 0.2, 0.2 );
-  fPrevButton = fGUIManager.NewGUI<GUIs::DecreaseButton>( back );
+  fNextButton = fGUIManager.NewGUI<GUIs::GUIImageButton>( sf::Rect<double>( 0.8, 0.0, 0.1, 0.1 ) );
+  fNextButton->Initialise( eIncrease );
+  fPrevButton = fGUIManager.NewGUI<GUIs::GUIImageButton>( sf::Rect<double>( 0.1, 0.0, 0.1, 0.1 ) );
+  fPrevButton->Initialise( eDecrease );
+  fContinuous = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( sf::Rect<double>( 0.25, 0.0, 0.5, 0.1 ) );
+  fContinuous->SetLabel( "Continuous" );
 
   fEVInfoText = Text( "" );
-  fEVInfoText.SetColor( sf::Color( 0, 0, 0 ) );
+  fEVInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fEVInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.1, 0.8, 0.25 ) );  
   fEVID = 0;
   fEVCount = 1;
   fMCInfoText = Text( "" );
-  fMCInfoText.SetColor( sf::Color( 0, 0, 0 ) );
+  fMCInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fMCInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.4, 0.8, 0.25 ) );
   fMCID = -1;
+  fClock.Reset();
 }
 
 void 
@@ -50,6 +53,13 @@ EventUI::EventLoop()
 	}
       fEvents.pop();
     }
+  if( fContinuous->GetState() && fClock.GetElapsedTime() > 3000 )
+    {
+      events.NextEV();
+      events.GetEVData( fEVID, fEVCount );
+      events.GetMCData( fMCID, fMCCount );
+      fClock.Reset();
+    }    
 }
 void 
 EventUI::Render2d( RWWrapper& windowApp )

@@ -11,7 +11,7 @@ namespace Viewer
 namespace GUIs
 {
 
-GenericTimer::GenericTimer( sf::Rect<double>& rect, unsigned int guiID )
+GenericTimer::GenericTimer( const sf::Rect<double>& rect, unsigned int guiID )
     : Timer( rect, guiID )
 {
     ImageManager& imageManager = ImageManager::GetInstance();

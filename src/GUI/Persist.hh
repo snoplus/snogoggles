@@ -25,7 +25,7 @@ namespace GUIs
 class Persist : public GUI
 {
 public:
-  inline Persist( sf::Rect<double>& rect, unsigned int guiID );
+  inline Persist( const sf::Rect<double>& rect, unsigned int guiID );
   virtual ~Persist() {};
 
   virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
@@ -35,25 +35,27 @@ public:
   inline virtual bool GetState();
   inline virtual void SetState( bool state );
 protected:
-  bool fActive;
+  bool fPressed;
+  bool fHover;
 };
 
-Persist::Persist( sf::Rect<double>& rect, unsigned int guiID ) 
+Persist::Persist( const sf::Rect<double>& rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
-  fActive = false; 
+  fPressed = false;
+  fHover = false;
 }
 
 bool
 Persist::GetState()
 {
-  return fActive;
+  return fPressed;
 }
 
 void
 Persist::SetState( bool state )
 {
-  fActive = state;
+  fPressed = state;
 }
 
 } // ::GUIs

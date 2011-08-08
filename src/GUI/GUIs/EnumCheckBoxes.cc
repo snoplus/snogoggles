@@ -6,7 +6,7 @@
 namespace Viewer {
 namespace GUIs {
 
-EnumCheckBoxes::EnumCheckBoxes( sf::Rect<double>& rect, unsigned int guiID )
+EnumCheckBoxes::EnumCheckBoxes( const sf::Rect<double>& rect, unsigned int guiID )
     : GUI ( rect, guiID )
 {
     fState = 0;

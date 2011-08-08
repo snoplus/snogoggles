@@ -1,39 +1,43 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::PinButton
+/// \class Viewer::GUIs::GUIImagePersist
 ///
-/// \brief   Button with an pin square
+/// \brief   Persistant GUI image
 ///
 /// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     30/06/11 : P.Jones - First Revision, new file. \n
+///     07/08/11 : P.Jones - First Revision, new file. \n
 ///
 /// \detail  As brief
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_PinButton__
-#define __Viewer_GUIs_PinButton__
+#ifndef __Viewer_GUIs_GUIImagePersist__
+#define __Viewer_GUIs_GUIImagePersist__
 
 #include <Viewer/Persist.hh>
 #include <Viewer/Sprite.hh>
+#include <Viewer/GUIImageManager.hh>
 
 namespace Viewer
-{ 
+{  
 namespace GUIs
 {
 
-class PinButton : public Persist
+class GUIImagePersist : public Persist
 {
 public:
-  PinButton( sf::Rect<double>& rect, unsigned int guiID );
-  virtual ~PinButton();
+  GUIImagePersist( const sf::Rect<double>& rect, unsigned int guiID );
+  virtual ~GUIImagePersist();
 
+  void Initialise( EGUIImage image );
+  
   void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
 protected:
-  Sprite fButton;
+  Sprite fPersist[3];
 };
+
 
 } // ::GUIs
 

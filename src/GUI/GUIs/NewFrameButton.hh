@@ -28,7 +28,7 @@ namespace GUIs
 class NewFrameButton : public Button
 {
 public:
-  NewFrameButton( sf::Rect<double>& rect, unsigned int guiID );
+  NewFrameButton( const sf::Rect<double>& rect, unsigned int guiID );
   virtual ~NewFrameButton();
 
   void SetTitle( const std::string& title );

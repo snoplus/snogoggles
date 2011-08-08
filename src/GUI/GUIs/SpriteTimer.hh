@@ -31,7 +31,7 @@ class SpriteTimer : public GenericTimer
 {
 public:
 
-    SpriteTimer( sf::Rect<double>& rect, unsigned int guiID );
+    SpriteTimer( const sf::Rect<double>& rect, unsigned int guiID );
 
     virtual ~SpriteTimer();
 

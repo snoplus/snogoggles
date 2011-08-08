@@ -10,7 +10,7 @@ using namespace std;
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-NewFrameButton::NewFrameButton( sf::Rect<double>& rect, unsigned int guiID )
+NewFrameButton::NewFrameButton( const sf::Rect<double>& rect, unsigned int guiID )
   : Button( rect, guiID )
 {
   ImageManager& imageManager = ImageManager::GetInstance();

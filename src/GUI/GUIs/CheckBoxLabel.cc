@@ -5,16 +5,16 @@ using namespace std;
 
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/ImageManager.hh>
+#include <Viewer/GUIImageManager.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-CheckBoxLabel::CheckBoxLabel( sf::Rect<double>& rect, unsigned int guiID )
+CheckBoxLabel::CheckBoxLabel( const sf::Rect<double>& rect, unsigned int guiID )
   : Persist( rect, guiID )
 {
-  ImageManager& imageManager = ImageManager::GetInstance();
-  fBox = imageManager.NewSprite( "FrameUI.png" );
-  fBox.SetSubRect( sf::Rect<int>( 301, 0, 21, 20 ) );
+  GUIImageManager& imageManager = GUIImageManager::GetInstance();
+  fBox[0] = imageManager.NewSprite( eOpenBox, eBase );
+  fBox[1] = imageManager.NewSprite( eCrossBox, eHighlight );
 
   double buttonLength = rect.Height;
   if( rect.Height > rect.Width )
@@ -23,8 +23,8 @@ CheckBoxLabel::CheckBoxLabel( sf::Rect<double>& rect, unsigned int guiID )
     buttonLength = rect.Width * 0.5;
   sf::Rect<double> lRect( rect.Left, rect.Top, buttonLength, buttonLength );
   sf::Rect<double> rRect( rect.Left + lRect.Width, rect.Top, rect.Width - lRect.Width, rect.Height );
-  fBox.SetBoundingRect( lRect );
-  
+  fBox[0].SetBoundingRect( lRect );
+  fBox[1].SetBoundingRect( lRect );  
 
   fLabel = Text( "check box" );
   fLabel.SetBoundingRect( rRect );
@@ -50,11 +50,11 @@ CheckBoxLabel::RenderT( sf::RenderWindow& windowApp )
 void 
 CheckBoxLabel::Render( RWWrapper& windowApp )
 {
-  if( !fActive )
-    fBox.SetSubRect( sf::Rect<int>( 301, 0, 21, 20 ) );
+  if( !fPressed )
+    windowApp.Draw( fBox[0] );
   else
-    fBox.SetSubRect( sf::Rect<int>( 301, 20, 21, 20 ) );
+    windowApp.Draw( fBox[1] );
 
   windowApp.Draw( fLabel );
-  windowApp.Draw( fBox );
+
 }

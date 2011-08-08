@@ -25,6 +25,9 @@ class RainbowPalette : public ColourPalette
 public:
   virtual Colour GetColour( double value );
   virtual Colour GetPrimaryColour( EColour value );
+
+  std::string GetName() { return RainbowPalette::Name(); }
+  static std::string Name() { return std::string( "Rainbow" ); }
 };
 
 } // ::Viewer

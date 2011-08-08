@@ -15,6 +15,8 @@
 #ifndef __Viewer_ColourPalette__
 #define __Viewer_ColourPalette__
 
+#include <string>
+
 #include <Viewer/Colour.hh>
 
 namespace Viewer
@@ -27,6 +29,7 @@ class ColourPalette
 public:
   virtual Colour GetColour( double value ) = 0;
   virtual Colour GetPrimaryColour( EColour value ) = 0;
+  virtual std::string GetName() = 0;
 
   static ColourPalette* gPalette;
 };

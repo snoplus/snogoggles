@@ -25,7 +25,7 @@ namespace GUIs
 class Button : public GUI
 {
 public:
-  inline Button( sf::Rect<double>& rect, unsigned int guiID );
+  inline Button( const sf::Rect<double>& rect, unsigned int guiID );
   virtual ~Button() {};
  
   virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
@@ -38,7 +38,7 @@ protected:
   bool fHover;
 };
 
-Button::Button( sf::Rect<double>& rect, unsigned int guiID ) 
+Button::Button( const sf::Rect<double>& rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false; 
