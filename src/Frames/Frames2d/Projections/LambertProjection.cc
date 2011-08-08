@@ -13,6 +13,7 @@
 #include <Viewer/GeodesicSphere.hh>
 #include <Viewer/Polyhedron.hh>
 #include <Viewer/Polygon.hh>
+#include <Viewer/TimeAxis.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -26,10 +27,8 @@ void
 LambertProjection::Initialise()
 {
   fProjectArea = sf::Rect<double>( 0.0, 0.0, 0.8, 0.9 );
-  fAxisArea = sf::Rect<double>( 0.85, 0.0, 0.1, 0.9 );
   fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( fProjectArea );
-  fInfoText.SetBoundingRect( sf::Rect<double>( 0.0, 0.9, 1.0, 0.1 ) );
-  fInfoText.SetColor( ColourPalette::gPalette->GetPrimaryColour( eBlack ) );
+  fHitInfo.SetRect( sf::Rect<double>( 0.8, 0.0, 0.2, 0.2 ) );
 }
 
 void 
@@ -70,11 +69,12 @@ LambertProjection::Render2d( RWWrapper& windowApp )
   fImage.Clear( localRect );
   fImage.SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize, 1.5 * kLocalSize ) );
   localRect.SetFromLocalRect( fAxisArea, fFrameRect );
-  //sf::Vector2<double> mapPosition = fMapArea->GetPosition();
+
   
   DrawGeodesic();
   DrawHits();
 
+  fHitInfo.Render( windowApp );
   windowApp.Draw( &fImage );
 }
 
@@ -84,6 +84,8 @@ LambertProjection::DrawHits()
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
   RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
+  sf::Vector2<double> mapPosition = fMapArea->GetPosition();
+
   for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
     {
       RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
@@ -91,12 +93,11 @@ LambertProjection::DrawHits()
       double pmtHitTime = rPMTCal->GetTime();
       fImage.DrawSquare( projPos, 
 			 ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime( pmtHitTime ) ) );
-      /*
+      
       const double distToMouse2 = ( projPos.x - mapPosition.x ) * ( projPos.x - mapPosition.x ) + 
 	( projPos.y - mapPosition.y ) * ( projPos.y - mapPosition.y );
       if( distToMouse2 < kLocalSize * kLocalSize )
-	infoText << rPMTCal->GetID() << " Time: " << rPMTCal->GetTime() << " Charge: " << rPMTCal->GetCharge() << endl;
-      */
+	fHitInfo.AddPMT( rPMTCal );
     }
 }
 

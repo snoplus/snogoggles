@@ -21,7 +21,7 @@
 
 #include <Viewer/Frame.hh>
 #include <Viewer/ProjectionImage.hh>
-#include <Viewer/TimeAxis.hh>
+#include <Viewer/HitInfo.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/Vector3.hh>
 
@@ -69,9 +69,8 @@ private:
   sf::Rect<double> fProjectArea;
   sf::Rect<double> fAxisArea;
   ProjectionImage fImage;
-  TimeAxis fTimeAxis;
+  HitInfo fHitInfo;
 
-  Text fInfoText;
   GUIs::MapArea* fMapArea; 
 };
 
