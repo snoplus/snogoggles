@@ -8,6 +8,7 @@
 /// REVISION HISTORY:\n
 ///     12/07/11 : Olivia Wasalski - First Revision, new file. \n
 ///     12/07/11 : Olivia Wasalski - Refactored, renamed, changed inheritance tree. \n
+///     08/08/11 : P.Jones - Added unit vector method.\n
 ///
 /// \detail  
 ///
@@ -33,6 +34,14 @@ public:
     void Render() const;
     void Load( ConfigurationTable* configTable );
     void Save( ConfigurationTable* configTable ) const;
+
+  Vector3 operator+( const Vector3& rhs ) const;
+  Vector3 operator-( const Vector3& rhs ) const;
+  Vector3 operator*( const double rhs ) const;
+  Vector3 operator/( const double rhs ) const;
+  /// Return the unit vector
+  Vector3 Unit() const;
+  double Mag() const;
 
     double x, y, z;
 

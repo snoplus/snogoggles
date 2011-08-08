@@ -31,7 +31,7 @@ FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
   sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
   Move( pos );
   Resize( size );
-
+  fTopBar.LoadConfiguration( configTable );
   fFrame->LoadConfiguration( configTable );
 } 
 
@@ -97,7 +97,7 @@ FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
   configTable.SetI( "posY", static_cast<int>( rect.Top + 1 ) );
   configTable.SetI( "sizeX", static_cast<int>( rect.Width + 1 ) );
   configTable.SetI( "sizeY", static_cast<int>( rect.Height + 1 ) );
-  configTable.SetI( "pinned", IsPinned() );
+  fTopBar.SaveConfiguration( configTable );
   fFrame->SaveConfiguration( configTable );
 }
 

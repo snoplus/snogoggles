@@ -81,7 +81,7 @@ ViewerWindow::DrawSplash()
   sf::Sprite sfmlSplash = im.NewSprite( "sfml.png" );
   sfmlSplash.SetPosition( windowResolution.x - sfmlSplash.GetSize().x, windowResolution.y - sfmlSplash.GetSize().y );
 
-  fWindowApp->Clear( GUIColourPalette::gPalette->GetBGColour( eBase ) );
+  fWindowApp->Clear( sf::Color( 255, 255, 255, 255 ) ); 
   fWindowApp->Draw( snoSplash );
   fWindowApp->Draw( sfmlSplash );
   fWindowApp->Display();
@@ -175,7 +175,7 @@ ViewerWindow::RenderLoop()
 void 
 ViewerWindow::SetGlobalGLStates()
 {
-  glClearColor(1.f, 1.f, 1.f, 1.f); // Sets the clear color to white.
+  GUIColourPalette::gPalette->GetBGColour( eBase ).ClearOpenGL();
   glClearDepth(1.f); // Sets the depth buffer clear to 1.
   glClearStencil(0); // Sets the stencil buffer clear to 0.
 

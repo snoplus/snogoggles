@@ -14,21 +14,21 @@ using namespace Frames;
 void 
 EventUI::Initialise()
 {
-  fNextButton = fGUIManager.NewGUI<GUIs::GUIImageButton>( sf::Rect<double>( 0.8, 0.0, 0.1, 0.1 ) );
+  fNextButton = fGUIManager.NewGUI<GUIs::GUIImageButton>( sf::Rect<double>( 0.8, 0.05, 0.1, 0.1 ) );
   fNextButton->Initialise( eIncrease );
-  fPrevButton = fGUIManager.NewGUI<GUIs::GUIImageButton>( sf::Rect<double>( 0.1, 0.0, 0.1, 0.1 ) );
+  fPrevButton = fGUIManager.NewGUI<GUIs::GUIImageButton>( sf::Rect<double>( 0.1, 0.05, 0.1, 0.1 ) );
   fPrevButton->Initialise( eDecrease );
-  fContinuous = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( sf::Rect<double>( 0.25, 0.0, 0.5, 0.1 ) );
+  fContinuous = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( sf::Rect<double>( 0.25, 0.05, 0.5, 0.1 ) );
   fContinuous->SetLabel( "Continuous" );
 
   fEVInfoText = Text( "" );
   fEVInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fEVInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.1, 0.8, 0.25 ) );  
+  fEVInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.2, 0.8, 0.2 ) );  
   fEVID = 0;
   fEVCount = 1;
   fMCInfoText = Text( "" );
   fMCInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fMCInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.4, 0.8, 0.25 ) );
+  fMCInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.4, 0.8, 0.2 ) );
   fMCID = -1;
   fClock.Reset();
 }

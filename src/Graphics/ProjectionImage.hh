@@ -28,8 +28,11 @@ namespace Viewer
 class ProjectionImage : public PixelImage
 {
 public:
+  void DrawDot( const sf::Vector2<double>& position,  /// < In local Coords
+		const Colour& colour ); 
+
   /// Draw a standard size square
-  void DrawSquare( const sf::Vector2<double>& size, /// < In local Coords
+  void DrawSquare( const sf::Vector2<double>& position, /// < In local Coords
 		   const Colour& colour ); 
 
   void DrawSquare( const sf::Vector2<double>& position, /// < In local Coords 

@@ -22,12 +22,16 @@
 
 namespace Viewer
 {  
+  class ConfigurationTable;
 
 class TopBar
 {
 public:
   TopBar();
   virtual ~TopBar();
+
+  void LoadConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable& configTable );
 
   /// Set the position rect
   void SetRect( const sf::Rect<double>& rect );

@@ -5,13 +5,14 @@
 using namespace std;
 
 #include <Viewer/About.hh>
+#include <Viewer/GUIColourPalette.hh>
 using namespace Viewer;
 using namespace Frames;
 
 void 
 About::Initialise()
 {
-  fInfoText.SetColor( sf::Color( 0, 0, 0 ) );
+  fInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.1, 0.8, 0.25 ) );  
 }
 

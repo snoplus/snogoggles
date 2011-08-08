@@ -7,6 +7,7 @@ using namespace std;
 #include <Viewer/TopBar.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/UIEvent.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
@@ -34,6 +35,18 @@ TopBar::~TopBar()
 }
 
 void 
+TopBar::LoadConfiguration( ConfigurationTable& configTable )
+{
+  fPin.SetState( configTable.GetI( "pinned" ) );
+}
+
+void 
+TopBar::SaveConfiguration( ConfigurationTable& configTable )
+{
+  configTable.SetI( "pinned", fPin.GetState() );
+}
+
+void 
 TopBar::SetRect( const sf::Rect<double>& rect )
 {
   fRect = rect;
@@ -55,19 +68,18 @@ TopBar::SetTitle( const string& title )
 void 
 TopBar::RenderT( sf::RenderWindow& windowApp )
 {
+  sf::Text titleObject( fTitle );
+  sf::Rect<float> textRect = titleObject.GetRect();
+  titleObject.SetPosition( fRect.Left + 20.0, fRect.Top - 1 );
+  titleObject.Scale( fRect.Height / textRect.Height, fRect.Height / textRect.Height );
   fLeft.RenderT( windowApp );
   fBar.RenderT( windowApp );
+  windowApp.Draw( titleObject );
   fDecrease.RenderT( windowApp );
   fIncrease.RenderT( windowApp );
   fPin.RenderT( windowApp );
   fClose.RenderT( windowApp );
   fRight.RenderT( windowApp );
-
-  sf::Text titleObject( fTitle );
-  sf::Rect<float> textRect = titleObject.GetRect();
-  titleObject.SetPosition( fRect.Left + 20.0, fRect.Top - 1 );
-  titleObject.Scale( fRect.Height / textRect.Height, fRect.Height / textRect.Height );
-  windowApp.Draw( titleObject );
 }
 
 FrameUIReturn

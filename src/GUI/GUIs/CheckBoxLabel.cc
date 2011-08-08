@@ -6,6 +6,7 @@ using namespace std;
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/GUIImageManager.hh>
+#include <Viewer/GUIColourPalette.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
@@ -28,7 +29,7 @@ CheckBoxLabel::CheckBoxLabel( const sf::Rect<double>& rect, unsigned int guiID )
 
   fLabel = Text( "check box" );
   fLabel.SetBoundingRect( rRect );
-  fLabel.SetColor( sf::Color( 0, 0, 0 ) );
+  fLabel.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
 }
 
 CheckBoxLabel::~CheckBoxLabel()
