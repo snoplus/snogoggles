@@ -24,6 +24,11 @@
 #include <Viewer/Sprite.hh>
 #include <Viewer/GUIColourPalette.hh>
 
+namespace sf
+{
+  class Image;
+}
+
 namespace Viewer
 {
   enum EGUIImage { eBarLeft, eBar, eBarRight, eDecrease, eIncrease, ePlus, eCross, eOpenBox, eCrossBox };
@@ -48,7 +53,8 @@ public:
 private:
   sf::Image* Colourise( GUIColourPalette* palette,
 			EGUIImageState state,
-			sf::Rect<int> sourceRect );
+			sf::Rect<int> sourceRect,
+			sf::Image* colouredImage );
 
   /// Cannot instantiate this class, is singleton
   GUIImageManager();

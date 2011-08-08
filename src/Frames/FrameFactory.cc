@@ -3,6 +3,7 @@
 #include <Viewer/EventUI.hh>
 #include <Viewer/About.hh>
 #include <Viewer/EventInfo.hh>
+#include <Viewer/ColourPicker.hh>
 // Test (Not built by default)
 #include <Viewer/Logo.hh>
 #include <Viewer/TestBox.hh>
@@ -28,6 +29,7 @@ FrameFactory::FrameFactory()
   Register( Frames::About::Name(), new Alloc<Frame, Frames::About>() );
   Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
   Register( Frames::EventInfo::Name(), new Alloc<Frame, Frames::EventInfo>() );
+  Register( Frames::ColourPicker::Name(), new Alloc<Frame, Frames::ColourPicker>() );
   //Register( Frames::Logo::Name(), new Alloc<Frame, Frames::Logo>() );
   //Register( Frames::TestBox::Name(), new Alloc<Frame, Frames::TestBox>() );
   Register( Frames::LambertProjection::Name(), new Alloc<Frame, Frames::LambertProjection>() );

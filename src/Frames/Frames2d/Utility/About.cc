@@ -12,7 +12,6 @@ using namespace Frames;
 void 
 About::Initialise()
 {
-  fInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.1, 0.8, 0.25 ) );  
 }
 
@@ -36,5 +35,6 @@ About::Render2d( RWWrapper& windowApp )
   else
     eventInfo << 1e3 / (double) windowApp.GetFrameTime() << " Hz";
   fInfoText.SetString( eventInfo.str().c_str() );
+  fInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   windowApp.Draw( fInfoText );  
 }
