@@ -12,7 +12,7 @@ namespace Viewer
 namespace GUIs
 {
 
-SpriteTimer::SpriteTimer( sf::Rect<double>& rect, unsigned int guiID )
+SpriteTimer::SpriteTimer( const sf::Rect<double>& rect, unsigned int guiID )
     : GenericTimer( rect, guiID )
 {
 

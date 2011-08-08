@@ -21,7 +21,7 @@
 #include <Viewer/Rect.hh>
 #include <Viewer/FrameUIReturn.hh>
 #include <Viewer/FrameFactory.hh>
-#include <Viewer/Persist.hh>
+#include <Viewer/TopBar.hh>
 
 namespace sf
 {
@@ -34,12 +34,6 @@ namespace Viewer
   class Frame;
   class GUI;
   class UIEvent;
-namespace GUIs
-{
-  class Button;
-  class Persist;
-  class TopBarButton;
-}
 
 class FrameContainer
 {
@@ -73,12 +67,7 @@ private:
   FrameFactory fFrameFactory;
 
   Frame* fFrame;
-  GUIs::Persist* fPinButton;
-  GUIs::Button* fExitButton;
-  GUIs::Button* fIncreaseButton;
-  GUIs::Button* fDecreaseButton;
-  GUIs::TopBarButton* fTopBar;
-  GUIs::Button* fTopBarRight;
+  TopBar fTopBar;
 };
 
 double
@@ -90,7 +79,7 @@ FrameContainer::GetAspectRatio()
 bool
 FrameContainer::IsPinned()
 {
-  return fPinButton->GetState();
+  return fTopBar.IsPinned();
 }
 
 } // ::Viewer

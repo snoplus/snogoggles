@@ -27,7 +27,7 @@ namespace GUIs
 class MapArea : public GUI
 {
 public:
-  inline MapArea( sf::Rect<double>& rect, unsigned int guiID );
+  inline MapArea( const sf::Rect<double>& rect, unsigned int guiID );
   virtual ~MapArea() {};
 
   virtual void RenderT( sf::RenderWindow& windowApp ) { };
@@ -39,7 +39,7 @@ protected:
   sf::Vector2<double> fCurrentPos;
 };
 
-MapArea::MapArea( sf::Rect<double>& rect, unsigned int guiID ) 
+MapArea::MapArea( const sf::Rect<double>& rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
 

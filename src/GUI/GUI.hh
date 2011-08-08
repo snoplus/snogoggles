@@ -34,13 +34,13 @@ class GUI
 {
 public:
   /// Constructor, must pass GUI position rect and an ID
-  GUI( sf::Rect<double>& rect, unsigned int guiID );
+  GUI( const sf::Rect<double>& rect, unsigned int guiID );
   /// Get the unique GUI ID within the frame (not globally unique)
   inline unsigned int GetGuiID();
   /// Get the globally unique GUI ID
   inline unsigned int GetGlobalID();
   /// Set the position rect
-  inline void SetRect( sf::Rect<double>& rect );
+  inline void SetRect( const sf::Rect<double>& rect );
   /// Set the GUI as hidden or not
   inline void SetHidden( bool hidden = true );
   /// Query if GUI is hidden
@@ -54,7 +54,6 @@ public:
   virtual void Render( RWWrapper& windowApp ) = 0;
   /// Event handler
   virtual GUIReturn NewEvent( UIEvent& event ) = 0;  
-
 protected:
   sf::Rect<double> fRect; /// < Position rect
   unsigned int fID;       /// < Local ID
@@ -77,7 +76,7 @@ GUI::GetGlobalID()
 }
 
 void 
-GUI::SetRect( sf::Rect<double>& rect )
+GUI::SetRect( const sf::Rect<double>& rect )
 {
   fRect = rect;
 }

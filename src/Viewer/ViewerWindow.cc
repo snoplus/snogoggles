@@ -13,14 +13,16 @@ using namespace std;
 #include <Viewer/Coord.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/UIEvent.hh>
-#include <Viewer/RainbowDiscretePalette.hh>
+#include <Viewer/GUIImageManager.hh>
 using namespace Viewer;
 
 ViewerWindow* ViewerWindow::fViewer = NULL;
+ColourPaletteFactory ViewerWindow::gColourPaletteFactory;
+GUIColourPaletteFactory ViewerWindow::gGUIColourPaletteFactory;
 
 ViewerWindow::ViewerWindow()
 {
-  ColourPalette::gPalette = new RainbowDiscretePalette();
+
 }
 
 void
@@ -44,6 +46,8 @@ ViewerWindow::Initialise()
       fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles", sf::Style::Default, Settings );
       Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       Coord::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig.GetS( "colourPal" ) );
+      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
       DrawSplash();
       fFrameManager.Initialise();
       fFrameManager.LoadConfiguration( loadConfig );
@@ -55,6 +59,8 @@ ViewerWindow::Initialise()
       fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, Settings  ); 
       Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
       Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" );
+      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" );
       DrawSplash();
       fFrameManager.Initialise();
     }
@@ -65,6 +71,9 @@ ViewerWindow::DrawSplash()
 {
   // Draw a splash background
   ImageManager& im = ImageManager::GetInstance();
+  // Now initialise the GUI
+  GUIImageManager& guiIM = GUIImageManager::GetInstance();
+  guiIM.ChangeColourScheme( GUIColourPalette::gPalette );
   sf::Sprite snoSplash = im.NewSprite( "Logo.png" );
   sf::Vector2<double> windowResolution = Coord::GetWindowResolution();
   snoSplash.SetPosition( windowResolution.x / 2 - snoSplash.GetSize().x / 2.0, windowResolution.y / 2 - snoSplash.GetSize().y / 2.0 );
@@ -72,7 +81,7 @@ ViewerWindow::DrawSplash()
   sf::Sprite sfmlSplash = im.NewSprite( "sfml.png" );
   sfmlSplash.SetPosition( windowResolution.x - sfmlSplash.GetSize().x, windowResolution.y - sfmlSplash.GetSize().y );
 
-  fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
+  fWindowApp->Clear( sf::Color( 255, 255, 255, 255 ) ); 
   fWindowApp->Draw( snoSplash );
   fWindowApp->Draw( sfmlSplash );
   fWindowApp->Display();
@@ -96,9 +105,12 @@ ViewerWindow::Destruct()
   Configuration saveConfig( configFileName.str(), true );
   saveConfig.SetI( "resX", static_cast<int>( Coord::GetWindowResolution().x ) );
   saveConfig.SetI( "resY", static_cast<int>( Coord::GetWindowResolution().y ) );
+  saveConfig.SetS( "colourPal", ColourPalette::gPalette->GetName() );
+  saveConfig.SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
   fFrameManager.SaveConfiguration( saveConfig );
   saveConfig.SaveConfiguration();
   
+  GUIImageManager::Destruct();
   ImageManager::Destruct();
   delete fWindowApp;
 }
@@ -163,7 +175,7 @@ ViewerWindow::RenderLoop()
 void 
 ViewerWindow::SetGlobalGLStates()
 {
-  glClearColor(1.f, 1.f, 1.f, 1.f); // Sets the clear color to white.
+  GUIColourPalette::gPalette->GetBGColour( eBase ).ClearOpenGL();
   glClearDepth(1.f); // Sets the depth buffer clear to 1.
   glClearStencil(0); // Sets the stencil buffer clear to 0.
 

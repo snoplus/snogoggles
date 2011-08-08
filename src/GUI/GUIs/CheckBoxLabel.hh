@@ -29,24 +29,17 @@ namespace GUIs
 class CheckBoxLabel : public Persist
 {
 public:
-  CheckBoxLabel( sf::Rect<double>& rect, unsigned int guiID );
+  CheckBoxLabel( const sf::Rect<double>& rect, unsigned int guiID );
   virtual ~CheckBoxLabel();
 
   void SetLabel( const std::string& label );
 
   void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
-  inline double PreferedRatio();
 protected:
-  Sprite fBox;
+  Sprite fBox[2];
   Text fLabel;
 };
-
-double
-CheckBoxLabel::PreferedRatio()
-{
-  return 1.0;
-}
 
 } // ::GUIs
 

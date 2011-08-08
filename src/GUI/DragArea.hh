@@ -27,7 +27,7 @@ namespace GUIs
 class DragArea : public GUI
 {
 public:
-  inline DragArea( sf::Rect<double>& rect, unsigned int guiID );
+  inline DragArea( const sf::Rect<double>& rect, unsigned int guiID );
   virtual ~DragArea() {};
 
   virtual void RenderT( sf::RenderWindow& windowApp ) { };
@@ -41,7 +41,7 @@ protected:
   bool fPressed;
 };
 
-DragArea::DragArea( sf::Rect<double>& rect, unsigned int guiID ) 
+DragArea::DragArea( const sf::Rect<double>& rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false;

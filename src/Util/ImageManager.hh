@@ -28,8 +28,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Example__
-#define __Viewer_Example__
+#ifndef __Viewer_ImageManager__
+#define __Viewer_ImageManager__
 
 #include <stdexcept>
 #include <map>

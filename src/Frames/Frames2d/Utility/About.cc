@@ -5,14 +5,14 @@
 using namespace std;
 
 #include <Viewer/About.hh>
+#include <Viewer/GUIColourPalette.hh>
 using namespace Viewer;
 using namespace Frames;
 
 void 
 About::Initialise()
 {
-  fInfoText = Text( "SNOGoggles v0.2" );
-  fInfoText.SetColor( sf::Color( 0, 0, 0 ) );
+  fInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.1, 0.8, 0.25 ) );  
 }
 
@@ -30,7 +30,7 @@ About::Render2d( RWWrapper& windowApp )
   stringstream eventInfo;
   eventInfo.precision( 0 );
   eventInfo << fixed;
-  eventInfo << "SNOGoggles v0.1" << "\nFrame Rate:";
+  eventInfo << "SNOGoggles v0.2" << "\nFrame Rate:";
   if( windowApp.GetFrameTime() == 0 ) // Damn quick system...
     eventInfo << "> 1000 Hz";
   else

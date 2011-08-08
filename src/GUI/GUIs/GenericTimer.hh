@@ -30,7 +30,7 @@ class GenericTimer : public Timer
 {
 public:
 
-  GenericTimer( sf::Rect<double>& rect, unsigned int guiID );
+  GenericTimer( const sf::Rect<double>& rect, unsigned int guiID );
   
   virtual ~GenericTimer() { }
 

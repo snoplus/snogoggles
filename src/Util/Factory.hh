@@ -9,7 +9,8 @@
 /// REVISION HISTORY:\n
 ///     29/06/11 : P.Jones - Ported from RAT. \n
 ///     05/07/11 : Olivia Wasalski - Added the NullAlloc and the OptionsAlloc. \n
-///		04/08/11 : Olivia Wasalski - Removed OptionsAlloc, no longer needed. \n
+///     04/08/11 : Olivia Wasalski - Removed OptionsAlloc, no longer needed. \n
+///     07/08/11 : P.Jones - Added get names method to Factory. \n
 ///
 /// \detail  As Brief.
 ///
@@ -19,6 +20,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 namespace Viewer {
 
@@ -74,6 +76,14 @@ public:
     for( typename AllocTable<T>::iterator iTer = table.begin(); iTer != table.end(); iTer++ )
       delete iTer->second;
     table.clear();
+  }
+
+  std::vector<std::string> GetNames()
+  {
+    std::vector<std::string> names;
+    for( typename AllocTable<T>::iterator iTer = table.begin(); iTer != table.end(); iTer++ )
+      names.push_back( iTer->first );
+    return names;
   }
 
 protected:

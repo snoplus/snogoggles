@@ -41,7 +41,7 @@ public:
   void Render( RWWrapper& windowApp );
   /// Make a GUI object under management, deleted by this class
   template<class T> inline
-  T* NewGUI( sf::Rect<double>& rect );
+  T* NewGUI( const sf::Rect<double>& rect );
   /// Return a GUI object given the local guiID
   GUI* GetGUI( unsigned int guiID );
   /// Delete all GUI objects
@@ -61,7 +61,7 @@ GUIManager::GUIManager()
 
 template<class T>
 T* 
-GUIManager::NewGUI( sf::Rect<double>& rect )
+GUIManager::NewGUI( const sf::Rect<double>& rect )
 {
   T* gui = new T( rect, fGUIObjects.size() );
   fGUIObjects.push_back( gui );

@@ -1,38 +1,41 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::DecreaseButton
+/// \class Viewer::GUIs::GUIImageButton
 ///
-/// \brief   Button with an exit square
+/// \brief   GUI Image Button
 ///
 /// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     30/06/11 : P.Jones - First Revision, new file. \n
+///     07/08/11 : P.Jones - First Revision, new file. \n
 ///
 /// \detail  As brief
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_DecreaseButton__
-#define __Viewer_GUIs_DecreaseButton__
+#ifndef __Viewer_GUIs_GUIImageButton__
+#define __Viewer_GUIs_GUIImageButton__
 
 #include <Viewer/Button.hh>
 #include <Viewer/Sprite.hh>
+#include <Viewer/GUIImageManager.hh>
 
 namespace Viewer
 {  
 namespace GUIs
 {
 
-class DecreaseButton : public Button
+class GUIImageButton : public Button
 {
 public:
-  DecreaseButton( sf::Rect<double>& rect, unsigned int guiID );
-  virtual ~DecreaseButton();
+  GUIImageButton( const sf::Rect<double>& rect, unsigned int guiID );
+  virtual ~GUIImageButton();
+
+  void Initialise( EGUIImage image );
   
   void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
 protected:
-  Sprite fButton;
+  Sprite fButton[3];
 };
 
 

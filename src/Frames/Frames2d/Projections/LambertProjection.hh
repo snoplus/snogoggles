@@ -15,15 +15,15 @@
 #ifndef __Viewer_Frames_LambertProjection__
 #define __Viewer_Frames_LambertProjection__
 
-#include <TVector3.h>
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/Frame.hh>
 #include <Viewer/ProjectionImage.hh>
-#include <Viewer/TimeAxis.hh>
+#include <Viewer/HitInfo.hh>
 #include <Viewer/Text.hh>
+#include <Viewer/Vector3.hh>
 
 namespace RAT
 {
@@ -60,14 +60,17 @@ public:
 
   void Render3d() { }
 private:
-  sf::Vector2<double> Project( TVector3 pmtPos );
+  sf::Vector2<double> Project( Vector3 pmtPos );
+  void DrawHits();
+  void DrawAllPMTs();
+  void DrawGeodesic();
+  void DrawLine( Vector3 v1, Vector3 v2 );
 
   sf::Rect<double> fProjectArea;
   sf::Rect<double> fAxisArea;
   ProjectionImage fImage;
-  TimeAxis fTimeAxis;
+  HitInfo fHitInfo;
 
-  Text fInfoText;
   GUIs::MapArea* fMapArea; 
 };
 

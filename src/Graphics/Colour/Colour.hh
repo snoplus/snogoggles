@@ -37,12 +37,22 @@ public:
   Colour( const sf::Color& color ) : sf::Color( color ) { }
 
   inline void SetOpenGL() const;
+  inline void ClearOpenGL() const;
 
   inline Colour AddColourFraction( const Colour& newColour, double fraction ) const;
 
   void Load( ConfigurationTable* configTable );
   void Save( ConfigurationTable* configTable ) const;
 };
+
+void
+Colour::ClearOpenGL() const
+{
+  glClearColor( static_cast<float>( r ) / 255.0f, 
+		static_cast<float>( g ) / 255.0f, 
+		static_cast<float>( b ) / 255.0f, 
+		static_cast<float>( a ) / 255.0f );
+}
 
 void
 Colour::SetOpenGL() const

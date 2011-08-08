@@ -27,7 +27,7 @@ namespace GUIs {
 
 class EnumCheckBoxes : public GUI {
 public:
-    EnumCheckBoxes( sf::Rect<double>& rect, unsigned int guiID );
+    EnumCheckBoxes( const sf::Rect<double>& rect, unsigned int guiID );
     virtual ~EnumCheckBoxes() { }
     virtual void SetLabels( std::vector< std::string >& labels );
     virtual void RenderT( sf::RenderWindow& windowApp ) { }

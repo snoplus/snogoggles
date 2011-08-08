@@ -6,13 +6,6 @@ using namespace std;
 
 #include <Viewer/FrameContainer.hh>
 #include <Viewer/Frame.hh>
-#include <Viewer/Logo.hh>
-#include <Viewer/ExitButton.hh>
-#include <Viewer/PinButton.hh>
-#include <Viewer/TopBarButton.hh>
-#include <Viewer/TopBarRightButton.hh>
-#include <Viewer/IncreaseButton.hh>
-#include <Viewer/DecreaseButton.hh>
 #include <Viewer/UIEvent.hh>
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
@@ -26,16 +19,9 @@ void
 FrameContainer::Initialise( const string& type )
 {
   fFrame = fFrameFactory.New( type );  
-  sf::Rect<double> tempPos( 0.0, 0.0, 1.0, 1.0 );
-  fExitButton = new GUIs::ExitButton( tempPos, 0 );
-  fPinButton = new GUIs::PinButton( tempPos, 1 );
-  fTopBarRight = new GUIs::TopBarRightButton( tempPos, 2 );
-  fIncreaseButton = new GUIs::IncreaseButton( tempPos, 3 );
-  fDecreaseButton = new GUIs::DecreaseButton( tempPos, 4 );
 
   fFrame->Initialise();
-  fTopBar = new GUIs::TopBarButton( tempPos, 5 );
-  fTopBar->SetTitle( fFrame->GetName() );
+  fTopBar.SetTitle( fFrame->GetName() );
 }
 
 void 
@@ -43,16 +29,14 @@ FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
 {      
   sf::Vector2<double> pos( configTable.GetI( "posX" ), configTable.GetI( "posY" ) );
   sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
-  fPinButton->SetState( configTable.GetI( "pinned" ) );
   Move( pos );
   Resize( size );
-
+  fTopBar.LoadConfiguration( configTable );
   fFrame->LoadConfiguration( configTable );
 } 
 
 FrameContainer::~FrameContainer()
 {
-  delete fExitButton;
   delete fFrame;
 }
   
@@ -78,31 +62,8 @@ void
 FrameContainer::RenderGUI( sf::RenderWindow& windowApp )
 {
   sf::Rect<double> containerRect = GetContainerRect().GetResolutionRect();
-  sf::Rect<double>buttonPos;
-  buttonPos = sf::Rect<double>( containerRect.Left, containerRect.Top, containerRect.Width - 100, 20 );
-  fTopBar->SetRect( buttonPos );
-  fTopBar->RenderT( windowApp );
-
-  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 20, containerRect.Top, 20, 20 );
-  fTopBarRight->SetRect( buttonPos );
-  fTopBarRight->RenderT( windowApp );
-
-  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 40, containerRect.Top, 20, 20 );
-  fExitButton->SetRect( buttonPos );
-  fExitButton->RenderT( windowApp );
-
-  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 60, containerRect.Top, 20, 20 );
-  fPinButton->SetRect( buttonPos );
-  fPinButton->RenderT( windowApp );
-
-  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 80, containerRect.Top, 20, 20 );
-  fIncreaseButton->SetRect( buttonPos );
-  fIncreaseButton->RenderT( windowApp );
-
-  buttonPos = sf::Rect<double>( containerRect.Left + containerRect.Width - 100, containerRect.Top, 20, 20 );
-  fDecreaseButton->SetRect( buttonPos );
-  fDecreaseButton->RenderT( windowApp );
-
+  fTopBar.SetRect( sf::Rect<double>( containerRect.Left, containerRect.Top, containerRect.Width, 20 ) );
+  fTopBar.RenderT( windowApp );
   fFrame->RenderGUI( windowApp );
 }
 
@@ -113,68 +74,13 @@ FrameContainer::NewEvent( UIEvent& event )
   switch( event.Type )
     {
     case sf::Event::LostFocus: //No explicit focus for container buttons, so must inform all
-      fTopBar->NewEvent( event );
-      fTopBarRight->NewEvent( event );
-      fExitButton->NewEvent( event );
-      fPinButton->NewEvent( event );
-      fIncreaseButton->NewEvent( event );
-      fDecreaseButton->NewEvent( event );
+      fTopBar.NewEvent( event );
       break;
-    case sf::Event::MouseButtonPressed:
-      {
-	if( fTopBar->ContainsPoint( event.GetResolutionCoord() ) )
-	  {
-	    fTopBar->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::eStartMove );
-	  }
-	if( fTopBarRight->ContainsPoint( event.GetResolutionCoord() ) )
-	  {
-	    fTopBarRight->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::eStartMove );
-	  }
-	if( fExitButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  fExitButton->NewEvent( event );
-	if( fPinButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  fPinButton->NewEvent( event );
-	if( fIncreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  fIncreaseButton->NewEvent( event );
-	if( fDecreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  fDecreaseButton->NewEvent( event );
-      }
-      break;
+    case sf::Event::MouseMoved:
     case sf::Event::MouseButtonReleased:
-      {
-	if( fExitButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  {
-	    fExitButton->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::eClosed );
-	  }
-	if( fPinButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  {
-	    fPinButton->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::ePinned );
-	  }	
-	if( fIncreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  {
-	    fIncreaseButton->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::eIncrease );
-	  }
-	if( fDecreaseButton->ContainsPoint( event.GetResolutionCoord() ) )
-	  {
-	    fDecreaseButton->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::eDecrease );
-	  }
-	if( fTopBar->GetState() ) // Always Stop moving if mouse up
-	  {
-	    fTopBar->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::eStopMove );
-	  }	
-	if( fTopBarRight->GetState() ) // Always Stop moving if mouse up
-	  {
-	    fTopBarRight->NewEvent( event );
-	    returnEvent = FrameUIReturn( FrameUIReturn::eStopMove );
-	  }
-      }
+    case sf::Event::MouseButtonPressed:
+	if( fTopBar.ContainsPoint( event.GetResolutionCoord() ) )
+	  returnEvent = fTopBar.NewEvent( event );
       break;
     }
  fFrame->NewEvent( event );
@@ -191,7 +97,7 @@ FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
   configTable.SetI( "posY", static_cast<int>( rect.Top + 1 ) );
   configTable.SetI( "sizeX", static_cast<int>( rect.Width + 1 ) );
   configTable.SetI( "sizeY", static_cast<int>( rect.Height + 1 ) );
-  configTable.SetI( "pinned", IsPinned() );
+  fTopBar.SaveConfiguration( configTable );
   fFrame->SaveConfiguration( configTable );
 }
 

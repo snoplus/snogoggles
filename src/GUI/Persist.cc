@@ -12,7 +12,7 @@ Persist::NewEvent( UIEvent& event )
   switch( event.Type )
     {
      case sf::Event::MouseButtonReleased:
-      fActive = !fActive;
+      fPressed = !fPressed;
       retEvent = GUIReturn( fID, fGlobalID );
       break;
     }

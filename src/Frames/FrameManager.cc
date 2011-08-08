@@ -46,6 +46,7 @@ FrameManager::LoadConfiguration( Configuration& config )
       currentFrameContainer->LoadConfiguration( currentTable );
       fFrameContainers.push_back( currentFrameContainer );
       PositionFrame( fFrameContainers.size() - 1, currentFrameContainer->GetPos() );
+      ResizeFrame( fFrameContainers.size() - 1, eToGrid, false );
     }
   CalculateGrid();
 }
@@ -319,6 +320,13 @@ FrameManager::ResizeFrame( int iFrame, ESize size, bool calcGrid )
 	if( CheckPosition( iFrame, row, col, rowSize, colSize ) )
 	  fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
 	break;
+      }
+    case eToGrid: // Resize the frame to fit the grid
+      {
+	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
+	int rowSize = currentSize.y / fRowSize;
+	int colSize = currentSize.x / fColSize;
+	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
       }
     }
   if( calcGrid )

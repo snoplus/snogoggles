@@ -5,6 +5,15 @@
 #include <Viewer/Colour.hh>
 using namespace Viewer;
 
+void 
+ProjectionImage::DrawDot( const sf::Vector2<double>& position,
+			  const Colour& colour )
+{
+  sf::Vector2<int> posPixel( static_cast<int>( position.x * fWidth ), 
+			     static_cast<int>( position.y * fHeight ) );
+  DrawSquare( posPixel, sf::Vector2<int>( 1, 1 ), colour );
+}
+
 void
 ProjectionImage::DrawSquare( const sf::Vector2<int>& position,
 			     const sf::Vector2<int>& size,
