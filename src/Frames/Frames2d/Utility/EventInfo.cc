@@ -15,7 +15,6 @@ using namespace Frames;
 void 
 EventInfo::Initialise()
 {
-  fInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fInfoText.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 1.0, 1.0 ) );  
 }
 
@@ -51,6 +50,7 @@ EventInfo::Render2d( RWWrapper& windowApp )
   eventInfo << "Nhit (Inv): " << rEV->GetPMTInvCalCount() << endl;
 
   fInfoText.SetString( eventInfo.str().c_str() );
+  fInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   windowApp.Draw( fInfoText );  
 }
 

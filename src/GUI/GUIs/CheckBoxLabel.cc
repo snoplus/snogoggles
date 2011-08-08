@@ -29,7 +29,6 @@ CheckBoxLabel::CheckBoxLabel( const sf::Rect<double>& rect, unsigned int guiID )
 
   fLabel = Text( "check box" );
   fLabel.SetBoundingRect( rRect );
-  fLabel.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
 }
 
 CheckBoxLabel::~CheckBoxLabel()
@@ -56,6 +55,6 @@ CheckBoxLabel::Render( RWWrapper& windowApp )
   else
     windowApp.Draw( fBox[1] );
 
+  fLabel.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   windowApp.Draw( fLabel );
-
 }

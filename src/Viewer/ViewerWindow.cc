@@ -73,6 +73,7 @@ ViewerWindow::DrawSplash()
   ImageManager& im = ImageManager::GetInstance();
   // Now initialise the GUI
   GUIImageManager& guiIM = GUIImageManager::GetInstance();
+  guiIM.Initialise();
   guiIM.ChangeColourScheme( GUIColourPalette::gPalette );
   sf::Sprite snoSplash = im.NewSprite( "Logo.png" );
   sf::Vector2<double> windowResolution = Coord::GetWindowResolution();

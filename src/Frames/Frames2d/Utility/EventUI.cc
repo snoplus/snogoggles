@@ -22,12 +22,10 @@ EventUI::Initialise()
   fContinuous->SetLabel( "Continuous" );
 
   fEVInfoText = Text( "" );
-  fEVInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fEVInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.2, 0.8, 0.2 ) );  
   fEVID = 0;
   fEVCount = 1;
   fMCInfoText = Text( "" );
-  fMCInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fMCInfoText.SetBoundingRect( sf::Rect<double>( 0.1, 0.4, 0.8, 0.2 ) );
   fMCID = -1;
   fClock.Reset();
@@ -67,6 +65,7 @@ EventUI::Render2d( RWWrapper& windowApp )
   stringstream eventInfo;
   eventInfo << "EV: " << fEVID << "\n" << fEVCount << " loaded.";
   fEVInfoText.SetString( eventInfo.str().c_str() );
+  fEVInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   windowApp.Draw( fEVInfoText );  
   eventInfo.str("");
 
@@ -74,6 +73,7 @@ EventUI::Render2d( RWWrapper& windowApp )
     {
       eventInfo << "MC: " << fMCID << "\n" << fMCCount << " loaded.";
       fMCInfoText.SetString( eventInfo.str().c_str() );
+      fMCInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
       windowApp.Draw( fMCInfoText );
     }
 }

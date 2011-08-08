@@ -9,6 +9,7 @@ using namespace std;
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/Colour.hh>
+#include <Viewer/GUIDefaultPalette.hh>
 using namespace Viewer;
 
 GUIImageManager* GUIImageManager::fGUIImageManager = NULL;
@@ -35,6 +36,20 @@ GUIImageManager::GUIImageManager()
       fSubRectMap[eCross] = sf::Rect<int>( 100, 0, 20, 20 );
       fSubRectMap[eOpenBox] = sf::Rect<int>( 140, 0, 20, 20 );
       fSubRectMap[eCrossBox] = sf::Rect<int>( 160, 0, 20, 20 );
+    }
+}
+
+void
+GUIImageManager::Initialise()
+{
+  Clear();
+  // Use default Colour palette
+  GUIDefaultPalette palette;
+  for( std::map< EGUIImage, sf::Rect<int> >::iterator iTer = fSubRectMap.begin(); iTer != fSubRectMap.end(); iTer++ )
+    {
+      (fImages[iTer->first])[eBase] = Colourise( &palette, eBase, iTer->second, NULL );
+      (fImages[iTer->first])[eHighlight] = Colourise( &palette, eHighlight, iTer->second, NULL );
+      (fImages[iTer->first])[eActive] = Colourise( &palette, eActive, iTer->second, NULL );
     }
 }
 
@@ -68,20 +83,19 @@ GUIImageManager::NewSprite( const EGUIImage image,
 void 
 GUIImageManager::ChangeColourScheme( GUIColourPalette* palette )
 {
-  Clear();
-
   for( std::map< EGUIImage, sf::Rect<int> >::iterator iTer = fSubRectMap.begin(); iTer != fSubRectMap.end(); iTer++ )
     {
-      (fImages[iTer->first])[eBase] = Colourise( palette, eBase, iTer->second );
-      (fImages[iTer->first])[eHighlight] = Colourise( palette, eHighlight, iTer->second );
-      (fImages[iTer->first])[eActive] = Colourise( palette, eActive, iTer->second );
+      (fImages[iTer->first])[eBase] = Colourise( palette, eBase, iTer->second, (fImages[iTer->first])[eBase] );
+      (fImages[iTer->first])[eHighlight] = Colourise( palette, eHighlight, iTer->second, (fImages[iTer->first])[eHighlight] );
+      (fImages[iTer->first])[eActive] = Colourise( palette, eActive, iTer->second, (fImages[iTer->first])[eActive] );
     }
 }
 
 sf::Image*
 GUIImageManager::Colourise( GUIColourPalette* palette,
 			    EGUIImageState state,
-			    sf::Rect<int> sourceRect )
+			    sf::Rect<int> sourceRect,
+			    sf::Image* colouredImage )
 {
   sf::Uint8* pixels = new sf::Uint8[ sourceRect.Width * sourceRect.Height * 4 ];
   for( int xPixel = 0; xPixel < sourceRect.Width; xPixel++ )
@@ -107,8 +121,9 @@ GUIImageManager::Colourise( GUIColourPalette* palette,
 	  pixels[ pixel + 3 ] = pixelColour.a;
 	} 
     }
-      
-  sf::Image* colouredImage = new sf::Image();
+
+  if( colouredImage == NULL )
+    colouredImage = new sf::Image();
   colouredImage->LoadFromPixels( sourceRect.Width, sourceRect.Height, pixels );
   delete pixels;
   return colouredImage;
