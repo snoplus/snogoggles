@@ -61,15 +61,15 @@ void CrateView::Render2d(RWWrapper& windowApp){
     int channel = ccc-(crate*512)-(card*32);
     
     double pmtX = hitWidth+(crate%10)*(crateWidth+hitWidth)+card*hitWidth;
-    double pmtY = int(crate/10)*(crateHeight+hitHeight)+(crateHeight-channel*hitHeight+0.005);
-    //if (crate==9){
+    double pmtY = hitHeight+int(crate/10)*(crateHeight+hitHeight)+(crateHeight-channel*hitHeight+0.005);
+    if (card==9){
     //printf("Crate: %i Card: %i Channel: %i\n",crate,card,channel);  
     //printf("pmtX: %0.4f pmtY: %0.4f\n",pmtX,pmtY);
       fImage.DrawSquare(sf::Vector2<double>(pmtX,pmtY),sf::Vector2<double>(hitHeight,hitWidth),ColourPalette::gPalette->GetColour(TimeAxis::ScaleTime(pmtHitTime)));
       const double distToMouse2 = pow(pmtX-mapPosition.x,2)+pow(pmtY-mapPosition.y,2);
       //if(distToMouse2 < kLocalSize * kLocalSize )
 	//infoText << rEV->GetPMTCal(ipmt)->GetID() << " Time: " << rEV->GetPMTCal(ipmt)->GetTime() << " Charge: " << rEV->GetPMTCal(ipmt)->GetCharge() << endl;
-      //}
+    }
   }
   fInfoText.SetString(infoText.str());
   windowApp.Draw(fInfoText);

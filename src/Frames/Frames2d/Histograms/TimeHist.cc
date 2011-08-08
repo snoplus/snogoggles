@@ -18,37 +18,37 @@ using namespace std;
 
 void TimeHist::Initialise()
 {
-   vertLine = Shape::Line(0.1,0.0,0.1,0.9,0.01f,ColourPalette::gPalette->GetPrimaryColour(eBlack));
+   vertLine = Shape::Line(0.1,0.0,0.1,0.9,0.01f,ColourPalette::gPalette->GetPrimaryColour(eGrey));
   vertLine.SetBoundingRect(sf::Rect<double>(0.0,0.0,1.0,1.0));
-  horizLine = Shape::Line(0.1,0.9,1.0,0.9,0.01f,ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizLine = Shape::Line(0.1,0.9,1.0,0.9,0.01f,ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizLine.SetBoundingRect(sf::Rect<double>(0.0,0.0,1.0,1.0));
-  horizMarker1 = Shape::Line(0.325,0.87,0.325,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizMarker1 = Shape::Line(0.325,0.87,0.325,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizMarker1.SetBoundingRect(sf::Rect<double>(0.0,0.0,1.0,1.0));
-  horizMarker2 = Shape::Line(0.55,0.87,0.55,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizMarker2 = Shape::Line(0.55,0.87,0.55,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizMarker2.SetBoundingRect(sf::Rect<double>(0.0,0.0,1.0,1.0));
-  horizMarker3 = Shape::Line(0.775,0.87,0.775,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizMarker3 = Shape::Line(0.775,0.87,0.775,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizMarker3.SetBoundingRect(sf::Rect<double>(0.0,0.0,1.0,1.0));
-  horizMarker4 = Shape::Line(1.0,0.87,1.0,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizMarker4 = Shape::Line(1.0,0.87,1.0,0.91,0.007f,ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizMarker4.SetBoundingRect(sf::Rect<double>(0.0,0.0,1.0,1.0)); 
   horizLabel1 = Text("200");
-  horizLabel1.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizLabel1.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizLabel1.SetBoundingRect(sf::Rect<double>(0.275,0.90,0.1,0.08));
   horizLabel2 = Text("300");
-  horizLabel2.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizLabel2.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizLabel2.SetBoundingRect(sf::Rect<double>(0.495,0.90,0.1,0.08));
   horizLabel3 = Text("400");
-  horizLabel3.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizLabel3.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizLabel3.SetBoundingRect(sf::Rect<double>(0.720,0.90,0.1,0.08));
   horizLabel4 = Text("500");
-  horizLabel4.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  horizLabel4.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   horizLabel4.SetBoundingRect(sf::Rect<double>(0.940,0.90,0.1,0.08));
-  vertLabel1.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  vertLabel1.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   vertLabel1.SetBoundingRect(sf::Rect<double>(0.02,0.675,0.05,0.08));
-  vertLabel2.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  vertLabel2.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   vertLabel2.SetBoundingRect(sf::Rect<double>(0.02,0.450,0.05,0.08));
-  vertLabel3.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  vertLabel3.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   vertLabel3.SetBoundingRect(sf::Rect<double>(0.02,0.225,0.05,0.08));
-  vertLabel4.SetColor(ColourPalette::gPalette->GetPrimaryColour(eBlack));
+  vertLabel4.SetColor(ColourPalette::gPalette->GetPrimaryColour(eGrey));
   vertLabel4.SetBoundingRect(sf::Rect<double>(0.02,0.0,0.05,0.08));
   }
 
