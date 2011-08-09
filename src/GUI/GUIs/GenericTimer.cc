@@ -17,11 +17,11 @@ GenericTimer::GenericTimer( const sf::Rect<double>& rect, unsigned int guiID )
     ImageManager& imageManager = ImageManager::GetInstance();
 
     fNormalButton = imageManager.NewSprite( "GenericButton.png" );
-    fNormalButton.SetColor( sf::Color::Red );
+    fNormalButton.SetColor( Colour( 96, 75, 216 ) );
     fNormalButton.SetBoundingRect( rect );
 
     fExcitedButton = fNormalButton;
-    fExcitedButton.SetColor( sf::Color::Yellow );
+    fExcitedButton.SetColor( Colour( 128, 112, 216 ) );
 }
 
 void GenericTimer::Render( RWWrapper& windowApp )
