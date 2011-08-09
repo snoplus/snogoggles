@@ -156,6 +156,8 @@ FrameManager::EventHandler( FrameUIReturn& retEvent, UIEvent& event )
 	  fMoving = true;
 	  fMoveOffset = event.GetResolutionCoord() - fFrameContainers[fFocus]->GetPos();
 	  fMoveStart = fFrameContainers[fFocus]->GetPos();
+	  if( fMoveOffset.x > 140.0 )
+	    fMoveOffset.x = 130.0;
 	  ResizeFrame( retEvent.fFrameID, eMinimal );
 	}
       break;
