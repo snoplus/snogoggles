@@ -68,6 +68,7 @@ TopBar::SetTitle( const string& title )
 void 
 TopBar::RenderT( sf::RenderWindow& windowApp )
 {
+  //fTitle.SetColor( 
   sf::Text titleObject( fTitle );
   sf::Rect<float> textRect = titleObject.GetRect();
   titleObject.SetPosition( fRect.Left + 20.0, fRect.Top - 1 );

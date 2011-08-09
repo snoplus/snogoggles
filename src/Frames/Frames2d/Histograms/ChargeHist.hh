@@ -33,7 +33,7 @@ namespace Viewer {
       void SaveConfiguration(ConfigurationTable& configTable);
       virtual std::string GetName(){return ChargeHist::Name();}
       static std::string Name(){return std::string("ChargeHist");}
-
+ 
     private:
       int pmtCharges[200];
       Shape vertLine;

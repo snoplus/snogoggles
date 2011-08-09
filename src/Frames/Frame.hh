@@ -37,7 +37,8 @@ namespace Viewer
 class Frame
 {
 public:   
-  
+  enum EFrameType { eUtil, e3d, e2d };
+
   virtual ~Frame() {};
 
   virtual void NewEvent( UIEvent& event );
@@ -50,7 +51,7 @@ public:
   virtual void EventLoop() = 0;
   
   virtual std::string GetName() = 0;
-  
+
   /// Only the GUIManager needs the RenderWindow, if overload RenderGUI then you should know what todo...
   virtual void RenderGUI( sf::RenderWindow& windowApp );
   inline virtual void Render2dT( sf::RenderWindow& windowApp );

@@ -59,6 +59,7 @@ public:
   virtual void Render2d( RWWrapper& windowApp );
 
   void Render3d() { }
+
 private:
   sf::Vector2<double> Project( Vector3 pmtPos );
   void DrawHits();

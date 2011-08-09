@@ -48,7 +48,7 @@ GUIImagePersist::RenderT( sf::RenderWindow& windowApp )
 void 
 GUIImagePersist::Render( RWWrapper& windowApp )
 {
-  if( !fPressed )
+  if( !fPressed && !fHover )
     windowApp.Draw( fPersist[0] );
   else if( fHover )
     windowApp.Draw( fPersist[1] );

@@ -48,7 +48,7 @@ public:
   static std::string Name() {return std::string("IcosahedralProjection");}
   //actually draw it
   virtual void Render2d(RWWrapper& windowApp);
-
+  
   /// 1.5 cols to every row
   double GetAspectRatio() { return 1.5; }
   virtual void FillPMTLocations();

@@ -3,6 +3,7 @@
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/Colour.hh>
+#include <Viewer/GUIColourPalette.hh>
 using namespace Viewer;
 
 void 
@@ -84,7 +85,7 @@ ProjectionImage::DrawHollowSquare( const sf::Vector2<double>& position,
   DrawSquare( posPixel, sizePixel, colour );
   sf::Vector2<int> newPos( posPixel.x + 1, posPixel.y + 1 );
   sf::Vector2<int> newSize( sizePixel.x - 2, sizePixel.y - 2 );
-  DrawSquare( newPos, newSize, Colour() );
+  DrawSquare( newPos, newSize, GUIColourPalette::gPalette->GetBGColour( eBase ) );
 }
 
 void 

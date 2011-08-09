@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 #include <Viewer/Factory.hh>
 #include <Viewer/Frame.hh>
@@ -28,6 +29,8 @@ class FrameFactory : public Factory<Frame>
 {
 public:   
   FrameFactory();
+  void RegisterFrame( const std::string& name, AllocBase<Frame>* allocator, Frame::EFrameType frameType );
+  std::map<std::string, Frame::EFrameType> fTypeMap;
 };
 
 } // ::Viewer

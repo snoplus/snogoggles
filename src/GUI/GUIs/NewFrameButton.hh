@@ -35,8 +35,12 @@ public:
   void RenderT( sf::RenderWindow& windowApp ) { };
   void Render( RWWrapper& windowApp );
 protected:
+  void SetPositions( const sf::Rect<double>& rect );
+
   Text fTitle;
-  Sprite fBar;
+  Sprite fLeft[3];
+  Sprite fBar[3];
+  Sprite fRight[3];
 };
 
 } // ::GUIs

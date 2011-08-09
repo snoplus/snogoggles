@@ -45,6 +45,7 @@ public:
   virtual void Render2d( RWWrapper& windowApp );
 
   void Render3d() { }
+
 private:
   sf::Clock fClock;
   Text fEVInfoText;

@@ -26,26 +26,33 @@ using namespace std;
 
 FrameFactory::FrameFactory()
 {
-  Register( Frames::About::Name(), new Alloc<Frame, Frames::About>() );
-  Register( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>() );
-  Register( Frames::EventInfo::Name(), new Alloc<Frame, Frames::EventInfo>() );
-  Register( Frames::ColourPicker::Name(), new Alloc<Frame, Frames::ColourPicker>() );
-  //Register( Frames::Logo::Name(), new Alloc<Frame, Frames::Logo>() );
-  //Register( Frames::TestBox::Name(), new Alloc<Frame, Frames::TestBox>() );
-  Register( Frames::LambertProjection::Name(), new Alloc<Frame, Frames::LambertProjection>() );
+  RegisterFrame( Frames::About::Name(), new Alloc<Frame, Frames::About>(), Frame::eUtil );
+  RegisterFrame( Frames::EventUI::Name(), new Alloc<Frame, Frames::EventUI>(), Frame::eUtil );
+  RegisterFrame( Frames::EventInfo::Name(), new Alloc<Frame, Frames::EventInfo>(), Frame::eUtil );
+  RegisterFrame( Frames::ColourPicker::Name(), new Alloc<Frame, Frames::ColourPicker>(), Frame::eUtil );
+  //RegisterFrame( Frames::Logo::Name(), new Alloc<Frame, Frames::Logo>(), Frame::eUtil );
+  //RegisterFrame( Frames::TestBox::Name(), new Alloc<Frame, Frames::TestBox>(), Frame::eUtil );
+  RegisterFrame( Frames::LambertProjection::Name(), new Alloc<Frame, Frames::LambertProjection>(), Frame::e2d );
   //Icosahedral Projection KC - 21/07/11
-  Register(Frames::IcosahedralProjection::Name(),new Alloc<Frame,Frames::IcosahedralProjection>());
+  RegisterFrame(Frames::IcosahedralProjection::Name(),new Alloc<Frame,Frames::IcosahedralProjection>(), Frame::e2d );
   //Time Histogram KC - 24/07/11
-  Register( Frames::TimeHist::Name(),new Alloc<Frame,Frames::TimeHist>() );
+  RegisterFrame( Frames::TimeHist::Name(),new Alloc<Frame,Frames::TimeHist>(), Frame::e2d );
   //Charge Histogram KC - 24/07/11
-  Register( Frames::ChargeHist::Name(),new Alloc<Frame,Frames::ChargeHist>() );
+  RegisterFrame( Frames::ChargeHist::Name(),new Alloc<Frame,Frames::ChargeHist>(), Frame::e2d );
   //Elliptical Projection KC - 26/07/11
-  Register(Frames::EllipticalProjection::Name(),new Alloc<Frame,Frames::EllipticalProjection>());
+  RegisterFrame(Frames::EllipticalProjection::Name(),new Alloc<Frame,Frames::EllipticalProjection>(), Frame::e2d );
   //Crate View KC - 05/08/11
-  Register(Frames::CrateView::Name(),new Alloc<Frame,Frames::CrateView>());
+  RegisterFrame(Frames::CrateView::Name(),new Alloc<Frame,Frames::CrateView>(), Frame::e2d );
 
   // 3D Frames
-  Register( Frames::HitFrame3d::Name(), new Alloc<Frame, Frames::HitFrame3d>() );
-  Register( Frames::TrackFrame3d::Name(), new Alloc<Frame, Frames::TrackFrame3d>() );
-  Register( Frames::RATGeoFrame3d::Name(), new Alloc<Frame, Frames::RATGeoFrame3d>() );
+  RegisterFrame( Frames::HitFrame3d::Name(), new Alloc<Frame, Frames::HitFrame3d>(), Frame::e3d );
+  RegisterFrame( Frames::TrackFrame3d::Name(), new Alloc<Frame, Frames::TrackFrame3d>(), Frame::e3d );
+  RegisterFrame( Frames::RATGeoFrame3d::Name(), new Alloc<Frame, Frames::RATGeoFrame3d>(), Frame::e3d );
+}
+
+void 
+FrameFactory::RegisterFrame( const std::string& name, AllocBase<Frame> *allocator, Frame::EFrameType frameType )
+{
+  Register( name, allocator );
+  fTypeMap[name] = frameType;
 }

@@ -38,8 +38,7 @@ namespace GUIs
       void SaveConfiguration(ConfigurationTable& configTable);
       virtual std::string GetName(){return CrateView::Name();}
       static std::string Name(){return std::string("CrateView");}
-
-    private:
+     private:
       
       sf::Rect<double> fProjectArea; 
       ProjectionImage fImage;

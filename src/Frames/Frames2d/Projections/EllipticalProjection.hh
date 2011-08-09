@@ -43,7 +43,7 @@ public:
   static std::string Name() {return std::string("EllipticalProjection");}
   //actually draw it
   virtual void Render2d(RWWrapper& windowApp);
-  virtual void FillPMTLocations();
+  virtual void FillPMTLocations(); //Private method??
 
 private:
   //figure out where PMT should be

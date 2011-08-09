@@ -31,7 +31,7 @@ namespace sf
 
 namespace Viewer
 {
-  enum EGUIImage { eBarLeft, eBar, eBarRight, eDecrease, eIncrease, ePlus, eCross, eOpenBox, eCrossBox };
+  enum EGUIImage { eBarLeft, eBar, eBarRight, eDecrease, eIncrease, ePlus, eCross, eOpenBox, eCrossBox, eNewFrameLeft, eNewFrame, eNewFrameRight };
   typedef std::map< EGUIImage, std::map< EGUIImageState, sf::Image* > > GUIImageMap;
 
 class GUIImageManager

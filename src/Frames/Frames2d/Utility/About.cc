@@ -29,7 +29,7 @@ About::Render2d( RWWrapper& windowApp )
   stringstream eventInfo;
   eventInfo.precision( 0 );
   eventInfo << fixed;
-  eventInfo << "SNOGoggles v0.2" << "\nFrame Rate:";
+  eventInfo << "SNOGoggles v0.3" << "\nFrame Rate:";
   if( windowApp.GetFrameTime() == 0 ) // Damn quick system...
     eventInfo << "> 1000 Hz";
   else

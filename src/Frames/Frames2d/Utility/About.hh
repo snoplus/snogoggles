@@ -42,6 +42,7 @@ public:
   virtual void Render2d( RWWrapper& windowApp );
 
   void Render3d() { }
+
 private:
   Text fInfoText;
 };

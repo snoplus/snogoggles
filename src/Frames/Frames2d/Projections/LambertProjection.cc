@@ -139,7 +139,7 @@ LambertProjection::DrawLine( Vector3 v1, Vector3 v2 )
   Vector3 line = v2 - v1;
   double dist = line.Mag();
   line = line.Unit();
-  for( double delta = 0.0; delta < dist; delta += dist / 10.0 )
+  for( double delta = 0.0; delta < dist; delta += dist / 30.0 )
     {
       Vector3 deltaPos = line * delta + v1;
       fImage.DrawDot( Project( deltaPos ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) );

@@ -36,6 +36,9 @@ GUIImageManager::GUIImageManager()
       fSubRectMap[eCross] = sf::Rect<int>( 100, 0, 20, 20 );
       fSubRectMap[eOpenBox] = sf::Rect<int>( 140, 0, 20, 20 );
       fSubRectMap[eCrossBox] = sf::Rect<int>( 160, 0, 20, 20 );
+      fSubRectMap[eNewFrameLeft] = sf::Rect<int>( 0, 20, 20, 20 );
+      fSubRectMap[eNewFrame] = sf::Rect<int>( 20, 20, 20, 20 );
+      fSubRectMap[eNewFrameRight] = sf::Rect<int>( 40, 20, 20, 20 );
     }
 }
 

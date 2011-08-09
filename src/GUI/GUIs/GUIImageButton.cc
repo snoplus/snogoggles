@@ -48,7 +48,7 @@ GUIImageButton::RenderT( sf::RenderWindow& windowApp )
 void 
 GUIImageButton::Render( RWWrapper& windowApp )
 {
-  if( !fPressed )
+  if( !fPressed && !fHover )
     windowApp.Draw( fButton[0] );
   else if( fHover )
     windowApp.Draw( fButton[1] );

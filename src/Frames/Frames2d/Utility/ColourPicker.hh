@@ -41,7 +41,8 @@ public:
   virtual void Render2d( RWWrapper& windowApp );
 
   void Render3d() { }
-private:
+
+ private:
   void NewColourPalette( int paletteID );
   void NewGUIColourPalette( int paletteID );
 
