@@ -8,7 +8,7 @@
 /// REVISION HISTORY:\n
 ///     29/06/11 : P.Jones - First Revision, new file. \n
 ///
-/// \detail  The main function is defined here
+/// \detail  The main function is defined here.
 ///
 ////////////////////////////////////////////////////////////////////////
 #include <iostream>
