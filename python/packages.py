@@ -43,8 +43,8 @@ def PThread(env):
 
 # Append Avalanche
 def Avalanche(env):
-	env.Append( CPPPATH = [ os.environ["AVALANCHE"] ] )
-	env.Append( LIBPATH = [ os.environ["AVALANCHE"] ] )
+	env.Append( CPPPATH = [ os.environ["AVALANCHEROOT"] ] )
+	env.Append( LIBPATH = [ os.environ["AVALANCHEROOT"] ] )
 	env.Append( LIBS = [ "avalanche" ] )
 
 # Adds all packages
