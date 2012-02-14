@@ -41,6 +41,12 @@ def Curl(env):
 def PThread(env):
 	env.Append( LIBS = [ "pthread" ] )
 
+# Append Avalanche
+def Avalanche(env):
+	env.Append( CPPPATH = [ os.environ["AVALANCHE"] ] )
+	env.Append( LIBPATH = [ os.environ["AVALANCHE"] ] )
+	env.Append( LIBS = [ "avalanche" ] )
+
 # Adds all packages
 def addpackages(env):
 	xercesc(env)
@@ -49,4 +55,5 @@ def addpackages(env):
 	sfml(env)
 	rat(env)
 	PThread(env)
+	Avalanche(env)
 	

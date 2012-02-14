@@ -19,6 +19,16 @@ using namespace std;
 
 const double kLocalSize = 1.0;
 
+// Required as the BitManip file is hard to include, TODO fix the BitManip file
+int GetBitsTemp(int arg, int loc, int n)
+{
+  int shifted = arg >> loc;
+  // Select the first (least significant) n of those bits
+  int mask = ((ULong64_t)1 << n) - 1;
+  int value = shifted & mask;
+  return value;
+}
+
 void CrateView::Initialise() {
   fProjectArea = sf::Rect<double>(0.1,0.0,0.8,0.9);
   fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( fProjectArea );
@@ -31,50 +41,39 @@ void CrateView::Render2d(RWWrapper& windowApp){
   Rect projection;
   projection.SetFromLocalRect(fProjectArea,fFrameRect);
   fImage.Clear(projection);
-  sf::Vector2<double> mapPosition = fMapArea->GetPosition();
-  Double_t crateWidth = 0.09;
-  Double_t crateHeight = 0.42;
-  Double_t hitWidth = crateWidth/18;
-  Double_t hitHeight = crateHeight/32;
+  const double kXMargin     = 0.01;
+  const double kYMargin     = 0.01;
+  const double kCrateWidth  = 1.0 / 10.0 - kXMargin; // 10 Columns
+  const double kCrateHeight = 1.0 / 2.0 - kYMargin; // 2 Rows
+  const double kHitWidth    = kCrateWidth  / 16.0; // There are 16 cards
+  const double kHitHeight   = kCrateHeight / 32.0; // There are 32 channels
 
-  //set up the positions of all the crates
-  //they are 0.08 wide by 0.4 high
-  Double_t xPos,yPos;
-  for (Int_t row=0;row<2;row++){
-    yPos = hitHeight+(row*(crateHeight+hitHeight));
-    for (Int_t column=0;column<10;column++){
-      xPos = hitWidth+(column*(crateWidth+hitWidth));
-      fImage.DrawHollowSquare(sf::Vector2<double>(xPos,yPos),sf::Vector2<double>(crateWidth,crateHeight),ColourPalette::gPalette->GetPrimaryColour(eGrey));
+  // Draw the crate outlines first
+  for( int iCrate = 0; iCrate < 20; iCrate++ ) // 20 Crates
+    {
+      double xPos = ( iCrate % 10 ) * ( kCrateWidth + kXMargin );
+      double yPos = ( iCrate / 10 ) * ( kCrateHeight + kYMargin );
+      fImage.DrawHollowSquare( sf::Vector2<double>( xPos, yPos ),
+			       sf::Vector2<double>( kCrateWidth, kCrateHeight ),
+			       ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
-  }
-
+  // Now draw the hits
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
-  RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
-  stringstream infoText;
-  //printf("finished with empty pmts\n");
-  for(int ipmt=0;ipmt<rEV->GetPMTCalCount();ipmt++){
-    double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
-    int ccc = rEV->GetPMTCal(ipmt)->GetID();
-    int crate = int(ccc/512);
-    int card = int((ccc-(512*crate))/32);
-    int channel = ccc-(crate*512)-(card*32);
-    
-    double pmtX = hitWidth+(crate%10)*(crateWidth+hitWidth)+card*hitWidth;
-    double pmtY = hitHeight+int(crate/10)*(crateHeight+hitHeight)+(crateHeight-channel*hitHeight+0.005);
-    if (card==9){
-    //printf("Crate: %i Card: %i Channel: %i\n",crate,card,channel);  
-    //printf("pmtX: %0.4f pmtY: %0.4f\n",pmtX,pmtY);
-      fImage.DrawSquare(sf::Vector2<double>(pmtX,pmtY),sf::Vector2<double>(hitHeight,hitWidth),ColourPalette::gPalette->GetColour(TimeAxis::ScaleTime(pmtHitTime)));
-      const double distToMouse2 = pow(pmtX-mapPosition.x,2)+pow(pmtY-mapPosition.y,2);
-      //if(distToMouse2 < kLocalSize * kLocalSize )
-	//infoText << rEV->GetPMTCal(ipmt)->GetID() << " Time: " << rEV->GetPMTCal(ipmt)->GetTime() << " Charge: " << rEV->GetPMTCal(ipmt)->GetCharge() << endl;
+  for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
+    {
+      double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
+      int lcn = rEV->GetPMTCal(ipmt)->GetID();
+      int crate = GetBitsTemp(lcn, 9, 5);
+      int card = GetBitsTemp(lcn, 5, 4);
+      int channel = GetBitsTemp(lcn, 0, 5);
+      double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth;
+      double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight;
+      fImage.DrawSquare( sf::Vector2<double>( xPos, yPos ),
+			 sf::Vector2<double>( kHitWidth, kHitHeight ),
+			 ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime( pmtHitTime ) ) );
     }
-  }
-  fInfoText.SetString(infoText.str());
-  windowApp.Draw(fInfoText);
   windowApp.Draw(&fImage);
-
 }
 
 void CrateView::Render3d(){

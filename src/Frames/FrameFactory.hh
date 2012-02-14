@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::FrameFactory
 ///
-/// \brief   The base class for all frames
+/// \brief   Allocates Frames
 ///
 /// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///

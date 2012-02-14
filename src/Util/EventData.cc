@@ -96,7 +96,7 @@ EventData::GetCurrentEV()
 DS::MC*
 EventData::GetCurrentMC()
 {
-  if( fCurrentMC == NULL )
+  if( fCurrentMC == NULL && !fMCs.empty() )
     NextEV();
   return fCurrentMC;    
 }
