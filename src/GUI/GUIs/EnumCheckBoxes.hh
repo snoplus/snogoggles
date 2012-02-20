@@ -32,7 +32,7 @@ public:
     virtual void SetLabels( std::vector< std::string >& labels );
     virtual void RenderT( sf::RenderWindow& windowApp ) { }
     virtual void Render( RWWrapper& windowApp );
-    virtual GUIReturn NewEvent( UIEvent& event );
+    virtual GUIReturn NewEvent( Event& event );
 
     inline void SetState( int state );
     inline int GetState() const;

@@ -2,77 +2,60 @@
 #include <SFML/Window.hpp>
 
 #include <Viewer/RWWrapper.hh>
+#include <Viewer/RectPtr.hh>
 #include <Viewer/Rect.hh>
-#include <Viewer/Shape.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/PixelImage.hh>
 #include <Viewer/Text.hh>
 using namespace Viewer;
 
-#include <iostream>
-using namespace std;
-
-RWWrapper::RWWrapper( sf::RenderWindow& renderWindow, Rect& motherRect )
-  : fRenderWindow( renderWindow ), fMotherRect( motherRect )
+RWWrapper::RWWrapper( sf::RenderWindow& renderWindow )
+  : fRenderWindow( renderWindow )
 {
 
-}
-
-void 
-RWWrapper::Draw( Shape& object )
-{
-  sf::Shape newObject( object );
-  Rect drawRect;
-  sf::Rect<double> oldObjectRect = object.GetBoundingRect(); // C++0x needed, this is annoying
-  drawRect.SetFromLocalRect( oldObjectRect, fMotherRect );
-  sf::Rect<double> objectRect = drawRect.GetResolutionRect();
-  newObject.SetPosition( objectRect.Left, objectRect.Top );
-  newObject.Scale( objectRect.Width, objectRect.Height );
-  DrawObject( newObject );
 }
 
 void 
 RWWrapper::Draw( Sprite& object )
 {
-  sf::Sprite newObject( object );
-  Rect drawRect;
-  sf::Rect<double> oldObjectRect = object.GetBoundingRect(); // C++0x needed, this is annoying
-  drawRect.SetFromLocalRect( oldObjectRect, fMotherRect );
-  sf::Rect<double> objectRect = drawRect.GetResolutionRect();
-  newObject.SetPosition(  objectRect.Left, objectRect.Top );
-  newObject.Resize( objectRect.Width, objectRect.Height );
-  DrawObject( newObject );
+  sf::Sprite sfmlSprite( object.GetTexture() );
+  sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
+  sfmlSprite.SetPosition( resPos.Left, resPos.Top );
+  sfmlSprite.SetScale( resPos.Width / object.GetTexture().GetWidth(), resPos.Height /object.GetTexture().GetHeight() );
+  DrawObject( sfmlSprite );
 }
+
 void 
-RWWrapper::Draw( Text& object, ETextAspect textScaling )
+RWWrapper::Draw( Text& object )
 {
-  sf::Text newObject( object );
-  sf::Rect<float> textRect = newObject.GetRect();
-  Rect drawRect;
-  sf::Rect<double> oldObjectRect = object.GetBoundingRect(); // C++0x needed, this is annoying
-  drawRect.SetFromLocalRect( oldObjectRect, fMotherRect );
-  sf::Rect<double> objectRect = drawRect.GetResolutionRect();
-  newObject.SetPosition( objectRect.Left, objectRect.Top );
-  switch( textScaling )
+  sf::Text sfmlText( object.GetString() );
+  sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
+  sf::Rect<float> textRect = sfmlText.GetGlobalBounds();
+  sfmlText.SetPosition( resPos.Left, resPos.Top );
+  // Decide how to strech the text
+  switch( object.GetScaling() )
     {
-    case eNone:
-      newObject.Scale( objectRect.Width / textRect.Width, objectRect.Height / textRect.Height );
+    case Text::eNone:
+      sfmlText.Scale( resPos.Width / textRect.Width, resPos.Height / textRect.Height );
       break;
-    case eWidth:
-      newObject.Scale( objectRect.Width / textRect.Width, objectRect.Width / textRect.Width ) ;
+    case Text::eWidth:
+      sfmlText.Scale( resPos.Width / textRect.Width, resPos.Width / textRect.Width ) ;
       break;
-    case eHeight:
-      newObject.Scale( objectRect.Height / textRect.Height, objectRect.Height / textRect.Height );
+    case Text::eHeight:
+      sfmlText.Scale( resPos.Height / textRect.Height, resPos.Height / textRect.Height );
       break;
     }
-  DrawObject( newObject );
+  DrawObject( sfmlText );
 }
 
 void
-RWWrapper::Draw( PixelImage* object )
+RWWrapper::Draw( PixelImage& object )
 {
-  sf::Sprite sprite = object->ToSprite();
-  DrawObject( sprite );
+  sf::Sprite sfmlSprite( object.GetTexture() );
+  sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
+  sfmlSprite.SetPosition( resPos.Left, resPos.Top );
+  sfmlSprite.SetScale( resPos.Width / object.GetTexture().GetWidth(), resPos.Height / object.GetTexture().GetHeight() );
+  DrawObject( sfmlSprite );
 }
 
 void 
@@ -81,8 +64,8 @@ RWWrapper::DrawObject( sf::Drawable& object )
   fRenderWindow.Draw( object );
 }
 
-unsigned int 
+sf::Time
 RWWrapper::GetFrameTime()
 {
-  return fRenderWindow.GetFrameTime();
+  return fClock.Restart();
 }

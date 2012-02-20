@@ -1,404 +1,294 @@
-#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
-#include <Viewer/UIEvent.hh>
-#include <Viewer/FrameManager.hh>
-#include <Viewer/FrameContainer.hh>
-#include <Viewer/Rect.hh>
-#include <Viewer/Configuration.hh>
-#include <Viewer/ConfigurationTable.hh>
-#include <Viewer/MasterUI.hh>
-using namespace Viewer;
-
-#include <iostream>
-#include <string>
+#include <vector>
 using namespace std;
 
-const int kMinFrameWidth = 140; // Minimum frame width 4*20 buttons + 2*20 ends + 20 bar
-const int kMasterUIHeight = 80; 
+#include <Viewer/FrameManager.hh>
+#include <Viewer/FrameContainer.hh>
+#include <Viewer/FrameGrid.hh>
+#include <Viewer/Rect.hh>
+#include <Viewer/Event.hh>
+#include <Viewer/FrameMasterUI.hh>
+using namespace Viewer;
+
+FrameManager::FrameManager( RectPtr rect,
+			    double rightMargin,
+			    double bottomMargin )
+  : fRect( rect ), fRightMargin( rightMargin ), fBottomMargin( bottomMargin )
+{
+
+}
 
 void
-FrameManager::Initialise()
+FrameManager::NewEvent( const Event& event )
 {
-  fFocus = -1;
-  fMoving = false;
-  sf::Vector2<double> resolution = Coord::GetWindowResolution();
-  fCols = resolution.x / kMinFrameWidth;
-  fColSize = resolution.x / fCols;
-  fRowSize = fColSize;
-  fRows = ( resolution.y - kMasterUIHeight ) / fRowSize;
-  fFrameGrid.resize( fCols, vector<int>( fRows, -2 ) ); 
-  fMasterUI = new Frames::MasterUI( this );
-  Rect masterUI;
-  masterUI.SetFromResolutionRect( sf::Rect<double>( 0.0, resolution.y - kMasterUIHeight, resolution.x, kMasterUIHeight ) );
-  fMasterUI->SetRect( masterUI );
-  CalculateGrid();
-  fMoveStart = sf::Vector2<double>( 0.0, 0.0 );
-}
-
-void 
-FrameManager::LoadConfiguration( Configuration& config )
-{
-  for( vector< ConfigurationTable* >::iterator iTer = config.GetTableBegin(); iTer != config.GetTableEnd(); iTer++ )
+  // Check the UI first
+  if( fFMUI->ContainsPoint( event.GetPos() ) )
     {
-      ConfigurationTable& currentTable = **iTer;
-      FrameContainer* currentFrameContainer = new FrameContainer();
-      currentFrameContainer->Initialise( currentTable.GetS( "type" ) );
-      currentFrameContainer->LoadConfiguration( currentTable );
-      fFrameContainers.push_back( currentFrameContainer );
-      PositionFrame( fFrameContainers.size() - 1, currentFrameContainer->GetPos() );
-      ResizeFrame( fFrameContainers.size() - 1, eToGrid, false );
+      fNewFrameEvents.push( fFMUI->NewEvent( event ) );
+      ChangeState( eNormal );
     }
-  CalculateGrid();
-}
-  
-void 
-FrameManager::NewEvent( UIEvent& event )
-{
-// Drop out to MasterUI frame if required FIRST
-  if( fMasterUI->ContainsResolutionPoint( event.GetResolutionCoord() ) )
-    fMasterUI->NewEvent( event );
+  // Else it may affect a frame container
   else
     {
-      UIEvent lostFocus = event;
-      lostFocus.Type = sf::Event::LostFocus;
-      fMasterUI->NewEvent( lostFocus );
-    }
-
-  FrameUIReturn retEvent; // Returned event
-  int oldFocus = fFocus;
-  switch( event.Type )
-    {
+      int oldFocus = fFocus;
+      FrameEvent retEvent; // Returned event
+      switch( event.Type )
+	{
 // First events that go straight through to Focus
-    case sf::Event::KeyPressed:
-    case sf::Event::KeyReleased:
-      {
-	if( fFocus >= 0 && fFocus < fFrameContainers.size() )
-	  retEvent = DispatchEvent( event, fFocus );
-	break;
-      }
-
-// Now events that go straight through to Focus and change the focus   
-    case sf::Event::MouseButtonReleased:
-      {
-	if( fFocus >= 0 && fFocus < fFrameContainers.size() )
-	  retEvent  = DispatchEvent( event, fFocus );
-	fFocus = FindFrame( event.GetResolutionCoord() );
-	break; 
-      }
-
-// Now events that change the focus   
-    case sf::Event::MouseButtonPressed:
-      {
-	fFocus = FindFrame( event.GetResolutionCoord() );   
-	if( fFocus >= 0 && fFocus < fFrameContainers.size() )
-	  retEvent = DispatchEvent( event, fFocus );
-	break;
-      }
-
-    case sf::Event::MouseMoved:
-      {
-	sf::Vector2<double> point = event.GetResolutionCoord();
-	if( fMoving )
+	case sf::Event::KeyPressed:
+	case sf::Event::KeyReleased:
 	  {
-	    fFrameContainers[fFocus]->Move( point - fMoveOffset );
-	    break;
+	    retEvent = DispatchEvent( event, fFocus );
 	  }
-	fFocus = FindFrame( point );
-	if( fFocus >= 0 && fFocus < fFrameContainers.size() )
-	  retEvent = DispatchEvent( event, fFocus );
-	break;
-      }
-    }
-  EventHandler( retEvent, event );
-// Focus change
-  if( oldFocus != fFocus && retEvent.fType != FrameUIReturn::eClosed ) 
-    {
-      if( oldFocus != -1 ) // Signal lost focus and resize
-	{
-	  event.Type = sf::Event::LostFocus;
-	  fFrameContainers[oldFocus]->NewEvent( event );
-	  // Also minimise if not pinned
-	  if( !fFrameContainers[oldFocus]->IsPinned() )
-	    ResizeFrame( oldFocus, eMinimal );
+	  break;	    
+// Now events that go straight through to Focus and change the focus
+	case sf::Event::MouseButtonReleased:
+	  {
+	    retEvent = DispatchEvent( event, fFocus );
+	    fFocus = FindFrame( event.GetPos() );
+	  }
+	  break;
+// Now events that change the focus
+	case sf::Event::MouseButtonPressed:
+	  {
+	    fFocus = FindFrame( event.GetPos() );
+	    retEvent = DispatchEvent( event, fFocus );
+	  }
+	  break;
+	case sf::Event::MouseMoved:
+	  {
+	    if( fState == eMoving )
+	      PositionFrame( event.GetPos(), fFocus, false );
+	    else
+	      {
+		fFocus = FindFrame( event.GetPos() );
+		retEvent = DispatchEvent( event, fFocus );
+	      }
+	  }
+	  break;
 	}
-      if( fFocus != -1 )
+      EventHandler( retEvent );
+      // Has the focus changed?
+      if( oldFocus != fFocus )
 	{
-	  if( !fFrameContainers[fFocus]->IsPinned() )
-	    ResizeFrame( fFocus, eLargest );
+	  // Broadcast a lost focus event
+	  ChangeState( eNormal );
+	  Event lostFocus( sf::Event::LostFocus );
+	  retEvent = DispatchEvent( lostFocus, oldFocus );
+	  EventHandler( retEvent );
+	  // Minimise the old focus
+	  ResizeFrame( FrameGrid::eSmallest, oldFocus );
+	  // Maximuse the new focus
+	  ResizeFrame( FrameGrid::eLargest, fFocus );
 	}
     }
 }
 
-FrameUIReturn
-FrameManager::DispatchEvent( UIEvent& event, int iFrame )
+FrameEvent
+FrameManager::DispatchEvent( const Event& event, 
+			     const int targetFrame )
 {
-  FrameUIReturn retEvent;
-  if( iFrame >=0 && iFrame < fFrameContainers.size() )
-    retEvent = fFrameContainers[iFrame]->NewEvent( event );
-  retEvent.fFrameID = iFrame;
+  FrameEvent retEvent;
+  if( targetFrame >=0 && targetFrame < fFrameContainers.size() )
+    retEvent = fFrameContainers[targetFrame]->NewEvent( event );
+  retEvent.fFrameID = targetFrame;
   return retEvent;
 }
 
-void
-FrameManager::EventHandler( FrameUIReturn& retEvent, UIEvent& event )
+void 
+FrameManager::EventLoop()
+{
+  // Create the frames requested
+  while( !fNewFrameEvents.empty() )
+    {
+      if( fNewFrameEvents.front() != string("") )
+	NewFrame( fNewFrameEvents.front() );
+      fNewFrameEvents.pop();
+    }
+  // Now pass on to the frames
+  for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
+    (*iTer)->EventLoop();
+}
+
+void 
+FrameManager::SaveConfiguration( ConfigurationTable& configTable )
+{
+
+}
+
+void 
+FrameManager::Initialise()
+{
+  // First create the frame grid
+  sf::Rect<double> defaultSize;
+  defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0 - fBottomMargin;
+  RectPtr fgRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
+  fFrameGrid = new FrameGrid( fgRect );
+  // Then initialise the UI
+  defaultSize.Left = 0.0; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = fBottomMargin;
+  RectPtr fmRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
+  fFMUI = new FrameMasterUI( fmRect );
+  // Now set the state
+  fFocus = -1;
+  fState = eNormal;
+}
+
+void 
+FrameManager::LoadConfiguration( ConfigurationTable& configTable )
+{
+  Initialise();
+  //for( vector<FrameManager*>::iterator iTer = fFrameManagers.begin(); iTer != fFrameManagers.end(); iTer++ )
+    // Need names of tables
+
+}
+
+void 
+FrameManager::Render2d( RWWrapper& renderApp, 
+			const RenderState& renderState )
+{
+  for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
+    (*iTer)->Render2d( renderApp, renderState );
+  fFMUI->Render2d( renderApp );
+}
+
+void 
+FrameManager::Render3d( RWWrapper& renderApp,
+			const RenderState& renderState )
+{
+  for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
+    (*iTer)->Render3d( renderApp, renderState );
+  fFMUI->Render3d( renderApp );
+}
+
+void 
+FrameManager::RenderGUI( RWWrapper& renderApp,
+			 const RenderState& renderState )
+{
+  for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
+    (*iTer)->RenderGUI( renderApp, renderState );
+  fFMUI->RenderGUI( renderApp );
+}
+
+void 
+FrameManager::EventHandler( const FrameEvent& retEvent )
 {
   switch( retEvent.fType )
     {
-    case FrameUIReturn::ePinned:
+    case FrameEvent::ePinned:
       break;
-    case FrameUIReturn::eClosed:
-      DeleteFrame( fFocus );
-      fFocus = -1;
+    case FrameEvent::eClosed:
+      {
+	DeleteFrame( fFocus );
+	fFocus = -1;
+      }
       break;
-    case FrameUIReturn::eStartMove:
-      if( !fFrameContainers[fFocus]->IsPinned() )
-	{
-	  fMoving = true;
-	  fMoveOffset = event.GetResolutionCoord() - fFrameContainers[fFocus]->GetPos();
-	  fMoveStart = fFrameContainers[fFocus]->GetPos();
-	  if( fMoveOffset.x > 140.0 )
-	    fMoveOffset.x = 130.0;
-	  ResizeFrame( retEvent.fFrameID, eMinimal );
-	}
+    case FrameEvent::eStartMove:
+      {
+	ChangeState( eMoving );
+	ResizeFrame( FrameGrid::eSmallest, retEvent.fFrameID );
+	sf::Rect<double> startRect = fFrameContainers[fFocus]->GetRect()->GetRect( Rect::eResolution );
+	fMoveOrigin = sf::Vector2<double>( startRect.Left, startRect.Top );
+      }
       break;
-    case FrameUIReturn::eStopMove:
-      fMoving = false;
-      PositionFrame( retEvent.fFrameID, fFrameContainers[retEvent.fFrameID]->GetPos() );
+    case FrameEvent::eStopMove:
+      {
+	sf::Rect<double> endRect = fFrameContainers[fFocus]->GetRect()->GetRect( Rect::eResolution );
+	sf::Vector2<double> endPos( endRect.Left, endRect.Top );
+	PositionFrame( endPos, retEvent.fFrameID, true );
+	ChangeState( eNormal );
+      }
       break;
-    case FrameUIReturn::eIncrease:
-      ResizeFrame( retEvent.fFrameID, eLarger );
+    case FrameEvent::eIncrease:
+      ResizeFrame( FrameGrid::eLarger, retEvent.fFrameID );
       break;
-    case FrameUIReturn::eDecrease:
-      ResizeFrame( retEvent.fFrameID, eSmaller );
+    case FrameEvent::eDecrease:
+      ResizeFrame( FrameGrid::eSmaller, retEvent.fFrameID );
       break;
     }
 }
 
 void 
-FrameManager::RenderGUI( sf::RenderWindow& windowApp )
-{
-  fMasterUI->RenderGUI( windowApp );
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    fFrameContainers[uFrame]->RenderGUI( windowApp );
-  //DrawGrid( windowApp );
+FrameManager::ChangeState( const EState state )
+{ 
+  if( fState == eMoving && state == eNormal ) // Put the frame back where it came from
+    PositionFrame( fMoveOrigin, fFocus, false );
+  fState = state;
 }
 
-void
-FrameManager::EventLoop()
-{
-  fMasterUI->EventLoop();
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    fFrameContainers[uFrame]->EventLoop();
-}
-
-void 
-FrameManager::Render2d( sf::RenderWindow& windowApp )
-{
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    fFrameContainers[uFrame]->Render2d( windowApp );
-}
-
-void 
-FrameManager::Render3d()
-{
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    fFrameContainers[uFrame]->Render3d();
-}
-  
-void 
-FrameManager::SaveConfiguration( Configuration& config )
-{
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    {
-      ConfigurationTable& configTable = *config.NewTable( "Frame" );
-      fFrameContainers[uFrame]->SaveConfiguration( configTable );
-    }
-}
 
 int 
-FrameManager::FindFrame( const sf::Vector2<double>& resolutionCoord )
+FrameManager::FindFrame( const sf::Vector2<double>& coord )
 {
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    if( fFrameContainers[uFrame]->GetContainerRect().ContainsResolutionPoint( resolutionCoord ) )
-      return static_cast<int>( uFrame );
-  return -1;
+  int targetFrame = -1;
+  for( int iFrame = 0; iFrame < fFrameContainers.size(); iFrame++ )
+    if( fFrameContainers[iFrame]->ContainsPoint( coord ) )
+      targetFrame = iFrame;
+  return targetFrame;
 }
 
 void 
-FrameManager::NewFrame( const std::string& type )
+FrameManager::NewFrame( const std::string& frameName )
 {
-  FrameContainer* currentFrameContainer = new FrameContainer();
-  currentFrameContainer->Initialise( type );
-  fFrameContainers.push_back( currentFrameContainer );
-  const int frameID = fFrameContainers.size() - 1;
-  // Position new frame
-  for( int iRow = 0; iRow < fRows; iRow++ )
-    for( int iCol = 0; iCol < fCols; iCol++ )
-      if( CheckPosition( frameID, iRow, iCol, 1, 1 ) )
+  sf::Rect<double> rect;
+  if( fFrameGrid->NewFrame( fFrameContainers.size(), rect ) )
+    {
+      RectPtr rectPtr = fRect->NewDaughter( rect, Rect::eLocal );
+      FrameContainer* newFrame = new FrameContainer( rectPtr );
+      newFrame->Initialise( frameName );
+      fFrameContainers.push_back( newFrame );
+    }      
+}
+
+void 
+FrameManager::DeleteFrame( const int targetFrame )
+{
+  if( targetFrame > 0 && targetFrame < fFrameContainers.size() )
+    fFrameGrid->RemoveFrame( targetFrame, fFrameContainers.size() );
+  delete fFrameContainers[targetFrame];
+  fFrameContainers.erase( fFrameContainers.begin() + targetFrame );
+  fFocus = -1;
+  ChangeState( eNormal );
+}
+
+void 
+FrameManager::PositionFrame( const sf::Vector2<double>& coord,
+			     const int targetFrame,
+			     bool final )
+{ // need final and move temp
+  if( targetFrame > 0 && targetFrame < fFrameContainers.size() )
+    {
+      // Do not try to move pinned frames
+      if( fFrameContainers[targetFrame]->IsPinned() )
+	return;
+      if( final )
 	{
-	  ResizeFrame( frameID, eMinimal, false );
-	  PositionFrame( frameID, sf::Vector2<double>( iCol * fColSize, iRow * fRowSize ) );
-	  return;
+	  sf::Rect<double> rect;
+	  if( fFrameGrid->MoveFrame( targetFrame, coord, rect ) )
+	    fFrameContainers[targetFrame]->SetRect( rect );
+	  else
+	    PositionFrame( fMoveOrigin, targetFrame, true );
 	}
-  // If get here then frame cannot be placed, so delete it
-  DeleteFrame( frameID );
-}
-
-void
-FrameManager::DeleteFrame( const int iFrame )
-{
-  if( fFocus == iFrame )
-    fFocus = -1;
-  delete fFrameContainers[iFrame];
-  for( unsigned int uFrame = iFrame; uFrame < fFrameContainers.size() - 1; uFrame++ )
-    fFrameContainers[uFrame] = fFrameContainers[uFrame+1];
-  fFrameContainers.pop_back();
-  CalculateGrid();
-}
-
-void
-FrameManager::PositionFrame( int iFrame, const sf::Vector2<double>& position )
-{
-  int col = position.x / fColSize;
-  int row = position.y / fRowSize;
-  sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
-  int colSize = currentSize.x / fColSize;
-  int rowSize = currentSize.y / fRowSize;
-  if( !CheckPosition( iFrame, row, col, rowSize, colSize ) )
-    {
-      fFrameContainers[iFrame]->Move( fMoveStart );
-      return;
-    }
-  sf::Vector2<double> gridPos( col * fColSize, row * fRowSize );
-  fFrameContainers[iFrame]->Move( gridPos );
-  CalculateGrid();
-}
-
-void
-FrameManager::ResizeFrame( int iFrame, ESize size, bool calcGrid )
-{
-  sf::Vector2<double> position = fFrameContainers[iFrame]->GetPos();
-  int col = position.x / fColSize;
-  int row = position.y / fRowSize;
-  switch( size )
-    {
-    case eMinimal:
-      fFrameContainers[iFrame]->Resize( sf::Vector2<double>( fColSize, fRowSize ) );
-      break;
-    case eLargest:
-      {
-	double aspectRatio = fFrameContainers[iFrame]->GetAspectRatio();
-	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
-	int rowSize = currentSize.y / fRowSize;
-	int colSize = aspectRatio * rowSize;
-	while( CheckPosition( iFrame, row, col, rowSize, colSize ) )
-	  {
-	    rowSize++;
-	    colSize = aspectRatio * rowSize;
-	  }
-	rowSize--;
-	colSize = aspectRatio * rowSize;
-	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );	
-	break;
-      }
-    case eLarger:
-      {
-	double aspectRatio = fFrameContainers[iFrame]->GetAspectRatio();
-	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
-	int rowSize = currentSize.y / fRowSize;
-	rowSize++;
-	int colSize = aspectRatio * rowSize;
-	if( CheckPosition( iFrame, row, col, rowSize, colSize ) )
-	  fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
-	break;
-      }
-    case eSmaller:
-      {
-	double aspectRatio = fFrameContainers[iFrame]->GetAspectRatio();
-	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
-	int rowSize = currentSize.y / fRowSize;
-	rowSize--;
-	int colSize = aspectRatio * rowSize;
-	if( CheckPosition( iFrame, row, col, rowSize, colSize ) )
-	  fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
-	break;
-      }
-    case eToGrid: // Resize the frame to fit the grid
-      {
-	sf::Vector2<double> currentSize = fFrameContainers[iFrame]->GetSize();
-	int rowSize = currentSize.y / fRowSize;
-	int colSize = currentSize.x / fColSize;
-	fFrameContainers[iFrame]->Resize( sf::Vector2<double>( colSize * fColSize, rowSize * fRowSize ) );
-      }
-    }
-  if( calcGrid )
-    CalculateGrid();
-}
-
-bool 
-FrameManager::CheckPosition( int iFrame, int row, int col, int rowSize, int colSize )
-{
-  if( row + rowSize > fRows || col + colSize > fCols || rowSize < 1 || colSize < 1 )
-    return false;
-
-  for( int iCol = col; iCol < col + colSize; iCol++ )
-    for( int iRow = row; iRow < row + rowSize; iRow++ )
-      {
-	if( (fFrameGrid[iCol])[iRow] != iFrame && (fFrameGrid[iCol])[iRow] != -1 )
-	  return false;
-      }
-
-  return true;
-}
-
-void
-FrameManager::CalculateGrid()
-{
-  // Reset the grid
-  for( int iCol = 0; iCol < fCols; iCol++ )
-    for( int iRow = 0; iRow < fRows; iRow++ )
-      (fFrameGrid[iCol])[iRow] = -1;
-
-  // Fill the grid
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
-    {
-      sf::Vector2<double> framePos = fFrameContainers[uFrame]->GetPos();
-      sf::Vector2<double> frameSize = fFrameContainers[uFrame]->GetSize();
-      int cols = frameSize.x / fColSize;
-      int rows = frameSize.y / fRowSize;
-      int col = framePos.x / fColSize;
-      int row = framePos.y / fRowSize;
-      for( int iCol = col; iCol < col + cols; iCol++ )
-	for( int iRow = row; iRow < row + rows; iRow++ )
-	  (fFrameGrid[iCol])[iRow] = uFrame;
+      else
+	{
+	  sf::Rect<double> rect = fFrameContainers[targetFrame]->GetRect()->GetRect( Rect::eResolution );
+	  rect.Left = coord.x; rect.Top = coord.y;
+	  fFrameContainers[targetFrame]->SetRect( rect );
+	}
     }
 }
 
-#include <SFML/Graphics.hpp>
-
-void
-FrameManager::DrawGrid( sf::RenderWindow& windowApp )
+void 
+FrameManager::ResizeFrame( const FrameGrid::ESize size,
+			   const int targetFrame )
 {
-  stringstream text;
-  for( int iCol = 0; iCol < fCols; iCol++ )
-    for( int iRow = 0; iRow < fRows; iRow++ )
-      {
-	text.str("");
-	text << (fFrameGrid[iCol])[iRow];
-	sf::Text label( text.str() );
-	label.SetColor( sf::Color( 0, 0, 0 ) );
-	label.SetPosition( iCol * fColSize, iRow * fRowSize );
-	windowApp.Draw( label );
-      }
-  return;
-  
-  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
+  if( targetFrame > 0 && targetFrame < fFrameContainers.size() )
     {
-      text.str("");
-      text << uFrame;
-      sf::Text label( text.str() );
-      label.SetColor( sf::Color( 0, 0, 0 ) );
-      label.SetPosition( fFrameContainers[uFrame]->GetPos().x, fFrameContainers[uFrame]->GetPos().y );
-      windowApp.Draw( label );
+      // Do not try and resize pinned frames
+      if( fFrameContainers[targetFrame]->IsPinned() )
+	return;
+      sf::Rect<double> rect;
+      if( fFrameGrid->ResizeFrame( targetFrame, size, rect ) )
+	fFrameContainers[targetFrame]->SetRect( rect );
     }
 }

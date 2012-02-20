@@ -1,14 +1,15 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::FrameManager
 ///
-/// \brief   Manages the Frames' existance, position and size
+/// \brief   The frame manager, manages all frames in a desktop
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     25/06/11 : P.Jones - First Revision, new file. \n
+///     18/02/12 : P.Jones - New file, first revision \n
 ///
-/// \detail  All viewer frames are managed by this class.
+/// \detail  This class manages the existance, position, creation and 
+///          destruction of all frames in a desktop.
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -17,68 +18,91 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <vector>
+#include <queue>
 #include <string>
+#include <vector>
 
-#include <Viewer/FrameUIReturn.hh>
-
-namespace sf
-{
-  class RenderWindow;
-}
+#include <Viewer/FrameGrid.hh>
+#include <Viewer/FrameEvent.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
-  class UIEvent;
-  class Configuration;
+  class Event;
+  class RenderState;
   class FrameContainer;
-  class Frame;
+  class FrameMasterUI;
+  class ConfigurationTable;
+  class RWWrapper;
 
 class FrameManager
 {
 public:
-  /// Initialise without any configuration
-  void Initialise();
-  /// Initialise with a configuration
-  void LoadConfiguration( Configuration& config );
-  
+  /// State of the Frame manager (is it moving a frame)
+  enum EState { eNormal, eMoving };
+
+  FrameManager( RectPtr rect,
+		double rightMargin,
+		double bottomMargin );
+  /// Deal with a new UI event
+  void NewEvent( const Event& event );
+  /// The event loop
   void EventLoop();
-  void RenderGUI( sf::RenderWindow& windowApp );
-  void Render2d( sf::RenderWindow& windowApp );
-  void Render3d();
-
-  void NewEvent( UIEvent& event ); 
-  void SaveConfiguration( Configuration& config );
-
-  void NewFrame( const std::string& type );
+  /// Save the current configuration
+  void SaveConfiguration( ConfigurationTable& configTable );
+  /// Initialise without a configuration
+  void Initialise();
+  /// Load a configuration
+  void LoadConfiguration( ConfigurationTable& configTable );
+  /// Render all 2d objects
+  void Render2d( RWWrapper& renderApp, 
+		 const RenderState& renderState );
+  /// Render all 3d objects
+  void Render3d( RWWrapper& renderApp, 
+		 const RenderState& renderState );
+  /// Render the GUI objects
+  void RenderGUI( RWWrapper& renderApp, 
+		  const RenderState& renderState );
+  /// Ask if object contains a point
+  inline bool ContainsPoint( const sf::Vector2<double>& point );
 private:
-  FrameUIReturn DispatchEvent( UIEvent& event, int iFrame );
-  void EventHandler( FrameUIReturn& retEvent, UIEvent& event );
-  int FindFrame( const sf::Vector2<double>& resolutionCoord );
+  FrameEvent DispatchEvent( const Event& event,
+			    const int targetFrame );
 
-  void DeleteFrame( const int iFrame );
-  void PositionFrame( int iFrame, const sf::Vector2<double>& position );
-  enum ESize { eMinimal, eLargest, eSmaller, eLarger, eToGrid };
-  void ResizeFrame( int iFrame, ESize size, bool calcGrid = true );
+  void EventHandler( const FrameEvent& retEvent );
 
-  bool CheckPosition( int iFrame, int row, int col, int rowSize, int colSize );
-  void CalculateGrid();
-  void DrawGrid( sf::RenderWindow& windowApp );  
+  void ChangeState( const EState state );
 
-  std::vector< std::vector<int> > fFrameGrid;
-  int fCols;
-  int fRows;
-  double fColSize;
-  double fRowSize;
+  int FindFrame( const sf::Vector2<double>& coord );
 
-  std::vector<FrameContainer*> fFrameContainers;
-  Frame* fMasterUI;
-  int fFocus;
-  bool fMoving;
-  sf::Vector2<double> fMoveOffset;
-  sf::Vector2<double> fMoveStart;
+  void NewFrame( const std::string& frameName );
+
+  void DeleteFrame( const int targetFrame );
+
+  void PositionFrame( const sf::Vector2<double>& coord,
+		      const int targetFrame,
+		      bool final );
+  void ResizeFrame( const FrameGrid::ESize size,
+		    const int targetFrame );
+
+  RectPtr fRect; /// < The frame manager rect
+  std::vector<FrameContainer*> fFrameContainers; /// < The frames themselves.
+  std::queue<std::string> fNewFrameEvents; /// < The event queue for new frames.
+  sf::Vector2<double> fMoveOrigin; /// < Original position of the frame
+  FrameMasterUI* fFMUI; /// < The UI that controls which frames should be created.
+  FrameGrid* fFrameGrid; /// < Controls where frames can be positioned.
+  int fFocus; /// < The current frame focus
+  double fBottomMargin; /// < Local coord size of bottom margin
+  double fRightMargin; /// < Local coord size of right margin
+  EState fState; /// < Current Frame manager state
 };
 
-} // ::Viewer
+inline bool
+FrameManager::ContainsPoint( const sf::Vector2<double>& point )
+{
+  return fRect->ContainsPoint( point, Rect::eResolution );
+}
+
+} //::Viewer
 
 #endif

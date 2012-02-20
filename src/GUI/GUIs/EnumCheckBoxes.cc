@@ -1,5 +1,5 @@
 #include <SFML/Graphics/Rect.hpp>
-#include <Viewer/UIEvent.hh>
+#include <Viewer/Event.hh>
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/EnumCheckBoxes.hh>
 
@@ -36,7 +36,7 @@ void EnumCheckBoxes::Render( RWWrapper& windowApp )
     }
 }
 
-GUIReturn EnumCheckBoxes::NewEvent( UIEvent& event )
+GUIReturn EnumCheckBoxes::NewEvent( Event& event )
 {
     GUIReturn retEvent; // Default NULL event
     switch( event.Type )

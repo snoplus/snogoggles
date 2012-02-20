@@ -16,21 +16,22 @@
 #define __Viewer_GUIs_Button__
 
 #include <Viewer/GUI.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
+  class Event;
 namespace GUIs
 {
 
 class Button : public GUI
 {
 public:
-  inline Button( const sf::Rect<double>& rect, unsigned int guiID );
+  inline Button( RectPtr rect, unsigned int guiID );
   virtual ~Button() {};
  
-  virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
-  virtual void Render( RWWrapper& windowApp ) = 0;
-  virtual GUIReturn NewEvent( UIEvent& event );
+  virtual void Render( RWWrapper& renderApp ) = 0;
+  virtual GUIEvent NewEvent( Event& event );
 
   inline virtual bool GetState();
 protected:
@@ -38,7 +39,7 @@ protected:
   bool fHover;
 };
 
-Button::Button( const sf::Rect<double>& rect, unsigned int guiID ) 
+Button::Button( RectPtr rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false; 

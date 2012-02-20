@@ -18,7 +18,6 @@ using namespace std;
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/Semaphore.hh>
 #include <Viewer/LoadRootFileThread.hh>
-#include <Viewer/ReceiverThread.hh>
 using namespace Viewer;
 
 #include <xercesc/util/PlatformUtils.hpp>
@@ -42,7 +41,7 @@ int main( int argc, char *argv[] )
 	    cout << "Wrong number of arguments, try snogoggles -s tcp://localhost:5024" << endl;
 	    return 1;
 	  }
-	loadData = new ReceiverThread( argv[2], sema );
+	//loadData = new ReceiverThread( argv[2], sema );
 	// Wait for first event to be loaded
 	sema.Wait();
       }

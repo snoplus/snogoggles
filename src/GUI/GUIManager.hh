@@ -3,10 +3,11 @@
 ///
 /// \brief   Manages the GUI objects in a frame
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     29/06/11 : P.Jones - First Revision, new file. \n
+///     20/02/12 : P.Jones - Second Revision, refactor to use new rect.
 ///
 /// \detail  Frames should use this to manage GUI objects, unless explicity
 ///          requied to do something else.
@@ -21,22 +22,23 @@
 
 #include <vector>
 
-#include <Viewer/GUIReturn.hh>
+#include <Viewer/GUIEvent.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
   class GUI;
-  class FrameCoord;
-  class UIEvent;
+  class Event;
   class RWWrapper;
 
 class GUIManager
 {
 public:
-  inline GUIManager();
+  /// Construct the GUIManager, pass the parent frames rect
+  inline GUIManager( RectPtr rect );
   ~GUIManager();
   /// Handle an event
-  GUIReturn NewEvent( UIEvent& event );
+  GUIEvent NewEvent( Event& event );
   /// Render the GUI objects
   void Render( RWWrapper& windowApp );
   /// Make a GUI object under management, deleted by this class
@@ -46,15 +48,20 @@ public:
   GUI* GetGUI( unsigned int guiID );
   /// Delete all GUI objects
   void Clear();
+  /// Delete a gui object by ID
+  void DeleteGUI( unsigned int guiID );
 private:
-  /// Find which GUI contains the localCoord point
-  int FindGUI( sf::Vector2<double> localCoord );
+  /// Find which GUI contains the point (resolution ALWAYS)
+  int FindGUI( sf::Vector2<double> point );
 
+  RectPtr fRect; /// < GUI Manager rect (should match the frames').
   std::vector<GUI*> fGUIObjects;
   int fFocus;
 };
 
-GUIManager::GUIManager()
+inline 
+GUIManager::GUIManager( RectPtr rect )
+  : fRect( rect )
 {
   fFocus = -1;
 }
@@ -63,7 +70,8 @@ template<class T>
 T* 
 GUIManager::NewGUI( const sf::Rect<double>& rect )
 {
-  T* gui = new T( rect, fGUIObjects.size() );
+  RectPtr rectPtr = fRect->NewDaughter( rect, Rect::eLocal );
+  T* gui = new T( rectPtr, fGUIObjects.size() );
   fGUIObjects.push_back( gui );
   return gui;
 }

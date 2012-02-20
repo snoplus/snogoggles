@@ -1,22 +1,22 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/DragArea.hh>
-#include <Viewer/UIEvent.hh>
+#include <Viewer/Event.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-GUIReturn 
-DragArea::NewEvent( UIEvent& event )
+GUIEvent 
+DragArea::NewEvent( Event& event )
 {
   switch( event.Type )
     {
     case sf::Event::MouseButtonPressed:
-      fStartPos = sf::Vector2<double>( event.MouseButton.X, event.MouseButton.Y );
+      fStartPos = event.GetPos();
       fPressed = true;
       break;
     case sf::Event::MouseMoved:
       if( fPressed )
-	fCurrentPos = sf::Vector2<double>( event.MouseMove.X, event.MouseMove.Y );
+	fCurrentPos = event.GetPos();
       break;
     case sf::Event::MouseButtonReleased:
     case sf::Event::LostFocus:
@@ -24,5 +24,5 @@ DragArea::NewEvent( UIEvent& event )
       fStartPos = fCurrentPos = sf::Vector2<double>();
       break;
     }
-  return GUIReturn( fID, fGlobalID );
+  return GUIEvent( fID, fGlobalID );
 }

@@ -1,7 +1,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/GUIManager.hh>
-#include <Viewer/UIEvent.hh>
+#include <Viewer/Event.hh>
 #include <Viewer/GUI.hh>
 using namespace Viewer;
 
@@ -18,10 +18,10 @@ GUIManager::Clear()
   fGUIObjects.clear();
 }
 
-GUIReturn 
-GUIManager::NewEvent( UIEvent& event )
+GUIEvent 
+GUIManager::NewEvent( Event& event )
 {
-  GUIReturn retEvent; // Returned event
+  GUIEvent retEvent; // Returned event
   int oldFocus = fFocus;
   switch( event.Type )
     {
@@ -36,7 +36,7 @@ GUIManager::NewEvent( UIEvent& event )
     case sf::Event::MouseButtonReleased:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
 	retEvent = fGUIObjects[fFocus]->NewEvent( event );
-      fFocus = FindGUI( event.GetLocalCoord() );
+      fFocus = FindGUI( event.GetPos() );
       break;
     case sf::Event::LostFocus:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
@@ -47,7 +47,7 @@ GUIManager::NewEvent( UIEvent& event )
 // Now events that change the focus   
     case sf::Event::MouseMoved:
     case sf::Event::MouseButtonPressed:
-      fFocus = FindGUI( event.GetLocalCoord() );   
+      fFocus = FindGUI( event.GetPos() );
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
 	retEvent = fGUIObjects[fFocus]->NewEvent( event );
       break;
@@ -77,10 +77,10 @@ GUIManager::GetGUI( unsigned int guiID )
 }
 
 int
-GUIManager::FindGUI( sf::Vector2<double> localCoord )
+GUIManager::FindGUI( sf::Vector2<double> point )
 {
   for( unsigned int uGUI = 0; uGUI < fGUIObjects.size(); uGUI++ )
-    if( !fGUIObjects[uGUI]->Hidden() && fGUIObjects[uGUI]->ContainsPoint( localCoord ) )
+    if( !fGUIObjects[uGUI]->Hidden() && fGUIObjects[uGUI]->ContainsPoint( point ) )
       return uGUI;
   return -1;
 }

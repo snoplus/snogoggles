@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIImageManager
+/// \class Viewer::GUITextureManager
 ///
 /// \brief   Colours the GUI base image to produce the required images.
 ///
@@ -13,8 +13,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIImageManager__
-#define __Viewer_GUIImageManager__
+#ifndef __Viewer_GUITextureManager__
+#define __Viewer_GUITextureManager__
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Config.hpp>
@@ -26,61 +26,61 @@
 
 namespace sf
 {
-  class Image;
+  class Texture;
 }
 
 namespace Viewer
 {
-  enum EGUIImage { eBarLeft, eBar, eBarRight, eDecrease, eIncrease, ePlus, eCross, eOpenBox, eCrossBox, eNewFrameLeft, eNewFrame, eNewFrameRight };
-  typedef std::map< EGUIImage, std::map< EGUIImageState, sf::Image* > > GUIImageMap;
+  enum EGUITexture { eBarLeft, eBar, eBarRight, eDecrease, eIncrease, ePlus, eCross, eOpenBox, eCrossBox, eNewFrameLeft, eNewFrame, eNewFrameRight };
+  typedef std::map< EGUITexture, std::map< EGUITextureState, sf::Texture* > > GUITextureMap;
 
-class GUIImageManager
+class GUITextureManager
 {
 public:
-  inline static GUIImageManager& GetInstance();
+  inline static GUITextureManager& GetInstance();
   inline static void Destruct();
 
-  ~GUIImageManager();
+  ~GUITextureManager();
 
   void Initialise();
   void Clear();
 
   /// Get a sprite for an image and state
-  Sprite NewSprite( const EGUIImage image,
-		    const EGUIImageState state );
+  Sprite NewSprite( const EGUITexture image,
+		    const EGUITextureState state );
   /// Change the colour scheme
   void ChangeColourScheme( GUIColourPalette* palette );
 private:
-  sf::Image* Colourise( GUIColourPalette* palette,
-			EGUIImageState state,
+  sf::Texture* Colourise( GUIColourPalette* palette,
+			EGUITextureState state,
 			sf::Rect<int> sourceRect,
-			sf::Image* colouredImage );
+			sf::Texture* colouredTexture );
 
   /// Cannot instantiate this class, is singleton
-  GUIImageManager();
-  static GUIImageManager* fGUIImageManager;
-  static std::map< EGUIImage, sf::Rect<int> > fSubRectMap;
+  GUITextureManager();
+  static GUITextureManager* fGUITextureManager;
+  static std::map< EGUITexture, sf::Rect<int> > fSubRectMap;
 
-  GUIImageMap fImages;   /// < Map of GUI images by type then by state
+  GUITextureMap fTextures;   /// < Map of GUI images by type then by state
   sf::Uint8* fBasePixels; /// < Pixels of base GUI image
   int fBaseWidth;
   int fBaseHeight;
 };
 
 void
-GUIImageManager::Destruct()
+GUITextureManager::Destruct()
 {
-  if( fGUIImageManager != NULL )
-    delete fGUIImageManager;
-  fGUIImageManager = NULL;
+  if( fGUITextureManager != NULL )
+    delete fGUITextureManager;
+  fGUITextureManager = NULL;
 }
 
-GUIImageManager& 
-GUIImageManager::GetInstance()
+GUITextureManager& 
+GUITextureManager::GetInstance()
 {
-  if( fGUIImageManager == NULL )
-    fGUIImageManager = new GUIImageManager();
-  return *fGUIImageManager;
+  if( fGUITextureManager == NULL )
+    fGUITextureManager = new GUITextureManager();
+  return *fGUITextureManager;
 }
 
 } // ::Viewer

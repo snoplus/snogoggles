@@ -1,22 +1,22 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/MapArea.hh>
-#include <Viewer/UIEvent.hh>
-#include <Viewer/Coord.hh>
+#include <Viewer/Event.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-GUIReturn 
-MapArea::NewEvent( UIEvent& event )
+GUIEvent 
+MapArea::NewEvent( Event& event )
 {
-  GUIReturn ret; // NULL event
+  GUIEvent ret; // NULL event
   switch( event.Type )
     {
     case sf::Event::MouseMoved:
       {
-	sf::Vector2<double> localPos = event.GetLocalCoord();
-	fCurrentPos = sf::Vector2<double>( ( localPos.x - fRect.Left ) / fRect.Width, ( localPos.y - fRect.Top ) / fRect.Height );
-	ret = GUIReturn( fID, fGlobalID );
+	sf::Vector2<double> resPos = event.GetPos();
+	sf::Rect<double> resRect = fRect->GetRect( Rect::eResolution );
+	fCurrentPos = sf::Vector2<double>( ( resPos.x - resRect.Left ) / resRect.Width, ( resPos.y - resRect.Top ) / resRect.Height );
+	ret = GUIEvent( fID, fGlobalID );
 	break;
       }
     case sf::Event::LostFocus:

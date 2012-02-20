@@ -1,61 +1,88 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Text
 ///
-/// \brief   
+/// \brief   A drawable string (text) defined in local coords
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     29/06/11 : P.Jones - First Revision, new file. \n
+///     17/02/12 : P.Jones - Second Revision uses new Rect system. \n
 ///
-/// \detail  Required to allow local coordinates only
+/// \detail  A string (text) with a position defined locally which can 
+///          be drawn in global coords by sfml.
 ///
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef __Viewer_Text__
 #define __Viewer_Text__
 
-#include <SFML/Graphics/Text.hpp>
+#include <string>
 
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
 
-class Text : public sf::Text
+class Text
 {
 public:
-  Text () : sf::Text() { }
-  Text (const sf::String &string, const sf::Font &font=sf::Font::GetDefaultFont(), unsigned int characterSize=30)
-    : sf::Text( string, font, characterSize ) 
-  { }
-
-  void SetBoundingRect( const sf::Rect<double>& rect ) { fRect = rect; }
-  sf::Rect<double> GetBoundingRect() { return fRect; }
-  void SetWidth( double width ) { fRect.Width = width; }
-  void SetHeight( double height ) { fRect.Height = height; }
-
+  /// Text scaling options, keep ascpect ratio by width, height or take target aspect ratio
+  enum ETextScaling { eNone, eWidth, eHeight };
+  /// Constructor, must pass a Rect
+  inline Text( RectPtr localRect );
+  /// Set the text string
+  inline void SetString( std::string& text );
+  /// Set the Aspect ratio scaling
+  inline void SetScaling( ETextScaling scaling );
+  /// Return the local Rect (by reference)
+  inline RectPtr GetRect();
+  /// Return the text string
+  inline std::string& GetString();
+  /// Return the aspect ratio scaling
+  inline ETextScaling GetScaling();
 protected:
-  sf::Rect<double> fRect;
-private:
-  /// Should not be called
-// Functions to overload, or maybe blocked??
-  void SetPosition( float x, float y ) { fRect.Left = x; fRect.Top = y; }
-  void SetPosition( const sf::Vector2f& position ) { fRect.Left = position.x; fRect.Top = position.y; }
-  void SetX( float x ) { fRect.Left = x; }
-  void SetY( float y ) { fRect.Top = y; }
-  void SetOrigin( float x, float y ) { fRect.Left = x + fRect.Width / 2.0; fRect.Top = y + fRect.Height / 2.0; }
-  void SetOrigin( const sf::Vector2f& origin ) { fRect.Left = origin.x + fRect.Width / 2.0; fRect.Top = origin.y + fRect.Height / 2.0; }
-
-  void SetScale(float factorX, float factorY);
-  void SetScaleX(float factor);
-  void SetScaleY(float factor);
-  const sf::Vector2f& GetScale() const;
-  const sf::Vector2f& GetPosition() const;
-  const sf::Vector2f& GetOrigin() const;
-  void Move (float offsetX, float offsetY);
-  void Move (const sf::Vector2f &offset);
-  sf::FloatRect GetRect () const;
+  std::string fString;   //! < The text string
+  ETextScaling fScaling; //! < The text aspect ratio scaling
+  RectPtr fLocalRect;    //! < The text local rect
 };
+
+inline 
+Text::Text( RectPtr localRect )
+  : fLocalRect( localRect )
+{
+  fScaling = eNone;
+}
+
+inline void 
+Text::SetString( std::string& text )
+{
+  fString = text;
+}
+
+inline void 
+Text::SetScaling( Text::ETextScaling scaling )
+{
+  fScaling = scaling;
+}
+
+inline RectPtr
+Text::GetRect()
+{
+  return fLocalRect;
+}
+
+inline std::string& 
+Text::GetString()
+{
+  return fString;
+}
+
+inline Text::ETextScaling 
+Text::GetScaling()
+{
+  return fScaling;
+}
 
 } // ::Viewer
 

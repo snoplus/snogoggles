@@ -1,34 +1,30 @@
-#include <SFML/Window/Event.hpp>
-
 #include <Viewer/Frame.hh>
-#include <Viewer/UIEvent.hh>
+//#include <Viewer/GUIManager.hh>
 using namespace Viewer;
 
-void 
-Frame::RenderGUI( sf::RenderWindow& windowApp )
-{
-  RWWrapper rWindowApp( windowApp, fFrameRect );
-  fGUIManager.Render( rWindowApp );
-}
-
-void 
-Frame::NewEvent( UIEvent& event )
-{
-  // New Mother rect, thus new UIEvent
-  UIEvent uiEvent( event, fFrameRect ); 
-  GUIReturn retEvent = fGUIManager.NewEvent( uiEvent );
-  if( retEvent.IsNULL() == false )
-    fEvents.push( retEvent );
-}
-   
-void 
-Frame::LoadConfiguration( ConfigurationTable& configTable )
+Frame::Frame( RectPtr rect )
+  : fRect( rect )
 {
 
 }
 
 void 
-Frame::SaveConfiguration( ConfigurationTable& configTable )
+Frame::NewEvent( const Event& event )
+{
+  //GUIEvent guiEvent = fGUIManager->NewEvent( event );
+  //if( guiEvent.IsNULL() == false )
+  //  fEvents.push( guiEvent );
+}
+
+void 
+Frame::Initialise()
+{
+  //fGUIManager = new GUIManager( fRect ); //Use same Rect as Frame
+}
+
+void
+Frame::RenderGUI( RWWrapper& renderApp,
+		  const RenderState& renderState )
 {
 
 }

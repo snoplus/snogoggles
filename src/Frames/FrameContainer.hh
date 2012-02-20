@@ -1,27 +1,27 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class FrameContainer
+/// \class Viewer::FrameContainer
 ///
-/// \brief   Collection of a Frame and top bar GUI objects
+/// \brief   Collection of the frame and the top bar GUIs
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     25/06/11 : P.Jones - First Revision, new file. \n
+///     19/02/12 : P.Jones - New file, first revision \n
 ///
-/// \detail  Used in the frame manager class to manage frames. This class
-///          contains the frame and the top bar GUI objects.
+/// \detail  This class manages the frames top bar GUI and contains the 
+///          frame itself. It also manages loading frames.
 ///
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef __Viewer_FrameContainer__
 #define __Viewer_FrameContainer__
 
-#include <iostream>
+#include <SFML/System/Vector2.hpp>
 
-#include <Viewer/Rect.hh>
-#include <Viewer/FrameUIReturn.hh>
-#include <Viewer/FrameFactory.hh>
-#include <Viewer/TopBar.hh>
+#include <string>
+
+#include <Viewer/RectPtr.hh>
+#include <Viewer/FrameEvent.hh>
 
 namespace sf
 {
@@ -30,58 +30,62 @@ namespace sf
 
 namespace Viewer
 {
+  class RWWrapper;
   class ConfigurationTable;
+  class RenderState;
+  class Event;
   class Frame;
-  class GUI;
-  class UIEvent;
+  class TopBar;
 
 class FrameContainer
 {
 public:
-  FrameContainer();
-  virtual ~FrameContainer();
-
-  void Initialise( const std::string& type );
-  void LoadConfiguration( ConfigurationTable& configTable );
-
-  void EventLoop();  
-  void Render2d( sf::RenderWindow& windowApp );
-  void Render3d();
-  void RenderGUI( sf::RenderWindow& windowApp );
-
-  FrameUIReturn NewEvent( UIEvent& event );
+  FrameContainer( RectPtr rect );
+  /// Deal with a new UI event
+  FrameEvent NewEvent( const Event& event );
+  /// The event loop
+  void EventLoop();
+  /// Save the current configuration
   void SaveConfiguration( ConfigurationTable& configTable );
+  /// Initialise without a configuration
+  void Initialise( const std::string& type );
+  /// Load a configuration
+  void LoadConfiguration( ConfigurationTable& configTable );
+  /// Render all 2d objects
+  void Render2d( RWWrapper& renderApp, 
+	       const RenderState& renderState );
+  /// Render all 3d objects
+  void Render3d( RWWrapper& renderApp, 
+	       const RenderState& renderState );
+  /// Render the GUI objects
+  void RenderGUI( RWWrapper& renderApp, 
+		const RenderState& renderState );
+  /// Ask if object contains a point
+  inline bool ContainsPoint( const sf::Vector2<double>& point );
 
-  void Resize( const sf::Vector2<double>& size );
-  void Move( const sf::Vector2<double>& position );
-  void SetContainerRect( Rect& fContainerRect );
-  Rect GetContainerRect();
-  sf::Vector2<double> GetPos();
-  sf::Vector2<double> GetSize();
+  inline RectPtr GetRect();
 
-  inline double GetAspectRatio();
+  void SetRect( const sf::Rect<double>& rect ); /// < Must be in resolution coords
 
-  inline bool IsPinned();
+  bool IsPinned();
 private:
-  Rect fContainerRect;
-  FrameFactory fFrameFactory;
-
-  Frame* fFrame;
-  TopBar fTopBar;
+  RectPtr fRect; /// < The container rect
+  Frame* fFrame; /// < Pointer to the frame
+  TopBar* fTopBar; /// Pointer to the top bar GUI
 };
 
-double
-FrameContainer::GetAspectRatio()
+inline bool
+FrameContainer::ContainsPoint( const sf::Vector2<double>& point )
 {
-  return fFrame->GetAspectRatio();
+  return fRect->ContainsPoint( point, Rect::eResolution );
 }
 
-bool
-FrameContainer::IsPinned()
+inline RectPtr
+FrameContainer::GetRect()
 {
-  return fTopBar.IsPinned();
+  return fRect;
 }
 
-} // ::Viewer
+} //::Viewer
 
 #endif

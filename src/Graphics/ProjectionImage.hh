@@ -17,13 +17,11 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <Viewer/Rect.hh>
 #include <Viewer/PixelImage.hh>
 
 namespace Viewer
 {
   class Colour;
-  class Rect;
 
 class ProjectionImage : public PixelImage
 {

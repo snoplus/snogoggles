@@ -1,48 +1,51 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/Timer.hh>
-#include <Viewer/UIEvent.hh>
+#include <Viewer/Event.hh>
 
 namespace Viewer {
 namespace GUIs {
 
-GUIReturn Timer::NewEvent( UIEvent& event )
+GUIEvent
+Timer::NewEvent( Event& event )
 {
-    GUIReturn retEvent;
-    switch( event.Type )
-        {
-            case sf::Event::MouseButtonPressed:
-                fPressed = true;
-                fClock.Reset();
-                fPreviousTime = 0;
-                retEvent = GUIReturn( fID, fGlobalID );
-                break;
-            case sf::Event::MouseButtonReleased:
-            case sf::Event::LostFocus:
-                fPressed = false;
-                retEvent = GUIReturn( fID, fGlobalID );
-                break;
-        }
-    return retEvent;
+  GUIEvent retEvent;
+  switch( event.Type )
+    {
+    case sf::Event::MouseButtonPressed:
+      fPressed = true;
+      fClock.Restart();
+      fPreviousTime = sf::Time();
+      retEvent = GUIEvent( fID, fGlobalID );
+      break;
+    case sf::Event::MouseButtonReleased:
+    case sf::Event::LostFocus:
+      fPressed = false;
+      retEvent = GUIEvent( fID, fGlobalID );
+      break;
+    }
+  return retEvent;
 }
 
-int Timer::GetElapsedTime()
+sf::Time
+Timer::GetElapsedTime()
 {
-    if( fPressed == false )
-        return -1;
-
-    return fClock.GetElapsedTime();
+  if( fPressed == false )
+    return sf::Time();
+  
+  return fClock.GetElapsedTime();
 }
 
-int Timer::GetDeltaTime()
+sf::Time
+Timer::GetDeltaTime()
 {
-    if( fPressed == false )
-        return -1;
-
-    int currentTime = fClock.GetElapsedTime();
-    int deltaTime = currentTime - fPreviousTime;
-    fPreviousTime = currentTime;
-    return deltaTime;
+  if( fPressed == false )
+    return sf::Time();
+  
+  sf::Time currentTime = fClock.GetElapsedTime();
+  sf::Time deltaTime = currentTime - fPreviousTime;
+  fPreviousTime = currentTime;
+  return deltaTime;
 }
 
 }; //  namespace GUIs
