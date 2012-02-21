@@ -3,12 +3,13 @@
 ///
 /// \brief   About frame, displays viewer information
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     19/07/11 : P.Jones - First Revision, new file. \n
+///     21/02/12 : P.Jones - Second Revision, uses new Rect structure. \n
 ///
-/// \detail  As brief.
+/// \detail  Displays frame rate and (hard coded) viewer revision.
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -16,14 +17,10 @@
 #define __Viewer_Frames_About__
 
 #include <Viewer/Frame.hh>
-#include <Viewer/Text.hh>
 
 namespace Viewer
 {
-namespace GUIs
-{
-  class Button;
-}
+  class Text;
 
 namespace Frames
 {
@@ -31,6 +28,9 @@ namespace Frames
 class About : public Frame
 {
 public:
+  About( RectPtr rect ) : Frame( rect ) { }
+  ~About();
+
   void Initialise();
  
   virtual void EventLoop();
@@ -39,12 +39,14 @@ public:
   
   static std::string Name() { return std::string( "About" ); }
 
-  virtual void Render2d( RWWrapper& windowApp );
+  virtual void Render2d( RWWrapper& renderApp,
+			 const RenderState& renderState );
 
-  void Render3d() { }
+  void Render3d( RWWrapper& renderApp,
+		 const RenderState& renderState ) { }
 
 private:
-  Text fInfoText;
+  Text* fInfoText;
 };
 
 } // ::Frames

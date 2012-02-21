@@ -1,6 +1,6 @@
 #include <RAT/DS/EV.hh>
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include <sstream>
 #include <string>
@@ -9,13 +9,21 @@ using namespace std;
 #include <Viewer/EventInfo.hh>
 #include <Viewer/EventData.hh>
 #include <Viewer/GUIColourPalette.hh>
+#include <Viewer/Text.hh>
+#include <Viewer/RWWrapper.hh>
 using namespace Viewer;
 using namespace Frames;
 
 void 
 EventInfo::Initialise()
 {
-  fInfoText.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 1.0, 1.0 ) );  
+  Frame::Initialise();
+  sf::Rect<double> textSize;
+  textSize.Left = 0.0; textSize.Top = 0.0; textSize.Width = 1.0; textSize.Height = 1.0;
+  fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
+  string hello("Hello");
+  fInfoText->SetString( hello );
+  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
 }
 
 void 
@@ -27,7 +35,8 @@ EventInfo::EventLoop()
     }
 }
 void 
-EventInfo::Render2d( RWWrapper& windowApp )
+EventInfo::Render2d( RWWrapper& renderApp,
+		     const RenderState& renderState )
 {
   stringstream eventInfo;
   eventInfo.precision( 0 );
@@ -49,9 +58,9 @@ EventInfo::Render2d( RWWrapper& windowApp )
   eventInfo << "Nhit (Spare): " << rEV->GetPMTSpareCalCount() << endl;
   eventInfo << "Nhit (Inv): " << rEV->GetPMTInvCalCount() << endl;
 
-  fInfoText.SetString( eventInfo.str().c_str() );
-  fInfoText.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  windowApp.Draw( fInfoText );  
+  fInfoText->SetString( eventInfo.str() );
+  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  renderApp.Draw( *fInfoText );  
 }
 
 string

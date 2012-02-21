@@ -4,7 +4,7 @@ using namespace Viewer;
 void
 PixelImage::Construct()
 {
-  fPixels = new sf::Uint8[fWidth * fHeight];
+  fPixels = new sf::Uint8[fWidth * fHeight * 4];
   fTexture.Create( fWidth, fHeight );
 }
 

@@ -6,7 +6,9 @@
 #include <Viewer/Event.hh>
 using namespace Viewer;
 
-#include <Viewer/Logo.hh>
+#include <Viewer/LambertProjection.hh>
+#include <Viewer/IcosahedralProjection.hh>
+#include <Viewer/CrateView.hh>
 
 FrameContainer::FrameContainer( RectPtr rect )
   : fRect( rect )
@@ -56,7 +58,14 @@ FrameContainer::Initialise( const std::string& type )
 {
   fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
   fTopBar->Initialise();
-  fFrame = new Frames::Logo( RectPtr( fRect->NewDaughter() ) );
+  static int init = 0;
+  if( init % 3 == 0 )
+    fFrame = new Frames::LambertProjection( RectPtr( fRect->NewDaughter() ) );
+  else if( init % 3 == 1 )
+    fFrame = new Frames::CrateView( RectPtr( fRect->NewDaughter() ) );
+  else
+    fFrame = new Frames::IcosahedralProjection( RectPtr( fRect->NewDaughter() ) );
+  init++;
   fFrame->Initialise();
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
 }
@@ -100,8 +109,8 @@ FrameContainer::SetRect( const sf::Rect<double>& rect,
   const double height = size.Height;
   size.Height = 20.0;
   fTopBar->SetRect( size );
-  /// Now the frame rect
-  size.Height = height - 20.0;
+  /// Now the frame rect 2 pxl margin at base
+  size.Height = height - 22.0;
   size.Top += 20.0;
   fFrame->GetRect()->SetRect( size, Rect::eResolution );
 }

@@ -17,9 +17,21 @@ Frame::NewEvent( const Event& event )
 }
 
 void 
+Frame::SaveConfiguration( ConfigurationTable& configTable )
+{
+
+}
+
+void 
 Frame::Initialise()
 {
   //fGUIManager = new GUIManager( fRect ); //Use same Rect as Frame
+}
+
+void 
+Frame::LoadConfiguration( ConfigurationTable& configTable )
+{
+
 }
 
 void

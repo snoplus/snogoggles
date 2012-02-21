@@ -20,6 +20,7 @@
 #include <string>
 
 #include <Viewer/RectPtr.hh>
+#include <Viewer/Colour.hh>
 
 namespace Viewer
 {
@@ -32,7 +33,7 @@ public:
   /// Constructor, must pass a Rect
   inline Text( RectPtr localRect );
   /// Set the text string
-  inline void SetString( std::string& text );
+  inline void SetString( const std::string& text );
   /// Set the Aspect ratio scaling
   inline void SetScaling( ETextScaling scaling );
   /// Return the local Rect (by reference)
@@ -41,10 +42,15 @@ public:
   inline std::string& GetString();
   /// Return the aspect ratio scaling
   inline ETextScaling GetScaling();
+
+  inline void SetColour( const Colour& colour );
+
+  inline Colour GetColour();
 protected:
-  std::string fString;   //! < The text string
-  ETextScaling fScaling; //! < The text aspect ratio scaling
-  RectPtr fLocalRect;    //! < The text local rect
+  std::string fString;   /// < The text string
+  ETextScaling fScaling; /// < The text aspect ratio scaling
+  Colour fColour; /// < The text colour
+  RectPtr fLocalRect;    /// < The text local rect
 };
 
 inline 
@@ -55,7 +61,7 @@ Text::Text( RectPtr localRect )
 }
 
 inline void 
-Text::SetString( std::string& text )
+Text::SetString( const std::string& text )
 {
   fString = text;
 }
@@ -82,6 +88,18 @@ inline Text::ETextScaling
 Text::GetScaling()
 {
   return fScaling;
+}
+
+inline void
+Text::SetColour( const Colour& colour )
+{
+  fColour = colour;
+}
+
+inline Colour
+Text::GetColour()
+{
+  return fColour;
 }
 
 } // ::Viewer

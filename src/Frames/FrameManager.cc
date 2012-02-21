@@ -10,6 +10,7 @@ using namespace std;
 #include <Viewer/Rect.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/FrameMasterUI.hh>
+#include <Viewer/EventData.hh> // Temp
 using namespace Viewer;
 
 FrameManager::FrameManager( RectPtr rect,
@@ -29,7 +30,10 @@ FrameManager::NewEvent( const Event& event )
       fNewFrameEvents.push( fFMUI->NewEvent( event ) );
       ChangeState( eNormal );
       if( event.Type == sf::Event::MouseButtonReleased )
-	NewFrame( "Logo" );
+	{
+	  NewFrame( "Logo" );
+	  EventData::GetInstance().NextEV();
+	}
 
     }
   // Else it may affect a frame container
@@ -283,8 +287,8 @@ FrameManager::ResizeFrame( const FrameGrid::ESize size,
 {
   if( targetFrame >= 0 && targetFrame < fFrameContainers.size() )
     {
-      // Do not try and resize pinned frames
-      if( fFrameContainers[targetFrame]->IsPinned() )
+      // Don't minimise or maximise if the frame is pinned
+      if( ( size == FrameGrid::eSmallest || size == FrameGrid::eLargest ) && fFrameContainers[targetFrame]->IsPinned() )
 	return;
       sf::Rect<double> rect;
       if( fFrameGrid->ResizeFrame( targetFrame, size, rect ) )

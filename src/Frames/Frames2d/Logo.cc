@@ -10,6 +10,7 @@ using namespace std;
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/Text.hh>
+#include <Viewer/GUIColourPalette.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -35,6 +36,7 @@ Logo::Initialise()
   fMessage = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fMessage->SetString( hello );
+  fMessage->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fState = false;
 }
 
@@ -90,5 +92,6 @@ Logo::Render2d( RWWrapper& renderApp,
   else
     fLogo->SetTexture( fTextures[1] );
   renderApp.Draw( *fLogo );
+  fMessage->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   renderApp.Draw( *fMessage );
 }

@@ -20,9 +20,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <Viewer/Frame.hh>
-#include <Viewer/Shape.hh>
 #include <Viewer/ProjectionImage.hh>
-#include <Viewer/Text.hh>
 
 namespace Viewer
 {
@@ -35,9 +33,12 @@ namespace Frames
 
 class IcosahedralProjection:public Frame{
 public:
+  IcosahedralProjection( RectPtr rect ) : Frame( rect ) { }
+  ~IcosahedralProjection() { delete fImage; }
   //empty classes
   void SaveConfiguration( ConfigurationTable& configTable );
-  void Render3d() { }
+  void Render3d(RWWrapper& windowApp,
+		const RenderState& renderState) { }
   //set up the projection etc.
   //void Initialize(ConfigurationTable& configTable);
   void Initialise();
@@ -47,7 +48,8 @@ public:
   virtual std::string GetName() {return IcosahedralProjection::Name();}
   static std::string Name() {return std::string("IcosahedralProjection");}
   //actually draw it
-  virtual void Render2d(RWWrapper& windowApp);
+  virtual void Render2d(RWWrapper& windowApp,
+			const RenderState& renderState);
   
   /// 1.5 cols to every row
   double GetAspectRatio() { return 1.5; }
@@ -59,8 +61,6 @@ private:
   sf::Vector2<double> Projection(TVector3 pmtPos);
   sf::Vector2<double> Transform(int vertex3d_1, int vertex3d_2, int vertex3d_3, int vertex2d_1, int vertex2d_2, int vertex2d_3, TVector3 pmtPos);
   //use Phil's convention here 
-  Shape fFilledPMT;
-  Shape fOpenPMT;
   bool projFilled;
 
   std::vector<TVector3> vertex_centres;
@@ -71,12 +71,7 @@ private:
   
   std::vector<sf::Vector2<double> > projPosVec;
   sf::Rect<double> fProjectArea; 
-  ProjectionImage fImage;
-
-  Text fInfoText;
-  GUIs::MapArea* fMapArea; 
-
-
+  ProjectionImage* fImage;
 };
 
 } //end Frames

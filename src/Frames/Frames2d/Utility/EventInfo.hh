@@ -3,10 +3,11 @@
 ///
 /// \brief   EventInfo frame, displays event information
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     19/07/11 : P.Jones - First Revision, new file. \n
+///     21/02/12 : P.Jones - Refactor for new Rect system. \n
 ///
 /// \detail  Displays gtid, event ID, Number of hits, event data and time
 ///          trigger word, number of hits by tube type and TUBII (eventually).
@@ -19,14 +20,10 @@
 #include <string>
 
 #include <Viewer/Frame.hh>
-#include <Viewer/Text.hh>
 
 namespace Viewer
 {
-namespace GUIs
-{
-  class Button;
-}
+  class Text;
 
 namespace Frames
 {
@@ -34,6 +31,9 @@ namespace Frames
 class EventInfo : public Frame
 {
 public:
+  EventInfo( RectPtr rect ) : Frame( rect ) { }
+  ~EventInfo();
+
   void Initialise();
  
   virtual void EventLoop();
@@ -42,14 +42,16 @@ public:
   
   static std::string Name() { return std::string( "Event Info" ); }
 
-  virtual void Render2d( RWWrapper& windowApp );
+  virtual void Render2d( RWWrapper& windowApp,
+			 const RenderState& renderState );
 
-  void Render3d() { }
+  void Render3d( RWWrapper& windowApp,
+		 const RenderState& renderState ) { }
 
   static std::string ToByteString( int number );
   static std::string ToHexString( int number );
 private:
-  Text fInfoText;
+  Text* fInfoText;
 };
 
 } // ::Frames

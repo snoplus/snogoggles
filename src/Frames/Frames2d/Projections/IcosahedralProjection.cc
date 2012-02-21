@@ -11,8 +11,7 @@
 #include <Viewer/EventData.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/TimeAxis.hh>
-#include <Viewer/MapArea.hh>
-
+#include <Viewer/RWWrapper.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 using namespace std;
@@ -22,6 +21,7 @@ const double kPSUPRadius = 8500.0;
 const double kLocalSize = 137.0*0.3/kPSUPRadius;
 
 void IcosahedralProjection::Initialise(){
+  fImage = new ProjectionImage( fRect );
   /*
   //set up shapes for the PMTs (use the convention of open and filled)
   fFilledPMT = sf::Shape::Circle(0,0,2.0,sf::Color(255,255,255));
@@ -34,9 +34,6 @@ void IcosahedralProjection::Initialise(){
 
   fProjectArea = sf::Rect<double>(0.1,0.0,0.8,0.9);
   projFilled = false;
-  fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( fProjectArea );
-  fInfoText.SetBoundingRect( sf::Rect<double>( 0.0, 0.9, 1.0, 0.1 ) );
-  fInfoText.SetColor( ColourPalette::gPalette->GetPrimaryColour( eBlack ) );
 
   //set up the geometry for the transformation
   //need to know the vertices
@@ -209,12 +206,10 @@ void IcosahedralProjection::FillPMTLocations(){
  projFilled = true;
 }
 
-void IcosahedralProjection::Render2d(RWWrapper& windowApp){
+void IcosahedralProjection::Render2d(RWWrapper& windowApp,
+				     const RenderState& renderState){
 
- Rect projection;
-  projection.SetFromLocalRect(fProjectArea,fFrameRect);
-  fImage.Clear(projection);
-  sf::Vector2<double> mapPosition = fMapArea->GetPosition();
+ fImage->Clear();
 
   if (!projFilled) FillPMTLocations();
 
@@ -226,20 +221,17 @@ void IcosahedralProjection::Render2d(RWWrapper& windowApp){
     //const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(ipmt));
     //printf("PMT %i has X position %0.2f\n",rEV->GetPMTCal(ipmt)->GetID(),(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID())).x);
     //printf("drawing pmt %i\n",ipmt);
-    fImage.DrawHollowSquare(projPosVec.at(ipmt),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetPrimaryColour(eGrey));
+    fImage->DrawHollowSquare(projPosVec.at(ipmt),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetPrimaryColour(eGrey));
   }
   //printf("finished with empty pmts\n");
   for(int ipmt=0;ipmt<rEV->GetPMTCalCount();ipmt++){
     //const sf::Vector2<double> projPos = Projection(rPMTList->GetPos(rEV->GetPMTCal(ipmt)->GetID()));
     double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
-    fImage.DrawSquare(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime(pmtHitTime)));
-    const double distToMouse2 = pow((projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()).x-mapPosition.x),2)+pow((projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()).y-mapPosition.y),2);
-      if(distToMouse2 < kLocalSize * kLocalSize )
-	infoText << rEV->GetPMTCal(ipmt)->GetID() << " Time: " << rEV->GetPMTCal(ipmt)->GetTime() << " Charge: " << rEV->GetPMTCal(ipmt)->GetCharge() << endl;
+    fImage->DrawSquare(projPosVec.at(rEV->GetPMTCal(ipmt)->GetID()),sf::Vector2<double>(kLocalSize,kLocalSize),ColourPalette::gPalette->GetColour( TimeAxis::ScaleTime(pmtHitTime)));
   }
-  fInfoText.SetString(infoText.str());
-  windowApp.Draw(fInfoText);
-  windowApp.Draw(&fImage);
+  //windowApp.Draw(fInfoText);
+  fImage->Update();
+  windowApp.Draw(*fImage);
   /*
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();

@@ -19,6 +19,7 @@ TopBar::~TopBar()
 FrameEvent
 TopBar::NewEvent( const Event& event )
 {
+  // MUST MAKE OWN LOST FOCUS EVENTS, PHIL
   FrameEvent retEvent; // Returned event
   switch( event.Type )
     {

@@ -45,6 +45,7 @@ RWWrapper::Draw( Text& object )
       sfmlText.Scale( resPos.Height / textRect.Height, resPos.Height / textRect.Height );
       break;
     }
+  sfmlText.SetColor( object.GetColour() );
   DrawObject( sfmlText );
 }
 

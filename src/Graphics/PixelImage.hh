@@ -62,7 +62,7 @@ PixelImage::PixelImage( RectPtr rect,
 			const double aspectRatio )
   : fLocalRect(rect)
 {
-  int totalPixels = static_cast<int>( sf::Texture::GetMaximumSize() );
+  int totalPixels = 250000.0; // I think this lies static_cast<int>( sf::Texture::GetMaximumSize() ) * 9;
   // Calculate the maximum width at this aspectRatio
   fWidth = static_cast<int>( sqrt( static_cast<double>( totalPixels ) / aspectRatio ) );
   fHeight = static_cast<int>( fWidth * aspectRatio );

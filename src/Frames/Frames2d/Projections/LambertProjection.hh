@@ -3,10 +3,12 @@
 ///
 /// \brief   Displays PMT hits in the Lambert azimuthal equal area projection
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     10/07/11 : P.Jones - First Revision, new file. \n
+///     21/02/12 : P.Jones - Second Revision, refactor to common 
+///                          projection base class. \n
 ///
 /// \detail  As brief.
 ///
@@ -15,64 +17,23 @@
 #ifndef __Viewer_Frames_LambertProjection__
 #define __Viewer_Frames_LambertProjection__
 
-
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Rect.hpp>
 
-#include <Viewer/Frame.hh>
-#include <Viewer/ProjectionImage.hh>
-#include <Viewer/HitInfo.hh>
-#include <Viewer/Text.hh>
+#include <Viewer/ProjectionBase.hh>
 #include <Viewer/Vector3.hh>
-
-namespace RAT
-{
-namespace DS
-{
-  class PMTProperties;
-}
-}
 
 namespace Viewer
 {
-namespace GUIs
-{
-  class MapArea;
-}
 namespace Frames
 {
 
-class LambertProjection : public Frame
+class LambertProjection : public ProjectionBase
 {
 public:
-  void Initialise();
-  void LoadConfiguration( ConfigurationTable& configTable );
-
-  void SaveConfiguration( ConfigurationTable& configTable );
-
-  virtual void EventLoop();
-  
-  virtual std::string GetName() { return LambertProjection::Name(); }
-  
-  static std::string Name() { return std::string( "LambertProjection" ); }
-
-  virtual void Render2d( RWWrapper& windowApp );
-
-  void Render3d() { }
+  LambertProjection( RectPtr rect ) : ProjectionBase( rect ) { }
 
 private:
   sf::Vector2<double> Project( Vector3 pmtPos );
-  void DrawHits();
-  void DrawAllPMTs();
-  void DrawGeodesic();
-  void DrawLine( Vector3 v1, Vector3 v2 );
-
-  sf::Rect<double> fProjectArea;
-  sf::Rect<double> fAxisArea;
-  ProjectionImage fImage;
-  HitInfo fHitInfo;
-
-  GUIs::MapArea* fMapArea; 
 };
 
 } // ::Frames

@@ -17,6 +17,7 @@
 #define __Viewer_Frame__
 
 #include <queue>
+#include <string>
 
 #include <Viewer/RectPtr.hh>
 #include <Viewer/GUIEvent.hh>
@@ -40,17 +41,19 @@ public:
   /// The event loop
   virtual void EventLoop() = 0;
   /// Save the current configuration
-  virtual void SaveConfiguration( ConfigurationTable& configTable ) = 0;
+  virtual void SaveConfiguration( ConfigurationTable& configTable );
   /// Initialise without a configuration
   virtual void Initialise();
   /// Load a configuration
-  virtual void LoadConfiguration( ConfigurationTable& configTable ) = 0;
+  virtual void LoadConfiguration( ConfigurationTable& configTable );
   /// Render all 2d objects
   virtual void Render2d( RWWrapper& renderApp, 
 			 const RenderState& renderState ) = 0;
   /// Render all 3d objects
   virtual void Render3d( RWWrapper& renderApp, 
 			 const RenderState& renderState ) = 0;
+  /// Return the frame name
+  virtual std::string GetName() = 0;
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp, 
 		  const RenderState& renderState );
