@@ -6,7 +6,7 @@ using namespace Viewer;
 GUIColourPalette* GUIColourPalette::gPalette = NULL;
 
 Colour 
-GUIDefaultPalette::GetBaseColour( EGUIImageState state )
+GUIDefaultPalette::GetBaseColour( EGUITextureState state )
 {
   switch( state )
     {
@@ -23,13 +23,13 @@ GUIDefaultPalette::GetBaseColour( EGUIImageState state )
 }
 
 Colour 
-GUIDefaultPalette::GetBGColour( EGUIImageState state )
+GUIDefaultPalette::GetBGColour( EGUITextureState state )
 {
   return Colour( 255, 255, 255, 255 );
 }
 
 Colour 
-GUIDefaultPalette::GetItemColour( EGUIImageState state )
+GUIDefaultPalette::GetItemColour( EGUITextureState state )
 {
   switch( state )
     {
@@ -46,7 +46,7 @@ GUIDefaultPalette::GetItemColour( EGUIImageState state )
 }
 
 Colour 
-GUIDefaultPalette::GetTextColour( EGUIImageState state )
+GUIDefaultPalette::GetTextColour( EGUITextureState state )
 {
   return Colour( 0, 0, 0, 255 );
 }

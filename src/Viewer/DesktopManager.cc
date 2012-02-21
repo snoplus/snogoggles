@@ -15,7 +15,7 @@ DesktopManager::DesktopManager( RectPtr globalMother,
 				double bottomMargin )
   : fGlobalMother( globalMother ), fBottomMargin( bottomMargin ), fRightMargin( rightMargin )
 {
-  fDesktops.resize( 8 ); // Maximum allowed desktops
+  fDesktops.resize( 1 ); // Maximum allowed desktops
 }
 
 void 
@@ -57,13 +57,13 @@ DesktopManager::Initialise()
       defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0; defaultSize.Height = 1.0;
       desktopRect->SetRect( defaultSize, Rect::eLocal );
       fDesktops[iDesktop] = new Desktop( desktopRect, fRightMargin, fBottomMargin );
+      fDesktops[iDesktop]->Initialise();
     }
 }
 
 void 
 DesktopManager::LoadConfiguration( Configuration& config )
 {
-  Initialise();
   //for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
     // Need names of tables
 }

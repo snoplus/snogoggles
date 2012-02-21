@@ -6,7 +6,7 @@ using namespace Viewer;
 using namespace Viewer::GUIs;
 
 GUIEvent 
-Button::NewEvent( Event& event )
+Button::NewEvent( const Event& event )
 {
   GUIEvent retEvent;
   switch( event.Type )

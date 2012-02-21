@@ -1,10 +1,12 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/FrameContainer.hh>
-//#include <Viewer/TopBar.hh>
+#include <Viewer/TopBar.hh>
 #include <Viewer/Frame.hh>
 #include <Viewer/Event.hh>
 using namespace Viewer;
+
+#include <Viewer/Logo.hh>
 
 FrameContainer::FrameContainer( RectPtr rect )
   : fRect( rect )
@@ -16,19 +18,24 @@ FrameEvent
 FrameContainer::NewEvent( const Event& event )
 {
   FrameEvent returnEvent;
-  /*switch( event.Type )
+  switch( event.Type )
     {
     case sf::Event::LostFocus:
-      fTopBar.NewEvent( event );
+      returnEvent = fTopBar->NewEvent( event );
       break;
-    case sf::Event::MouseMoved:
     case sf::Event::MouseButtonReleased:
+      // Mouse must be down to move
+      returnEvent = FrameEvent( FrameEvent::eStopMove );
+    case sf::Event::MouseMoved:
     case sf::Event::MouseButtonPressed:
-      if( fTopBar->ContainsPoint( event.GetPos() ) );
-	returnEvent = fTopBar->NewEvent( event );
-      break;
+      if( fTopBar->ContainsPoint( event.GetPos() ) )
+	{
+	  returnEvent = fTopBar->NewEvent( event );
+	  return returnEvent;
+	}
+      // Do NOT CONTINUE if the event is destined for the top bar
     }
-    fFrame->NewEvent( event );*/
+  fFrame->NewEvent( event );
   return returnEvent;
 }
 
@@ -47,7 +54,11 @@ FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
 void 
 FrameContainer::Initialise( const std::string& type )
 {
-  SetRect( fRect->GetRect( Rect::eResolution ) );
+  fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
+  fTopBar->Initialise();
+  fFrame = new Frames::Logo( RectPtr( fRect->NewDaughter() ) );
+  fFrame->Initialise();
+  SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
 }
 
 void 
@@ -74,21 +85,23 @@ void
 FrameContainer::RenderGUI( RWWrapper& renderApp, 
 			   const RenderState& renderState )
 {
-  //fTopBar->Render( renderApp );
+  fTopBar->RenderGUI( renderApp );
   fFrame->RenderGUI( renderApp, renderState );
 }
 
 void
-FrameContainer::SetRect( const sf::Rect<double>& rect )
+FrameContainer::SetRect( const sf::Rect<double>& rect,
+			 const Rect::ECoordSystem& system )
 {
   sf::Rect<double> size = rect;
-  fRect->SetRect( size, Rect::eResolution );
+  fRect->SetRect( size, system );
   // The top bar is always 20 high, so ensure this
-  double temp = size.Height;
+  size = fRect->GetRect( Rect::eResolution );
+  const double height = size.Height;
   size.Height = 20.0;
-  //fTopBar->GetRect()->SetRect( size, Rect::eResolution );
+  fTopBar->SetRect( size );
   /// Now the frame rect
-  size.Height = temp - 20.0;
+  size.Height = height - 20.0;
   size.Top += 20.0;
   fFrame->GetRect()->SetRect( size, Rect::eResolution );
 }
@@ -96,5 +109,5 @@ FrameContainer::SetRect( const sf::Rect<double>& rect )
 bool
 FrameContainer::IsPinned()
 {
-  return false;//fTopBar->IsPinned();
+  fTopBar->IsPinned();
 }

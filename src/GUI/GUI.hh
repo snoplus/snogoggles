@@ -55,7 +55,7 @@ public:
   /// Pure virtual render call, local render window
   virtual void Render( RWWrapper& renderApp ) = 0;
   /// Event handler
-  virtual GUIEvent NewEvent( Event& event ) = 0;  
+  virtual GUIEvent NewEvent( const Event& event ) = 0;  
 protected:
   RectPtr fRect; /// < Position rect
   unsigned int fID;       /// < Local ID

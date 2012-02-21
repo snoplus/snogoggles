@@ -21,7 +21,7 @@ RWWrapper::Draw( Sprite& object )
   sf::Sprite sfmlSprite( object.GetTexture() );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
   sfmlSprite.SetPosition( resPos.Left, resPos.Top );
-  sfmlSprite.SetScale( resPos.Width / object.GetTexture().GetWidth(), resPos.Height /object.GetTexture().GetHeight() );
+  sfmlSprite.SetScale( resPos.Width / object.GetTexture().GetWidth(), resPos.Height / object.GetTexture().GetHeight() );
   DrawObject( sfmlSprite );
 }
 

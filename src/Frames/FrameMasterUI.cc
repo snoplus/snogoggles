@@ -13,7 +13,7 @@ FrameMasterUI::FrameMasterUI( RectPtr rect )
 string 
 FrameMasterUI::NewEvent( const Event& event )
 {
-
+  return string("");
 }
 
 void 

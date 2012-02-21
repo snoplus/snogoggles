@@ -36,19 +36,19 @@ Rect::NewDaughter( const sf::Rect<double>& rect,
 void
 Rect::DeleteDaughter( Rect* daughter )
 {
-  for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); iTer++ )
+  for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); )
     if( *iTer == daughter ) // Found daughter
-      {
-	fDaughters.erase( iTer );
-	return;
-      }
+      iTer = fDaughters.erase( iTer );
+    else
+      ++iTer;
 } 
 
 Rect::~Rect()
 {
   for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); iTer++ )
     (*iTer)->fMother = NULL;
-  fMother->DeleteDaughter( this );
+  if( fMother != NULL )
+    fMother->DeleteDaughter( this );
 }
 
 void 
@@ -107,6 +107,7 @@ Rect::GetRect( ECoordSystem system )
       result.Top    = localToMother.Top    * fsWindowHeight;
       result.Width  = localToMother.Width  * fsWindowWidth;
       result.Height = localToMother.Height * fsWindowHeight;
+      return result;
     }
   else // eResolution
     {
@@ -116,6 +117,7 @@ Rect::GetRect( ECoordSystem system )
       result.Top    = localToMother.Top    * fsResolutionHeight;
       result.Width  = localToMother.Width  * fsResolutionWidth;
       result.Height = localToMother.Height * fsResolutionHeight;
+      return result;
     }
 }
 

@@ -44,15 +44,14 @@ Desktop::Initialise()
 {
   // First initialise the UI
   sf::Rect<double> defaultSize;
-  RectPtr emRect = fRect->NewDaughter();
   defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 0.0; defaultSize.Width = fRightMargin; defaultSize.Height = 1.0 - fBottomMargin;
-  emRect->SetRect( defaultSize, Rect::eLocal );
+  RectPtr emRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
   fEMUI = new EventMasterUI( emRect );
   // Now initialise the FrameManager
-  RectPtr frameRect = fRect->NewDaughter();
   defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0;
-  frameRect->SetRect( defaultSize, Rect::eLocal );
+  RectPtr frameRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
   fFrameManager = new FrameManager( frameRect, fRightMargin, fBottomMargin );
+  fFrameManager->Initialise();
 }
 
 void 

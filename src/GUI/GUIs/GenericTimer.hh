@@ -17,12 +17,16 @@
 #define __Viewer_GUIs_GenericTimer__
 
 #include <Viewer/Timer.hh>
-#include <Viewer/Sprite.hh>
-#include <SFML/Graphics.hpp>
-#include <string>
+#include <Viewer/RectPtr.hh>
+
+namespace sf
+{
+  class Texture;
+}
 
 namespace Viewer
 {  
+  class Sprite;
 namespace GUIs
 {
 
@@ -30,20 +34,15 @@ class GenericTimer : public Timer
 {
 public:
 
-  GenericTimer( const sf::Rect<double>& rect, unsigned int guiID );
+  GenericTimer( RectPtr rect, unsigned int guiID );
   
-  virtual ~GenericTimer() { }
+  virtual ~GenericTimer();
 
-  void RenderT( sf::RenderWindow& windowApp ) { };
   void Render( RWWrapper& windowApp );
   
-  virtual void RenderLabel( RWWrapper& windowApp ) { }
-
 protected:
-
-    Sprite fNormalButton;
-    Sprite fExcitedButton;
-
+  sf::Texture* fTextures[2];
+  Sprite* fSprite;
 };
 
 

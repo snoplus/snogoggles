@@ -6,7 +6,7 @@ using namespace Viewer;
 using namespace Viewer::GUIs;
 
 GUIEvent 
-Persist::NewEvent( Event& event )
+Persist::NewEvent( const Event& event )
 {
   GUIEvent retEvent; // Default NULL event
   switch( event.Type )

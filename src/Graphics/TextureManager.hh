@@ -60,7 +60,7 @@ public:
   /// Destruct the Image Manager, delete the textures
   ~TextureManager();
   /// Return a texture given a filename
-  sf::Texture& GetTexture( const std::string& fileName );
+  sf::Texture* GetTexture( const std::string& fileName );
 private:
   std::map< std::string, sf::Texture* > fTextures;
 

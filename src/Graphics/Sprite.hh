@@ -28,17 +28,20 @@ namespace Viewer
 class Sprite
 {
 public:
+  /// Destructor
+  virtual ~Sprite() { fTexture = NULL; }
+
   /// Construct the sprite with a Rect reference
   inline Sprite( RectPtr localRect );
   /// Set the texture
-  inline void SetTexture( sf::Texture& texture );
+  inline void SetTexture( sf::Texture* texture );
   /// Return the Rect by reference
   inline RectPtr GetRect();
   /// Return the texture
   inline sf::Texture& GetTexture();
 protected:
-  sf::Texture fTexture; //! < The texture
-  RectPtr fLocalRect;     //! < The rect (by reference)
+  sf::Texture* fTexture; //! < The texture
+  RectPtr fLocalRect;    //! < The rect
 };
 
 inline 
@@ -49,7 +52,7 @@ Sprite::Sprite( RectPtr localRect )
 }
   
 inline void 
-Sprite::SetTexture( sf::Texture& texture )
+Sprite::SetTexture( sf::Texture* texture )
 {
   fTexture = texture;
 }
@@ -63,7 +66,7 @@ Sprite::GetRect()
 inline sf::Texture& 
 Sprite::GetTexture()
 {
-  return fTexture;
+  return *fTexture;
 }
 
 } // ::Viewer

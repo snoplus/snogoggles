@@ -15,7 +15,7 @@ TextureManager::~TextureManager()
   fTextures.clear();
 }
 
-sf::Texture&
+sf::Texture*
 TextureManager::GetTexture(
 		       const string& fileName )
 {
@@ -30,5 +30,5 @@ TextureManager::GetTexture(
 	throw TextureNotFoundError( fileName );
       fTextures[fileName] = texture;
     }
-  return *texture;
+  return texture;
 }

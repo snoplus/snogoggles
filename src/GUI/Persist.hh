@@ -30,7 +30,7 @@ public:
   virtual ~Persist() {};
 
   virtual void Render( RWWrapper& windowApp ) = 0;
-  virtual GUIEvent NewEvent( Event& event );
+  virtual GUIEvent NewEvent( const Event& event );
 
   inline virtual bool GetState();
   inline virtual void SetState( bool state );

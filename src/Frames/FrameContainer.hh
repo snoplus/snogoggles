@@ -65,13 +65,14 @@ public:
 
   inline RectPtr GetRect();
 
-  void SetRect( const sf::Rect<double>& rect ); /// < Must be in resolution coords
+  void SetRect( const sf::Rect<double>& rect,
+		const Rect::ECoordSystem& system );
 
   bool IsPinned();
 private:
   RectPtr fRect; /// < The container rect
   Frame* fFrame; /// < Pointer to the frame
-  TopBar* fTopBar; /// Pointer to the top bar GUI
+  TopBar* fTopBar; /// < Pointer to the top bar GUI
 };
 
 inline bool

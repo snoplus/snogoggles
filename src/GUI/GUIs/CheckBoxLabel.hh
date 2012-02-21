@@ -18,27 +18,35 @@
 #include <string>
 
 #include <Viewer/Persist.hh>
-#include <Viewer/Sprite.hh>
-#include <Viewer/Text.hh>
+#include <Viewer/RectPtr.hh>
+
+namespace sf
+{
+  class Texture;
+}
 
 namespace Viewer
 { 
+  class Sprite;
+  class Text;
+  class RWWrapper;
+
 namespace GUIs
 {
 
 class CheckBoxLabel : public Persist
 {
 public:
-  CheckBoxLabel( const sf::Rect<double>& rect, unsigned int guiID );
+  CheckBoxLabel( RectPtr rect, unsigned int guiID );
   virtual ~CheckBoxLabel();
 
-  void SetLabel( const std::string& label );
+  void SetLabel( std::string& label );
 
-  void RenderT( sf::RenderWindow& windowApp );
   void Render( RWWrapper& windowApp );
 protected:
-  Sprite fBox[2];
-  Text fLabel;
+  sf::Texture* fBoxTextures[2];
+  Sprite* fBox;
+  Text* fLabel;
 };
 
 } // ::GUIs

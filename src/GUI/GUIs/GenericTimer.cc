@@ -1,37 +1,39 @@
 #include <Viewer/GenericTimer.hh>
-#include <Viewer/Shape.hh>
 #include <Viewer/RWWrapper.hh>
-#include <SFML/Graphics.hpp>
 #include <Viewer/Colour.hh>
-#include <Viewer/ImageManager.hh>
-#include <string>
+#include <Viewer/GUITextureManager.hh>
+#include <Viewer/Sprite.hh>
 
 namespace Viewer
 {
 namespace GUIs
 {
 
-GenericTimer::GenericTimer( const sf::Rect<double>& rect, unsigned int guiID )
-    : Timer( rect, guiID )
+GenericTimer::GenericTimer( RectPtr rect, unsigned int guiID )
+  : Timer( rect, guiID )
 {
-    ImageManager& imageManager = ImageManager::GetInstance();
+  fSprite = new Sprite( rect );
+  GUITextureManager& textureManager = GUITextureManager::GetInstance();
+  fTextures[0] = textureManager.GetTexture( eNewFrame, eBase );
+  fTextures[1] = textureManager.GetTexture( eNewFrame, eHighlight );
+  fTextures[2] = textureManager.GetTexture( eNewFrame, eActive );
+}
 
-    fNormalButton = imageManager.NewSprite( "GenericButton.png" );
-    fNormalButton.SetColor( Colour( 96, 75, 216 ) );
-    fNormalButton.SetBoundingRect( rect );
-
-    fExcitedButton = fNormalButton;
-    fExcitedButton.SetColor( Colour( 128, 112, 216 ) );
+GenericTimer::~GenericTimer()
+{
+  delete fSprite;
 }
 
 void GenericTimer::Render( RWWrapper& windowApp )
 {
-    if( fPressed == true )
-        windowApp.Draw( fExcitedButton );
-    else
-        windowApp.Draw( fNormalButton );
-
-    RenderLabel( windowApp );
+  if( fPressed == true )
+    fSprite->SetTexture( fTextures[2] );
+  //  else if( fHover )
+  //  fSprite->SetTexture( fTextures[1] );
+  else
+    fSprite->SetTexture( fTextures[0] );
+  
+  windowApp.Draw( *fSprite );
 }
 
 

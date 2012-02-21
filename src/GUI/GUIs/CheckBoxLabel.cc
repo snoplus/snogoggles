@@ -1,60 +1,61 @@
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-
 using namespace std;
+
+#include <SFML/Graphics/Texture.hpp>
 
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/GUIImageManager.hh>
+#include <Viewer/GUITextureManager.hh>
 #include <Viewer/GUIColourPalette.hh>
+#include <Viewer/Sprite.hh>
+#include <Viewer/Text.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-CheckBoxLabel::CheckBoxLabel( const sf::Rect<double>& rect, unsigned int guiID )
+CheckBoxLabel::CheckBoxLabel( RectPtr rect, 
+			      unsigned int guiID )
   : Persist( rect, guiID )
 {
-  GUIImageManager& imageManager = GUIImageManager::GetInstance();
-  fBox[0] = imageManager.NewSprite( eOpenBox, eBase );
-  fBox[1] = imageManager.NewSprite( eCrossBox, eHighlight );
+  GUITextureManager& textureManager = GUITextureManager::GetInstance();
+  fBoxTextures[0] = textureManager.GetTexture( eOpenBox, eBase );
+  fBoxTextures[1] = textureManager.GetTexture( eCrossBox, eHighlight );
 
-  double buttonLength = rect.Height;
-  if( rect.Height > rect.Width )
-    buttonLength = rect.Width;
-  else if( rect.Height == rect.Width ) // Difficult to scale
-    buttonLength = rect.Width * 0.5;
-  sf::Rect<double> lRect( rect.Left, rect.Top, buttonLength, buttonLength );
-  sf::Rect<double> rRect( rect.Left + lRect.Width, rect.Top, rect.Width - lRect.Width, rect.Height );
-  fBox[0].SetBoundingRect( lRect );
-  fBox[1].SetBoundingRect( lRect );  
 
-  fLabel = Text( "check box" );
-  fLabel.SetBoundingRect( rRect );
+  sf::Rect<double> size = rect->GetRect( Rect::eResolution );
+  sf::Rect<double> buttonSize = size;
+  if( size.Height > size.Width )
+    buttonSize.Width = size.Width;
+  else if( size.Height == size.Width ) // Difficult to scale
+    buttonSize.Width = size.Width * 0.5;
+
+  sf::Rect<double> textSize = size;
+  textSize.Width = size.Width - buttonSize.Width;
+  textSize.Left = buttonSize.Width;
+  fBox = new Sprite( RectPtr( fRect->NewDaughter( buttonSize, Rect::eResolution ) ) );
+  fLabel = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eResolution ) ) );
+  string temp( "Check Box" );
+  fLabel->SetString( temp );
 }
 
 CheckBoxLabel::~CheckBoxLabel()
 {
+  delete fBox, fLabel;
 }
 
 void
-CheckBoxLabel::SetLabel( const string& label )
+CheckBoxLabel::SetLabel( string& label )
 {
-  fLabel.SetString( label );
+  fLabel->SetString( label );
 }
 
 void 
-CheckBoxLabel::RenderT( sf::RenderWindow& windowApp )
-{
-  // TODO if needed
-}
-
-void 
-CheckBoxLabel::Render( RWWrapper& windowApp )
+CheckBoxLabel::Render( RWWrapper& renderApp )
 {
   if( !fPressed )
-    windowApp.Draw( fBox[0] );
+    fBox->SetTexture( fBoxTextures[0] );
   else
-    windowApp.Draw( fBox[1] );
+    fBox->SetTexture( fBoxTextures[1] );
 
-  fLabel.SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  windowApp.Draw( fLabel );
+  renderApp.Draw( *fBox );
+  //fLabel->SetColor( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  renderApp.Draw( *fLabel );
 }

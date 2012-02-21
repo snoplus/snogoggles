@@ -31,7 +31,7 @@ public:
   virtual ~Button() {};
  
   virtual void Render( RWWrapper& renderApp ) = 0;
-  virtual GUIEvent NewEvent( Event& event );
+  virtual GUIEvent NewEvent( const Event& event );
 
   inline virtual bool GetState();
 protected:

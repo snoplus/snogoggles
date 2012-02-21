@@ -19,6 +19,8 @@
 #define __Viewer_RectPtr__
 
 #include <Viewer/Rect.hh>
+#include <iostream>
+using namespace std;
 
 namespace Viewer
 {
@@ -27,8 +29,8 @@ class RectPtr
 {
 public:
   /// Must contruct with a Rect
-  RectPtr( Rect* rect )  { fRect = rect; fReferences =  new int(1); }
-  RectPtr( const RectPtr& rhs )  { fRect = rhs.fRect; fReferences = rhs.fReferences; (*fReferences)++; }
+  explicit RectPtr( Rect* rect )  { fRect = rect; fReferences =  new int(1); }
+  RectPtr( const RectPtr& rhs )  { fRect = rhs.fRect; fReferences = rhs.fReferences; (*fReferences)++;}
   inline RectPtr& operator=( const RectPtr& rhs );
 
   /// On destruction should delete the Rect, and then only if it is the last reference
@@ -39,7 +41,7 @@ public:
   Rect* operator->() { return fRect; }
 private:
   /// Prevent usage
-  RectPtr();
+  RectPtr() : fRect(NULL), fReferences(NULL) { }
 
   Rect* fRect; /// < A pointer to the rect object
   int* fReferences; /// < For reference counting

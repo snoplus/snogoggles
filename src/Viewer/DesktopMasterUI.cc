@@ -29,7 +29,7 @@ DesktopMasterUI::SaveConfiguration( ConfigurationTable& configTable )
 void 
 DesktopMasterUI::Initialise()
 {
-
+  fCurrentDesktop = 0;
 }
 
 void 

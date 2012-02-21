@@ -32,6 +32,8 @@ namespace Viewer
 class Frame
 {
 public:
+  enum EFrameType { eUtil, e3d, e2d };
+
   Frame( RectPtr rect );
   /// Deal with a new UI event
   void NewEvent( const Event& event );
@@ -40,7 +42,7 @@ public:
   /// Save the current configuration
   virtual void SaveConfiguration( ConfigurationTable& configTable ) = 0;
   /// Initialise without a configuration
-  void Initialise();
+  virtual void Initialise();
   /// Load a configuration
   virtual void LoadConfiguration( ConfigurationTable& configTable ) = 0;
   /// Render all 2d objects
@@ -56,7 +58,7 @@ public:
   inline bool ContainsPoint( const sf::Vector2<double>& point );
 
   inline RectPtr GetRect();
-private:
+protected:
   RectPtr fRect; /// < The frame rect
   GUIManager* fGUIManager;
   std::queue<GUIEvent> fEvents;

@@ -44,7 +44,7 @@ ViewerWindow::Initialise()
   settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
 
   // Load the configuration
-  try
+  /*  try
     {
       stringstream configFileName;
       configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
@@ -58,9 +58,10 @@ ViewerWindow::Initialise()
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
       DrawSplash();
       fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
+      fDesktopManager->Initialise();
       fDesktopManager->LoadConfiguration( loadConfig );
-    }
-  catch( Configuration::NoFileError& e )
+      }
+      catch( Configuration::NoFileError& e )*/
     {
       sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
       fullScreen.Height -= 40.0; // Mac systems require this
@@ -85,15 +86,15 @@ ViewerWindow::DrawSplash()
 {
   // This usage of width and height should not occur elsewhere in the viewer code, make use of Rects and Viewer::Sprite instead
   TextureManager& textures = TextureManager::GetInstance();
-  sf::Texture& snoSplash = textures.GetTexture( "Logo.png" );
-  sf::Texture& sfmlSplash = textures.GetTexture( "sfml.png" );
+  sf::Texture* snoSplash = textures.GetTexture( "Logo.png" );
+  sf::Texture* sfmlSplash = textures.GetTexture( "sfml.png" );
   const int windowWidth = fWindowApp->GetWidth();
   const int windowHeight = fWindowApp->GetHeight();
   // Can't draw textures directly, must wrap in a sprite and set the position.
-  sf::Sprite snoSprite( snoSplash );
-  snoSprite.SetPosition( windowWidth / 2 - snoSplash.GetWidth() / 2, windowHeight / 2 - snoSplash.GetHeight() / 2 );
-  sf::Sprite sfmlSprite( sfmlSplash );
-  sfmlSprite.SetPosition( windowWidth - sfmlSplash.GetWidth(), windowHeight - sfmlSplash.GetHeight() );
+  sf::Sprite snoSprite( *snoSplash );
+  snoSprite.SetPosition( windowWidth / 2 - snoSplash->GetWidth() / 2, windowHeight / 2 - snoSplash->GetHeight() / 2 );
+  sf::Sprite sfmlSprite( *sfmlSplash );
+  sfmlSprite.SetPosition( windowWidth - sfmlSplash->GetWidth(), windowHeight - sfmlSplash->GetHeight() );
   // Now draw these logos
   fWindowApp->Clear( sf::Color( 255, 255, 255, 255 ) ); 
   fWindowApp->Draw( snoSprite );

@@ -16,8 +16,13 @@
 #define __Viewer_GUIs_GUIImagePersist__
 
 #include <Viewer/Persist.hh>
-#include <Viewer/Sprite.hh>
-#include <Viewer/GUIImageManager.hh>
+#include <Viewer/GUITextureManager.hh>
+#include <Viewer/RectPtr.hh>
+
+namespace sf
+{
+  class Texture;
+}
 
 namespace Viewer
 {  
@@ -27,15 +32,15 @@ namespace GUIs
 class GUIImagePersist : public Persist
 {
 public:
-  GUIImagePersist( const sf::Rect<double>& rect, unsigned int guiID );
+  GUIImagePersist( RectPtr rect, 
+		   unsigned int guiID );
   virtual ~GUIImagePersist();
 
-  void Initialise( EGUIImage image );
+  void Initialise( EGUITexture image );
   
-  void RenderT( sf::RenderWindow& windowApp );
-  void Render( RWWrapper& windowApp );
+  void Render( RWWrapper& renderApp );
 protected:
-  Sprite fPersist[3];
+  sf::Texture* fPersist[3];
 };
 
 

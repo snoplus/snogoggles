@@ -1,38 +1,35 @@
+using namespace std;
+
 #include <Viewer/SpriteTimer.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/RWWrapper.hh>
-#include <SFML/Graphics.hpp>
-#include <Viewer/ImageManager.hh>
-#include <string>
-
-#include <iostream>
+#include <Viewer/TextureManager.hh>
 
 namespace Viewer
 {
 namespace GUIs
 {
 
-SpriteTimer::SpriteTimer( const sf::Rect<double>& rect, unsigned int guiID )
+SpriteTimer::SpriteTimer( RectPtr rect, unsigned int guiID )
     : GenericTimer( rect, guiID )
 {
-
+  fSprite = new Sprite( rect );
 }
 
 SpriteTimer::~SpriteTimer()
 {
-
+  delete fSprite;
 }
 
-void SpriteTimer::SetSprite( const std::string& filename )
+void SpriteTimer::SetTexture( const std::string& filename )
 {
-    ImageManager& imageManager = ImageManager::GetInstance();
-    fSprite = imageManager.NewSprite( filename );
-    fSprite.SetBoundingRect( fRect );
+  TextureManager& textureManager = TextureManager::GetInstance();
+  fSprite->SetTexture( textureManager.GetTexture( filename ) );
 }
-
-void SpriteTimer::RenderLabel( RWWrapper& windowApp )
+  
+void SpriteTimer::Render( RWWrapper& windowApp )
 {
-    windowApp.Draw( fSprite );
+  windowApp.Draw( *fSprite );
 }
 
 

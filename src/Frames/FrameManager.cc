@@ -1,6 +1,7 @@
 #include <SFML/Graphics/Rect.hpp>
 
 #include <vector>
+#include <iostream>
 using namespace std;
 
 #include <Viewer/FrameManager.hh>
@@ -27,6 +28,9 @@ FrameManager::NewEvent( const Event& event )
     {
       fNewFrameEvents.push( fFMUI->NewEvent( event ) );
       ChangeState( eNormal );
+      if( event.Type == sf::Event::MouseButtonReleased )
+	NewFrame( "Logo" );
+
     }
   // Else it may affect a frame container
   else
@@ -178,22 +182,19 @@ FrameManager::EventHandler( const FrameEvent& retEvent )
     case FrameEvent::ePinned:
       break;
     case FrameEvent::eClosed:
-      {
-	DeleteFrame( fFocus );
-	fFocus = -1;
-      }
+      DeleteFrame( retEvent.fFrameID );
       break;
     case FrameEvent::eStartMove:
       {
 	ChangeState( eMoving );
 	ResizeFrame( FrameGrid::eSmallest, retEvent.fFrameID );
-	sf::Rect<double> startRect = fFrameContainers[fFocus]->GetRect()->GetRect( Rect::eResolution );
+	sf::Rect<double> startRect = fFrameContainers[retEvent.fFrameID]->GetRect()->GetRect( Rect::eResolution );
 	fMoveOrigin = sf::Vector2<double>( startRect.Left, startRect.Top );
       }
       break;
     case FrameEvent::eStopMove:
       {
-	sf::Rect<double> endRect = fFrameContainers[fFocus]->GetRect()->GetRect( Rect::eResolution );
+	sf::Rect<double> endRect = fFrameContainers[retEvent.fFrameID]->GetRect()->GetRect( Rect::eResolution );
 	sf::Vector2<double> endPos( endRect.Left, endRect.Top );
 	PositionFrame( endPos, retEvent.fFrameID, true );
 	ChangeState( eNormal );
@@ -211,8 +212,6 @@ FrameManager::EventHandler( const FrameEvent& retEvent )
 void 
 FrameManager::ChangeState( const EState state )
 { 
-  if( fState == eMoving && state == eNormal ) // Put the frame back where it came from
-    PositionFrame( fMoveOrigin, fFocus, false );
   fState = state;
 }
 
@@ -233,17 +232,17 @@ FrameManager::NewFrame( const std::string& frameName )
   sf::Rect<double> rect;
   if( fFrameGrid->NewFrame( fFrameContainers.size(), rect ) )
     {
-      RectPtr rectPtr = fRect->NewDaughter( rect, Rect::eLocal );
+      RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eLocal ) );
       FrameContainer* newFrame = new FrameContainer( rectPtr );
       newFrame->Initialise( frameName );
       fFrameContainers.push_back( newFrame );
-    }      
+    }
 }
 
 void 
 FrameManager::DeleteFrame( const int targetFrame )
 {
-  if( targetFrame > 0 && targetFrame < fFrameContainers.size() )
+  if( targetFrame >= 0 && targetFrame < fFrameContainers.size() )
     fFrameGrid->RemoveFrame( targetFrame, fFrameContainers.size() );
   delete fFrameContainers[targetFrame];
   fFrameContainers.erase( fFrameContainers.begin() + targetFrame );
@@ -256,7 +255,7 @@ FrameManager::PositionFrame( const sf::Vector2<double>& coord,
 			     const int targetFrame,
 			     bool final )
 { // need final and move temp
-  if( targetFrame > 0 && targetFrame < fFrameContainers.size() )
+  if( targetFrame >= 0 && targetFrame < fFrameContainers.size() )
     {
       // Do not try to move pinned frames
       if( fFrameContainers[targetFrame]->IsPinned() )
@@ -265,7 +264,7 @@ FrameManager::PositionFrame( const sf::Vector2<double>& coord,
 	{
 	  sf::Rect<double> rect;
 	  if( fFrameGrid->MoveFrame( targetFrame, coord, rect ) )
-	    fFrameContainers[targetFrame]->SetRect( rect );
+	    fFrameContainers[targetFrame]->SetRect( rect, Rect::eLocal );
 	  else
 	    PositionFrame( fMoveOrigin, targetFrame, true );
 	}
@@ -273,7 +272,7 @@ FrameManager::PositionFrame( const sf::Vector2<double>& coord,
 	{
 	  sf::Rect<double> rect = fFrameContainers[targetFrame]->GetRect()->GetRect( Rect::eResolution );
 	  rect.Left = coord.x; rect.Top = coord.y;
-	  fFrameContainers[targetFrame]->SetRect( rect );
+	  fFrameContainers[targetFrame]->SetRect( rect, Rect::eResolution );
 	}
     }
 }
@@ -282,13 +281,13 @@ void
 FrameManager::ResizeFrame( const FrameGrid::ESize size,
 			   const int targetFrame )
 {
-  if( targetFrame > 0 && targetFrame < fFrameContainers.size() )
+  if( targetFrame >= 0 && targetFrame < fFrameContainers.size() )
     {
       // Do not try and resize pinned frames
       if( fFrameContainers[targetFrame]->IsPinned() )
 	return;
       sf::Rect<double> rect;
       if( fFrameGrid->ResizeFrame( targetFrame, size, rect ) )
-	fFrameContainers[targetFrame]->SetRect( rect );
+	fFrameContainers[targetFrame]->SetRect( rect, Rect::eLocal );
     }
 }
