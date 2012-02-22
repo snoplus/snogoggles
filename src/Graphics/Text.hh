@@ -28,27 +28,20 @@ namespace Viewer
 class Text
 {
 public:
-  /// Text scaling options, keep ascpect ratio by width, height or take target aspect ratio
-  enum ETextScaling { eNone, eWidth, eHeight };
   /// Constructor, must pass a Rect
   inline Text( RectPtr localRect );
   /// Set the text string
   inline void SetString( const std::string& text );
-  /// Set the Aspect ratio scaling
-  inline void SetScaling( ETextScaling scaling );
   /// Return the local Rect (by reference)
   inline RectPtr GetRect();
   /// Return the text string
   inline std::string& GetString();
-  /// Return the aspect ratio scaling
-  inline ETextScaling GetScaling();
 
   inline void SetColour( const Colour& colour );
 
   inline Colour GetColour();
 protected:
   std::string fString;   /// < The text string
-  ETextScaling fScaling; /// < The text aspect ratio scaling
   Colour fColour; /// < The text colour
   RectPtr fLocalRect;    /// < The text local rect
 };
@@ -57,19 +50,13 @@ inline
 Text::Text( RectPtr localRect )
   : fLocalRect( localRect )
 {
-  fScaling = eNone;
+
 }
 
 inline void 
 Text::SetString( const std::string& text )
 {
   fString = text;
-}
-
-inline void 
-Text::SetScaling( Text::ETextScaling scaling )
-{
-  fScaling = scaling;
 }
 
 inline RectPtr
@@ -82,12 +69,6 @@ inline std::string&
 Text::GetString()
 {
   return fString;
-}
-
-inline Text::ETextScaling 
-Text::GetScaling()
-{
-  return fScaling;
 }
 
 inline void

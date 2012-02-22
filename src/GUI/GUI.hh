@@ -68,7 +68,7 @@ private:
 inline
 GUI::GUI( RectPtr rect,
 	  unsigned int guiID )
-  : fRect( rect ), fID( fGlobalID )
+  : fRect( rect ), fID( guiID )
 {
   fGlobalID = fsNextID++;
 }
@@ -110,9 +110,9 @@ GUI::SetGUIID( unsigned int guiID )
 }
 
 inline bool 
-GUI::ContainsPoint( const sf::Vector2<double>& localPoint )
+GUI::ContainsPoint( const sf::Vector2<double>& point )
 {
-  return fRect->ContainsPoint( localPoint, Rect::eResolution );
+  return fRect->ContainsPoint( point, Rect::eResolution );
 }
 
 } // ::Viewer

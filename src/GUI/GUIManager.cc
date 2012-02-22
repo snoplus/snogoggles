@@ -19,7 +19,7 @@ GUIManager::Clear()
 }
 
 GUIEvent 
-GUIManager::NewEvent( Event& event )
+GUIManager::NewEvent( const Event& event )
 {
   GUIEvent retEvent; // Returned event
   int oldFocus = fFocus;
@@ -55,8 +55,8 @@ GUIManager::NewEvent( Event& event )
 // Focus change
   if( oldFocus != fFocus && oldFocus != -1 ) 
     {
-      event.Type = sf::Event::LostFocus;
-      fGUIObjects[oldFocus]->NewEvent( event );
+      Event lostFocus( sf::Event::LostFocus );
+      fGUIObjects[oldFocus]->NewEvent( lostFocus );
     }
   return retEvent;
 }

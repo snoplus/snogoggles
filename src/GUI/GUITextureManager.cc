@@ -42,8 +42,8 @@ GUITextureManager::Initialise()
       fBasePixels = new sf::Uint8[ pixels ];
       memcpy( fBasePixels, baseImage.GetPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
     }
-  //else
-  //  throw;
+  else
+    throw;
   fSubRects[eBarLeft] = sf::Rect<int>( 0, 0, 20, 20 );
   fSubRects[eBar] = sf::Rect<int>( 20, 0, 20, 20 );
   fSubRects[eBarRight] = sf::Rect<int>( 120, 0, 20, 20 );
@@ -56,6 +56,13 @@ GUITextureManager::Initialise()
   fSubRects[eNewFrameLeft] = sf::Rect<int>( 0, 20, 20, 20 );
   fSubRects[eNewFrame] = sf::Rect<int>( 20, 20, 20, 20 );
   fSubRects[eNewFrameRight] = sf::Rect<int>( 40, 20, 20, 20 );
+  // NULL init
+  for( GUIRectMap::iterator iTer = fSubRects.begin(); iTer != fSubRects.end(); iTer++ )
+    {
+      (fTextures[iTer->first])[eBase] = NULL;
+      (fTextures[iTer->first])[eHighlight] = NULL;
+      (fTextures[iTer->first])[eActive] = NULL;
+    }
   ChangeColourScheme();
 }
 
@@ -108,12 +115,10 @@ GUITextureManager::Colourise( EGUITexture image,
         }
     }
   // Now produce the texture
-  sf::Texture* texture = new sf::Texture();
-  if( texture->Create( sourceRect.Width, sourceRect.Height ) )
+  if( (fTextures[image])[state] == NULL )
     {
-      texture->Update( pixels );
-      (fTextures[image])[state] = texture;
+      (fTextures[image])[state] = new sf::Texture();
+      (fTextures[image])[state]->Create( sourceRect.Width, sourceRect.Height );
     }
-  else
-    throw;
+  (fTextures[image])[state]->Update( pixels );
 }

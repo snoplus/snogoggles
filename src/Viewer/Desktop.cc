@@ -28,7 +28,7 @@ Desktop::NewEvent( Event& event )
 void 
 Desktop::EventLoop()
 {
-  // No need for this, so just pass on
+  fEMUI->EventLoop();
   fFrameManager->EventLoop();
 }
 
@@ -47,6 +47,7 @@ Desktop::Initialise()
   defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 0.0; defaultSize.Width = fRightMargin; defaultSize.Height = 1.0 - fBottomMargin;
   RectPtr emRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
   fEMUI = new EventMasterUI( emRect );
+  fEMUI->Initialise();
   // Now initialise the FrameManager
   defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0;
   RectPtr frameRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );

@@ -1,4 +1,5 @@
 #include <Viewer/PixelImage.hh>
+#include <Viewer/GUIColourPalette.hh>
 using namespace Viewer;
 
 void
@@ -8,10 +9,16 @@ PixelImage::Construct()
   fTexture.Create( fWidth, fHeight );
 }
 
+void
+PixelImage::Clear()
+{
+  Clear( GUIColourPalette::gPalette->GetBGColour( eBase ) );
+}
+
 void 
 PixelImage::Clear( Colour fillColour )
 {
-  const unsigned int pixelSize = fWidth * fHeight;
+  const unsigned int pixelSize = fWidth * fHeight * 4;
   for( unsigned int iPixel = 0; iPixel < pixelSize; iPixel+=4 )
     {
       fPixels[iPixel]     = fillColour.r;

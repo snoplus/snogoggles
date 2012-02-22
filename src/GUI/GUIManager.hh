@@ -38,7 +38,7 @@ public:
   inline GUIManager( RectPtr rect );
   ~GUIManager();
   /// Handle an event
-  GUIEvent NewEvent( Event& event );
+  GUIEvent NewEvent( const Event& event );
   /// Render the GUI objects
   void Render( RWWrapper& windowApp );
   /// Make a GUI object under management, deleted by this class
@@ -70,7 +70,7 @@ template<class T>
 T* 
 GUIManager::NewGUI( const sf::Rect<double>& rect )
 {
-  RectPtr rectPtr = fRect->NewDaughter( rect, Rect::eLocal );
+  RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eLocal ) );
   T* gui = new T( rectPtr, fGUIObjects.size() );
   fGUIObjects.push_back( gui );
   return gui;

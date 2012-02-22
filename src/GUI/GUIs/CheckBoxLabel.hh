@@ -40,7 +40,7 @@ public:
   CheckBoxLabel( RectPtr rect, unsigned int guiID );
   virtual ~CheckBoxLabel();
 
-  void SetLabel( std::string& label );
+  void SetLabel( const std::string& label );
 
   void Render( RWWrapper& windowApp );
 protected:

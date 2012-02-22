@@ -29,21 +29,21 @@ class RectPtr
 {
 public:
   /// Must contruct with a Rect
-  explicit RectPtr( Rect* rect )  { fRect = rect; fReferences =  new int(1); }
-  RectPtr( const RectPtr& rhs )  { fRect = rhs.fRect; fReferences = rhs.fReferences; (*fReferences)++;}
+  explicit RectPtr( Rect* rect )  { fpRect = rect; fReferences =  new int(1); }
+  RectPtr( const RectPtr& rhs )  { fpRect = rhs.fpRect; fReferences = rhs.fReferences; (*fReferences)++;}
   inline RectPtr& operator=( const RectPtr& rhs );
 
   /// On destruction should delete the Rect, and then only if it is the last reference
   inline ~RectPtr();
   /// Accessor
-  Rect& operator*() { return *fRect; }
+  Rect& operator*() { return *fpRect; }
   /// Accessor
-  Rect* operator->() { return fRect; }
+  Rect* operator->() { return fpRect; }
 private:
   /// Prevent usage
-  RectPtr() : fRect(NULL), fReferences(NULL) { }
+  RectPtr() : fpRect(NULL), fReferences(NULL) { }
 
-  Rect* fRect; /// < A pointer to the rect object
+  Rect* fpRect; /// < A pointer to the rect object
   int* fReferences; /// < For reference counting
 };
 
@@ -54,10 +54,10 @@ RectPtr::operator=( const RectPtr& rhs )
     {
       if( --(*fReferences) <= 0 )
 	{
-	  delete fRect;
+	  delete fpRect;
 	  delete fReferences;
 	}
-      fRect = rhs.fRect;
+      fpRect = rhs.fpRect;
       fReferences = rhs.fReferences;
       (*fReferences)++;
     }
@@ -69,7 +69,7 @@ RectPtr::~RectPtr()
 {
   if( --(*fReferences) <= 0 )
     {
-      delete fRect;
+      delete fpRect;
       delete fReferences;
     }
 }

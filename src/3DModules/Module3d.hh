@@ -18,7 +18,6 @@
 #ifndef __Viewer_Frames_Module3d__
 #define __Viewer_Frames_Module3d__
 
-#include <Viewer/GUIReturn.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <SFML/Graphics.hpp>
 #include <string>

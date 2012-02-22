@@ -21,6 +21,7 @@
 
 #include <Viewer/RectPtr.hh>
 #include <Viewer/GUIEvent.hh>
+#include <Viewer/GUIManager.hh>
 
 namespace Viewer
 {
@@ -63,7 +64,7 @@ public:
   inline RectPtr GetRect();
 protected:
   RectPtr fRect; /// < The frame rect
-  GUIManager* fGUIManager;
+  GUIManager fGUIManager;
   std::queue<GUIEvent> fEvents;
 };
 

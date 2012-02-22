@@ -29,6 +29,7 @@ ProjectionBase::Initialise()
   sf::Rect<double> imageSize;
   imageSize.Left = 0.0; imageSize.Top = 0.0; imageSize.Width = 1.0; imageSize.Height = 1.0;
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( imageSize, Rect::eLocal ) ) );
+  fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize, 1.5 * kLocalSize ) );
 }
 
 void 
@@ -45,7 +46,6 @@ ProjectionBase::Render2d( RWWrapper& windowApp,
 			  const RenderState& renderState )
 {
   fImage->Clear();
-  fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize, 1.5 * kLocalSize ) );
   //fImage->DrawHollowSquare( sf::Vector2<double>( 0.1, 0.2 ),
   //			    ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
 

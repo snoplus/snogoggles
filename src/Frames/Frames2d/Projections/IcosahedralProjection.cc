@@ -209,7 +209,7 @@ void IcosahedralProjection::FillPMTLocations(){
 void IcosahedralProjection::Render2d(RWWrapper& windowApp,
 				     const RenderState& renderState){
 
- fImage->Clear();
+  fImage->Clear();
 
   if (!projFilled) FillPMTLocations();
 

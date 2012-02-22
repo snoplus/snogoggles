@@ -37,8 +37,10 @@ public:
   inline PixelImage( RectPtr rect,
 		     const int width, 
 		     const int height );
-  /// Clear the texture with a colour default white
-  void Clear( Colour fillColour = Colour() );
+  /// Clear the texture to the current GUI bg colour
+  void Clear();
+  /// Clear the texture with a colour
+  void Clear( Colour fillColour );
   /// Must call after changes to the pixels
   inline void Update();
   /// Return the texture

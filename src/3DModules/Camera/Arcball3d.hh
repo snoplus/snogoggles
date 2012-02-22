@@ -20,7 +20,6 @@
 #define __Viewer_Frames_Arcball3d__
 
 #include <Viewer/CameraManager3d.hh>
-#include <Viewer/GUIReturn.hh>
 #include <TVector3.h>
 #include <SFML/Graphics.hpp>
 #include <string>
