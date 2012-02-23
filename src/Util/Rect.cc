@@ -117,6 +117,7 @@ Rect::GetRect( ECoordSystem system )
     {
       sf::Rect<double> result = GetRect( eWindow );
       result.Top = fsWindowHeight - ( result.Top + result.Height );
+      return result;
     }
   else // eResolution
     {

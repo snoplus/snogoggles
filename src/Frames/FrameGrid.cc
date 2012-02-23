@@ -150,9 +150,9 @@ FrameGrid::IncreaseFrame( unsigned int id,
   if( success )
     {
       for( unsigned int iRow = row; iRow < row + rows + 1; iRow++ )
-	fGrid[iCol][iRow] = id;
+	fGrid[col + cols][iRow] = id;
       for( unsigned int iCol = col; iCol < col + cols + 1; iCol++ )
-	fGrid[iCol][iRow] = id;
+	fGrid[iCol][row + rows] = id;
       cols += 1;
       rows += 1;
     }
