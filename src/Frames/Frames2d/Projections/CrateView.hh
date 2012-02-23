@@ -7,47 +7,50 @@
 ///
 /// REVISION HISTORY:\n
 ///     5/07/11 : K. Clark - added \n
+///    21/02/12 : P.Jones - Refactor to use new Rect system.
 ///
-/// \detail  Do my best to copy XSNOED view for better or worse.
+/// \detail  Display the crate hit information, crates are ordered by 
+///          crate id, then by card horizontally and channel vertically.
 ///
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef __Viewer_CrateView__
 #define __Viewer_CrateView__
-#endif
+
 
 #include <Viewer/Frame.hh>
-#include <Viewer/Shape.hh>
-#include <Viewer/ProjectionImage.hh>
-#include <Viewer/Text.hh>
 
-namespace Viewer {
-namespace GUIs
+namespace Viewer 
 {
-  class MapArea;
-}
-  namespace Frames {
+  class ProjectionImage;
+namespace Frames 
+{
 
-    class CrateView: public Frame {
-      
-    public:
-      void Initialise();
-      virtual void Render2d(RWWrapper& windowApp);
-      virtual void Render3d();
-      virtual void EventLoop();
-      void SaveConfiguration(ConfigurationTable& configTable);
-      virtual std::string GetName(){return CrateView::Name();}
-      static std::string Name(){return std::string("CrateView");}
-     private:
-      
-      sf::Rect<double> fProjectArea; 
-      ProjectionImage fImage;
+class CrateView : public Frame
+{
+public:
+  CrateView( RectPtr rect ) : Frame( rect ) { }
+  ~CrateView();
+  
+  void Initialise();
+  
+  virtual void EventLoop();
+  
+  virtual std::string GetName() { return CrateView::Name(); }
+  
+  static std::string Name() { return std::string( "Crate View" ); }
 
-      Text fInfoText;
-      GUIs::MapArea* fMapArea; 
-    };
+  virtual void Render2d( RWWrapper& renderApp,
+			 const RenderState& renderState );
+  
+  void Render3d( RWWrapper& renderApp,
+		 const RenderState& renderState ) { }
+private:
+  ProjectionImage* fImage; /// < Image of the crates
+};
 
-
-
-  }//Viewer namespace
 }//Frames namespace
+
+}//Viewer namespace
+
+#endif

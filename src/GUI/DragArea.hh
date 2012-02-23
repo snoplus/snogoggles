@@ -18,6 +18,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <Viewer/GUI.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
@@ -27,12 +28,11 @@ namespace GUIs
 class DragArea : public GUI
 {
 public:
-  inline DragArea( const sf::Rect<double>& rect, unsigned int guiID );
+  inline DragArea( RectPtr rect, unsigned int guiID );
   virtual ~DragArea() {};
 
-  virtual void RenderT( sf::RenderWindow& windowApp ) { };
   virtual void Render( RWWrapper& windowApp ) { };
-  virtual GUIReturn NewEvent( UIEvent& event );
+  virtual GUIEvent NewEvent( Event& event );
 
   inline sf::Vector2<double> GetMoveDelta();
 protected:
@@ -41,13 +41,14 @@ protected:
   bool fPressed;
 };
 
-DragArea::DragArea( const sf::Rect<double>& rect, unsigned int guiID ) 
+inline
+DragArea::DragArea( RectPtr rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false;
 }
 
-sf::Vector2<double>
+inline sf::Vector2<double>
 DragArea::GetMoveDelta()
 {
   return fCurrentPos - fStartPos;

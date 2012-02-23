@@ -3,26 +3,35 @@
 #include <SFML/OpenGL.hpp>
 
 #include <string>
-#include <iostream>
 using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
-#include <Viewer/ImageManager.hh>
+#include <Viewer/TextureManager.hh>
 #include <Viewer/Configuration.hh>
 #include <Viewer/ConfigurationTable.hh>
-#include <Viewer/Coord.hh>
 #include <Viewer/Rect.hh>
-#include <Viewer/UIEvent.hh>
-#include <Viewer/GUIImageManager.hh>
+#include <Viewer/RectPtr.hh>
+#include <Viewer/Event.hh>
+#include <Viewer/RWWrapper.hh>
+#include <Viewer/DesktopManager.hh>
 using namespace Viewer;
 
-ViewerWindow* ViewerWindow::fViewer = NULL;
 ColourPaletteFactory ViewerWindow::gColourPaletteFactory;
 GUIColourPaletteFactory ViewerWindow::gGUIColourPaletteFactory;
 
 ViewerWindow::ViewerWindow()
 {
+  fMotherRect = &Rect::NewMother();
+  sf::Rect<double> rect;
+  // Mother Rect is the whole screen
+  rect.Left = 0.0; rect.Width = 1.0; rect.Top = 0.0; rect.Height = 1.0;
+  fMotherRect->SetRect( rect, Rect::eLocal );
+}
 
+ViewerWindow::~ViewerWindow()
+{
+  delete fDesktopManager;
+  delete fMotherRect;
 }
 
 void
@@ -30,68 +39,73 @@ ViewerWindow::Initialise()
 {
   // Attempt to initialize the size of the depth and stencil buffers.
   // Fails on Linux, not sure about Mac.
-  sf::ContextSettings Settings;
-  Settings.DepthBits         = 24; // Request a 24 bits depth buffer
-  Settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
+  sf::ContextSettings settings;
+  settings.DepthBits         = 24; // Request a 24 bits depth buffer
+  settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
 
   // Load the configuration
-  try
+  /*  try
     {
       stringstream configFileName;
       configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
       Configuration loadConfig( configFileName.str(), false );  
       int resX = loadConfig.GetI( "resX" ); 
       int resY = loadConfig.GetI( "resY" );
-      Coord::SetWindowResolution( resX, resY );
-      fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles", sf::Style::Default, Settings );
-      Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
-      Coord::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles", sf::Style::Default, settings );
+      Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig.GetS( "colourPal" ) );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
       DrawSplash();
-      fFrameManager.Initialise();
-      fFrameManager.LoadConfiguration( loadConfig );
-    }
-  catch( Configuration::NoFileError& e )
+      fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
+      fDesktopManager->Initialise();
+      fDesktopManager->LoadConfiguration( loadConfig );
+      }
+      catch( Configuration::NoFileError& e )*/
     {
       sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
       fullScreen.Height -= 40.0; // Mac systems require this
-      fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, Settings  ); 
-      Coord::SetWindowResolution( fullScreen.Width, fullScreen.Height );
-      Coord::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, settings  ); 
+      Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" );
       DrawSplash();
-      fFrameManager.Initialise();
+      fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
+      fDesktopManager->Initialise();
     }
+
+  // Now initialise the GUI
+  //GUIImageManager& guiIM = GUIImageManager::GetInstance();
+  //guiIM.Initialise();
+  //guiIM.ChangeColourScheme( GUIColourPalette::gPalette );
 }
 
 void
 ViewerWindow::DrawSplash()
 {
-  // Draw a splash background
-  ImageManager& im = ImageManager::GetInstance();
-  // Now initialise the GUI
-  GUIImageManager& guiIM = GUIImageManager::GetInstance();
-  guiIM.Initialise();
-  guiIM.ChangeColourScheme( GUIColourPalette::gPalette );
-  sf::Sprite snoSplash = im.NewSprite( "Logo.png" );
-  sf::Vector2<double> windowResolution = Coord::GetWindowResolution();
-  snoSplash.SetPosition( windowResolution.x / 2 - snoSplash.GetSize().x / 2.0, windowResolution.y / 2 - snoSplash.GetSize().y / 2.0 );
-
-  sf::Sprite sfmlSplash = im.NewSprite( "sfml.png" );
-  sfmlSplash.SetPosition( windowResolution.x - sfmlSplash.GetSize().x, windowResolution.y - sfmlSplash.GetSize().y );
-
+  // This usage of width and height should not occur elsewhere in the viewer code, make use of Rects and Viewer::Sprite instead
+  TextureManager& textures = TextureManager::GetInstance();
+  sf::Texture* snoSplash = textures.GetTexture( "Logo.png" );
+  sf::Texture* sfmlSplash = textures.GetTexture( "sfml.png" );
+  const int windowWidth = fWindowApp->GetWidth();
+  const int windowHeight = fWindowApp->GetHeight();
+  // Can't draw textures directly, must wrap in a sprite and set the position.
+  sf::Sprite snoSprite( *snoSplash );
+  snoSprite.SetPosition( windowWidth / 2 - snoSplash->GetWidth() / 2, windowHeight / 2 - snoSplash->GetHeight() / 2 );
+  sf::Sprite sfmlSprite( *sfmlSplash );
+  sfmlSprite.SetPosition( windowWidth - sfmlSplash->GetWidth(), windowHeight - sfmlSplash->GetHeight() );
+  // Now draw these logos
   fWindowApp->Clear( sf::Color( 255, 255, 255, 255 ) ); 
-  fWindowApp->Draw( snoSplash );
-  fWindowApp->Draw( sfmlSplash );
+  fWindowApp->Draw( snoSprite );
+  fWindowApp->Draw( sfmlSprite );
   fWindowApp->Display();
 }
 
 void
 ViewerWindow::Run()
 {
-  while( fWindowApp->IsOpened() )
+  while( fWindowApp->IsOpen() )
     {
       EventLoop();
       RenderLoop();
@@ -104,15 +118,10 @@ ViewerWindow::Destruct()
   stringstream configFileName;
   configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
   Configuration saveConfig( configFileName.str(), true );
-  saveConfig.SetI( "resX", static_cast<int>( Coord::GetWindowResolution().x ) );
-  saveConfig.SetI( "resY", static_cast<int>( Coord::GetWindowResolution().y ) );
   saveConfig.SetS( "colourPal", ColourPalette::gPalette->GetName() );
   saveConfig.SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
-  fFrameManager.SaveConfiguration( saveConfig );
   saveConfig.SaveConfiguration();
   
-  GUIImageManager::Destruct();
-  ImageManager::Destruct();
   delete fWindowApp;
 }
 
@@ -129,7 +138,7 @@ ViewerWindow::EventLoop()
 	  fWindowApp->Close();
 	  break;
 	case sf::Event::Resized:
-	  Coord::SetWindowSize( event.Size.Width, event.Size.Height );
+	  Rect::SetWindowSize( event.Size.Width, event.Size.Height );
 	  break;
 	case sf::Event::LostFocus:
 	case sf::Event::GainedFocus:
@@ -144,14 +153,12 @@ ViewerWindow::EventLoop()
 	    }
 //Drop through
 	default:
-	  Rect windowRect;
-       	  windowRect.SetFromResolutionRect( sf::Rect<double>( 0.0, 0.0, Coord::GetWindowResolution().x, Coord::GetWindowResolution().y ) );
-	  UIEvent uiEvent( event, windowRect );
-	  fFrameManager.NewEvent( uiEvent );
+	  Event viewerEvent( event );
+	  fDesktopManager->NewEvent( viewerEvent );
 	}
     }
   // Now get Frames to deal with events
-  fFrameManager.EventLoop();
+  fDesktopManager->EventLoop();
 }
 
 void
@@ -164,11 +171,13 @@ ViewerWindow::RenderLoop()
   // This SFML call is unnecessary.
   //fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
 
-  fFrameManager.Render3d();
-  fWindowApp->SaveGLStates(); // This call seems to be necessary.
-  fFrameManager.Render2d( *fWindowApp );
-  fFrameManager.RenderGUI( *fWindowApp );
-  fWindowApp->RestoreGLStates(); // Matches the save call above.
+  RWWrapper renderApp( *fWindowApp );
+
+  fDesktopManager->Render3d( renderApp );
+  fWindowApp->PushGLStates(); // This call seems to be necessary.
+  fDesktopManager->Render2d( renderApp );
+  fDesktopManager->RenderGUI( renderApp );
+  fWindowApp->PopGLStates(); // Matches the save call above.
 
   fWindowApp->Display();
 }

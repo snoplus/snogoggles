@@ -1,14 +1,14 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/Button.hh>
-#include <Viewer/UIEvent.hh>
+#include <Viewer/Event.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-GUIReturn 
-Button::NewEvent( UIEvent& event )
+GUIEvent 
+Button::NewEvent( const Event& event )
 {
-  GUIReturn retEvent;
+  GUIEvent retEvent;
   switch( event.Type )
     {
     case sf::Event::MouseButtonPressed:
@@ -18,7 +18,7 @@ Button::NewEvent( UIEvent& event )
       fHover = true;
       break;
     case sf::Event::MouseButtonReleased:
-      retEvent = GUIReturn( fID, fGlobalID );
+      retEvent = GUIEvent( fID, fGlobalID );
     case sf::Event::LostFocus:
       fPressed = false;
       fHover = false;

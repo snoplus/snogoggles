@@ -1,154 +1,122 @@
 #include <SFML/Window/Event.hpp>
 
-#include <string>
-#include <iostream>
-using namespace std;
-
 #include <Viewer/FrameContainer.hh>
+#include <Viewer/TopBar.hh>
 #include <Viewer/Frame.hh>
-#include <Viewer/UIEvent.hh>
-#include <Viewer/ConfigurationTable.hh>
+#include <Viewer/Event.hh>
 using namespace Viewer;
 
-FrameContainer::FrameContainer()
+#include <Viewer/LambertProjection.hh>
+#include <Viewer/IcosahedralProjection.hh>
+#include <Viewer/CrateView.hh>
+
+FrameContainer::FrameContainer( RectPtr rect )
+  : fRect( rect )
 {
 
+}
+
+FrameEvent 
+FrameContainer::NewEvent( const Event& event )
+{
+  FrameEvent returnEvent;
+  switch( event.Type )
+    {
+    case sf::Event::LostFocus:
+      returnEvent = fTopBar->NewEvent( event );
+      break;
+    case sf::Event::MouseButtonReleased:
+      // Mouse must be down to move
+      returnEvent = FrameEvent( FrameEvent::eStopMove );
+    case sf::Event::MouseMoved:
+    case sf::Event::MouseButtonPressed:
+      if( fTopBar->ContainsPoint( event.GetPos() ) )
+	{
+	  returnEvent = fTopBar->NewEvent( event );
+	  return returnEvent;
+	}
+      // Do NOT CONTINUE if the event is destined for the top bar
+    }
+  fFrame->NewEvent( event );
+  return returnEvent;
 }
 
 void 
-FrameContainer::Initialise( const string& type )
-{
-  fFrame = fFrameFactory.New( type );  
-
-  fFrame->Initialise();
-  fTopBar.SetTitle( fFrame->GetName() );
-}
-
-void 
-FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
-{      
-  sf::Vector2<double> pos( configTable.GetI( "posX" ), configTable.GetI( "posY" ) );
-  sf::Vector2<double> size( configTable.GetI( "sizeX" ), configTable.GetI( "sizeY" ) );
-  Move( pos );
-  Resize( size );
-  fTopBar.LoadConfiguration( configTable );
-  fFrame->LoadConfiguration( configTable );
-} 
-
-FrameContainer::~FrameContainer()
-{
-  delete fFrame;
-}
-  
-void
 FrameContainer::EventLoop()
 {
   fFrame->EventLoop();
 }
 
 void 
-FrameContainer::Render2d( sf::RenderWindow& windowApp )
-{
-  fFrame->Render2dT( windowApp );
-}
-
-void 
-FrameContainer::Render3d()
-{
-  fFrame->Render3d();
-}
-
-void 
-FrameContainer::RenderGUI( sf::RenderWindow& windowApp )
-{
-  sf::Rect<double> containerRect = GetContainerRect().GetResolutionRect();
-  fTopBar.SetRect( sf::Rect<double>( containerRect.Left, containerRect.Top, containerRect.Width, 20 ) );
-  fTopBar.RenderT( windowApp );
-  fFrame->RenderGUI( windowApp );
-}
-
-FrameUIReturn 
-FrameContainer::NewEvent( UIEvent& event )
-{
-  FrameUIReturn returnEvent;
-  switch( event.Type )
-    {
-    case sf::Event::LostFocus: //No explicit focus for container buttons, so must inform all
-      fTopBar.NewEvent( event );
-      break;
-    case sf::Event::MouseMoved:
-    case sf::Event::MouseButtonReleased:
-    case sf::Event::MouseButtonPressed:
-	if( fTopBar.ContainsPoint( event.GetResolutionCoord() ) )
-	  returnEvent = fTopBar.NewEvent( event );
-      break;
-    }
- fFrame->NewEvent( event );
- return returnEvent;
-}
-  
-void 
 FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
 {
-  configTable.SetS( "type", fFrame->GetName() );
-  Rect full = GetContainerRect();
-  sf::Rect<double> rect = full.GetResolutionRect();
-  configTable.SetI( "posX", static_cast<int>( rect.Left + 1 ) ); //+1 to allow safer positioning on load
-  configTable.SetI( "posY", static_cast<int>( rect.Top + 1 ) );
-  configTable.SetI( "sizeX", static_cast<int>( rect.Width + 1 ) );
-  configTable.SetI( "sizeY", static_cast<int>( rect.Height + 1 ) );
-  fTopBar.SaveConfiguration( configTable );
-  fFrame->SaveConfiguration( configTable );
+
 }
 
 void 
-FrameContainer::Resize( const sf::Vector2<double>& size )
+FrameContainer::Initialise( const std::string& type )
 {
-  Rect newRect = GetContainerRect();
-  sf::Vector2<double> position = newRect.GetResolutionCoord();
-  newRect.SetFromResolutionRect( sf::Rect<double>( position.x, position.y, size.x, size.y ) );
-  SetContainerRect( newRect );
+  fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
+  fTopBar->Initialise();
+  static int init = 0;
+  if( init % 3 == 0 )
+    fFrame = new Frames::LambertProjection( RectPtr( fRect->NewDaughter() ) );
+  else if( init % 3 == 1 )
+    fFrame = new Frames::CrateView( RectPtr( fRect->NewDaughter() ) );
+  else
+    fFrame = new Frames::IcosahedralProjection( RectPtr( fRect->NewDaughter() ) );
+  init++;
+  fFrame->Initialise();
+  SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
 }
 
 void 
-FrameContainer::Move( const sf::Vector2<double>& position )
+FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
 {
-  Rect newRect = GetContainerRect();
-  sf::Vector2<double> resolution = Coord::GetWindowResolution();
-  if( position.x > resolution.x || position.y > resolution.y )
-    return;
-  newRect.SetFromResolutionCoord( position );
-  SetContainerRect( newRect );
-}
 
+}
 
 void 
-FrameContainer::SetContainerRect( Rect& containerRect )
+FrameContainer::Render2d( RWWrapper& renderApp, 
+			  const RenderState& renderState )
 {
-  fContainerRect = containerRect;
-  sf::Rect<double> rect = fContainerRect.GetResolutionRect();
-  rect.Top = rect.Top + 20;
-  rect.Height = rect.Height - 20;
-  Rect frameRect;
-  frameRect.SetFromResolutionRect( rect );
-  fFrame->SetRect( frameRect );
+  fFrame->Render2d( renderApp, renderState );
 }
 
-Rect
-FrameContainer::GetContainerRect()
+void 
+FrameContainer::Render3d( RWWrapper& renderApp, 
+			  const RenderState& renderState )
 {
-  return fContainerRect;
+  fFrame->Render3d( renderApp, renderState );
 }
 
-sf::Vector2<double> 
-FrameContainer::GetPos()
+void 
+FrameContainer::RenderGUI( RWWrapper& renderApp, 
+			   const RenderState& renderState )
 {
-  return GetContainerRect().GetResolutionCoord();
+  fTopBar->RenderGUI( renderApp );
+  fFrame->RenderGUI( renderApp, renderState );
 }
 
-sf::Vector2<double> 
-FrameContainer::GetSize()
+void
+FrameContainer::SetRect( const sf::Rect<double>& rect,
+			 const Rect::ECoordSystem& system )
 {
-  sf::Rect<double> rect = GetContainerRect().GetResolutionRect();
-  return sf::Vector2<double>( rect.Width, rect.Height );
+  sf::Rect<double> size = rect;
+  fRect->SetRect( size, system );
+  // The top bar is always 20 high, so ensure this
+  size = fRect->GetRect( Rect::eResolution );
+  const double height = size.Height;
+  size.Height = 20.0;
+  fTopBar->SetRect( size );
+  /// Now the frame rect 2 pxl margin at base
+  size.Height = height - 22.0;
+  size.Top += 20.0;
+  fFrame->GetRect()->SetRect( size, Rect::eResolution );
+}
+
+bool
+FrameContainer::IsPinned()
+{
+  fTopBar->IsPinned();
 }

@@ -17,8 +17,10 @@
 #ifndef __Viewer_GUIs_Timer__
 #define __Viewer_GUIs_Timer__
 
-#include <Viewer/GUI.hh>
 #include <SFML/System/Clock.hpp>
+
+#include <Viewer/GUI.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
@@ -28,23 +30,22 @@ namespace GUIs
 class Timer : public GUI
 {
 public:
-    inline Timer( const sf::Rect<double>& rect, unsigned int guiID );
-    virtual ~Timer() {};
- 
-    virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
-    virtual void Render( RWWrapper& windowApp ) = 0;
-    virtual GUIReturn NewEvent( UIEvent& event );
-
-    inline virtual bool GetState();
-    int GetElapsedTime();
-    int GetDeltaTime();
+  inline Timer( RectPtr rect, unsigned int guiID );
+  virtual ~Timer() {};
+  
+  virtual void Render( RWWrapper& windowApp ) = 0;
+  virtual GUIEvent NewEvent( Event& event );
+  
+  inline virtual bool GetState();
+  sf::Time GetElapsedTime();
+  sf::Time GetDeltaTime();
 protected:
-    sf::Clock fClock;
-    int fPreviousTime;
-    bool fPressed;
+  sf::Clock fClock;
+  sf::Time fPreviousTime;
+  bool fPressed;
 };
 
-Timer::Timer( const sf::Rect<double>& rect, unsigned int guiID ) 
+Timer::Timer( RectPtr rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false; 

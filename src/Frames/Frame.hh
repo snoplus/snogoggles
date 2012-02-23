@@ -3,13 +3,13 @@
 ///
 /// \brief   The base class for all frames
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     25/06/11 : P.Jones - First Revision, new file. \n
+///     19/02/12 : P.Jones - New file, first revision \n
 ///
-/// \detail  All Frames will derive from this, however frames should derive
-///          from the 2d or 3d subclass version.
+/// \detail  All frames derive from this base class. The base class deals
+///          with the GUIManager.
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -19,88 +19,67 @@
 #include <queue>
 #include <string>
 
-#include <Viewer/Rect.hh>
+#include <Viewer/RectPtr.hh>
+#include <Viewer/GUIEvent.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/GUIReturn.hh>
-#include <Viewer/RWWrapper.hh>
-
-namespace sf
-{
-  class RenderWindow;
-  class Event;
-} //::sf
 
 namespace Viewer
 {
+  class RWWrapper;
   class ConfigurationTable;
+  class RenderState;
+  class Event;
+  class GUIManager;
 
 class Frame
 {
-public:   
+public:
   enum EFrameType { eUtil, e3d, e2d };
 
-  virtual ~Frame() {};
-
-  virtual void NewEvent( UIEvent& event );
-   
-  virtual void Initialise() = 0;
-  virtual void LoadConfiguration( ConfigurationTable& configTable );
-
-  virtual void SaveConfiguration( ConfigurationTable& configTable );
-
+  Frame( RectPtr rect );
+  /// Deal with a new UI event
+  void NewEvent( const Event& event );
+  /// The event loop
   virtual void EventLoop() = 0;
-  
+  /// Save the current configuration
+  virtual void SaveConfiguration( ConfigurationTable& configTable );
+  /// Initialise without a configuration
+  virtual void Initialise();
+  /// Load a configuration
+  virtual void LoadConfiguration( ConfigurationTable& configTable );
+  /// Render all 2d objects
+  virtual void Render2d( RWWrapper& renderApp, 
+			 const RenderState& renderState ) = 0;
+  /// Render all 3d objects
+  virtual void Render3d( RWWrapper& renderApp, 
+			 const RenderState& renderState ) = 0;
+  /// Return the frame name
   virtual std::string GetName() = 0;
+  /// Render the GUI objects
+  void RenderGUI( RWWrapper& renderApp, 
+		  const RenderState& renderState );
+  /// Ask if object contains a point
+  inline bool ContainsPoint( const sf::Vector2<double>& point );
 
-  /// Only the GUIManager needs the RenderWindow, if overload RenderGUI then you should know what todo...
-  virtual void RenderGUI( sf::RenderWindow& windowApp );
-  inline virtual void Render2dT( sf::RenderWindow& windowApp );
-  virtual void Render2d( RWWrapper& windowApp ) = 0;
-  virtual void Render3d() = 0;
-
-  inline virtual double GetAspectRatio();
-
-  inline void SetRect( const Rect& rect );
-  inline Rect GetRect(); 
-
-  inline bool ContainsResolutionPoint( const sf::Vector2<double>& point );
+  inline RectPtr GetRect();
 protected:
-  Rect fFrameRect;
+  RectPtr fRect; /// < The frame rect
   GUIManager fGUIManager;
-  std::queue<GUIReturn> fEvents;
+  std::queue<GUIEvent> fEvents;
 };
 
-void 
-Frame::Render2dT( sf::RenderWindow& windowApp ) 
-{ 
-  RWWrapper wrapper = RWWrapper( windowApp, fFrameRect );
-  Render2d( wrapper ); 
-}
-
-double
-Frame::GetAspectRatio()
+inline bool
+Frame::ContainsPoint( const sf::Vector2<double>& point )
 {
-  return 1.0;
+  return fRect->ContainsPoint( point, Rect::eResolution );
 }
 
-void
-Frame::SetRect( const Rect& rect ) 
-{
-  fFrameRect = rect;
-}
-
-Rect 
+inline RectPtr
 Frame::GetRect()
 {
-  return fFrameRect;
+  return fRect;
 }
 
-bool 
-Frame::ContainsResolutionPoint(const sf::Vector2<double>& point  )
-{
-  return fFrameRect.ContainsResolutionPoint( point );
-}
-
-} // ::Viewer
+} //::Viewer
 
 #endif

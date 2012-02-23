@@ -16,14 +16,15 @@
 #ifndef __Viewer_GUIs_SpriteTimer__
 #define __Viewer_GUIs_SpriteTimer__
 
-#include <Viewer/GenericTimer.hh>
-#include <Viewer/Sprite.hh>
-#include <Viewer/RWWrapper.hh>
-#include <SFML/Graphics.hpp>
 #include <string>
+
+#include <Viewer/GenericTimer.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {  
+  class RWWrapper;
+  class Sprite;
 namespace GUIs
 {
 
@@ -31,16 +32,17 @@ class SpriteTimer : public GenericTimer
 {
 public:
 
-    SpriteTimer( const sf::Rect<double>& rect, unsigned int guiID );
+  SpriteTimer( RectPtr rect, 
+	       unsigned int guiID );
+  
+  virtual ~SpriteTimer();
 
-    virtual ~SpriteTimer();
-
-    void SetSprite( const std::string& filename );
-
-    void RenderLabel( RWWrapper& windowApp );
-
+  void SetTexture( const std::string& filename );
+  
+  void Render( RWWrapper& windowApp );
+  
 protected:
-    Sprite fSprite;
+  Sprite* fSprite;
 
 };
 

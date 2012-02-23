@@ -4,7 +4,7 @@
 using namespace Viewer;
 
 Colour 
-GUIDefaultInvPalette::GetBaseColour( EGUIImageState state )
+GUIDefaultInvPalette::GetBaseColour( EGUITextureState state )
 {
   switch( state )
     {
@@ -21,13 +21,13 @@ GUIDefaultInvPalette::GetBaseColour( EGUIImageState state )
 }
 
 Colour 
-GUIDefaultInvPalette::GetBGColour( EGUIImageState state )
+GUIDefaultInvPalette::GetBGColour( EGUITextureState state )
 {
   return Colour( 0, 0, 0, 255 );
 }
 
 Colour 
-GUIDefaultInvPalette::GetItemColour( EGUIImageState state )
+GUIDefaultInvPalette::GetItemColour( EGUITextureState state )
 {
   switch( state )
     {
@@ -44,7 +44,7 @@ GUIDefaultInvPalette::GetItemColour( EGUIImageState state )
 }
 
 Colour 
-GUIDefaultInvPalette::GetTextColour( EGUIImageState state )
+GUIDefaultInvPalette::GetTextColour( EGUITextureState state )
 {
   return Colour( 255, 255, 255, 255 );
 }

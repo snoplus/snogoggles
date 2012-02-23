@@ -1,95 +1,151 @@
-#include <SFML/OpenGL.hpp>
+using namespace std;
 
-#include <Viewer/Coord.hh>
 #include <Viewer/Rect.hh>
+#include <Viewer/RectPtr.hh>
 using namespace Viewer;
 
-void 
-Rect::SetFromWindowRect( const sf::Rect<double>& windowRect )
+double Rect::fsWindowHeight = 0.0;
+double Rect::fsWindowWidth = 0.0;
+double Rect::fsResolutionHeight = 0.0;
+double Rect::fsResolutionWidth = 0.0;
+
+Rect&
+Rect::NewMother()
 {
-  sf::Vector2<double> windowCoord( windowRect.Left, windowRect.Top );
-  SetFromWindowCoord( windowCoord );
-  fSize = sf::Vector2<double>( windowRect.Width / fsWindowWidth * fsResolutionWidth,
-			       windowRect.Height / fsWindowHeight * fsResolutionHeight );
+  // Only the global mother has a mother pointer to a NULL
+  return *(new Rect( NULL )); 
+}
+
+Rect*
+Rect::NewDaughter()
+{
+  Rect* daughter = new Rect( this );
+  fDaughters.push_back( daughter );
+  return daughter;
+}
+
+Rect*
+Rect::NewDaughter( const sf::Rect<double>& rect,
+		   ECoordSystem system = eLocal )
+{
+  Rect* daughter = NewDaughter();
+  daughter->SetRect( rect, system );
+  return daughter;
+}
+
+void
+Rect::DeleteDaughter( Rect* daughter )
+{
+  return;
+  for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); )
+    if( *iTer == daughter ) // Found daughter
+      iTer = fDaughters.erase( iTer );
+    else
+      ++iTer;
+} 
+
+Rect::~Rect()
+{
+  return;
+  for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); iTer++ )
+    (*iTer)->fMother = NULL;
+  if( fMother != NULL )
+    fMother->DeleteDaughter( this );
 }
 
 void 
-Rect::SetFromResolutionRect( const sf::Rect<double>& resolutionRect )
+Rect::SetRect( const sf::Rect<double>& rect,
+	       ECoordSystem system )
 {
-  sf::Vector2<double> resolutionCoord( resolutionRect.Left, resolutionRect.Top );
-  SetFromResolutionCoord( resolutionCoord );
-  fSize = sf::Vector2<double>( resolutionRect.Width, resolutionRect.Height );
-}
-  
-void Rect::SetFromLocalRect( const sf::Rect<double>& localRect, Rect& motherRect )
-{
-  sf::Vector2<double> localCoord( localRect.Left, localRect.Top );
-  SetFromLocalCoord( localCoord, motherRect );
-  sf::Rect<double> resolutionRect = motherRect.GetResolutionRect();
-  fSize = sf::Vector2<double>( localRect.Width * resolutionRect.Width,
-			    localRect.Height * resolutionRect.Height );
+  if( system == eLocal )
+    {
+      fLeft = rect.Left;
+      fTop = rect.Top;
+      fWidth = rect.Width;
+      fHeight = rect.Height;
+    }
+  else
+    {
+      sf::Rect<double> motherRect = fMother->GetRect( system );
+      fLeft = ( rect.Left - motherRect.Left ) / motherRect.Width;
+      fWidth = rect.Width / motherRect.Width;
+      fTop = ( rect.Top - motherRect.Top ) / motherRect.Height;
+      fHeight = rect.Height / motherRect.Height;
+    }
 }
 
 sf::Rect<double> 
-Rect::GetLocalRect( Rect& motherRect )
+Rect::GetRect( int level )
 {
-  sf::Vector2<double> localPos = GetLocalCoord( motherRect );
-  sf::Rect<double> resolutionRect = motherRect.GetResolutionRect();
-  sf::Vector2<double> localSize = sf::Vector2<double>( fSize.x / resolutionRect.Width,
-						       fSize.y / resolutionRect.Height );
-  return sf::Rect<double>( localPos.x, localPos.y, localSize.x, localSize.y );
-}
-  
-sf::Rect<double> 
-Rect::GetResolutionRect()
-{
-  sf::Vector2<double> resPos = GetResolutionCoord();
-  return sf::Rect<double>( resPos.x, resPos.y, fSize.x, fSize.y );
-}
- 
-sf::Rect<double> 
-Rect::GetWindowRect()
-{
-  sf::Vector2<double> windowPos = GetWindowCoord();
-  return sf::Rect<double>( windowPos.x, windowPos.y, 
-			   fSize.x / fsResolutionWidth * fsWindowWidth, 
-			   fSize.y / fsResolutionHeight * fsWindowHeight );
+  sf::Rect<double> result;
+  if( fMother == NULL || level == 0 )
+    {
+      result.Left = fLeft;
+      result.Top = fTop;
+      result.Width = fWidth;
+      result.Height = fHeight;
+    }
+  else
+    {
+      sf::Rect<double> motherRect = fMother->GetRect( level - 1 );
+      result.Left = fLeft * motherRect.Width + motherRect.Left;
+      result.Top = fTop * motherRect.Height + motherRect.Top;
+      result.Width = fWidth * motherRect.Width;
+      result.Height = fHeight* motherRect.Height;
+    }
+  return result;
 }
 
-void 
-Rect::SetAsGLViewport()
+sf::Rect<double> 
+Rect::GetRect( ECoordSystem system )
 {
-  // Remember Rect is defined as top left, viewport as bottom left
-  sf::Rect<double> windowRect = GetWindowRect();
-  glViewport( windowRect.Left, fsWindowHeight - ( windowRect.Top + windowRect.Height ), windowRect.Width, windowRect.Height );
-}
-
-sf::Rect<double>
-Rect::GetViewport()
-{
-  sf::Rect<double> windowRect = GetWindowRect();
-  windowRect.Top = fsWindowHeight - ( windowRect.Top + windowRect.Height );
-  return windowRect;
+  if( system == eLocal )
+    return GetRect( 0 );
+  else if( system == eWindow )
+    {
+      const sf::Rect<double> localToMother = GetRect( -1 );
+      sf::Rect<double> result;
+      result.Left   = localToMother.Left   * fsWindowWidth;
+      result.Top    = localToMother.Top    * fsWindowHeight;
+      result.Width  = localToMother.Width  * fsWindowWidth;
+      result.Height = localToMother.Height * fsWindowHeight;
+      return result;
+    }
+  else // eResolution
+    {
+      const sf::Rect<double> localToMother = GetRect( -1 );
+      sf::Rect<double> result;
+      result.Left   = localToMother.Left   * fsResolutionWidth;
+      result.Top    = localToMother.Top    * fsResolutionHeight;
+      result.Width  = localToMother.Width  * fsResolutionWidth;
+      result.Height = localToMother.Height * fsResolutionHeight;
+      return result;
+    }
 }
 
 bool 
-Rect::ContainsResolutionPoint( const sf::Vector2<double>& point )
+Rect::ContainsRect( const sf::Rect<double>& testRect,
+		    const ECoordSystem system )
 {
-  sf::Rect<double> resolutionRect = GetResolutionRect();
-  if( point.x > resolutionRect.Left && point.x < resolutionRect.Left + resolutionRect.Width && 
-      point.y > resolutionRect.Top && point.y < resolutionRect.Top + resolutionRect.Height )
+  sf::Rect<double> thisRes = GetRect( system );
+  const double thisRight = thisRes.Left + thisRes.Width;
+  const double testRight = testRect.Left + testRect.Width;
+  const double thisBottom = thisRes.Top + thisRes.Height;
+  const double testBottom = testRect.Top + testRect.Height;
+  if( thisRes.Left < testRect.Left && thisRight > testRight && thisRes.Top < testRect.Top && thisBottom > testBottom )
     return true;
   else
-    return false;
+    return false;      
 }
- 
+
 bool 
-Rect::ContainsLocalPoint( const sf::Vector2<double>& point, Rect& motherRect )
+Rect::ContainsPoint( const sf::Vector2<double>& testPoint,
+		     const ECoordSystem system )
 {
-  sf::Rect<double> localRect = GetLocalRect( motherRect );
-  if( point.x > localRect.Left && point.x < localRect.Left + localRect.Width && 
-      point.y > localRect.Top && point.y < localRect.Top + localRect.Height )
-    return true;
-  else
-    return false;
+  sf::Rect<double> testRect;
+  testRect.Left = testPoint.x;
+  testRect.Top = testPoint.y;
+  testRect.Width = 0.0;
+  testRect.Height = 0.0;
+  return ContainsRect( testRect, system );
 }

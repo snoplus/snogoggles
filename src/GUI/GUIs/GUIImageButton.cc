@@ -1,27 +1,23 @@
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-
 #include <Viewer/GUIImageButton.hh>
 #include <Viewer/RWWrapper.hh>
+#include <Viewer/Sprite.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-GUIImageButton::GUIImageButton( const sf::Rect<double>& rect, unsigned int guiID )
+GUIImageButton::GUIImageButton( RectPtr rect, 
+				unsigned int guiID )
   : Button( rect, guiID )
 {
 
 }
 
 void
-GUIImageButton::Initialise( EGUIImage image )
+GUIImageButton::Initialise( EGUITexture image )
 {
-  GUIImageManager& imageManager = GUIImageManager::GetInstance();
-  fButton[0] = imageManager.NewSprite( image, eBase );
-  fButton[0].SetBoundingRect( fRect );
-  fButton[1] = imageManager.NewSprite( image, eHighlight );
-  fButton[1].SetBoundingRect( fRect );
-  fButton[2] = imageManager.NewSprite( image, eActive );
-  fButton[2].SetBoundingRect( fRect );
+  GUITextureManager& textureManager = GUITextureManager::GetInstance();
+  fButton[0] = textureManager.GetTexture( image, eBase );
+  fButton[1] = textureManager.GetTexture( image, eHighlight );
+  fButton[2] = textureManager.GetTexture( image, eActive );
 }
 
 GUIImageButton::~GUIImageButton()
@@ -30,28 +26,15 @@ GUIImageButton::~GUIImageButton()
 }
 
 void 
-GUIImageButton::RenderT( sf::RenderWindow& windowApp )
+GUIImageButton::Render( RWWrapper& renderApp )
 {
-  sf::Sprite newObject;
-  if( !fPressed )
-    newObject = sf::Sprite( fButton[0] );
-  else if( fHover )
-    newObject = sf::Sprite( fButton[1] );
-  else
-    newObject = sf::Sprite( fButton[2] );
-  
-  newObject.SetPosition( fRect.Left, fRect.Top );
-  newObject.Resize( fRect.Width, fRect.Height );
-  windowApp.Draw( newObject );
-}
+  Sprite buttonSprite( fRect );
 
-void 
-GUIImageButton::Render( RWWrapper& windowApp )
-{
   if( !fPressed && !fHover )
-    windowApp.Draw( fButton[0] );
+    buttonSprite.SetTexture( fButton[0] );
   else if( fHover )
-    windowApp.Draw( fButton[1] );
+    buttonSprite.SetTexture( fButton[1] );
   else
-    windowApp.Draw( fButton[2] );
+    buttonSprite.SetTexture( fButton[2] );
+  renderApp.Draw( buttonSprite );
 }

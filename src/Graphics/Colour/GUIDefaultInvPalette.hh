@@ -23,10 +23,10 @@ namespace Viewer
 class GUIDefaultInvPalette : public GUIColourPalette
 {
 public:
-  Colour GetBaseColour( EGUIImageState state );
-  Colour GetBGColour( EGUIImageState state );
-  Colour GetItemColour( EGUIImageState state );
-  Colour GetTextColour( EGUIImageState state );
+  Colour GetBaseColour( EGUITextureState state );
+  Colour GetBGColour( EGUITextureState state );
+  Colour GetItemColour( EGUITextureState state );
+  Colour GetTextColour( EGUITextureState state );
 
   std::string GetName() { return Name(); }
   static std::string Name() { return std::string("Default Inverted"); }

@@ -1,5 +1,4 @@
 #include <Viewer/Module3d.hh>
-#include <Viewer/GUIReturn.hh>
 #include <Viewer/ConfigurationTable.hh>
 
 #include <SFML/Graphics.hpp>

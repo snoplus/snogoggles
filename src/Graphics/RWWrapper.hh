@@ -16,6 +16,8 @@
 #ifndef __Viewer_RWWrapper__
 #define __Viewer_RWWrapper__
 
+#include <SFML/System/Clock.hpp>
+
 namespace sf
 {
   class Drawable;
@@ -25,8 +27,6 @@ namespace sf
 
 namespace Viewer
 {
-  class Rect;
-  class Shape;
   class Sprite;
   class Text;
   class PixelImage;
@@ -34,21 +34,24 @@ namespace Viewer
 class RWWrapper
 {
 public:
-  enum ETextAspect { eNone, eWidth, eHeight };
+  /// Must construct with a renderWindow
+  RWWrapper( sf::RenderWindow& renderWindow );
 
-  RWWrapper( sf::RenderWindow& renderWindow, Rect& motherRect );
-
-  void Draw( Shape& object );
+  /// Draw a sprite onto the screen
   void Draw( Sprite& object );
-  void Draw( PixelImage* object );
-  void Draw( Text& object, ETextAspect textScaling = eNone );
-  unsigned int GetFrameTime();
+  /// Draw some text onto the screen
+  void Draw( Text& object );
+  /// Draw a pixel image onto the screen
+  void Draw( PixelImage& object );
+  /// Return the time elapsed since the last frame
+  sf::Time GetFrameTime();
 
 protected:
+  /// Draw a sfml Drawable (everything that can be drawn is drawable)
   void DrawObject( sf::Drawable& object );
 
-  sf::RenderWindow& fRenderWindow;
-  Rect& fMotherRect;
+  sf::Clock fClock; /// < Calculates the time between frames
+  sf::RenderWindow& fRenderWindow; /// < Reference to the RenderWindow
 };
 
 } // ::Viewer

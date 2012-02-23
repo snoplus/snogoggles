@@ -17,17 +17,19 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <Viewer/Rect.hh>
 #include <Viewer/PixelImage.hh>
 
 namespace Viewer
 {
   class Colour;
-  class Rect;
 
 class ProjectionImage : public PixelImage
 {
 public:
+  ProjectionImage( RectPtr rect ) : PixelImage( rect ) { }
+  ProjectionImage( RectPtr rect,
+		   const int width,
+		   const int height ) : PixelImage( rect, width, height ) { }
   void DrawDot( const sf::Vector2<double>& position,  /// < In local Coords
 		const Colour& colour ); 
 

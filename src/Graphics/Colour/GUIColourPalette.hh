@@ -19,15 +19,15 @@
 
 namespace Viewer
 {
-  enum EGUIImageState { eBase, eHighlight, eActive };
+  enum EGUITextureState { eBase, eHighlight, eActive };
 
 class GUIColourPalette
 {
 public:
-  virtual Colour GetBaseColour( EGUIImageState state ) = 0;
-  virtual Colour GetBGColour( EGUIImageState state ) = 0;
-  virtual Colour GetItemColour( EGUIImageState state ) = 0;
-  virtual Colour GetTextColour( EGUIImageState state ) = 0;
+  virtual Colour GetBaseColour( EGUITextureState state ) = 0;
+  virtual Colour GetBGColour( EGUITextureState state ) = 0;
+  virtual Colour GetItemColour( EGUITextureState state ) = 0;
+  virtual Colour GetTextColour( EGUITextureState state ) = 0;
   
   virtual std::string GetName() = 0;
   

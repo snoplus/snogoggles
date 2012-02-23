@@ -16,8 +16,13 @@
 #define __Viewer_GUIs_GUIImageButton__
 
 #include <Viewer/Button.hh>
-#include <Viewer/Sprite.hh>
-#include <Viewer/GUIImageManager.hh>
+#include <Viewer/GUITextureManager.hh>
+#include <Viewer/RectPtr.hh>
+
+namespace sf
+{
+  class Texture;
+}
 
 namespace Viewer
 {  
@@ -27,15 +32,15 @@ namespace GUIs
 class GUIImageButton : public Button
 {
 public:
-  GUIImageButton( const sf::Rect<double>& rect, unsigned int guiID );
+  GUIImageButton( RectPtr rect, 
+		  unsigned int guiID );
   virtual ~GUIImageButton();
 
-  void Initialise( EGUIImage image );
+  void Initialise( EGUITexture image );
   
-  void RenderT( sf::RenderWindow& windowApp );
-  void Render( RWWrapper& windowApp );
+  void Render( RWWrapper& renderApp );
 protected:
-  Sprite fButton[3];
+  sf::Texture* fButton[3];
 };
 
 

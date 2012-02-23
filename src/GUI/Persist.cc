@@ -1,19 +1,19 @@
 #include <SFML/Window/Event.hpp>
 
 #include <Viewer/Persist.hh>
-#include <Viewer/UIEvent.hh>
+#include <Viewer/Event.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
-GUIReturn 
-Persist::NewEvent( UIEvent& event )
+GUIEvent 
+Persist::NewEvent( const Event& event )
 {
-  GUIReturn retEvent; // Default NULL event
+  GUIEvent retEvent; // Default NULL event
   switch( event.Type )
     {
      case sf::Event::MouseButtonReleased:
       fPressed = !fPressed;
-      retEvent = GUIReturn( fID, fGlobalID );
+      retEvent = GUIEvent( fID, fGlobalID );
       break;
     }
   return retEvent;

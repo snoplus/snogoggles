@@ -16,17 +16,27 @@
 #define __Viewer_Frames_Logo__
 
 #include <Viewer/Frame.hh>
-#include <Viewer/Sprite.hh>
-#include <Viewer/Text.hh>
+
+namespace sf
+{
+  class Texture;
+}
 
 namespace Viewer
 {
+  class Sprite;
+  class Text;
+  class RenderState;
+
 namespace Frames
 {
 
 class Logo : public Frame
 {
 public:
+  Logo( RectPtr rect ) : Frame( rect ) { }
+  ~Logo();
+
   void Initialise();
   void LoadConfiguration( ConfigurationTable& configTable );
 
@@ -38,16 +48,18 @@ public:
   
   static std::string Name() { return std::string( "Logo" ); }
 
-  virtual void Render2d( RWWrapper& windowApp );
+  virtual void Render2d( RWWrapper& renderApp, 
+			 const RenderState& renderState );
 
-  void Render3d() { }
+  void Render3d( RWWrapper& renderApp, 
+		 const RenderState& renderState ) { }
 
   EFrameType GetFrameType() { return eUtil; }
 private:
-  Sprite fLogo;
-  Sprite fLogo2;
-  Text fMessage;
-  bool fState;
+  sf::Texture* fTextures[2]; /// < The two logo textures
+  Sprite* fLogo; /// < The sprite
+  Text* fMessage; /// < The message
+  bool fState; /// < Which logo to display
 };
 
 } // ::Frames

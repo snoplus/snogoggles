@@ -16,6 +16,7 @@
 #define __Viewer_GUIs_Persist__
 
 #include <Viewer/GUI.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
@@ -25,12 +26,11 @@ namespace GUIs
 class Persist : public GUI
 {
 public:
-  inline Persist( const sf::Rect<double>& rect, unsigned int guiID );
+  inline Persist( RectPtr rect, unsigned int guiID );
   virtual ~Persist() {};
 
-  virtual void RenderT( sf::RenderWindow& windowApp ) = 0;
   virtual void Render( RWWrapper& windowApp ) = 0;
-  virtual GUIReturn NewEvent( UIEvent& event );
+  virtual GUIEvent NewEvent( const Event& event );
 
   inline virtual bool GetState();
   inline virtual void SetState( bool state );
@@ -39,7 +39,7 @@ protected:
   bool fHover;
 };
 
-Persist::Persist( const sf::Rect<double>& rect, unsigned int guiID ) 
+Persist::Persist( RectPtr rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
   fPressed = false;

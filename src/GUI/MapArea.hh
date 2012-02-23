@@ -18,6 +18,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <Viewer/GUI.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
@@ -27,25 +28,25 @@ namespace GUIs
 class MapArea : public GUI
 {
 public:
-  inline MapArea( const sf::Rect<double>& rect, unsigned int guiID );
+  inline MapArea( RectPtr rect, unsigned int guiID );
   virtual ~MapArea() {};
 
-  virtual void RenderT( sf::RenderWindow& windowApp ) { };
   virtual void Render( RWWrapper& windowApp ) { };
-  virtual GUIReturn NewEvent( UIEvent& event );
+  virtual GUIEvent NewEvent( Event& event );
 
   inline sf::Vector2<double> GetPosition();
 protected:
   sf::Vector2<double> fCurrentPos;
 };
 
-MapArea::MapArea( const sf::Rect<double>& rect, unsigned int guiID ) 
+inline
+MapArea::MapArea( RectPtr rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
 
 }
 
-sf::Vector2<double>
+inline sf::Vector2<double>
 MapArea::GetPosition()
 {
   return fCurrentPos;

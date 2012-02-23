@@ -1,23 +1,42 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
+#include <string>
+using namespace std;
 
 #include <Viewer/Logo.hh>
-#include <Viewer/ImageManager.hh>
+#include <Viewer/TextureManager.hh>
 #include <Viewer/ConfigurationTable.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/RWWrapper.hh>
+#include <Viewer/Sprite.hh>
+#include <Viewer/Text.hh>
+#include <Viewer/GUIColourPalette.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
+
+Logo::~Logo()
+{
+  delete fLogo, fMessage;
+}
 
 void
 Logo::Initialise()
 {
-  ImageManager& imageManager = ImageManager::GetInstance();
-  fLogo = imageManager.NewSprite( "Logo.png" );
-  fLogo.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 1.0, 1.0 ) );
-  fLogo2 = imageManager.NewSprite( "Logo2.png" );
-  fLogo2.SetBoundingRect( sf::Rect<double>( 0.0, 0.0, 0.5, 0.5 ) );
-  fMessage = Text( "Hello" );
-  fMessage.SetBoundingRect( sf::Rect<double>( 0.5, 0.0, 0.5, 0.5 ) );
-  fMessage.SetColor( sf::Color( 0, 0, 0 ) );
+  Frame::Initialise();
+  TextureManager& textureManager = TextureManager::GetInstance();
+  fTextures[0] = textureManager.GetTexture( "Logo.png" );
+  fTextures[1] = textureManager.GetTexture( "Logo2.png" );
+  
+  sf::Rect<double> spriteSize = fRect->GetRect( Rect::eLocal );
+  spriteSize.Width = 0.5;
+  spriteSize.Height = 0.5;
+  fLogo = new Sprite( RectPtr( fRect->NewDaughter( spriteSize, Rect::eLocal ) ) );
+  sf::Rect<double> textSize = spriteSize;
+  textSize.Left = 0.5;
+  fMessage = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
+  string hello("Hello");
+  fMessage->SetString( hello );
+  fMessage->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   fState = false;
 }
 
@@ -25,13 +44,10 @@ void
 Logo::LoadConfiguration( ConfigurationTable& configTable )
 {
   sf::Rect<double> button( 0.8, 0.1, 0.2, 0.1 );
-  GUIs::CheckBoxLabel* cbLabel = dynamic_cast<GUIs::CheckBoxLabel*>( fGUIManager.NewGUI<GUIs::CheckBoxLabel>( button ) );
-  cbLabel->SetLabel( "New Logo" );
   
   try
     {
       fState = configTable.GetI( "state" );
-      cbLabel->SetState( fState );
     }
   catch( ConfigurationTable::NoAttributeError& e )
     {
@@ -39,8 +55,8 @@ Logo::LoadConfiguration( ConfigurationTable& configTable )
     }
   try
     {
-      if( configTable.GetTable( "Nested" )->GetI( "state" ) )
-	fMessage.SetString( "BOB" );
+      //if( configTable.GetTable( "Nested" )->GetI( "state" ) )
+      //fMessage.SetString( "BOB" );
     }
   catch( ConfigurationTable::NoTableError& e )
     {
@@ -66,12 +82,16 @@ Logo::EventLoop()
       fEvents.pop();
     }
 }
+
 void 
-Logo::Render2d( RWWrapper& windowApp )
+Logo::Render2d( RWWrapper& renderApp,
+		const RenderState& renderState )
 {
   if( fState )
-    windowApp.Draw( fLogo );
+    fLogo->SetTexture( fTextures[0] );
   else
-    windowApp.Draw( fLogo2 );
-  windowApp.Draw( fMessage );
+    fLogo->SetTexture( fTextures[1] );
+  renderApp.Draw( *fLogo );
+  fMessage->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  renderApp.Draw( *fMessage );
 }
