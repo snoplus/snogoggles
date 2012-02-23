@@ -17,6 +17,7 @@
 #include <iostream>
 
 #include <Viewer/BaseFrame3d.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -24,6 +25,7 @@ namespace Frames {
 
 class HitFrame3d : public BaseFrame3d {
 public:
+  HitFrame3d( RectPtr rect ) : BaseFrame3d( rect ) { }
 	static inline std::string Name();
 	inline std::string GetName();
 	ModuleManager3d* CreateModuleManager();

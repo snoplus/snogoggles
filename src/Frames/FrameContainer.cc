@@ -9,6 +9,7 @@ using namespace Viewer;
 #include <Viewer/LambertProjection.hh>
 #include <Viewer/IcosahedralProjection.hh>
 #include <Viewer/CrateView.hh>
+#include <Viewer/HitFrame3d.hh>
 
 FrameContainer::FrameContainer( RectPtr rect )
   : fRect( rect )
@@ -59,10 +60,12 @@ FrameContainer::Initialise( const std::string& type )
   fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
   fTopBar->Initialise();
   static int init = 0;
-  if( init % 3 == 0 )
+  if( init % 4 == 0 )
     fFrame = new Frames::LambertProjection( RectPtr( fRect->NewDaughter() ) );
-  else if( init % 3 == 1 )
+  else if( init % 4 == 1 )
     fFrame = new Frames::CrateView( RectPtr( fRect->NewDaughter() ) );
+  else if( init % 4 == 2 )
+    fFrame = new Frames::HitFrame3d( RectPtr( fRect->NewDaughter() ) );
   else
     fFrame = new Frames::IcosahedralProjection( RectPtr( fRect->NewDaughter() ) );
   init++;

@@ -4,6 +4,8 @@
 #include <Viewer/TestBox.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/DragArea.hh>
+#include <Viewer/RWWrapper.hh>
+#include <Viewer/RenderState.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -13,12 +15,6 @@ TestBox::Initialise()
   sf::Rect<double> dragPos = sf::Rect<double>( 0.0, 0.0, 1.0, 1.0 );
   fRotate = 0.0;
   fDragArea = dynamic_cast<GUIs::DragArea*>( fGUIManager.NewGUI<GUIs::DragArea>( dragPos ) );
-}
-
-void
-TestBox::Initialise( ConfigurationTable& configTable )
-{
-  Initialise();
 }
 
 void 
@@ -33,10 +29,11 @@ TestBox::EventLoop()
 }
 
 void
-TestBox::Render3d()
+TestBox::Render3d( RWWrapper& renderApp,
+		   const RenderState& renderState )
 {
   // Remember Rect is defined as top left, viewport as bottom left
-  fFrameRect.SetAsGLViewport();
+  fRect->SetAsGLViewport();
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(90.f, 1.f, 1.f, 500.f);

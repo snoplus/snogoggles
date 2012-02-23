@@ -6,7 +6,7 @@ using namespace Viewer;
 using namespace Viewer::GUIs;
 
 GUIEvent 
-DragArea::NewEvent( Event& event )
+DragArea::NewEvent( const Event& event )
 {
   switch( event.Type )
     {

@@ -106,13 +106,13 @@ void ModuleManager3d::Render2d( RWWrapper& windowApp )
 
 }
 
-void ModuleManager3d::Render3d( Rect& viewport )
+void ModuleManager3d::Render3d( RectPtr viewport )
 {
     RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
     RAT::DS::MC* mc = EventData::GetInstance().GetCurrentMC();
     RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetRun()->GetPMTProp();
 
-	fCameraManager->SetUpCameraSystem( viewport.GetViewport() ); 
+    fCameraManager->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
     HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
     TrackManager3d::RenderTracksSafe( fTrackManager, mc );
     GeoManager3d::RenderGeometrySafe( fGeoManager );

@@ -1,3 +1,5 @@
+#include <SFML/OpenGL.hpp>
+
 using namespace std;
 
 #include <Viewer/Rect.hh>
@@ -111,6 +113,11 @@ Rect::GetRect( ECoordSystem system )
       result.Height = localToMother.Height * fsWindowHeight;
       return result;
     }
+  else if( system == eGL )
+    {
+      sf::Rect<double> result = GetRect( eWindow );
+      result.Top = fsWindowHeight - ( result.Top + result.Height );
+    }
   else // eResolution
     {
       const sf::Rect<double> localToMother = GetRect( -1 );
@@ -148,4 +155,11 @@ Rect::ContainsPoint( const sf::Vector2<double>& testPoint,
   testRect.Width = 0.0;
   testRect.Height = 0.0;
   return ContainsRect( testRect, system );
+}
+
+void
+Rect::SetAsGLViewport()
+{
+  sf::Rect<double> thisWin = GetRect( eGL );
+  glViewport( thisWin.Left, thisWin.Top, thisWin.Width, thisWin.Height );
 }

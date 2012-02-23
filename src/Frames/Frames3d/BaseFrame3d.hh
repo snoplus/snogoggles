@@ -30,14 +30,14 @@ namespace Frames {
 
 class BaseFrame3d : public Frame {
 public:
-	BaseFrame3d();
+  BaseFrame3d( RectPtr rect );
 	virtual ~BaseFrame3d();
 	virtual void Initialise();
 	virtual void LoadConfiguration( ConfigurationTable& configTable );
 	virtual void SaveConfiguration( ConfigurationTable& configTable );
 	virtual void EventLoop();
-	virtual void Render2d( RWWrapper& windowApp );
-	virtual void Render3d();
+  virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
+	virtual void Render3d( RWWrapper& renderApp, const RenderState& renderState );
 
 	virtual ModuleManager3d* CreateModuleManager() = 0;
 	virtual sf::Rect< double > GetViewportArea() = 0;
@@ -47,7 +47,6 @@ protected:
 	void LateInitialise();
 
 	ModuleManager3d* fModuleManager;
-	Rect fViewportRect;
 	bool fInitialised;
 
 }; // class BaseFrame3d
