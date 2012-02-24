@@ -44,6 +44,8 @@ public:
   FrameManager( RectPtr rect,
 		double rightMargin,
 		double bottomMargin );
+
+  virtual ~FrameManager();
   /// Deal with a new UI event
   void NewEvent( const Event& event );
   /// The event loop
@@ -86,6 +88,7 @@ private:
 		    const int targetFrame );
 
   RectPtr fRect; /// < The frame manager rect
+  RectPtr* fgRect; /// < The frame grid area rect
   std::vector<FrameContainer*> fFrameContainers; /// < The frames themselves.
   std::queue<std::string> fNewFrameEvents; /// < The event queue for new frames.
   sf::Vector2<double> fMoveOrigin; /// < Original position of the frame

@@ -37,12 +37,12 @@ EventMasterUI::EventLoop()
 	case 1: // Prev EV
 	  events.PreviousEV();
 	  break;
-	case 3: // GUI Colour Selector
+	case 4: // GUI Colour Selector
 	  GUIColourPalette::gPalette = fGUIColourFactory.New( fGUIColourSelector->GetStringState() );
 	  // Notify the GUI textures that they have changed...
 	  GUITextureManager::GetInstance().ChangeColourScheme();
 	  break;
-	case 4: // Event Colour Selector
+	case 5: // Event Colour Selector
 	  ColourPalette::gPalette = fColourFactory.New( fColourSelector->GetStringState() );
 	  break;
 	}
@@ -68,11 +68,13 @@ EventMasterUI::Initialise()
   GUIs::GUIImageButton* prevEVGUI = fGUIManager.NewGUI<GUIs::GUIImageButton>( size );
   prevEVGUI->Initialise( eDecrease );
 
-  size.Top = 0.3; size.Height = 0.25; size.Width = 0.8;
-  GUIs::RadioCheckBoxes* dataType = fGUIManager.NewGUI<GUIs::RadioCheckBoxes>( size );
-  vector<string> dataOptions;
-  dataOptions.push_back( "TAC" ); dataOptions.push_back( "QHL" ); dataOptions.push_back( "QHS" ); dataOptions.push_back( "QLX" );
-  dataType->Initialise( dataOptions );
+  size.Top = 0.2; size.Height = 0.25; size.Width = 0.8;
+  fSourceRadio = fGUIManager.NewGUI<GUIs::RadioCheckBoxes>( size );
+  fSourceRadio->Initialise( RenderState::GetSourceStrings() );
+
+  size.Top = 0.5; size.Height = 0.2; size.Width = 0.8;
+  fTypeRadio = fGUIManager.NewGUI<GUIs::RadioCheckBoxes>( size );
+  fTypeRadio->Initialise( RenderState::GetTypeStrings() );
 
   size.Top = 0.8; size.Left = 0.0; size.Height = 0.05; size.Width = 0.9;
   fGUIColourSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
@@ -98,5 +100,5 @@ EventMasterUI::RenderGUI( RWWrapper& renderApp )
 RenderState 
 EventMasterUI::GetRenderState()
 {
-  return RenderState();
+  return RenderState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>());
 }

@@ -41,6 +41,7 @@ namespace Viewer
 namespace GUIs
 {
   class Selector;
+  class RadioCheckBoxes;
 }
 
 
@@ -77,6 +78,8 @@ private:
 
   GUIs::Selector* fGUIColourSelector;
   GUIs::Selector* fColourSelector;
+  GUIs::RadioCheckBoxes* fTypeRadio;
+  GUIs::RadioCheckBoxes* fSourceRadio;
 };
 
 inline bool

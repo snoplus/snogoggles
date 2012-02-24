@@ -149,9 +149,10 @@ FrameGrid::IncreaseFrame( unsigned int id,
     success = success && CheckEmptySquare( id, iCol, row + rows );
   if( success )
     {
-      for( unsigned int iCol = col + cols; iCol < col + cols + 1; iCol++ )
-	for( unsigned int iRow = row + rows; iRow < row + rows + 1; iRow++ )
-	  fGrid[iCol][iRow] = id;
+      for( unsigned int iRow = row; iRow < row + rows + 1; iRow++ )
+	fGrid[col + cols][iRow] = id;
+      for( unsigned int iCol = col; iCol < col + cols + 1; iCol++ )
+	fGrid[iCol][row + rows] = id;
       cols += 1;
       rows += 1;
     }

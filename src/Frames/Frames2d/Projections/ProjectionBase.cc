@@ -46,8 +46,6 @@ ProjectionBase::Render2d( RWWrapper& windowApp,
 			  const RenderState& renderState )
 {
   fImage->Clear();
-  //fImage->DrawHollowSquare( sf::Vector2<double>( 0.1, 0.2 ),
-  //			    ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
 
   DrawGeodesic();
   DrawHits();

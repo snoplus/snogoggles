@@ -22,6 +22,7 @@ namespace Frames {
 
 class RATGeoFrame3d : public BaseFrame3d {
 public:
+  RATGeoFrame3d( RectPtr rect ) : BaseFrame3d( rect ) { }
 	static inline std::string Name();
 	inline std::string GetName();
 	ModuleManager3d* CreateModuleManager();

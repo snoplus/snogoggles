@@ -7,7 +7,7 @@ namespace Viewer {
 namespace GUIs {
 
 GUIEvent
-Timer::NewEvent( Event& event )
+Timer::NewEvent( const Event& event )
 {
   GUIEvent retEvent;
   switch( event.Type )
