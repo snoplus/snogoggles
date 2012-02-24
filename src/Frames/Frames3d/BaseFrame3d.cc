@@ -4,7 +4,9 @@
 namespace Viewer {
 namespace Frames {
 
-BaseFrame3d::BaseFrame3d()
+BaseFrame3d::BaseFrame3d(
+			 RectPtr rect )
+  : Frame( rect )
 {
 	fInitialised = false;
 }
@@ -39,15 +41,14 @@ void BaseFrame3d::EventLoop()
 	fModuleManager->EventLoop();
 }
 
-void BaseFrame3d::Render2d( RWWrapper& windowApp )
+void BaseFrame3d::Render2d( RWWrapper& renderApp, const RenderState& renderState )
 {
-	fModuleManager->Render2d( windowApp );
+	fModuleManager->Render2d( renderApp );
 }
 
-void BaseFrame3d::Render3d()
+void BaseFrame3d::Render3d( RWWrapper& renderApp, const RenderState& renderState )
 {
-	fViewportRect.SetFromLocalRect( GetViewportArea(), fFrameRect );
-	fModuleManager->Render3d( fViewportRect );
+	fModuleManager->Render3d( fRect );
 }
 
 void BaseFrame3d::LateInitialise()

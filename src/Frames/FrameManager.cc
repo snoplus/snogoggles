@@ -21,6 +21,11 @@ FrameManager::FrameManager( RectPtr rect,
 
 }
 
+FrameManager::~FrameManager()
+{
+  delete fgRect;
+}
+
 void
 FrameManager::NewEvent( const Event& event )
 {
@@ -131,8 +136,8 @@ FrameManager::Initialise()
   // First create the frame grid
   sf::Rect<double> defaultSize;
   defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0 - fBottomMargin;
-  RectPtr fgRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
-  fFrameGrid = new FrameGrid( fgRect );
+  fgRect = new RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
+  fFrameGrid = new FrameGrid( *fgRect );
   // Then initialise the UI
   defaultSize.Left = 0.0; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = fBottomMargin;
   RectPtr fmRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
@@ -236,7 +241,7 @@ FrameManager::NewFrame( const std::string& frameName )
   sf::Rect<double> rect;
   if( fFrameGrid->NewFrame( fFrameContainers.size(), rect ) )
     {
-      RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eLocal ) );
+      RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eLocal ) );
       FrameContainer* newFrame = new FrameContainer( rectPtr );
       newFrame->Initialise( frameName );
       fFrameContainers.push_back( newFrame );

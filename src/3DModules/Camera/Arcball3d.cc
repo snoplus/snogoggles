@@ -38,27 +38,27 @@ void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& options
 
     sf::Rect<double> rect( 0, optionsArea.Top, optionsArea.Height, optionsArea.Height); 
     fSpinLeftButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinLeftButton->SetSprite("Arrows/RotateLeft.png");
+    fSpinLeftButton->SetTexture("Arrows/RotateLeft.png");
 
     rect.Left += shift;
     fSpinRightButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinRightButton->SetSprite("Arrows/RotateRight.png");
+    fSpinRightButton->SetTexture("Arrows/RotateRight.png");
 
     rect.Left += shift;
     fSpinUpButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinUpButton->SetSprite("Arrows/RotateUp.png");
+    fSpinUpButton->SetTexture("Arrows/RotateUp.png");
 
     rect.Left += shift;
     fSpinDownButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinDownButton->SetSprite("Arrows/RotateDown.png");
+    fSpinDownButton->SetTexture("Arrows/RotateDown.png");
 
     rect.Left += shift;
     fZoomInButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fZoomInButton->SetSprite("ZoomIn.png");
+    fZoomInButton->SetTexture("ZoomIn.png");
 
     rect.Left += shift;
     fZoomOutButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fZoomOutButton->SetSprite("ZoomOut.png");
+    fZoomOutButton->SetTexture("ZoomOut.png");
 }
 
 void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea )
@@ -135,13 +135,13 @@ void Arcball3d::Zoom( float speed, int deltaTime )
 void Arcball3d::SpinButton( const TVector3& axis, GUIs::Timer* timer )
 {
     if( timer->GetState() == true )
-        Spin( axis, timer->GetDeltaTime() );
+      Spin( axis, timer->GetDeltaTime().AsMilliseconds() );
 }
 
 void Arcball3d::ZoomButton( float speed, GUIs::Timer* timer )
 {
     if( timer->GetState() == true )
-        Zoom( speed, timer->GetDeltaTime() );
+      Zoom( speed, timer->GetDeltaTime().AsMilliseconds() );
 }
 
 }; // namespace Frames

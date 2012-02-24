@@ -31,7 +31,7 @@ namespace Viewer
 class Rect
 {
 public:
-  enum ECoordSystem { eLocal, eWindow, eResolution };
+  enum ECoordSystem { eLocal, eWindow, eResolution, eGL };
   /// Creat the global mother rect
   static Rect& NewMother();
   /// Create a new Daughter rect for usage
@@ -57,6 +57,8 @@ public:
   /// Returns true if the window coordinate is within this rect
   bool ContainsPoint( const sf::Vector2<double>& testPoint,
 		      const ECoordSystem system );
+  /// Helper function to set the gl viewport as the current rect
+  void SetAsGLViewport();
 protected:
   /// Unlink a daughter
   void DeleteDaughter( Rect* daughter );

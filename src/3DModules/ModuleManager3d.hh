@@ -32,6 +32,8 @@
 #include <string>
 #include <SFML/Graphics/Rect.hpp>
 
+#include <Viewer/RectPtr.hh>
+
 namespace Viewer {
 
 	class ConfigurationTable;
@@ -71,7 +73,7 @@ public:
     void SaveModuleConfigurations( ConfigurationTable& configTable );
     void EventLoop();
     void Render2d( RWWrapper& windowApp );
-    void Render3d( Rect& viewport );
+    void Render3d( RectPtr viewport );
 
     CameraManager3d*    fCameraManager;     ///< The camera manager	
     HitManager3d*       fHitManager;        ///< The hit manager.

@@ -6,7 +6,7 @@
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/CheckBoxLabel.hh>
-#include <Viewer/EnumCheckBoxes.hh>
+#include <Viewer/RadioCheckBoxes.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -45,9 +45,9 @@ void WorldManager3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& op
     labels.push_back( "Outline" );
 
     rect.Height = 3 * rect.Height;
-    fRenderTypeGUI = g.NewGUI< GUIs::EnumCheckBoxes >( rect );
-    fRenderTypeGUI->SetLabels( labels );
-    fRenderTypeGUI->SetState( fGeoRenderType );
+    fRenderTypeGUI = g.NewGUI< GUIs::RadioCheckBoxes >( rect );
+    fRenderTypeGUI->Initialise( labels );
+    //fRenderTypeGUI->SetState( fGeoRenderType );
 }
 
 void WorldManager3d::SetWorld( World* world )

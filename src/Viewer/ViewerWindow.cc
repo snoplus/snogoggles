@@ -14,6 +14,7 @@ using namespace std;
 #include <Viewer/Event.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/DesktopManager.hh>
+#include <Viewer/RenderState.hh>
 using namespace Viewer;
 
 ColourPaletteFactory ViewerWindow::gColourPaletteFactory;
@@ -37,6 +38,7 @@ ViewerWindow::~ViewerWindow()
 void
 ViewerWindow::Initialise()
 {
+  RenderState::Initialise();
   // Attempt to initialize the size of the depth and stencil buffers.
   // Fails on Linux, not sure about Mac.
   sf::ContextSettings settings;
