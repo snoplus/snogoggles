@@ -170,13 +170,11 @@ FrameGrid::DecreaseFrame( unsigned int id,
     return false;
   // Always possible here
   // Constant col, multi row remove first
-  if( col + cols < fCols && row + rows + 1 <  fRows )
-    for( unsigned int iRow = row; iRow < row + rows + 1; iRow++ )
-      fGrid[col + cols][iRow] = -1;
+  for( unsigned int iRow = row; iRow < row + rows; iRow++ )
+    fGrid[col + cols - 1][iRow] = -1;
   // Constant row, multi col remove now
-  if( row + rows < fRows && col + cols + 1 < fCols )
-    for( unsigned int iCol = col; iCol < col + cols + 1; iCol++ )
-      fGrid[iCol][row + rows] = -1;
+  for( unsigned int iCol = col; iCol < col + cols; iCol++ )
+    fGrid[iCol][row + rows - 1] = -1;
   cols -= 1;
   rows -= 1;
   return true;

@@ -81,7 +81,6 @@ FrameManager::NewEvent( const Event& event )
 	  }
 	  break;
 	}
-      EventHandler( retEvent );
       // Has the focus changed?
       if( oldFocus != fFocus )
 	{
@@ -95,6 +94,8 @@ FrameManager::NewEvent( const Event& event )
 	  // Maximuse the new focus
 	  ResizeFrame( FrameGrid::eLargest, fFocus );
 	}
+      else
+	EventHandler( retEvent );
     }
 }
 

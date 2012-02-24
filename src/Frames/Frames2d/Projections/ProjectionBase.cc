@@ -90,10 +90,10 @@ void
 ProjectionBase::DrawGeodesic()
 {
   GeodesicSphere* geodesic = GeodesicSphere::GetInstance();
-  Polyhedron polyhedron = geodesic->GetPolyhedron();
+  const Polyhedron& polyhedron = geodesic->GetPolyhedron();
   for( int iPolygon = 0; iPolygon < polyhedron.GetNoPolygons(); iPolygon++ )
     {
-      Polygon polygon = polyhedron.GetPolygon( iPolygon );
+      const Polygon& polygon = polyhedron.GetPolygon( iPolygon );
       Vector3 v1 = polygon.GetVertex(0);
       Vector3 v2 = polygon.GetVertex(1);
       Vector3 v3 = polygon.GetVertex(2);
