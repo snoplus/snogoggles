@@ -41,11 +41,12 @@ def Curl(env):
 def PThread(env):
 	env.Append( LIBS = [ "pthread" ] )
 
-# Append Avalanche
+# Append Avalanche and zmq
 def Avalanche(env):
-	env.Append( CPPPATH = [ os.path.join(os.environ['AVALANCHEROOT'], "lib/cpp") ] )
-	env.Append( LIBPATH = [ os.path.join(os.environ['AVALANCHEROOT'], "lib/cpp") ] )
-	env.Append( LIBS = [ "avalanche" ] )
+	avalancheLibPath = os.path.join(os.environ['AVALANCHEROOT'], "lib/cpp")
+	env.Append( CPPPATH = [ avalancheLibPath, os.environ[ZEROMQROOT] + "/include" ] )
+	env.Append( LIBPATH = [ avalancheLibPath, os.environ[ZEROMQROOT] + "/lib" ] )
+	env.Append( LIBS = [ "avalanche", "zmq" ] )
 
 # Adds all packages
 def addpackages(env):

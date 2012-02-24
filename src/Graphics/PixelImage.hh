@@ -48,6 +48,7 @@ public:
   /// Return the local Rect
   inline RectPtr GetRect();
 
+  inline int GetWidth();
 protected:
   /// Construct the texture and pixels
   void Construct();
@@ -98,6 +99,12 @@ inline RectPtr
 PixelImage::GetRect()
 {
   return fLocalRect;
+}
+
+inline int
+PixelImage::GetWidth()
+{
+  return fWidth;
 }
 
 } // ::Viewer
