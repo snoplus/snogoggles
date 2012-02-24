@@ -34,7 +34,7 @@ GUITextureManager::Initialise()
   sf::Image baseImage;
   stringstream fileLocation;
   fileLocation << getenv( "VIEWERROOT" ) << "/textures/GUIA.png";
-  if( baseImage.LoadFromFile( "/home/jonesph/snocave/snogoggles/textures/GUIA.png" ) )
+  if( baseImage.LoadFromFile( fileLocation.str() ) )
     {
       fBaseWidth = baseImage.GetWidth();
       fBaseHeight = baseImage.GetHeight();
