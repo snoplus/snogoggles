@@ -53,17 +53,23 @@ Histogram::DrawHistogram()
 {
   if( fBins.empty() )
     return;
-  const double maxValue = *max_element( fBins.begin(), fBins.end() );
+  const double maxValue = *max_element( fBins.begin(), fBins.end() ) + 1;
+  int drawnBinWidth = 1.0; // one pixel wide
+  int binsPerDrawn = 1.0;
+  if( fBins.size() > fImage->GetWidth() )
+    binsPerDrawn = fBins.size() / fImage->GetWidth();
+  
+  drawnBinWidth /= fImage->GetWidth(); // Change to local coords
   const int binWidth = fBins.size() / fImage->GetWidth();
-  for( unsigned int iBin = 0; iBin < fBins.size(); iBin += binWidth )
+  for( unsigned int iBin = 0; iBin < fBins.size(); iBin += binsPerDrawn )
     {
       double binValue = 0.0;
-      for( unsigned int iBin2 = iBin; iBin2 < iBin + binWidth; iBin2++ )
+      for( unsigned int iBin2 = iBin; iBin2 < iBin + binsPerDrawn; iBin2++ )
         binValue += fBins[iBin2];
 
       const double binRatio = static_cast<double>( iBin ) / static_cast<double>( fBins.size() );
       sf::Vector2<double> pos( binRatio, 1.0 - binValue / maxValue );
-      sf::Vector2<double> size( 1.0, binValue / maxValue );
+      sf::Vector2<double> size( drawnBinWidth, binValue / maxValue );
       fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( iBin / fBins.size() ) );
     }
 }
@@ -93,22 +99,20 @@ Histogram::CalculateHistogram( const RenderState& renderState )
 	}
       break;
     case RenderState::eCal:
-      {
-      case RenderState::eTAC:
-	switch( renderState.GetDataType() )
-	  {
-	    fBins.resize( 500, 0.0 );
-	    for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-	      {
-		if( rEV->GetPMTCal( ipmt )->GetsPMTt() > 0.0 && rEV->GetPMTCal( ipmt )->GetsPMTt() < 500.0 )
-		  {
-		    int bin = static_cast<int>( rEV->GetPMTUnCal( ipmt )->GetsPMTt() );
-		    fBins[ bin ] += 1.0;
-		  }
-	      }
-	  }
-	break;
-      }
+      switch( renderState.GetDataType() )
+	{
+	case RenderState::eTAC:
+	  fBins.resize( 500, 0.0 );
+	  for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
+	    {
+	      if( rEV->GetPMTCal( ipmt )->GetsPMTt() > 0.0 && rEV->GetPMTCal( ipmt )->GetsPMTt() < 500.0 )
+		{
+		  int bin = static_cast<int>( rEV->GetPMTUnCal( ipmt )->GetsPMTt() );
+		  fBins[ bin ] += 1.0;
+		}
+	    }
+	  break;
+	}
       break;
     }
 }

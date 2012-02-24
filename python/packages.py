@@ -44,8 +44,8 @@ def PThread(env):
 # Append Avalanche and zmq
 def Avalanche(env):
 	avalancheLibPath = os.path.join(os.environ['AVALANCHEROOT'], "lib/cpp")
-	env.Append( CPPPATH = [ avalancheLibPath, os.environ[ZEROMQROOT] + "/include" ] )
-	env.Append( LIBPATH = [ avalancheLibPath, os.environ[ZEROMQROOT] + "/lib" ] )
+	env.Append( CPPPATH = [ avalancheLibPath, os.environ['ZEROMQROOT'] + "/include" ] )
+	env.Append( LIBPATH = [ avalancheLibPath, os.environ['ZEROMQROOT'] + "/lib" ] )
 	env.Append( LIBS = [ "avalanche", "zmq" ] )
 
 # Adds all packages
