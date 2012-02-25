@@ -56,22 +56,12 @@ FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
 }
 
 void 
-FrameContainer::Initialise( const std::string& type )
+FrameContainer::Initialise( Frame* frame )
 {
   fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
   fTopBar->Initialise();
-  static int init = 0;
-  if( init % 5 == 0 )
-    fFrame = new Frames::LambertProjection( RectPtr( fRect->NewDaughter() ) );
-  else if( init % 5 == 1 )
-    fFrame = new Frames::CrateView( RectPtr( fRect->NewDaughter() ) );
-  else if( init % 5 == 2 )
-    fFrame = new Frames::HitFrame3d( RectPtr( fRect->NewDaughter() ) );
-  else if( init % 5 == 3 )
-    fFrame = new Frames::Histogram( RectPtr( fRect->NewDaughter() ) );
-  else
-    fFrame = new Frames::IcosahedralProjection( RectPtr( fRect->NewDaughter() ) );
-  init++;
+  fFrame = frame;
+  fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
   fFrame->Initialise();
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
 }

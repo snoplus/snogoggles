@@ -10,7 +10,6 @@ using namespace std;
 #include <Viewer/Rect.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/FrameMasterUI.hh>
-#include <Viewer/EventData.hh> // Temp
 using namespace Viewer;
 
 FrameManager::FrameManager( RectPtr rect,
@@ -32,14 +31,8 @@ FrameManager::NewEvent( const Event& event )
   // Check the UI first
   if( fFMUI->ContainsPoint( event.GetPos() ) )
     {
-      fNewFrameEvents.push( fFMUI->NewEvent( event ) );
+      fFMUI->NewEvent( event );
       ChangeState( eNormal );
-      if( event.Type == sf::Event::MouseButtonReleased )
-	{
-	  NewFrame( "Logo" );
-	  EventData::GetInstance().NextEV();
-	}
-
     }
   // Else it may affect a frame container
   else
@@ -113,14 +106,8 @@ FrameManager::DispatchEvent( const Event& event,
 void 
 FrameManager::EventLoop()
 {
-  // Create the frames requested
-  while( !fNewFrameEvents.empty() )
-    {
-      if( fNewFrameEvents.front() != string("") )
-	NewFrame( fNewFrameEvents.front() );
-      fNewFrameEvents.pop();
-    }
   // Now pass on to the frames
+  fFMUI->EventLoop();
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
     (*iTer)->EventLoop();
 }
@@ -142,7 +129,8 @@ FrameManager::Initialise()
   // Then initialise the UI
   defaultSize.Left = 0.0; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = fBottomMargin;
   RectPtr fmRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
-  fFMUI = new FrameMasterUI( fmRect );
+  fFMUI = new FrameMasterUI( fmRect, *fgRect, this );
+  fFMUI->Initialise();
   // Now set the state
   fFocus = -1;
   fState = eNormal;
@@ -163,7 +151,6 @@ FrameManager::Render2d( RWWrapper& renderApp,
 {
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
     (*iTer)->Render2d( renderApp, renderState );
-  fFMUI->Render2d( renderApp );
 }
 
 void 
@@ -172,7 +159,6 @@ FrameManager::Render3d( RWWrapper& renderApp,
 {
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
     (*iTer)->Render3d( renderApp, renderState );
-  fFMUI->Render3d( renderApp );
 }
 
 void 
@@ -181,7 +167,7 @@ FrameManager::RenderGUI( RWWrapper& renderApp,
 {
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
     (*iTer)->RenderGUI( renderApp, renderState );
-  fFMUI->RenderGUI( renderApp );
+  fFMUI->Render( renderApp );
 }
 
 void 
@@ -237,14 +223,14 @@ FrameManager::FindFrame( const sf::Vector2<double>& coord )
 }
 
 void 
-FrameManager::NewFrame( const std::string& frameName )
+FrameManager::NewFrame( Frame* frame )
 {
   sf::Rect<double> rect;
   if( fFrameGrid->NewFrame( fFrameContainers.size(), rect ) )
     {
       RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eLocal ) );
       FrameContainer* newFrame = new FrameContainer( rectPtr );
-      newFrame->Initialise( frameName );
+      newFrame->Initialise( frame );
       fFrameContainers.push_back( newFrame );
     }
 }

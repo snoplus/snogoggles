@@ -31,10 +31,11 @@ namespace Frames
 class Histogram : public Frame
 {
 public:
-  Histogram( RectPtr rect ) : Frame( rect ) { }
+  Histogram( RectPtr rect ) : Frame( rect ), fLogY( true ) { }
   ~Histogram();
 
   void Initialise();
+  void Initialise( sf::Rect<double> imageSize );
   void LoadConfiguration( ConfigurationTable& configTable ) { }
 
   void SaveConfiguration( ConfigurationTable& configTable ) { }
@@ -58,6 +59,7 @@ protected:
 
   std::vector<double> fBins; /// < The histogram bin values
   ProjectionImage* fImage;
+  bool fLogY; /// < Display the y axis as log
 };
 
 } // ::Frames

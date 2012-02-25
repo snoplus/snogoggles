@@ -19,6 +19,7 @@ BaseFrame3d::~BaseFrame3d()
 
 void BaseFrame3d::Initialise()
 {
+  Frame::Initialise();
 	fModuleManager = CreateModuleManager();
 }
 
@@ -37,7 +38,7 @@ void BaseFrame3d::EventLoop()
 	while( fEvents.empty() == false )
 		fEvents.pop();
 
-	LateInitialise();
+	LateInitialise(); // This is very prone to cause segfaults, must it work this way?
 	fModuleManager->EventLoop();
 }
 

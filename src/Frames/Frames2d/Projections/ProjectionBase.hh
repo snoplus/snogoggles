@@ -36,16 +36,14 @@ public:
   ProjectionBase( RectPtr rect ) : Frame( rect ) { }
   ~ProjectionBase();
 
-  void Initialise();
+  virtual void Initialise();
   void LoadConfiguration( ConfigurationTable& configTable ) { }
 
   void SaveConfiguration( ConfigurationTable& configTable ) { }
 
   virtual void EventLoop();
   
-  virtual std::string GetName() { return ProjectionBase::Name(); }
-  
-  static std::string Name() { return std::string( "ProjectionBase" ); }
+  virtual std::string GetName() = 0;
 
   virtual void Render2d( RWWrapper& renderApp, 
 			 const RenderState& renderState );
@@ -55,13 +53,16 @@ public:
 
   //EFrameType GetFrameType() { return eUtil; }
 protected:
-  void DrawLine( Vector3 v1, 
-		 Vector3 v2 );
-  void DrawHits();
+  void ProjectGeodesicLine( Vector3 v1, 
+			    Vector3 v2 );
+  void DrawHits( const RenderState& renderState );
   void DrawGeodesic();
   void DrawAllPMTs();
 
   virtual sf::Vector2<double> Project( Vector3 pmtPos ) = 0;
+  
+  std::vector< sf::Vector2<double> > fProjectedPMTs; /// < Vector of projected pmt positions
+  std::vector< sf::Vector2<double> > fProjectedGeodesic; /// < Vecotr of projected geodesic positions
   ProjectionImage* fImage;
 };
 

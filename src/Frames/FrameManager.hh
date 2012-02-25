@@ -18,7 +18,6 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <queue>
 #include <string>
 #include <vector>
 
@@ -34,6 +33,7 @@ namespace Viewer
   class FrameMasterUI;
   class ConfigurationTable;
   class RWWrapper;
+  class Frame;
 
 class FrameManager
 {
@@ -67,7 +67,10 @@ public:
 		  const RenderState& renderState );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
+  /// Create a new frame 
+  void NewFrame( Frame* frame );
 private:
+
   FrameEvent DispatchEvent( const Event& event,
 			    const int targetFrame );
 
@@ -76,8 +79,6 @@ private:
   void ChangeState( const EState state );
 
   int FindFrame( const sf::Vector2<double>& coord );
-
-  void NewFrame( const std::string& frameName );
 
   void DeleteFrame( const int targetFrame );
 
@@ -90,7 +91,6 @@ private:
   RectPtr fRect; /// < The frame manager rect
   RectPtr* fgRect; /// < The frame grid area rect
   std::vector<FrameContainer*> fFrameContainers; /// < The frames themselves.
-  std::queue<std::string> fNewFrameEvents; /// < The event queue for new frames.
   sf::Vector2<double> fMoveOrigin; /// < Original position of the frame
   FrameMasterUI* fFMUI; /// < The UI that controls which frames should be created.
   FrameGrid* fFrameGrid; /// < Controls where frames can be positioned.

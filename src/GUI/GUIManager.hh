@@ -43,7 +43,8 @@ public:
   void Render( RWWrapper& windowApp );
   /// Make a GUI object under management, deleted by this class
   template<class T> inline
-  T* NewGUI( const sf::Rect<double>& rect );
+  T* NewGUI( const sf::Rect<double>& rect,
+	     Rect::ECoordSystem system = Rect::eLocal );
   /// Return a GUI object given the local guiID
   GUI* GetGUI( unsigned int guiID );
   /// Delete all GUI objects
@@ -68,9 +69,10 @@ GUIManager::GUIManager( RectPtr rect )
 
 template<class T>
 T* 
-GUIManager::NewGUI( const sf::Rect<double>& rect )
+GUIManager::NewGUI( const sf::Rect<double>& rect,
+		    Rect::ECoordSystem system )
 {
-  RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eLocal ) );
+  RectPtr rectPtr( fRect->NewDaughter( rect, system ) );
   T* gui = new T( rectPtr, fGUIObjects.size() );
   fGUIObjects.push_back( gui );
   return gui;

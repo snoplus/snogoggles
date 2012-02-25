@@ -31,7 +31,8 @@ RWWrapper::Draw( Text& object )
   sf::Text sfmlText( object.GetString() );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
   sf::Rect<float> textRect = sfmlText.GetGlobalBounds();
-  sfmlText.SetPosition( resPos.Left, resPos.Top );
+  const double topCorrection = textRect.Top / textRect.Height * resPos.Height;
+  sfmlText.SetPosition( resPos.Left, resPos.Top - topCorrection );
   if( textRect.Width > resPos.Width )
     sfmlText.Scale( resPos.Width / textRect.Width, resPos.Height / textRect.Height );
   sfmlText.SetColor( object.GetColour() );

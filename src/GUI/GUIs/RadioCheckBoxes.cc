@@ -17,16 +17,19 @@ RadioCheckBoxes::~RadioCheckBoxes()
 }
 
 void 
-RadioCheckBoxes::Initialise( const vector<string>& labels )
+RadioCheckBoxes::Initialise( const vector<string>& labels,
+			     const int cols )
 {
   sf::Rect<double> size;
   size.Left = 0.0;
-  size.Width = 1.0;
+  size.Width = 1.0 / (double)cols;
   double height = 1.0 / (double) labels.size();
   size.Height = height;
+  int numPerCol = labels.size() / cols;
   for( unsigned int iLabel = 0; iLabel < labels.size(); iLabel++ )
     {
-      size.Top = iLabel * height;
+      size.Top = ( iLabel % numPerCol ) * height;
+      size.Left = ( iLabel / numPerCol ) * size.Width;
       fRadioCheckBoxes.push_back( new CheckBoxLabel( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), iLabel ) );
       fRadioCheckBoxes[iLabel]->SetLabel( labels[iLabel] );
     }

@@ -32,6 +32,10 @@ class LambertProjection : public ProjectionBase
 public:
   LambertProjection( RectPtr rect ) : ProjectionBase( rect ) { }
 
+  std::string GetName() { return LambertProjection::Name(); }
+
+  static std::string Name() { return std::string( "Lambert" ); }
+
 private:
   sf::Vector2<double> Project( Vector3 pmtPos );
 };

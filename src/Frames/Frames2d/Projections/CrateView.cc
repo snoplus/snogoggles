@@ -18,6 +18,12 @@ using namespace Viewer::Frames;
 
 
 const double kLocalSize = 1.0;
+const double kXMargin     = 0.01;
+const double kYMargin     = 0.01;
+const double kCrateWidth  = 1.0 / 10.0 - kXMargin; // 10 Columns
+const double kCrateHeight = 1.0 / 2.0 - kYMargin; // 2 Rows
+const double kHitWidth    = kCrateWidth  / 16.0; // There are 16 cards
+const double kHitHeight   = kCrateHeight / 32.0; // There are 32 channels
 
 void 
 CrateView::Initialise() 
@@ -33,13 +39,6 @@ CrateView::Render2d( RWWrapper& renderApp,
 		     const RenderState& renderState )
 {
   fImage->Clear();
-  const double kXMargin     = 0.01;
-  const double kYMargin     = 0.01;
-  const double kCrateWidth  = 1.0 / 10.0 - kXMargin; // 10 Columns
-  const double kCrateHeight = 1.0 / 2.0 - kYMargin; // 2 Rows
-  const double kHitWidth    = kCrateWidth  / 16.0; // There are 16 cards
-  const double kHitHeight   = kCrateHeight / 32.0; // There are 32 channels
-
   // Draw the crate outlines first
   for( int iCrate = 0; iCrate < 20; iCrate++ ) // 20 Crates
     {
@@ -50,21 +49,7 @@ CrateView::Render2d( RWWrapper& renderApp,
 				ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
   // Now draw the hits
-  EventData& events = EventData::GetInstance();
-  RAT::DS::EV* rEV = events.GetCurrentEV();
-  for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-    {
-      double pmtHitTime = rEV->GetPMTCal(ipmt)->GetTime();
-      int lcn = rEV->GetPMTCal(ipmt)->GetID();
-      int crate = RAT::BitManip::GetBits(lcn, 9, 5);
-      int card = RAT::BitManip::GetBits(lcn, 5, 4);
-      int channel = RAT::BitManip::GetBits(lcn, 0, 5);
-      double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth;
-      double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight;
-      fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
-			  sf::Vector2<double>( kHitWidth, kHitHeight ),
-			  ColourPalette::gPalette->GetPrimaryColour( eRed ) );
-    }
+  DrawPMTs( renderState );
   fImage->Update();
   renderApp.Draw( *fImage );
 }
@@ -75,4 +60,103 @@ CrateView::EventLoop()
   while(!fEvents.empty()){
     fEvents.pop();
   }
+}
+
+void
+CrateView::DrawPMT( int lcn,
+		    double ratio )
+{
+  int crate = RAT::BitManip::GetBits(lcn, 9, 5);
+  int card = RAT::BitManip::GetBits(lcn, 5, 4);
+  int channel = RAT::BitManip::GetBits(lcn, 0, 5);
+  double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth;
+  double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight;
+  fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
+		      sf::Vector2<double>( kHitWidth, kHitHeight ),
+		      ColourPalette::gPalette->GetColour( ratio ) );
+}
+
+void 
+CrateView::DrawPMTs( const RenderState& renderState )
+{
+  EventData& events = EventData::GetInstance();
+  RAT::DS::EV* rEV = events.GetCurrentEV();
+
+  switch( renderState.GetDataSource() )
+    {
+    case RenderState::eUnCal:
+      switch( renderState.GetDataType() )
+        {
+        case RenderState::eTAC:
+          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
+            {
+	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
+              double tac = rEV->GetPMTUnCal( ipmt )->GetTime();
+              DrawPMT( rPMTUnCal->GetID(), tac / 4000.0 );
+            }
+          break;
+        case RenderState::eQHL:
+          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
+            {
+	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
+              double qhl = rEV->GetPMTUnCal( ipmt )->GetsQHL();
+              DrawPMT( rPMTUnCal->GetID(), qhl / 4500.0 );
+            }
+          break;
+        case RenderState::eQHS:
+	  for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
+            {
+	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
+              double qhs = rEV->GetPMTUnCal( ipmt )->GetsQHS();
+              DrawPMT( rPMTUnCal->GetID(), qhs / 4500.0 );
+            }
+          break;
+        case RenderState::eQLX:
+          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
+            {
+	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
+              double qlx = rEV->GetPMTUnCal( ipmt )->GetsQLX();
+              DrawPMT( rPMTUnCal->GetID(), qlx / 1400.0 );
+            }
+          break;
+        }
+      break;
+    case RenderState::eCal:
+      switch( renderState.GetDataType() )
+        {
+        case RenderState::eTAC:
+          for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
+            {
+	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
+              double tac = rEV->GetPMTCal( ipmt )->GetTime();
+              DrawPMT( rPMTCal->GetID(), tac / 500.0 );
+            }
+          break;
+        case RenderState::eQHL:
+         for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
+	   {
+	     RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
+	     double qhl = rEV->GetPMTCal( ipmt )->GetsQHL();
+	     DrawPMT( rPMTCal->GetID(), qhl / 4000.0 );
+	   }
+	 break;
+	case RenderState::eQHS:
+	  for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
+	    {
+	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
+	      double qhs = rEV->GetPMTCal( ipmt )->GetsQHS();
+	      DrawPMT( rPMTCal->GetID(), qhs / 4000.0 );
+	    }
+	  break;
+	case RenderState::eQLX:
+	  for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
+	    {
+	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
+	      double qlx = rEV->GetPMTCal( ipmt )->GetsQLX();
+	      DrawPMT( rPMTCal->GetID(), qlx / 1000.0 );
+	    }
+	  break;
+	}
+      break;
+    }
 }

@@ -46,6 +46,10 @@ public:
   void Render3d( RWWrapper& renderApp,
 		 const RenderState& renderState ) { }
 private:
+  void DrawPMT( int lcn,
+		double ratio );
+  void DrawPMTs( const RenderState& renderState );
+
   ProjectionImage* fImage; /// < Image of the crates
 };
 

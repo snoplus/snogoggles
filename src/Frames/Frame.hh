@@ -37,6 +37,8 @@ public:
   enum EFrameType { eUtil, e3d, e2d };
 
   Frame( RectPtr rect );
+
+  inline void NewMother( RectPtr rect );
   /// Deal with a new UI event
   void NewEvent( const Event& event );
   /// The event loop
@@ -67,6 +69,12 @@ protected:
   GUIManager fGUIManager;
   std::queue<GUIEvent> fEvents;
 };
+
+inline void
+Frame::NewMother( RectPtr mother )
+{
+  fRect = mother;
+}
 
 inline bool
 Frame::ContainsPoint( const sf::Vector2<double>& point )

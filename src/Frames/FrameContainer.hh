@@ -48,7 +48,7 @@ public:
   /// Save the current configuration
   void SaveConfiguration( ConfigurationTable& configTable );
   /// Initialise without a configuration
-  void Initialise( const std::string& type );
+  void Initialise( Frame* frame );
   /// Load a configuration
   void LoadConfiguration( ConfigurationTable& configTable );
   /// Render all 2d objects

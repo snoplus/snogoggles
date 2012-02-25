@@ -21,6 +21,7 @@
 
 #include <Viewer/Factory.hh>
 #include <Viewer/Frame.hh>
+#include <Viewer/RectPtr.hh>
 
 namespace Viewer
 {
@@ -28,7 +29,7 @@ namespace Viewer
 class FrameFactory : public Factory<Frame>
 {
 public:   
-  FrameFactory();
+  FrameFactory( RectPtr rect );
   void RegisterFrame( const std::string& name, AllocBase<Frame>* allocator, Frame::EFrameType frameType );
   std::map<std::string, Frame::EFrameType> fTypeMap;
 };

@@ -38,7 +38,8 @@ public:
   void Render( RWWrapper& renderApp );
   GUIEvent NewEvent( const Event& event );
 
-  void Initialise( const std::vector<std::string>& labels );
+  void Initialise( const std::vector<std::string>& labels,
+		   const int cols = 1 );
   void SetState( unsigned int state );
   /// Return the state as an unsigned int
   unsigned int GetState() const;
