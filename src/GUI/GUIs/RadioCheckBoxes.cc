@@ -20,12 +20,12 @@ void
 RadioCheckBoxes::Initialise( const vector<string>& labels,
 			     const int cols )
 {
+  const int numPerCol = labels.size() / cols;
   sf::Rect<double> size;
   size.Left = 0.0;
   size.Width = 1.0 / (double)cols;
-  double height = 1.0 / (double) labels.size();
+  double height = 1.0 / numPerCol;
   size.Height = height;
-  int numPerCol = labels.size() / cols;
   for( unsigned int iLabel = 0; iLabel < labels.size(); iLabel++ )
     {
       size.Top = ( iLabel % numPerCol ) * height;
@@ -81,4 +81,12 @@ RadioCheckBoxes::GetState() const
     if( fRadioCheckBoxes[iCheckBox]->GetState() )
       state = iCheckBox;
   return state;
+}
+
+void
+RadioCheckBoxes::SetState( unsigned int state )
+{
+  for( unsigned int iCheckBox = 0; iCheckBox < fRadioCheckBoxes.size(); iCheckBox++ )
+    fRadioCheckBoxes[iCheckBox]->SetState( false );
+  fRadioCheckBoxes[state]->SetState( true );
 }

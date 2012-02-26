@@ -7,6 +7,7 @@
 #include <Viewer/EventData.hh>
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/ColourPalette.hh>
+#include <Viewer/Event.hh>
 using namespace Viewer;
 
 EventMasterUI::EventMasterUI( RectPtr rect )
@@ -18,6 +19,14 @@ EventMasterUI::EventMasterUI( RectPtr rect )
 void 
 EventMasterUI::NewEvent( const Event& event )
 {
+  EventData& events = EventData::GetInstance();
+  if( event.Type == sf::Event::KeyPressed )
+    {
+      if( event.Key.Code == sf::Keyboard::Right )
+	events.NextEV();
+      else if( event.Key.Code == sf::Keyboard::Left )
+	events.PreviousEV();
+    }
   GUIEvent guiEvent = fGUIManager.NewEvent( event );
   if( guiEvent.IsNULL() == false )
     fEvents.push( guiEvent );

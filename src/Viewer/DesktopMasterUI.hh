@@ -18,7 +18,11 @@
 
 #include <SFML/System/Vector2.hpp>
 
+#include <queue>
+
+#include <Viewer/GUIEvent.hh>
 #include <Viewer/RectPtr.hh>
+#include <Viewer/GUIManager.hh>
 
 namespace sf
 {
@@ -32,6 +36,10 @@ namespace Viewer
   class ConfigurationTable;
   class RenderState;
   class Event;
+namespace GUIs
+{
+  class RadioCheckBoxes;
+}
 
 class DesktopMasterUI
 {
@@ -48,20 +56,19 @@ public:
   void Initialise();
   /// Load a configuration
   void LoadConfiguration( ConfigurationTable& configTable );
-  /// Render all 2d objects
-  void Render2d( RWWrapper& renderApp ) {}
-  /// Render all 3d objects
-  void Render3d( RWWrapper& renderApp ) {}
   /// Render the GUI objects
-  void RenderGUI( RWWrapper& renderApp );
+  void Render( RWWrapper& renderApp );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
   /// Get the index of the currently displayed desktop
   inline unsigned int GetCurrentDesktop();
 private:
+  GUIManager fGUIManager; /// < GUI manager
+  std::queue<GUIEvent> fEvents; /// < Returned gui events
   RectPtr fRect; /// < The DMUI drawable area
   unsigned int fNumDesktops; /// < Number of desktops
   unsigned int fCurrentDesktop; /// < Currently displayed desktop
+  GUIs::RadioCheckBoxes* fDesktopRadio; /// < Desktop chooser radio
 };
 
 inline bool

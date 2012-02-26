@@ -15,7 +15,7 @@ DesktopManager::DesktopManager( RectPtr globalMother,
 				double bottomMargin )
   : fGlobalMother( globalMother ), fBottomMargin( bottomMargin ), fRightMargin( rightMargin )
 {
-  fDesktops.resize( 1 ); // Maximum allowed desktops
+  fDesktops.resize( 8 ); // Maximum allowed desktops
 }
 
 void 
@@ -71,20 +71,18 @@ DesktopManager::LoadConfiguration( Configuration& config )
 void 
 DesktopManager::Render2d( RWWrapper& renderApp )
 {
-  fDMUI->Render2d( renderApp );
   fDesktops[fDMUI->GetCurrentDesktop()]->Render2d( renderApp );
 }
 
 void 
 DesktopManager::Render3d( RWWrapper& renderApp )
 {
-  fDMUI->Render3d( renderApp );
   fDesktops[fDMUI->GetCurrentDesktop()]->Render3d( renderApp );
 }
 
 void 
 DesktopManager::RenderGUI( RWWrapper& renderApp )
 {
-  fDMUI->RenderGUI( renderApp );
+  fDMUI->Render( renderApp );
   fDesktops[fDMUI->GetCurrentDesktop()]->RenderGUI( renderApp );
 }
