@@ -38,7 +38,7 @@ namespace Viewer
 class ReceiverThread : public Thread
 {
 public:
-  inline ReceiverThread( const std::string& port, Semaphore& semaphore );
+  ReceiverThread( const std::string& port, Semaphore& semaphore );
   
   virtual ~ReceiverThread() {};
   
@@ -61,12 +61,6 @@ private:
   RAT::DS::Root* fDS;
   RAT::DS::Run* fRun;
 };
-
-ReceiverThread::ReceiverThread( const std::string& port, Semaphore& semaphore )
-  : fSemaphore( semaphore ), fNumReceivedEvents(0), fPort( port )
-{
-  fRun = NULL;
-}
 
 } //::Viewer
 
