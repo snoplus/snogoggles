@@ -8,6 +8,7 @@ using namespace std;
 #include <Viewer/Rect.hh>
 #include <Viewer/Configuration.hh>
 #include <Viewer/DesktopMasterUI.hh>
+#include <Viewer/ColourMasterUI.hh>
 using namespace Viewer;
 
 DesktopManager::DesktopManager( RectPtr globalMother,
@@ -23,12 +24,14 @@ DesktopManager::NewEvent( Event& event )
 {
   // Check the UI first
   fDMUI->NewEvent( event ); 
+  fCMUI->NewEvent( event );
   fDesktops[fDMUI->GetCurrentDesktop()]->NewEvent( event );
 }
 void 
 DesktopManager::EventLoop()
 {
   fDMUI->EventLoop();
+  fCMUI->EventLoop();
   fDesktops[fDMUI->GetCurrentDesktop()]->EventLoop();
 }
 
@@ -49,6 +52,10 @@ DesktopManager::Initialise()
   dmRect->SetRect( defaultSize, Rect::eLocal );
   fDMUI = new DesktopMasterUI( dmRect, fDesktops.size() );
   fDMUI->Initialise();
+  defaultSize.Top = 1.0 - 2.0 * fBottomMargin; defaultSize.Height = fBottomMargin;
+  fCMUI = new ColourMasterUI( RectPtr( fGlobalMother->NewDaughter( defaultSize, Rect::eLocal ) ) );
+  fCMUI->Initialise();
+
   // Now initialise the Desktops
   for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
@@ -84,5 +91,6 @@ void
 DesktopManager::RenderGUI( RWWrapper& renderApp )
 {
   fDMUI->Render( renderApp );
+  fCMUI->Render( renderApp );
   fDesktops[fDMUI->GetCurrentDesktop()]->RenderGUI( renderApp );
 }

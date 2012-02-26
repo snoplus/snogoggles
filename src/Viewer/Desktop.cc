@@ -44,9 +44,8 @@ Desktop::Initialise()
 {
   // First initialise the UI
   sf::Rect<double> defaultSize;
-  defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 0.0; defaultSize.Width = fRightMargin; defaultSize.Height = 1.0 - fBottomMargin;
-  RectPtr emRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
-  fEMUI = new EventMasterUI( emRect );
+  defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 0.0; defaultSize.Width = fRightMargin; defaultSize.Height = 1.0 - 2.0 * fBottomMargin;
+  fEMUI = new EventMasterUI( RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) ) );
   fEMUI->Initialise();
   // Now initialise the FrameManager
   defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0;
@@ -68,7 +67,6 @@ Desktop::Render2d( RWWrapper& renderApp )
 {
   RenderState renderState = fEMUI->GetRenderState();
   fFrameManager->Render2d( renderApp, renderState );
-  fEMUI->Render2d( renderApp );
 }
 
 void 
@@ -76,7 +74,6 @@ Desktop::Render3d( RWWrapper& renderApp )
 {
   RenderState renderState = fEMUI->GetRenderState();
   fFrameManager->Render3d( renderApp, renderState );
-  fEMUI->Render3d( renderApp );
 }
 
 void 
@@ -84,5 +81,5 @@ Desktop::RenderGUI( RWWrapper& renderApp )
 {
   RenderState renderState = fEMUI->GetRenderState();
   fFrameManager->RenderGUI( renderApp, renderState );
-  fEMUI->RenderGUI( renderApp );
+  fEMUI->Render( renderApp );
 }

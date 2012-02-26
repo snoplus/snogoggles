@@ -23,7 +23,7 @@
 namespace Viewer
 {
   class DesktopMasterUI;
-  class EventMasterUI;
+  class ColourMasterUI;
   class Desktop;
   class RWWrapper;
   class Configuration;
@@ -55,6 +55,7 @@ private:
   std::vector<Desktop*> fDesktops; /// < The available desktops
   RectPtr fGlobalMother; /// < The gloabl mother rect, this class does not need it's own
   DesktopMasterUI* fDMUI; /// < The UI which controls which desktop is visible
+  ColourMasterUI* fCMUI; /// < The UI which controls the current colour scheme
   double fRightMargin; /// < Local coord size of right margin
   double fBottomMargin; /// < Local coord size of bottom margin
 };

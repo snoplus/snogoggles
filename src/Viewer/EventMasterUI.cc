@@ -46,14 +46,6 @@ EventMasterUI::EventLoop()
 	case 1: // Prev EV
 	  events.PreviousEV();
 	  break;
-	case 4: // GUI Colour Selector
-	  GUIColourPalette::gPalette = fGUIColourFactory.New( fGUIColourSelector->GetStringState() );
-	  // Notify the GUI textures that they have changed...
-	  GUITextureManager::GetInstance().ChangeColourScheme();
-	  break;
-	case 5: // Event Colour Selector
-	  ColourPalette::gPalette = fColourFactory.New( fColourSelector->GetStringState() );
-	  break;
 	}
       fEvents.pop();
     }
@@ -84,14 +76,6 @@ EventMasterUI::Initialise()
   size.Top = 0.5; size.Height = 0.2; size.Width = 0.8;
   fTypeRadio = fGUIManager.NewGUI<GUIs::RadioCheckBoxes>( size );
   fTypeRadio->Initialise( RenderState::GetTypeStrings() );
-
-  size.Top = 0.8; size.Left = 0.0; size.Height = 0.05; size.Width = 0.9;
-  fGUIColourSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
-  fGUIColourSelector->Initialise( fGUIColourFactory.GetNames() );
-
-  size.Top = 0.7; size.Left = 0.0; size.Height = 0.05; size.Width = 0.9;
-  fColourSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
-  fColourSelector->Initialise( fColourFactory.GetNames() );
 }
 
 void 
@@ -101,7 +85,7 @@ EventMasterUI::LoadConfiguration( ConfigurationTable& configTable )
 }
 
 void 
-EventMasterUI::RenderGUI( RWWrapper& renderApp )
+EventMasterUI::Render( RWWrapper& renderApp )
 {
   fGUIManager.Render( renderApp );
 }

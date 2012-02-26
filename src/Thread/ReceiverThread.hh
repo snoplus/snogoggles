@@ -14,6 +14,8 @@
 #ifndef __Viewer_ReceiverThread__
 #define __Viewer_ReceiverThread__
 
+#include <avalanche.hpp>
+
 #include <Viewer/Thread.hh>
 
 #include <string>
@@ -50,6 +52,7 @@ private:
   int fNumReceivedEvents;
   Semaphore& fSemaphore;
 
+  avalanche::client fClient;
   // Temp below, (must load a DS::Run from somewhere - need PMT positions)
   void LoadRootFile();
   TFile* fFile;
@@ -62,7 +65,7 @@ private:
 ReceiverThread::ReceiverThread( const std::string& port, Semaphore& semaphore )
   : fSemaphore( semaphore ), fNumReceivedEvents(0), fPort( port )
 {
-
+  fRun = NULL;
 }
 
 } //::Viewer

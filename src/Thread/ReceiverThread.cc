@@ -1,5 +1,3 @@
-#include <avalanche.hpp>
-
 #include <RAT/DS/EV.hh>
 #include <RAT/DS/PMTProperties.hh>
 #include <RAT/DS/Run.hh>
@@ -24,7 +22,7 @@ ReceiverThread::Run()
 {
   // Must load a DS run for the PMT Positions (replace this with db access when possible...)
   EventData& events = EventData::GetInstance();
-  if( fNumReceivedEvents == 0 )
+  if( fRun == NULL ) // Need safer method!
     {
       LoadRootFile();
       events.SetRun( fRun );
@@ -32,22 +30,19 @@ ReceiverThread::Run()
       delete fFile;
       delete fDS;
       delete fRun;
+      fClient.addDispatcher( fPort.c_str() );
+      cout << "Listening " << fPort << endl;
     }
-
-  // create a client, listening for objects
-  avalanche::client client;
-  client.addDispatcher( fPort.c_str() );
-  // receive RAT::DS::PackedRec objects, blocks until recieves packet
-  cout << "Listening" << endl;
-  //RAT::DS::PackedRec* rec = (RAT::DS::PackedRec*) client.recvObject(RAT::DS::PackedRec::Class());
-  //if( rec && rec->RecordType == 1 ) //Detector event (why not enum?)
+  /// receive RAT::DS::PackedRec objects, blocks until recieves packet
+  RAT::DS::PackedRec* rec = (RAT::DS::PackedRec*) fClient.recv();
+  if( rec && rec->RecordType == 1 ) //Detector event (why not enum?)
   
   // Temp fix for builder strangeness
-  RAT::DS::PackedEvent* event = (RAT::DS::PackedEvent*) client.recv();
-  if( event )
+  //RAT::DS::PackedEvent* event = (RAT::DS::PackedEvent*) fClient.recv();
+  //if( event )
     {
       cout << "Got an event" << endl;
-      //RAT::DS::PackedEvent* event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
+      RAT::DS::PackedEvent* event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
       RAT::DS::Root* rDS = RAT::Pack::UnpackEvent( event, NULL, NULL );
       events.AddEV( rDS->GetEV(0), fNumReceivedEvents );
       fNumReceivedEvents++;

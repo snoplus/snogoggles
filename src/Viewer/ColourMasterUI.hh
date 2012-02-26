@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::EventMasterUI
+/// \class Viewer::ColourMasterUI
 ///
 /// \brief   UI to control which event is visible
 ///
@@ -13,8 +13,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_EventMasterUI__
-#define __Viewer_EventMasterUI__
+#ifndef __Viewer_ColourMasterUI__
+#define __Viewer_ColourMasterUI__
 
 #include <SFML/System/Vector2.hpp>
 
@@ -23,10 +23,12 @@
 #include <Viewer/RectPtr.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/GUIManager.hh>
+#include <Viewer/GUIColourPaletteFactory.hh>
+#include <Viewer/ColourPaletteFactory.hh>
 
 namespace sf
 {
-  class Event;
+  class Colour;
   class RenderWindow;
 }
 
@@ -39,14 +41,13 @@ namespace Viewer
 namespace GUIs
 {
   class Selector;
-  class RadioCheckBoxes;
 }
 
 
-class EventMasterUI
+class ColourMasterUI
 {
 public:
-  EventMasterUI( RectPtr rect );
+  ColourMasterUI( RectPtr rect );
   /// Deal with a new UI event
   void NewEvent( const Event& event );
   /// The event loop
@@ -61,20 +62,19 @@ public:
   void Render( RWWrapper& renderApp );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
-  /// Return the current render state
-  RenderState GetRenderState();
 private:
   RectPtr fRect; /// < The DMUI drawable area
   GUIManager fGUIManager; /// < The GUI manager
   std::queue<GUIEvent> fEvents;
+  GUIColourPaletteFactory fGUIColourFactory; /// < The GUI Colour factory
+  ColourPaletteFactory fColourFactory; /// < The event colour factory
 
-  //GUIs::Selector* fGUIColourSelector;
-  GUIs::RadioCheckBoxes* fTypeRadio;
-  GUIs::RadioCheckBoxes* fSourceRadio;
+  GUIs::Selector* fGUIColourSelector;
+  GUIs::Selector* fColourSelector;
 };
 
 inline bool
-EventMasterUI::ContainsPoint( const sf::Vector2<double>& point )
+ColourMasterUI::ContainsPoint( const sf::Vector2<double>& point )
 {
   return fRect->ContainsPoint( point, Rect::eResolution );
 }
