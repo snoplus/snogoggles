@@ -40,13 +40,14 @@ ReceiverThread::Run()
   if( fGoodBuilder ) // Events come as PackedRec types
     {
       RAT::DS::PackedRec* rec = (RAT::DS::PackedRec*) fClient.recv();
-      event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
+      if( rec ) // avalanche is non-blocking
+	event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
     }
   else // Events come as PackedEvent types
     {
       event = (RAT::DS::PackedEvent*) fClient.recv();
     }
-  if( event != NULL )
+  if( event != NULL ) // avalanche is non-blocking
     {
       cout << "Got an event " << event->NHits << endl;
       RAT::DS::Root* rDS = RAT::Pack::UnpackEvent( event, NULL, NULL );
