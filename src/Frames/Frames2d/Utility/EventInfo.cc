@@ -51,6 +51,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << "Data Clean: " << ToHexString( rEV->GetDataCleanFlags() ) << endl;
   eventInfo << "Nhit: " << rEV->GetPMTAllCalCount() << endl;
   eventInfo << "Nhit (Cal): " << rEV->GetPMTCalCount() << endl;
+  eventInfo << "Nhit (UnCal): " << rEV->GetPMTUnCalCount() << endl;
   eventInfo << "Nhit (OWL): " << rEV->GetPMTOWLCalCount() << endl;
   eventInfo << "Nhit (LG): " << rEV->GetPMTLGCalCount() << endl;
   eventInfo << "Nhit (Neck): " << rEV->GetPMTNeckCalCount() << endl;

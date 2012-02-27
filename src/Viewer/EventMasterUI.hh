@@ -41,7 +41,6 @@ namespace GUIs
 {
   class Selector;
   class RadioCheckBoxes;
-  class CheckBoxLabel;
 }
 
 
@@ -72,7 +71,6 @@ private:
   sf::Clock fClock; /// < Timing clock, for continuous events
 
   GUIs::Selector* fRefreshSelector;
-  GUIs::CheckBoxLabel* fContinuousBox;
   GUIs::RadioCheckBoxes* fTypeRadio;
   GUIs::RadioCheckBoxes* fSourceRadio;
 };

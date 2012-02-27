@@ -4,7 +4,6 @@
 #include <Viewer/GUIImageButton.hh>
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Selector.hh>
-#include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/EventData.hh>
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/ColourPalette.hh>
@@ -24,9 +23,9 @@ EventMasterUI::NewEvent( const Event& event )
   if( event.Type == sf::Event::KeyPressed )
     {
       if( event.Key.Code == sf::Keyboard::Right )
-	events.NextEV();
+	events.Next();
       else if( event.Key.Code == sf::Keyboard::Left )
-	events.PreviousEV();
+	events.Prev();
     }
   GUIEvent guiEvent = fGUIManager.NewEvent( event );
   if( guiEvent.IsNULL() == false )
@@ -42,34 +41,32 @@ EventMasterUI::EventLoop()
       switch( fEvents.front().fguiID )
 	{
 	case 0: // Next EV
-	  events.NextEV();
+	  events.Next();
 	  break;
 	case 1: // Prev EV
-	  events.PreviousEV();
+	  events.Prev();
 	  break;
 	}
       fEvents.pop();
     }
-  // If continuous event switching then...
-  if( fContinuousBox->GetState() )
+  switch( fRefreshSelector->GetState() )
     {
-      switch( fRefreshSelector->GetState() )
+    case 0: // Stopped
+      break;
+    case 1: // Instant refresh
+      events.Latest();
+      break;
+    case 2: // 0.5 second
+      if( fClock.GetElapsedTime().AsSeconds() > 0.5 )
 	{
-	case 0: // Instant refresh
-	  events.NextEV();
-	  break;
-	case 1: // 1 second
-	  if( fClock.GetElapsedTime().AsSeconds() > 1.0 )
-	    {
-	      events.NextEV();
-	      fClock.Restart();
-	    }
-	case 2: // 5 seconds
-	  if( fClock.GetElapsedTime().AsSeconds() > 5.0 )
-	    {
-	      events.NextEV();
-	      fClock.Restart();
-	    }
+	  events.Next();
+	  fClock.Restart();
+	}
+    case 3: // 2 seconds
+      if( fClock.GetElapsedTime().AsSeconds() > 2.0 )
+	{
+	  events.Next();
+	  fClock.Restart();
 	}
     }
 }
@@ -103,12 +100,8 @@ EventMasterUI::Initialise()
   size.Left = 0.1; size.Top = 0.1; size.Width = 0.8; size.Height = 0.05;
   fRefreshSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
   vector<string> refreshStrings;
-  refreshStrings.push_back( "Instant" ); refreshStrings.push_back( "1 sec" ); refreshStrings.push_back( "5 sec" );
+  refreshStrings.push_back( "Stop" ); refreshStrings.push_back( "Instant" ); refreshStrings.push_back( "Continuous 1/2 sec" ); refreshStrings.push_back( "Continuous 2 sec" );
   fRefreshSelector->Initialise( refreshStrings );
-
-  size.Left = 0.1; size.Top = 0.05; size.Width = 0.8; size.Height = 0.05;
-  fContinuousBox = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( size );
-  fContinuousBox->SetLabel( "Continuous" );
 }
 
 void 

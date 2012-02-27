@@ -52,7 +52,7 @@ ReceiverThread::Run()
       cout << "Got an event " << event->NHits << endl;
       RAT::DS::Root* rDS = RAT::Pack::UnpackEvent( event, NULL, NULL );
       EventData& events = EventData::GetInstance();
-      events.AddEV( rDS->GetEV(0), fNumReceivedEvents );
+      events.AddDS( rDS );
       fNumReceivedEvents++;
       if( fNumReceivedEvents == 1 )
 	fSemaphore.Signal();
