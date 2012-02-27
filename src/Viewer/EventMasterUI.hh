@@ -17,6 +17,7 @@
 #define __Viewer_EventMasterUI__
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include <queue>
 
@@ -40,6 +41,7 @@ namespace GUIs
 {
   class Selector;
   class RadioCheckBoxes;
+  class CheckBoxLabel;
 }
 
 
@@ -67,8 +69,10 @@ private:
   RectPtr fRect; /// < The DMUI drawable area
   GUIManager fGUIManager; /// < The GUI manager
   std::queue<GUIEvent> fEvents;
+  sf::Clock fClock; /// < Timing clock, for continuous events
 
-  //GUIs::Selector* fGUIColourSelector;
+  GUIs::Selector* fRefreshSelector;
+  GUIs::CheckBoxLabel* fContinuousBox;
   GUIs::RadioCheckBoxes* fTypeRadio;
   GUIs::RadioCheckBoxes* fSourceRadio;
 };

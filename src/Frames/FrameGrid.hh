@@ -47,6 +47,9 @@ public:
   bool MoveFrame( unsigned int id, 
 		  sf::Vector2<double> position,
 		  sf::Rect<double>& rect ); 
+  /// Check where the frame is, return false if not found
+  bool CheckFrame( unsigned int id,
+		   sf::Rect<double>& rect );
 private:
   /// Increase the frame size, return false if failed.
   bool IncreaseFrame( unsigned int id,

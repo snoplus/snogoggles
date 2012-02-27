@@ -43,7 +43,7 @@ About::Render2d( RWWrapper& renderApp,
   stringstream eventInfo;
   eventInfo.precision( 0 );
   eventInfo << fixed;
-  eventInfo << "SNOGoggles v0.3" << "\nFrame Rate:";
+  eventInfo << "SNOGoggles Air Fill" << "\nFrame Rate:";
   eventInfo << 1e6 / (double) renderApp.GetFrameTime().AsMicroseconds() << " Hz";
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
