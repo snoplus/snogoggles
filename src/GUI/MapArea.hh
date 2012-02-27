@@ -32,7 +32,7 @@ public:
   virtual ~MapArea() {};
 
   virtual void Render( RWWrapper& windowApp ) { };
-  virtual GUIEvent NewEvent( Event& event );
+  virtual GUIEvent NewEvent( const Event& event );
 
   inline sf::Vector2<double> GetPosition();
 protected:

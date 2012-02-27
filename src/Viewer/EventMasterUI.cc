@@ -100,7 +100,7 @@ EventMasterUI::Initialise()
   size.Left = 0.1; size.Top = 0.1; size.Width = 0.8; size.Height = 0.05;
   fRefreshSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
   vector<string> refreshStrings;
-  refreshStrings.push_back( "Stop" ); refreshStrings.push_back( "Instant" ); refreshStrings.push_back( "Continuous 1/2 sec" ); refreshStrings.push_back( "Continuous 2 sec" );
+  refreshStrings.push_back( "Stop" ); refreshStrings.push_back( "Instant" ); refreshStrings.push_back( "1/2 sec" ); refreshStrings.push_back( "2 sec" );
   fRefreshSelector->Initialise( refreshStrings );
 }
 

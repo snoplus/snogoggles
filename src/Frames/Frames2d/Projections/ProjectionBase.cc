@@ -34,7 +34,13 @@ ProjectionBase::Initialise()
   Frame::Initialise();
   sf::Rect<double> imageSize;
   imageSize.Left = 0.0; imageSize.Top = 0.0; imageSize.Width = 1.0; imageSize.Height = 1.0;
-  fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( imageSize, Rect::eLocal ) ) );
+  Initialise( imageSize );
+}
+
+void
+ProjectionBase::Initialise( const sf::Rect<double>& size )
+{
+  fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize, 1.5 * kLocalSize ) );
   // Firstly make the vector of PMT positions
   EventData& events = EventData::GetInstance();

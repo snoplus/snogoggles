@@ -6,7 +6,7 @@ using namespace Viewer;
 using namespace Viewer::GUIs;
 
 GUIEvent 
-MapArea::NewEvent( Event& event )
+MapArea::NewEvent( const Event& event )
 {
   GUIEvent ret; // NULL event
   switch( event.Type )

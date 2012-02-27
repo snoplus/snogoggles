@@ -34,9 +34,11 @@ class ProjectionBase : public Frame
 {
 public:
   ProjectionBase( RectPtr rect ) : Frame( rect ) { }
-  ~ProjectionBase();
+  virtual ~ProjectionBase();
 
   virtual void Initialise();
+
+  void Initialise( const sf::Rect<double>& size );
   void LoadConfiguration( ConfigurationTable& configTable ) { }
 
   void SaveConfiguration( ConfigurationTable& configTable ) { }
