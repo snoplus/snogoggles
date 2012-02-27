@@ -19,11 +19,15 @@ using namespace std;
 #include <Viewer/Semaphore.hh>
 #include <Viewer/LoadRootFileThread.hh>
 #include <Viewer/ReceiverThread.hh>
+
 #include <Viewer/GeodesicSphere.hh>
+#include <Viewer/EventData.hh>
 using namespace Viewer;
 
 #include <xercesc/util/PlatformUtils.hpp>
 using namespace xercesc;
+
+void Initialise();
 
 int main( int argc, char *argv[] )
 {
@@ -34,7 +38,7 @@ int main( int argc, char *argv[] )
   viewer.Initialise();
 
   Thread* loadData;
-  if( string( argv[1] ) == string( "-s" ) ) // Temp horrible way...
+  if( string( argv[1] ) == string( "-s" ) || string( argv[1] ) == string( "-p" ) ) // Temp horrible way...
     {
       { // Scoping to protect semaphore from runtime errors and seg faults
 	Semaphore sema;
@@ -43,7 +47,10 @@ int main( int argc, char *argv[] )
 	    cout << "Wrong number of arguments, try snogoggles -s tcp://localhost:5024" << endl;
 	    return 1;
 	  }
-	loadData = new ReceiverThread( argv[2], sema );
+	if( string( argv[1] ) == string( "-p" ) )
+	  loadData = new ReceiverThread( argv[2], sema );
+	else
+	  loadData = new ReceiverThread( argv[2], sema, true );
 	// Wait for first event to be loaded
 	sema.Wait();
       }
@@ -63,8 +70,7 @@ int main( int argc, char *argv[] )
       }
     }
 
-  GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
-
+  Initialise();
   viewer.Run();
   viewer.Destruct();
 
@@ -73,4 +79,10 @@ int main( int argc, char *argv[] )
   delete loadData;
   XMLPlatformUtils::Terminate();
   return 0;
+}
+
+void Initialise()
+{
+  GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
+  EventData::GetInstance().Initialise();
 }
