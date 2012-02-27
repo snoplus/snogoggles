@@ -4,6 +4,7 @@
 #include <Viewer/GUIImageButton.hh>
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Selector.hh>
+#include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/EventData.hh>
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/ColourPalette.hh>
@@ -49,6 +50,28 @@ EventMasterUI::EventLoop()
 	}
       fEvents.pop();
     }
+  // If continuous event switching then...
+  if( fContinuousBox->GetState() )
+    {
+      switch( fRefreshSelector->GetState() )
+	{
+	case 0: // Instant refresh
+	  events.NextEV();
+	  break;
+	case 1: // 1 second
+	  if( fClock.GetElapsedTime().AsSeconds() > 1.0 )
+	    {
+	      events.NextEV();
+	      fClock.Restart();
+	    }
+	case 2: // 5 seconds
+	  if( fClock.GetElapsedTime().AsSeconds() > 5.0 )
+	    {
+	      events.NextEV();
+	      fClock.Restart();
+	    }
+	}
+    }
 }
 
 void 
@@ -61,7 +84,7 @@ void
 EventMasterUI::Initialise()
 {
   sf::Rect<double> size;
-  size.Left = 0.8; size.Top = 0.1; size.Width = 0.1; size.Height = 0.05;
+  size.Left = 0.8; size.Top = 0.0; size.Width = 0.1; size.Height = 0.05;
   GUIs::GUIImageButton* nextEVGUI = fGUIManager.NewGUI<GUIs::GUIImageButton>( size );
   nextEVGUI->Initialise( eIncrease );
 
@@ -76,6 +99,16 @@ EventMasterUI::Initialise()
   size.Top = 0.5; size.Height = 0.2; size.Width = 0.8;
   fTypeRadio = fGUIManager.NewGUI<GUIs::RadioCheckBoxes>( size );
   fTypeRadio->Initialise( RenderState::GetTypeStrings() );
+
+  size.Left = 0.1; size.Top = 0.1; size.Width = 0.8; size.Height = 0.05;
+  fRefreshSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
+  vector<string> refreshStrings;
+  refreshStrings.push_back( "Instant" ); refreshStrings.push_back( "1 sec" ); refreshStrings.push_back( "5 sec" );
+  fRefreshSelector->Initialise( refreshStrings );
+
+  size.Left = 0.1; size.Top = 0.05; size.Width = 0.8; size.Height = 0.05;
+  fContinuousBox = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( size );
+  fContinuousBox->SetLabel( "Continuous" );
 }
 
 void 

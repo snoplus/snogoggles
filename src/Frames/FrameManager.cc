@@ -65,7 +65,7 @@ FrameManager::NewEvent( const Event& event )
 	case sf::Event::MouseMoved:
 	  {
 	    if( fState == eMoving )
-	      PositionFrame( event.GetPos(), fFocus, false );
+	      MoveFrame( event.GetPos(), fFocus );
 	    else
 	      {
 		fFocus = FindFrame( event.GetPos() );
@@ -184,15 +184,11 @@ FrameManager::EventHandler( const FrameEvent& retEvent )
       {
 	ChangeState( eMoving );
 	ResizeFrame( FrameGrid::eSmallest, retEvent.fFrameID );
-	sf::Rect<double> startRect = fFrameContainers[retEvent.fFrameID]->GetRect()->GetRect( Rect::eResolution );
-	fMoveOrigin = sf::Vector2<double>( startRect.Left, startRect.Top );
       }
       break;
     case FrameEvent::eStopMove:
       {
-	sf::Rect<double> endRect = fFrameContainers[retEvent.fFrameID]->GetRect()->GetRect( Rect::eResolution );
-	sf::Vector2<double> endPos( endRect.Left, endRect.Top );
-	PositionFrame( endPos, retEvent.fFrameID, true );
+	PositionFrame( retEvent.fFrameID );
 	ChangeState( eNormal );
       }
       break;
@@ -208,6 +204,8 @@ FrameManager::EventHandler( const FrameEvent& retEvent )
 void 
 FrameManager::ChangeState( const EState state )
 { 
+  if( fState == eMoving && state == eNormal )
+    PositionFrame( fFocus );
   fState = state;
 }
 
@@ -246,30 +244,43 @@ FrameManager::DeleteFrame( const int targetFrame )
   ChangeState( eNormal );
 }
 
+void
+FrameManager::MoveFrame( const sf::Vector2<double>& coord,
+			 const int targetFrame )
+{
+  if( targetFrame >= 0 && targetFrame < fFrameContainers.size() )
+    {
+      // Don not try to move pinned frames
+      if( fFrameContainers[targetFrame]->IsPinned() )
+	return;
+      sf::Rect<double> rect = fFrameContainers[targetFrame]->GetRect()->GetRect( Rect::eResolution );
+      rect.Left = coord.x; rect.Top = coord.y;
+      fFrameContainers[targetFrame]->SetRect( rect, Rect::eResolution );
+    }
+}
+
 void 
-FrameManager::PositionFrame( const sf::Vector2<double>& coord,
-			     const int targetFrame,
-			     bool final )
+FrameManager::PositionFrame( const int targetFrame )
 { // need final and move temp
   if( targetFrame >= 0 && targetFrame < fFrameContainers.size() )
     {
       // Do not try to move pinned frames
       if( fFrameContainers[targetFrame]->IsPinned() )
 	return;
-      if( final )
-	{
-	  sf::Rect<double> rect;
-	  if( fFrameGrid->MoveFrame( targetFrame, coord, rect ) )
-	    fFrameContainers[targetFrame]->SetRect( rect, Rect::eLocal );
-	  else
-	    PositionFrame( fMoveOrigin, targetFrame, true );
-	}
+      // Get the end position
+      sf::Rect<double> endRect = fFrameContainers[targetFrame]->GetRect()->GetRect( Rect::eResolution );
+      sf::Vector2<double> endPos( endRect.Left, endRect.Top );
+
+      sf::Rect<double> rect;
+      if( fFrameGrid->MoveFrame( targetFrame, endPos, rect ) )
+	// Try and move to this position
+	fFrameContainers[targetFrame]->SetRect( rect, Rect::eLocal );
+      else if( fFrameGrid->CheckFrame( targetFrame, rect ) )
+	// Return to original position
+	fFrameContainers[targetFrame]->SetRect( rect, Rect::eLocal );
       else
-	{
-	  sf::Rect<double> rect = fFrameContainers[targetFrame]->GetRect()->GetRect( Rect::eResolution );
-	  rect.Left = coord.x; rect.Top = coord.y;
-	  fFrameContainers[targetFrame]->SetRect( rect, Rect::eResolution );
-	}
+	// Frame doesn't exist, so delete (very weird)...
+	DeleteFrame( targetFrame );
     }
 }
 

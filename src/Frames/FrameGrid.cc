@@ -126,6 +126,16 @@ FrameGrid::MoveFrame( unsigned int id,
   return false;
 }
 
+bool 
+FrameGrid::CheckFrame( unsigned int id,
+		       sf::Rect<double>& rect )
+{
+  unsigned int col, row, cols, rows;
+  bool exists = GetExtent( id, col, row, cols, rows );
+  rect = GridToRect( col, row, cols, rows );
+  return exists;
+}
+
 bool
 FrameGrid::IncreaseFrame( unsigned int id,
 			  unsigned int& col,

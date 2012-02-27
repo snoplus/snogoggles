@@ -82,16 +82,17 @@ private:
 
   void DeleteFrame( const int targetFrame );
 
-  void PositionFrame( const sf::Vector2<double>& coord,
-		      const int targetFrame,
-		      bool final );
+  /// Move the frame around the screen WITHOUT checking if the position is valid
+  void MoveFrame( const sf::Vector2<double>& coord,
+		  const int targetFrame );
+  /// Position the frame only if it is valid, else return the frame
+  void PositionFrame( const int targetFrame );
   void ResizeFrame( const FrameGrid::ESize size,
 		    const int targetFrame );
 
   RectPtr fRect; /// < The frame manager rect
   RectPtr* fgRect; /// < The frame grid area rect
   std::vector<FrameContainer*> fFrameContainers; /// < The frames themselves.
-  sf::Vector2<double> fMoveOrigin; /// < Original position of the frame
   FrameMasterUI* fFMUI; /// < The UI that controls which frames should be created.
   FrameGrid* fFrameGrid; /// < Controls where frames can be positioned.
   int fFocus; /// < The current frame focus

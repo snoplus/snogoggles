@@ -28,7 +28,7 @@ EventData::NextEV()
   Lock lock( fLock );
   fCurrentID++;
   if( fCurrentID >= fEVs.size() )
-    fCurrentID = 0;
+    fCurrentID--;
   fCurrentEvent = fEVs[fCurrentID];
   if( !fMCs.empty() )
     fCurrentMC = fMCs[ fEVToMC[fCurrentID] ];
