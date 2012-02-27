@@ -7,8 +7,10 @@
 ///
 /// REVISION HISTORY:\n
 ///     23/02/12 : P.Jones - First Revision, new file. \n
+///     27/02/12 : P.Jones - Second Revision, stability improvements. \n
 ///
-/// \detail Receive and load Packed ROOT events.
+/// \detail Setup a avalanche client to receive packed ROOT events from
+///         a suitable dispatcher.
 ///
 ////////////////////////////////////////////////////////////////////////
 #ifndef __Viewer_ReceiverThread__
@@ -38,28 +40,29 @@ namespace Viewer
 class ReceiverThread : public Thread
 {
 public:
-  ReceiverThread( const std::string& port, Semaphore& semaphore );
-  
+  /// Construct the Receiver thread, requires the port to use and a semaphore to signal data has arrived.
+  ReceiverThread( const std::string& port, 
+		  Semaphore& semaphore,
+		  bool goodBuilder = false );
+  /// Destructor, closes the avalanche client etc...
   virtual ~ReceiverThread() {};
-  
-  virtual void
-  Run();
+  /// Run function, called by the thread
+  virtual void Run();
+
+protected:
+  virtual void Initialise();
 private:
   /// Prevent usage
   void Receiver();
+  /// The run tree information must be present in the viewer, this information does not come from the 
+  /// packed events. Temporarily load this information from a pre made root file.
+  void LoadRunTree();
 
-  std::string fPort;
-  int fNumReceivedEvents;
-  Semaphore& fSemaphore;
-
-  avalanche::client fClient;
-  // Temp below, (must load a DS::Run from somewhere - need PMT positions)
-  void LoadRootFile();
-  TFile* fFile;
-  TTree* fTree;
-  TTree* fRunTree;
-  RAT::DS::Root* fDS;
-  RAT::DS::Run* fRun;
+  avalanche::client fClient; /// < The avalanche receiver client
+  int fNumReceivedEvents; /// < The current number of recieved events
+  Semaphore& fSemaphore; /// < The semaphore to signal events have arrrived
+  std::string fPort; /// < The avalanche port
+  bool fGoodBuilder; /// < Temp, false if the builder is outputting the wrong format events
 };
 
 } //::Viewer

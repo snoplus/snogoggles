@@ -42,9 +42,17 @@ Thread::Wait()
 void
 Thread::RunT()
 {
+  Initialise();
   while( fRun )
     Run();
   pthread_exit(NULL);
+}
+
+void
+Thread::Initialise()
+{
+
+
 }
 
 void

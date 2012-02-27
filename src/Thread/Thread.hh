@@ -44,6 +44,11 @@ public:
   //private:
   void
   RunT();
+protected:
+  /// Initialise the thread (always will be run in the separate thread).
+  virtual void
+  Initialise();
+
 private:
   static void* 
   PosixCaller( void* arg );
