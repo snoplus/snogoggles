@@ -18,19 +18,15 @@ void
 LoadRootFileThread::Run()
 {
   EventData& events = EventData::GetInstance();
+
   if( fTree == NULL )
     {
       LoadRootFile();
       events.SetRun( fRun );
       fTree->GetEntry( fMCEvent );
-      if( fDS->ExistMC() )
-	events.AddMC( fDS->GetMC() );
-      for( int iEV = 0; iEV < fDS->GetEVCount(); iEV++ )
-	{
-	  events.AddEV( fDS->GetEV( iEV ), fMCEvent );
-	}
-      fMCEvent++;
+      events.AddDS( fDS );
       fSemaphore.Signal();
+      fMCEvent++;
       return;
     }
   if( fMCEvent >= fTree->GetEntries() )
@@ -44,12 +40,7 @@ LoadRootFileThread::Run()
   else
     {
       fTree->GetEntry( fMCEvent );
-      if( fDS->ExistMC() )
-	events.AddMC( fDS->GetMC() );
-      for( int iEV = 0; iEV < fDS->GetEVCount(); iEV++ )
-	{
-	  events.AddEV( fDS->GetEV( iEV ), fMCEvent );
-	}
+      events.AddDS( fDS );
       fMCEvent++;
     }
 }

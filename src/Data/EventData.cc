@@ -1,123 +1,96 @@
+#include <iostream>
+using namespace std;
+
 #include <Viewer/EventData.hh>
 using namespace Viewer;
 
-#include <RAT/DS/Root.hh>
-using namespace RAT;
-
-EventData* EventData::fsEventData = NULL;
-
 EventData::EventData()
 {
-  fCurrentEvent = NULL;
-  fCurrentMC = NULL;
+  fWriteIndex = 0;
+  fDSIndex = 0;
+  fDS = NULL;
   fRun = NULL;
-  fCurrentID = -1;
+  fEVIndex = 0;
+  fEvents.resize( 5000, NULL );
+}
+
+void
+EventData::Initialise()
+{
+  fDS = new RAT::DS::Root( *fEvents[0] );
 }
 
 EventData::~EventData()
 {
-  for( unsigned int uLoop = 0; uLoop < fEVs.size(); uLoop++ )
-    delete fEVs[uLoop];
-  fEVs.clear();
-  delete fRun;
-}
-
-void
-EventData::NextEV()
-{
-  Lock lock( fLock );
-  fCurrentID++;
-  if( fCurrentID >= fEVs.size() )
-    fCurrentID--;
-  fCurrentEvent = fEVs[fCurrentID];
-  if( !fMCs.empty() )
-    fCurrentMC = fMCs[ fEVToMC[fCurrentID] ];
-  return;
-}
-
-void
-EventData::PreviousEV()
-{
-  Lock lock( fLock );
-  fCurrentID--;
-  if( fCurrentID < 0 )
-    fCurrentID++;
-  fCurrentEvent = fEVs[fCurrentID];  
-  if( !fMCs.empty() )
-    fCurrentMC = fMCs[ fEVToMC[fCurrentID] ];
-  return;
-}
-
-bool
-EventData::AddEV(
-		 DS::EV* ev,
-		 int mcEvent )
-{
-  if( fLock.TryLock() == true )
-    {
-      DS::EV* nEV = new DS::EV( *ev );
-      fEVs.push_back( nEV );
-      fEVToMC[ fEVs.size() - 1 ] = mcEvent;
-      fLock.Unlock();
-    }
-  else
-    return false;
-}
-
-bool
-EventData::AddMC(
-		 DS::MC* ev )
-{
-  if( fLock.TryLock() == true )
-    {
-      DS::MC* nMC = new DS::MC( *ev );
-      fMCs.push_back( nMC );
-      fLock.Unlock();
-    }
-  else
-    return false;
-}
-
-void
-EventData::SetRun(
-		  DS::Run* run ) 
-{ 
-  fRun = new RAT::DS::Run( *run ); 
-}
-
-DS::EV*
-EventData::GetCurrentEV()
-{
-  if( fCurrentEvent == NULL )
-    NextEV();
-  return fCurrentEvent;    
-}
-
-DS::MC*
-EventData::GetCurrentMC()
-{
-  if( fCurrentMC == NULL && !fMCs.empty() )
-    NextEV();
-  return fCurrentMC;    
+  for( unsigned int uLoop = 0; uLoop < fEvents.size(); uLoop++ )
+    delete fEvents[uLoop];
+  fEvents.clear();
+  delete fRun, fDS;
 }
 
 void 
-EventData::GetEVData( int& currentEV, int& evCount )
+EventData::SetRun( RAT::DS::Run* rRun )
 {
   Lock lock( fLock );
-  currentEV = fCurrentID;
-  evCount = fEVs.size();
+  fRun = new RAT::DS::Run( *rRun );
+}
+
+bool
+EventData::AddDS( RAT::DS::Root* rDS )
+{
+  if( fLock.TryLock() == true )
+    {
+      RAT::DS::Root* nDS = new RAT::DS::Root( *rDS );
+      nDS->SetRunHere( fRun );
+      if( nDS->GetEVCount() == 0 ) // Temp safety, will need some thought.
+	nDS->AddNewEV();
+      if( fEvents[fWriteIndex] != NULL )
+	delete fEvents[fWriteIndex];
+      fEvents[fWriteIndex] = nDS;
+      fWriteIndex = (++fWriteIndex) % fEvents.size(); // Roll over
+      fLock.Unlock();
+      return true;
+    }
+  return false;  
 }
 
 void 
-EventData::GetMCData( int& currentMC, int& mcCount )
+EventData::Latest()
 {
   Lock lock( fLock );
-  if( !fMCs.empty() )
-    {
-      currentMC = fEVToMC[fCurrentID];
-      mcCount = fMCs.size();
-    }
+  if( fWriteIndex == 0 )
+    fDSIndex = fEvents.size() - 1;
   else
-    currentMC = -1;
+    fDSIndex = ( fWriteIndex - 1 ) % fEvents.size();
+  fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
+  fEVIndex = 0;
 }
+
+void 
+EventData::Next()
+{
+  Lock lock( fLock );
+  fDSIndex = ++fDSIndex % fEvents.size();
+  // Return to the previous event
+  if( fEvents[fDSIndex] == NULL )
+    {
+      fDSIndex = 0;
+    }
+  fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
+  fEVIndex = 0;
+}
+
+void 
+EventData::Prev()
+{
+  Lock lock( fLock );
+  if( fDSIndex == 0 )
+    fDSIndex = fEvents.size() - 1;
+  else
+    fDSIndex = --fDSIndex % fEvents.size();
+  if( fEvents[fDSIndex] == NULL)
+    fDSIndex = fWriteIndex - 1;
+  fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
+  fEVIndex = 0;
+}
+

@@ -43,6 +43,8 @@ public:
   ~ViewerWindow();
   /// Singleton accessor 
   inline static ViewerWindow& GetInstance();
+  /// Initialise all the singletons
+  void InitAll();
   /// Start the viewer, load settings etc...
   void Initialise();
   /// Run loop, polled by the thread
