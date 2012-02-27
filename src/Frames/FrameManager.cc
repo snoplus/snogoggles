@@ -269,7 +269,7 @@ FrameManager::PositionFrame( const int targetFrame )
 	return;
       // Get the end position
       sf::Rect<double> endRect = fFrameContainers[targetFrame]->GetRect()->GetRect( Rect::eResolution );
-      sf::Vector2<double> endPos( endRect.Left, endRect.Top );
+      sf::Vector2<double> endPos( endRect.Left + 1.0, endRect.Top + 1.0 ); // Safer to plus one as must convert to local
 
       sf::Rect<double> rect;
       if( fFrameGrid->MoveFrame( targetFrame, endPos, rect ) )
