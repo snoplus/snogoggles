@@ -24,8 +24,9 @@ LoadRootFileThread::Run()
       LoadRootFile();
       events.SetRun( fRun );
       fTree->GetEntry( fMCEvent );
+      RAT::DS::Root* nDS = new RAT::DS::Root( *fDS );
       events.AddDS( fDS );
-      fSemaphore.Signal();
+      
       fMCEvent++;
       return;
     }
@@ -35,11 +36,13 @@ LoadRootFileThread::Run()
       delete fFile;
       delete fDS;
       delete fRun;
+      fSemaphore.Signal();
       Kill();
     }
   else
     {
       fTree->GetEntry( fMCEvent );
+      RAT::DS::Root* nDS = new RAT::DS::Root( *fDS );
       events.AddDS( fDS );
       fMCEvent++;
     }

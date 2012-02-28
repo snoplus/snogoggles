@@ -62,6 +62,7 @@ EventData::Latest()
     fDSIndex = fEvents.size() - 1;
   else
     fDSIndex = ( fWriteIndex - 1 ) % fEvents.size();
+  delete fDS;
   fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
   fEVIndex = 0;
 }
@@ -76,6 +77,7 @@ EventData::Next()
     {
       fDSIndex = 0;
     }
+  delete fDS;
   fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
   fEVIndex = 0;
 }
@@ -90,6 +92,7 @@ EventData::Prev()
     fDSIndex = --fDSIndex % fEvents.size();
   if( fEvents[fDSIndex] == NULL)
     fDSIndex = fWriteIndex - 1;
+  delete fDS;
   fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
   fEVIndex = 0;
 }
