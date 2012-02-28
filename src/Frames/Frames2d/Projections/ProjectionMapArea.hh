@@ -20,7 +20,7 @@
 namespace Viewer
 {
   class GUIManager;
-  class Text;
+  class HitInfo;
 namespace GUIs
 {
   class MapArea;
@@ -31,7 +31,7 @@ namespace Frames
 class ProjectionMapArea : public ProjectionBase
 {
 public:
-  ProjectionMapArea( RectPtr rect ) : ProjectionBase( rect ), fGUIManager( rect ), fPMTofInterest( -1 ) { }
+  ProjectionMapArea( RectPtr rect ) : ProjectionBase( rect ), fPMTofInterest( -1 ) { }
   virtual ~ProjectionMapArea();
 
   virtual void Initialise();
@@ -43,9 +43,8 @@ public:
 protected:
   virtual sf::Vector2<double> Project( Vector3 pmtPos ) = 0;
   
-  GUIManager fGUIManager; /// < The gui manager
   GUIs::MapArea* fMapArea; /// < The map area gui
-  Text* fInfoText;
+  HitInfo* fHitInfo; /// < The hit info widget
   int fPMTofInterest; /// < The id of the current PMT of interest, default -1 (no interest)
 };
 

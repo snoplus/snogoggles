@@ -17,12 +17,19 @@
 #ifndef __Viewer_CrateView__
 #define __Viewer_CrateView__
 
+#include <SFML/System/Vector2.hpp>
 
 #include <Viewer/Frame.hh>
 
 namespace Viewer 
 {
   class ProjectionImage;
+  class HitInfo;
+namespace GUIs
+{
+  class MapArea;
+}
+
 namespace Frames 
 {
 
@@ -50,7 +57,11 @@ private:
 		double ratio );
   void DrawPMTs( const RenderState& renderState );
 
+  sf::Vector2<double> fMousePos; /// < The mouse position (-1, -1) if not in frame
+  int fPMTofInterest; /// < The PMT which is hoverred over
+  GUIs::MapArea* fMapArea; /// < The map area gui
   ProjectionImage* fImage; /// < Image of the crates
+  HitInfo* fHitInfo; /// < Hit info
 };
 
 }//Frames namespace

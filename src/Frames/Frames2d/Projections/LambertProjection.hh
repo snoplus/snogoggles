@@ -19,7 +19,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <Viewer/ProjectionBase.hh>
+#include <Viewer/ProjectionMapArea.hh>
 #include <Viewer/Vector3.hh>
 
 namespace Viewer
@@ -27,10 +27,10 @@ namespace Viewer
 namespace Frames
 {
 
-class LambertProjection : public ProjectionBase
+class LambertProjection : public ProjectionMapArea
 {
 public:
-  LambertProjection( RectPtr rect ) : ProjectionBase( rect ) { }
+  LambertProjection( RectPtr rect ) : ProjectionMapArea( rect ) { }
 
   std::string GetName() { return LambertProjection::Name(); }
 

@@ -71,6 +71,7 @@ GUI::GUI( RectPtr rect,
   : fRect( rect ), fID( guiID )
 {
   fGlobalID = fsNextID++;
+  fHidden = false;
 }
 
 inline unsigned int 

@@ -1,5 +1,4 @@
 #include <Viewer/Frame.hh>
-//#include <Viewer/GUIManager.hh>
 using namespace Viewer;
 
 Frame::Frame( RectPtr rect )
@@ -38,5 +37,5 @@ void
 Frame::RenderGUI( RWWrapper& renderApp,
 		  const RenderState& renderState )
 {
-
+  fGUIManager.Render( renderApp );
 }

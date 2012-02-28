@@ -74,6 +74,7 @@ inline void
 Frame::NewMother( RectPtr mother )
 {
   fRect = mother;
+  fGUIManager.NewMother( mother );
 }
 
 inline bool

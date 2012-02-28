@@ -4,7 +4,6 @@
 
 using namespace std;
 
-#include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/CrateView.hh>
@@ -13,6 +12,8 @@ using namespace std;
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/RWWrapper.hh>
+#include <Viewer/HitInfo.hh>
+#include <Viewer/MapArea.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -25,13 +26,22 @@ const double kCrateHeight = 1.0 / 2.0 - kYMargin; // 2 Rows
 const double kHitWidth    = kCrateWidth  / 16.0; // There are 16 cards
 const double kHitHeight   = kCrateHeight / 32.0; // There are 32 channels
 
+CrateView::~CrateView()
+{
+  delete fImage, fHitInfo;
+}
+
 void 
 CrateView::Initialise() 
 {
   Frame::Initialise();
-  sf::Rect<double> imageSize;
-  imageSize.Left = 0.0; imageSize.Top = 0.0; imageSize.Width = 1.0; imageSize.Height = 1.0;
-  fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( imageSize, Rect::eLocal ) ) );
+  sf::Rect<double> size;
+  size.Left = 0.0; size.Top = 0.0; size.Width = 1.0; size.Height = 0.95;
+  fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
+  fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( size );
+  size.Left = 0.0; size.Top = 0.95; size.Width = 0.9; size.Height = 0.05;
+  fHitInfo = new HitInfo( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), true );
+  fPMTofInterest = -1;
 }
 
 void 
@@ -49,17 +59,24 @@ CrateView::Render2d( RWWrapper& renderApp,
 				ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
   // Now draw the hits
+  fPMTofInterest = -1;
   DrawPMTs( renderState );
   fImage->Update();
   renderApp.Draw( *fImage );
+
+  if( fPMTofInterest != -1 )
+    fHitInfo->Render( renderApp, renderState, fPMTofInterest );
 }
 
 void 
 CrateView::EventLoop()
 {
-  while(!fEvents.empty()){
-    fEvents.pop();
-  }
+  while( !fEvents.empty() )
+    {
+      // Only one event type is likely
+      fMousePos = fMapArea->GetPosition();
+      fEvents.pop();
+    }
 }
 
 void
@@ -74,6 +91,11 @@ CrateView::DrawPMT( int lcn,
   fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
 		      sf::Vector2<double>( kHitWidth, kHitHeight ),
 		      ColourPalette::gPalette->GetColour( ratio ) );
+  // Draw the PMT info as well?
+  const double closeRadius = 0.005;
+  if( fabs( xPos - fMousePos.x ) < closeRadius && fabs( yPos - fMousePos.y ) < closeRadius )
+    fPMTofInterest = lcn;
+  
 }
 
 void 

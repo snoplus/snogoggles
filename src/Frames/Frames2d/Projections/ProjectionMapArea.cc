@@ -4,25 +4,26 @@ using namespace std;
 
 #include <Viewer/ProjectionMapArea.hh>
 #include <Viewer/MapArea.hh>
-#include <Viewer/Text.hh>
+#include <Viewer/HitInfo.hh>
 #include <Viewer/RWWrapper.hh>
+#include <Viewer/EventData.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
 ProjectionMapArea::~ProjectionMapArea()
 {
-  delete fInfoText;
+  delete fHitInfo;
 }
 
 void 
 ProjectionMapArea::Initialise()
 {
   sf::Rect<double> size;
-  size.Left = 0.05; size.Top = 0.0; size.Width = 0.9; size.Height = 0.9;
+  size.Left = 0.025; size.Top = 0.0; size.Width = 0.95; size.Height = 0.95;
   ProjectionBase::Initialise( size );
   fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( size );
-  size.Top = 0.9;
-  fInfoText = new Text( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
+  size.Left = 0.05; size.Top = 0.95; size.Width = 0.9; size.Height = 0.05;
+  fHitInfo = new HitInfo( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), true );
 }
 
 void 
@@ -41,7 +42,8 @@ ProjectionMapArea::EventLoop()
       fPMTofInterest = -1;
       for( unsigned int ipmt = 0; ipmt < fProjectedPMTs.size(); ipmt++ )
 	{
-	  if( fabs( fProjectedPMTs[ipmt].x - mousePos.x ) < 0.01 && fabs( fProjectedPMTs[ipmt].y - mousePos.y ) < 0.01 )
+	  const double closeRadius = 0.005;
+	  if( fabs( fProjectedPMTs[ipmt].x - mousePos.x ) < closeRadius && fabs( fProjectedPMTs[ipmt].y - mousePos.y ) < closeRadius )
 	    fPMTofInterest = ipmt;
 	}
       fEvents.pop();
@@ -52,8 +54,10 @@ void
 ProjectionMapArea::Render2d( RWWrapper& renderApp,
 			     const RenderState& renderState )
 {
-  stringstream info;
-  info << fPMTofInterest;
-  fInfoText->SetString( info.str() );
-  renderApp.Draw( *fInfoText );
+  ProjectionBase::Render2d( renderApp, renderState );
+  if( fPMTofInterest != -1 )
+    {
+      EventData& events = EventData::GetInstance();
+      fHitInfo->Render( renderApp, renderState, fPMTofInterest );
+    }
 }

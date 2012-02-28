@@ -7,7 +7,7 @@
 ///
 /// REVISION HISTORY:\n
 ///     13.07.11 - Start
-///     25/02/12 - P.Jones, Refactor to use ProjectionBase class, still
+///     25/02/12 - P.Jones, Refactor to use ProjectionMapArea class, still
 ///                requires a further refactor for comments.
 ///
 /// \detail  Not much more detail to go into here.
@@ -21,7 +21,7 @@
 #include <TVector3.h>
 
 #include <Viewer/Frame.hh>
-#include <Viewer/ProjectionBase.hh>
+#include <Viewer/ProjectionMapArea.hh>
 
 namespace Viewer
 {
@@ -29,7 +29,7 @@ namespace Viewer
 namespace Frames
 {
 
-class IcosahedralProjection : public ProjectionBase
+class IcosahedralProjection : public ProjectionMapArea
 {
 public:
   IcosahedralProjection( RectPtr rect );

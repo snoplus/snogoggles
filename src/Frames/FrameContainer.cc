@@ -38,6 +38,7 @@ FrameContainer::NewEvent( const Event& event )
 	  return returnEvent;
 	}
       // Do NOT CONTINUE if the event is destined for the top bar
+      break;
     }
   fFrame->NewEvent( event );
   return returnEvent;

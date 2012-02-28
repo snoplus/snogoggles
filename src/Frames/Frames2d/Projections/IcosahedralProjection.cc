@@ -11,7 +11,7 @@ const double kPSUPRadius = 8500.0;
 const double kLocalSize = 137.0*0.3/kPSUPRadius;
 
 IcosahedralProjection::IcosahedralProjection( RectPtr rect ) 
-  : ProjectionBase( rect )
+  : ProjectionMapArea( rect )
 {
   //set up the geometry for the transformation
   //need to know the vertices

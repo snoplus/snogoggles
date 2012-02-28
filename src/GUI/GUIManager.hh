@@ -51,6 +51,8 @@ public:
   void Clear();
   /// Delete a gui object by ID
   void DeleteGUI( unsigned int guiID );
+  /// Change the rect to take account of a new mother
+  inline void NewMother( RectPtr mother );
 private:
   /// Find which GUI contains the point (resolution ALWAYS)
   int FindGUI( sf::Vector2<double> point );
@@ -76,6 +78,12 @@ GUIManager::NewGUI( const sf::Rect<double>& rect,
   T* gui = new T( rectPtr, fGUIObjects.size() );
   fGUIObjects.push_back( gui );
   return gui;
+}
+
+inline void
+GUIManager::NewMother( RectPtr mother )
+{
+  fRect = mother;
 }
 
 } // ::Viewer
