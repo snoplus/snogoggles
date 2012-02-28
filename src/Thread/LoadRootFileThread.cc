@@ -7,6 +7,7 @@ using namespace RAT;
 using namespace ROOT;
 
 #include <sstream>
+#include <iostream>
 using namespace std;
 
 #include <Viewer/LoadRootFileThread.hh>
@@ -24,7 +25,6 @@ LoadRootFileThread::Run()
       LoadRootFile();
       events.SetRun( fRun );
       fTree->GetEntry( fMCEvent );
-      RAT::DS::Root* nDS = new RAT::DS::Root( *fDS );
       events.AddDS( fDS );
       
       fMCEvent++;
@@ -42,9 +42,9 @@ LoadRootFileThread::Run()
   else
     {
       fTree->GetEntry( fMCEvent );
-      RAT::DS::Root* nDS = new RAT::DS::Root( *fDS );
       events.AddDS( fDS );
       fMCEvent++;
+      cout << "Loaded " << fMCEvent << " events." << endl;
     }
 }
 
