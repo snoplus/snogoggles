@@ -43,8 +43,6 @@ CheckBoxLabel::SetLabel( const string& label )
   fLabel->SetString( label );
 }
 
-#include <iostream>
-using namespace std;
 void 
 CheckBoxLabel::Render( RWWrapper& renderApp )
 {

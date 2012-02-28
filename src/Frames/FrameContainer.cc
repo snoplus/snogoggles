@@ -63,8 +63,8 @@ FrameContainer::Initialise( Frame* frame )
   fTopBar->Initialise();
   fFrame = frame;
   fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
-  fFrame->Initialise();
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
+  fFrame->Initialise();
 }
 
 void 
