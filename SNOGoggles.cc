@@ -48,7 +48,7 @@ int main( int argc, char *argv[] )
 	    return 1;
 	  }
 	if( string( argv[1] ) == string( "-p" ) )
-	  loadData = new ReceiverThread( argv[2], sema );
+	  loadData = new ReceiverThread( argv[2], sema, false );
 	else
 	  loadData = new ReceiverThread( argv[2], sema, true );
 	// Wait for first event to be loaded

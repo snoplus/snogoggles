@@ -52,6 +52,7 @@ HistogramBase::Render2d( RWWrapper& windowApp,
 
   CalculateHistogram( renderState );
   DrawHistogram();
+  DrawTicks();
 
   fImage->Update();
   windowApp.Draw( *fImage );
@@ -93,11 +94,28 @@ HistogramBase::DrawHistogram()
       const double binRatio = static_cast<double>( iBin ) / static_cast<double>( fBins.size() );
       double binHeight = binValue / fMaxValue;
       if( fLogY && binValue > 0.0 && fMaxValue > 1.0 )
-	binHeight = log( binValue ) / ( log( fMaxValue ) - log( 1.0 ) );
+	binHeight = log10( binValue ) / ( log10( fMaxValue ) - log10( 0.1 ) );
       sf::Vector2<double> pos( binRatio, 1.0 - binHeight );
       sf::Vector2<double> size( pixelBinWidth, binHeight );
       if( binValue > 0.0 )
 	fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( binRatio ) );
+    }
+}
+
+void
+HistogramBase::DrawTicks()
+{
+  const double ticSize = 0.05;
+  for( int iTic = 0.0; iTic < 10; iTic++ )
+    {
+      double xPos =  (double)iTic / 10.0;
+      sf::Vector2<double> pos( xPos, 1.0 - ticSize );
+      sf::Vector2<double> size( 1.0 / fImage->GetWidth(), ticSize );
+      fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+      double yPos = (double)iTic / 10.0;
+      pos = sf::Vector2<double>( 0.0, yPos );
+      size = sf::Vector2<double>( ticSize, 1.0 / fImage->GetWidth() );
+      fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
 }
 

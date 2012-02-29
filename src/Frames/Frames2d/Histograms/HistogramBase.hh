@@ -57,6 +57,7 @@ public:
 protected:
   virtual void CalculateHistogram( const RenderState& renderState );
   virtual void DrawHistogram();
+  virtual void DrawTicks();
 
   std::vector<double> fBins; /// < The histogram bin values
   ProjectionImage* fImage;

@@ -1,5 +1,6 @@
 #include <cmath>
 #include <sstream>
+#include <iomanip>
 using namespace std;
 
 #include <Viewer/Histogram.hh>
@@ -31,7 +32,7 @@ Histogram::Initialise()
   fMaxX = new Text( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   size.Left = 0.9; size.Top = 0.0; size.Width = 0.1; size.Height = 0.025;
   fLogYBox = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( size, Rect::eLocal );
-  fLogYBox->SetLabel( "Log Y?" );
+  fLogYBox->SetLabel( "Log_10 Y?" );
 }
 
 void 
@@ -52,9 +53,9 @@ Histogram::Render2d( RWWrapper& renderApp,
   if( fLogY )
     {
       stringstream value;
-      value << log( fMaxValue );
+      value << scientific << setprecision(1) << log10( fMaxValue );
       fMaxY->SetString( value.str() );
-      value.str(""); value << 1.0;
+      value.str(""); value << log10( 0.1 );
       fMinY->SetString( value.str() );
     }
   else
@@ -62,7 +63,7 @@ Histogram::Render2d( RWWrapper& renderApp,
       stringstream value;
       value << fMaxValue;
       fMaxY->SetString( value.str() );
-      value.str(""); value << 1.0;
+      value.str(""); value << 0.0;
       fMinY->SetString( value.str() );
     }
   stringstream value;
