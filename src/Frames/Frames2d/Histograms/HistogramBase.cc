@@ -106,13 +106,17 @@ void
 HistogramBase::DrawTicks()
 {
   const double ticSize = 0.05;
-  for( int iTic = 0.0; iTic < 10; iTic++ )
+  for( int iTic = 0.0; iTic <= 10; iTic++ )
     {
       double xPos =  (double)iTic / 10.0;
       sf::Vector2<double> pos( xPos, 1.0 - ticSize );
       sf::Vector2<double> size( 1.0 / fImage->GetWidth(), ticSize );
       fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
-      double yPos = (double)iTic / 10.0;
+      double yPos = (double)iTic / 10.0 * fMaxValue;
+      if( fLogY && yPos != 0.0 )
+	yPos = log10( yPos ) / ( log10( fMaxValue ) - log10( 0.1 ) );
+      else
+	yPos /= fMaxValue;
       pos = sf::Vector2<double>( 0.0, yPos );
       size = sf::Vector2<double>( ticSize, 1.0 / fImage->GetWidth() );
       fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );

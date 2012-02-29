@@ -77,6 +77,8 @@ public:
   ConfigurationTable( xercesc_3_1::DOMElement* element, bool output, xercesc_3_1::DOMDocument* domDocument );
 
   ConfigurationTable* GetTable( const std::string& name );
+  inline std::map< std::string, ConfigurationTable* >::iterator GetTableBegin();
+  inline std::map< std::string, ConfigurationTable* >::iterator GetTableEnd();
   inline unsigned int GetNumTables();
   ConfigurationTable* NewTable( const std::string& name );
 
@@ -94,6 +96,18 @@ private:
   bool fOutput;
 };
 
+std::map< std::string, ConfigurationTable* >::iterator
+ConfigurationTable::GetTableBegin()
+{
+  return fConfigTables.begin();
+}
+  
+std::map< std::string, ConfigurationTable* >::iterator
+ConfigurationTable::GetTableEnd()
+{
+  return fConfigTables.end();
+}
+  
 unsigned int
 ConfigurationTable::GetNumTables()
 {
