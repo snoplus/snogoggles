@@ -4,6 +4,7 @@
 #include <Viewer/GUIImageButton.hh>
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Selector.hh>
+#include <Viewer/ScalingBar.hh>
 #include <Viewer/EventData.hh>
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/ColourPalette.hh>
@@ -45,6 +46,15 @@ EventMasterUI::EventLoop()
 	  break;
 	case 1: // Prev EV
 	  events.Prev();
+	  break;
+	case 2: // Event type change 
+	case 3: // Event type change 
+	  // Must reset the scaling
+	  fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>() );
+	  fScalingBar->Reset();
+	  break;
+	case 5: // New Scaling
+	  fCurrentRenderState.ChangeScaling( fScalingBar->GetMin(), fScalingBar->GetMax() );
 	  break;
 	}
       fEvents.pop();
@@ -102,6 +112,9 @@ EventMasterUI::Initialise()
   vector<string> refreshStrings;
   refreshStrings.push_back( "Stop" ); refreshStrings.push_back( "Instant" ); refreshStrings.push_back( "1/2 sec" ); refreshStrings.push_back( "2 sec" );
   fRefreshSelector->Initialise( refreshStrings );
+
+  size.Left = 0.1; size.Top = 0.7; size.Width = 0.8; size.Height = 0.05;
+  fScalingBar = fGUIManager.NewGUI<GUIs::ScalingBar>( size );
 }
 
 void 
@@ -119,5 +132,5 @@ EventMasterUI::Render( RWWrapper& renderApp )
 RenderState 
 EventMasterUI::GetRenderState()
 {
-  return RenderState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>());
+  return fCurrentRenderState; 
 }

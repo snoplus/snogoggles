@@ -24,6 +24,7 @@
 #include <Viewer/RectPtr.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/GUIManager.hh>
+#include <Viewer/RenderState.hh>
 
 namespace sf
 {
@@ -35,14 +36,13 @@ namespace Viewer
 {
   class RWWrapper;
   class ConfigurationTable;
-  class RenderState;
   class Event;
 namespace GUIs
 {
   class Selector;
   class RadioCheckBoxes;
+  class ScalingBar;
 }
-
 
 class EventMasterUI
 {
@@ -69,10 +69,12 @@ private:
   GUIManager fGUIManager; /// < The GUI manager
   std::queue<GUIEvent> fEvents;
   sf::Clock fClock; /// < Timing clock, for continuous events
+  RenderState fCurrentRenderState; /// < The current render state
 
   GUIs::Selector* fRefreshSelector;
   GUIs::RadioCheckBoxes* fTypeRadio;
   GUIs::RadioCheckBoxes* fSourceRadio;
+  GUIs::ScalingBar* fScalingBar;
 };
 
 inline bool

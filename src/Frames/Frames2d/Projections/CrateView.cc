@@ -80,8 +80,8 @@ CrateView::EventLoop()
 }
 
 void
-CrateView::DrawPMT( int lcn,
-		    double ratio )
+CrateView::DrawPMT( const int lcn,
+		    const Colour& colour )
 {
   int crate = RAT::BitManip::GetBits(lcn, 9, 5);
   int card = RAT::BitManip::GetBits(lcn, 5, 4);
@@ -90,7 +90,7 @@ CrateView::DrawPMT( int lcn,
   double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight;
   fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
 		      sf::Vector2<double>( kHitWidth, kHitHeight ),
-		      ColourPalette::gPalette->GetColour( ratio ) );
+		      colour );
   // Draw the PMT info as well?
   const double closeRadius = 0.005;
   if( fabs( xPos - fMousePos.x ) < closeRadius && fabs( yPos - fMousePos.y ) < closeRadius )
@@ -114,7 +114,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
             {
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
               double tac = rEV->GetPMTUnCal( ipmt )->GetTime();
-              DrawPMT( rPMTUnCal->GetID(), tac / 4000.0 );
+              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
         case RenderState::eQHL:
@@ -122,7 +123,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
             {
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
               double qhl = rEV->GetPMTUnCal( ipmt )->GetsQHL();
-              DrawPMT( rPMTUnCal->GetID(), qhl / 4500.0 );
+              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
         case RenderState::eQHS:
@@ -130,7 +132,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
             {
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
               double qhs = rEV->GetPMTUnCal( ipmt )->GetsQHS();
-              DrawPMT( rPMTUnCal->GetID(), qhs / 4500.0 );
+              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
         case RenderState::eQLX:
@@ -138,7 +141,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
             {
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
               double qlx = rEV->GetPMTUnCal( ipmt )->GetsQLX();
-              DrawPMT( rPMTUnCal->GetID(), qlx / 1400.0 );
+              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
         }
@@ -151,7 +155,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
             {
 	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
               double tac = rEV->GetPMTCal( ipmt )->GetTime();
-              DrawPMT( rPMTCal->GetID(), tac / 500.0 );
+              DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) /
+									     ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
         case RenderState::eQHL:
@@ -159,7 +164,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
 	   {
 	     RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
 	     double qhl = rEV->GetPMTCal( ipmt )->GetsQHL();
-	     DrawPMT( rPMTCal->GetID(), qhl / 4000.0 );
+	     DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
+									    ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
 	   }
 	 break;
 	case RenderState::eQHS:
@@ -167,7 +173,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
 	    {
 	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
 	      double qhs = rEV->GetPMTCal( ipmt )->GetsQHS();
-	      DrawPMT( rPMTCal->GetID(), qhs / 4000.0 );
+	      DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
+									     ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
 	    }
 	  break;
 	case RenderState::eQLX:
@@ -175,7 +182,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
 	    {
 	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
 	      double qlx = rEV->GetPMTCal( ipmt )->GetsQLX();
-	      DrawPMT( rPMTCal->GetID(), qlx / 1000.0 );
+	      DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
+									     ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
 	    }
 	  break;
 	}

@@ -56,7 +56,7 @@ public:
   //EFrameType GetFrameType() { return eUtil; }
 protected:
   virtual void CalculateHistogram( const RenderState& renderState );
-  virtual void DrawHistogram();
+  virtual void DrawHistogram( const RenderState& renderState );
   virtual void DrawTicks();
 
   std::vector<double> fBins; /// < The histogram bin values

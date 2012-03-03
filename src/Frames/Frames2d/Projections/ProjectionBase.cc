@@ -129,7 +129,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
 	      const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
 	      double tac = rEV->GetPMTUnCal( ipmt )->GetTime();
-	      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( tac / 4000.0 ) );
+	      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) / 
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
 	    }
 	  break;
 	case RenderState::eQHL:
@@ -138,7 +139,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
               const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
               double qhl = rEV->GetPMTUnCal( ipmt )->GetsQHL();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( qhl / 4500.0 ) );
+              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
 	case RenderState::eQHS:
@@ -147,7 +149,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
               const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
               double qhs = rEV->GetPMTUnCal( ipmt )->GetsQHS();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( qhs / 4500.0 ) );
+              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
 	case RenderState::eQLX:
@@ -156,7 +159,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
               const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
               double qlx = rEV->GetPMTUnCal( ipmt )->GetsQLX();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( qlx / 1400.0 ) );
+              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
 	}
@@ -170,7 +174,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
 	      const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
 	      double tac = rEV->GetPMTCal( ipmt )->GetTime();
-	      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( tac / 500.0 ) );
+	      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
 	    }
 	  break;
 	case RenderState::eQHL:
@@ -179,7 +184,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
               const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
               double qhl = rEV->GetPMTCal( ipmt )->GetsQHL();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( qhl / 4000.0 ) );
+              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
 	case RenderState::eQHS:
@@ -188,7 +194,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
               const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
               double qhs = rEV->GetPMTCal( ipmt )->GetsQHS();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( qhs / 4000.0 ) );
+              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
 	case RenderState::eQLX:
@@ -197,7 +204,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
 	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
               const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
               double qlx = rEV->GetPMTCal( ipmt )->GetsQLX();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( qlx / 1000.0 ) );
+              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
+									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
             }
           break;
 	}

@@ -25,6 +25,7 @@ namespace Viewer
 {
   class ProjectionImage;
   class HitInfo;
+  class Colour;
 namespace GUIs
 {
   class MapArea;
@@ -53,8 +54,8 @@ public:
   void Render3d( RWWrapper& renderApp,
 		 const RenderState& renderState ) { }
 private:
-  void DrawPMT( int lcn,
-		double ratio );
+  void DrawPMT( const int lcn,
+		const Colour& colour );
   void DrawPMTs( const RenderState& renderState );
 
   sf::Vector2<double> fMousePos; /// < The mouse position (-1, -1) if not in frame

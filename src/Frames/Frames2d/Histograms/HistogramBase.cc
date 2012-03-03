@@ -51,7 +51,7 @@ HistogramBase::Render2d( RWWrapper& windowApp,
   fImage->Clear();
 
   CalculateHistogram( renderState );
-  DrawHistogram();
+  DrawHistogram( renderState );
   DrawTicks();
 
   fImage->Update();
@@ -59,7 +59,7 @@ HistogramBase::Render2d( RWWrapper& windowApp,
 }
 
 void
-HistogramBase::DrawHistogram()
+HistogramBase::DrawHistogram( const RenderState& renderState )
 {
   if( fBins.empty() )
     return;
@@ -97,8 +97,8 @@ HistogramBase::DrawHistogram()
 	binHeight = log10( binValue ) / ( log10( fMaxValue ) - log10( 0.1 ) );
       sf::Vector2<double> pos( binRatio, 1.0 - binHeight );
       sf::Vector2<double> size( pixelBinWidth, binHeight );
-      if( binValue > 0.0 )
-	fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( binRatio ) );
+      if( static_cast<double>( iBin ) > renderState.GetScalingMin() && static_cast<double>( iBin ) < renderState.GetScalingMax() )
+	fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( ( (double)( iBin ) - renderState.GetScalingMin() ) / ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }
 

@@ -35,32 +35,43 @@ public:
 
   static void Initialise();
 
+  void ChangeState( EDataSource source,
+		    EDataType type );
+  void ChangeScaling( double fractionalMin,
+		      double fractionalMax );
+
   static std::vector<std::string> GetSourceStrings();
   static std::vector<std::string> GetTypeStrings();
 
   inline EDataSource GetDataSource() const;
   inline EDataType GetDataType() const;
+  inline double GetScalingMin() const;
+  inline double GetScalingMax() const;
+
 private:
   EDataSource fCurrentDataSource;
   EDataType fCurrentDataType;
 
+  double fCurrentScalingMin; /// < Lower numerical value to be displayed
+  double fCurrentScalingMax; /// < Upper numerical value to be displayed
+
   static std::map< EDataSource, std::string > fsSourceNames;
   static std::map< EDataType, std::string > fsTypeNames;
+  static std::map< EDataSource, std::map< EDataType, double > > fsDefaultScalingMin;
+  static std::map< EDataSource, std::map< EDataType, double > > fsDefaultScalingMax;
 };
 
 inline 
 RenderState::RenderState()
 {
-  fCurrentDataSource = eCal;
-  fCurrentDataType = eTAC;
+  ChangeState( eCal, eTAC );
 }
 
 inline 
 RenderState::RenderState( EDataSource source,
 			  EDataType type )
 {
-  fCurrentDataSource = source;
-  fCurrentDataType = type;
+  ChangeState( source, type );
 }
 
 inline RenderState::EDataSource 
@@ -73,6 +84,18 @@ inline RenderState::EDataType
 RenderState::GetDataType() const
 {
   return fCurrentDataType;
+}
+
+inline double
+RenderState::GetScalingMin() const
+{
+  return fCurrentScalingMin;
+}
+
+inline double
+RenderState::GetScalingMax() const
+{
+  return fCurrentScalingMax;
 }
 
 } //::Viewer
