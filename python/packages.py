@@ -16,7 +16,8 @@ def geant4(env):
 # Appends ROOT
 def root(env):
 	ROOTSYS = os.path.join(os.environ["ROOTSYS"], 'bin')
-	env.ParseConfig( os.path.join(ROOTSYS, 'root-config') + " --cflags --ldflags --libs")
+	env.ParseConfig( os.path.join(ROOTSYS, 'root-config') + " --cflags --ldflags --libs ")
+        env.Append( CPPPATH = [ os.environ["ROOTSYS"] + "/include"])
 
 # Appends SFML and GLEW
 def sfml(env):
@@ -37,6 +38,8 @@ def rat(env):
 def Curl(env):
 	env.Append( LIBS = [ "bz2", "curl" ] )
 
+def glut(env):
+	env.Append (LIBS = ["glut", "GLU", "GL"])
 # Appends Pthread
 def PThread(env):
 	env.Append( LIBS = [ "pthread" ] )
@@ -52,9 +55,9 @@ def Avalanche(env):
 def addpackages(env):
 	xercesc(env)
 	geant4(env)
-	root(env)
 	sfml(env)
 	rat(env)
+	root(env)
 	PThread(env)
 	Avalanche(env)
-	
+	glut(env)	
