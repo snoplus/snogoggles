@@ -22,7 +22,9 @@ GUIImageButton::Initialise( EGUITexture image )
 
 GUIImageButton::~GUIImageButton()
 {
- 
+  fButton[0] = NULL; // Manager deletes the texture
+  fButton[1] = NULL; // Manager deletes the texture
+  fButton[2] = NULL; // Manager deletes the texture
 }
 
 void 

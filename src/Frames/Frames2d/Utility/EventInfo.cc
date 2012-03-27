@@ -14,6 +14,11 @@ using namespace std;
 using namespace Viewer;
 using namespace Frames;
 
+EventInfo::~EventInfo()
+{
+
+}
+
 void 
 EventInfo::Initialise()
 {

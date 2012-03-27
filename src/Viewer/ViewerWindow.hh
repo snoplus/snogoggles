@@ -57,7 +57,7 @@ private:
   /// Draw a splash whilst loading the viewer
   void DrawSplash();
   /// Deal with any UI events
-  void EventLoop();
+  bool EventLoop();
   /// Draw stuff to the screen
   void RenderLoop();
   /// Resets OpenGL's depth and stencil buffers.

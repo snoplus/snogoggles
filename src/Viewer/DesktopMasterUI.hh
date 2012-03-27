@@ -45,7 +45,8 @@ class DesktopMasterUI
 {
 public:
   DesktopMasterUI( RectPtr rect,
-		   unsigned int numDesktops );
+                   unsigned int numDesktops );
+  ~DesktopMasterUI();
   /// Deal with a new UI event
   void NewEvent( const Event& event );
   /// The event loop

@@ -7,6 +7,11 @@ Frame::Frame( RectPtr rect )
 
 }
 
+Frame::~Frame()
+{
+
+}
+
 void 
 Frame::NewEvent( const Event& event )
 {

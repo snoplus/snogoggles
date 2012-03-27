@@ -21,6 +21,9 @@ GenericTimer::GenericTimer( RectPtr rect, unsigned int guiID )
 
 GenericTimer::~GenericTimer()
 {
+  fTextures[0] = NULL; // Manager deletes the textures
+  fTextures[1] = NULL;
+  fTextures[2] = NULL;
   delete fSprite;
 }
 

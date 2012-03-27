@@ -38,6 +38,8 @@ public:
   /// Constructor, must pass GUI position rect and an ID
   GUI( RectPtr rect,
        unsigned int guiID );
+
+  virtual ~GUI();
   /// Get the unique GUI ID within the frame (not globally unique)
   inline unsigned int GetGuiID();
   /// Get the globally unique GUI ID

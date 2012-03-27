@@ -35,6 +35,7 @@ public:
   Desktop( RectPtr desktopRect, 
 	   double rightMargin,
 	   double bottomMargin );
+  ~Desktop();
   /// Deal with a new UI event
   void NewEvent( Event& event );
   /// The event loop

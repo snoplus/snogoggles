@@ -18,6 +18,11 @@ ScalingBar::ScalingBar( RectPtr rect,
   fImage = new ProjectionImage( rect );
 }
 
+ScalingBar::~ScalingBar()
+{
+  delete fImage;
+}
+
 GUIEvent 
 ScalingBar::NewEvent( const Event& event )
 {

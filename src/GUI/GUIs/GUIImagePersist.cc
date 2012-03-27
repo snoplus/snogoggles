@@ -21,7 +21,9 @@ GUIImagePersist::Initialise( EGUITexture image )
 
 GUIImagePersist::~GUIImagePersist()
 {
- 
+  fPersist[0] = NULL; // Manager deletes the texture
+  fPersist[1] = NULL;
+  fPersist[2] = NULL;
 }
 
 void 

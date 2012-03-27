@@ -38,6 +38,8 @@ public:
 
   Frame( RectPtr rect );
 
+  virtual ~Frame();
+
   inline void NewMother( RectPtr rect );
   /// Deal with a new UI event
   void NewEvent( const Event& event );

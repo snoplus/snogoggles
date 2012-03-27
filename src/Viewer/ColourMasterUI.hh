@@ -48,6 +48,7 @@ class ColourMasterUI
 {
 public:
   ColourMasterUI( RectPtr rect );
+  ~ColourMasterUI();
   /// Deal with a new UI event
   void NewEvent( const Event& event );
   /// The event loop

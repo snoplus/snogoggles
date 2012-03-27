@@ -48,6 +48,7 @@ class EventMasterUI
 {
 public:
   EventMasterUI( RectPtr rect );
+  ~EventMasterUI();
   /// Deal with a new UI event
   void NewEvent( const Event& event );
   /// The event loop

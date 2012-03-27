@@ -18,6 +18,12 @@ Desktop::Desktop( RectPtr desktopRect,
 
 }
 
+Desktop::~Desktop()
+{
+  delete fEMUI;
+  delete fFrameManager;
+}
+
 void 
 Desktop::NewEvent( Event& event )
 {

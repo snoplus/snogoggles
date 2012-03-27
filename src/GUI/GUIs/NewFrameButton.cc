@@ -14,7 +14,16 @@ using namespace Viewer::GUIs;
 
 NewFrameButton::~NewFrameButton()
 {
-  delete fText;
+  fLeft[0] = NULL; // Manager deletes the textures
+  fLeft[1] = NULL;
+  fLeft[2] = NULL;
+  fBar[0] = NULL;
+  fBar[1] = NULL;
+  fBar[2] = NULL;
+  fRight[0] = NULL;
+  fRight[1] = NULL;
+  fRight[2] = NULL;
+  delete fBarSprite, fLeftSprite, fRightSprite, fText;
 }
 
 void 

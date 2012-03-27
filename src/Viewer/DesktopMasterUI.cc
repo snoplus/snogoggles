@@ -17,6 +17,11 @@ DesktopMasterUI::DesktopMasterUI( RectPtr rect,
   
 }
 
+DesktopMasterUI::~DesktopMasterUI()
+{
+  fDesktopRadio = NULL; // GUI Manager deletes this
+}
+
 void 
 DesktopMasterUI::NewEvent( const Event& event )
 {

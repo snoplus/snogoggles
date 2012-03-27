@@ -110,7 +110,8 @@ ViewerWindow::Run()
 {
   while( fWindowApp->IsOpen() )
     {
-      EventLoop();
+      if( !EventLoop() ) // Returns false on user controlled close
+        break;
       RenderLoop();
     }
 }
@@ -128,43 +129,46 @@ ViewerWindow::Destruct()
   // Must delete textures before the window, or get sfml segfault
   TextureManager::GetInstance().ClearTextures();
   GUITextureManager::GetInstance().ClearTextures();
+  delete fDesktopManager;
+  fWindowApp->Close();
   delete fWindowApp;
 }
 
-void
+bool
 ViewerWindow::EventLoop()
 {
   sf::Event event;
   while( fWindowApp->PollEvent( event ) )
     {
       switch( event.Type )
-	{
-// First ViewerWindow Specific Events
-	case sf::Event::Closed:
-	  fWindowApp->Close();
-	  break;
-	case sf::Event::Resized:
-	  Rect::SetWindowSize( event.Size.Width, event.Size.Height );
-	  break;
-	case sf::Event::LostFocus:
-	case sf::Event::GainedFocus:
-	  break;
-
-// Now events to use and then pass to frames
-	case sf::Event::KeyPressed:
-	  if( event.Key.Code == sf::Keyboard::Escape )
-	    {
-	      fWindowApp->Close();
-	      break;
-	    }
-//Drop through
-	default:
-	  Event viewerEvent( event );
-	  fDesktopManager->NewEvent( viewerEvent );
-	}
+        {
+          // First ViewerWindow Specific Events
+        case sf::Event::Closed:
+          fWindowApp->Close();
+          break;
+        case sf::Event::Resized:
+          Rect::SetWindowSize( event.Size.Width, event.Size.Height );
+          break;
+        case sf::Event::LostFocus:
+        case sf::Event::GainedFocus:
+          break;
+          
+          // Now events to use and then pass to frames
+        case sf::Event::KeyPressed:
+          if( event.Key.Code == sf::Keyboard::Escape )
+            {
+              // Start closing the viewer
+              return false;
+            }
+          //Drop through
+        default:
+          Event viewerEvent( event );
+          fDesktopManager->NewEvent( viewerEvent );
+        }
     }
   // Now get Frames to deal with events
   fDesktopManager->EventLoop();
+  return true;
 }
 
 void

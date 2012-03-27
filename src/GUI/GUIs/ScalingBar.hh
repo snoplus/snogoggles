@@ -32,7 +32,7 @@ public:
 
   ScalingBar( RectPtr rect, 
 	      unsigned int guiID );
-  ~ScalingBar() {};
+  virtual ~ScalingBar();
  
   void Render( RWWrapper& renderApp );
   GUIEvent NewEvent( const Event& event );

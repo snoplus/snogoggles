@@ -41,6 +41,7 @@ class FrameContainer
 {
 public:
   FrameContainer( RectPtr rect );
+  ~FrameContainer();
   /// Deal with a new UI event
   FrameEvent NewEvent( const Event& event );
   /// The event loop

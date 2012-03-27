@@ -17,6 +17,14 @@ EventMasterUI::EventMasterUI( RectPtr rect )
 
 }
 
+EventMasterUI::~EventMasterUI()
+{
+  fRefreshSelector = NULL; // GUI Manager deletes these
+  fTypeRadio = NULL;
+  fSourceRadio = NULL;
+  fScalingBar = NULL;
+}
+
 void 
 EventMasterUI::NewEvent( const Event& event )
 {

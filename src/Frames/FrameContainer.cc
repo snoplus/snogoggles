@@ -18,6 +18,12 @@ FrameContainer::FrameContainer( RectPtr rect )
 
 }
 
+FrameContainer::~FrameContainer()
+{
+  delete fFrame;
+  delete fTopBar;
+}
+
 FrameEvent 
 FrameContainer::NewEvent( const Event& event )
 {

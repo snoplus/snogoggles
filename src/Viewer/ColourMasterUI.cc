@@ -16,6 +16,12 @@ ColourMasterUI::ColourMasterUI( RectPtr rect )
 
 }
 
+ColourMasterUI::~ColourMasterUI()
+{
+  fGUIColourSelector = NULL; // GUI Manager deletes this
+  fColourSelector = NULL;
+}
+
 void 
 ColourMasterUI::NewEvent( const Event& event )
 {

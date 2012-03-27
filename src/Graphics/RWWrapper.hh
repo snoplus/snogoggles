@@ -17,6 +17,7 @@
 #define __Viewer_RWWrapper__
 
 #include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 namespace sf
 {
@@ -52,6 +53,7 @@ protected:
 
   sf::Clock fClock; /// < Calculates the time between frames
   sf::RenderWindow& fRenderWindow; /// < Reference to the RenderWindow
+  sf::Font fFont;
 };
 
 } // ::Viewer

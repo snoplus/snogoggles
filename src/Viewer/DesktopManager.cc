@@ -19,6 +19,15 @@ DesktopManager::DesktopManager( RectPtr globalMother,
   fDesktops.resize( 8 ); // Maximum allowed desktops
 }
 
+DesktopManager::~DesktopManager()
+{
+  for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
+    delete *iTer;
+  fDesktops.clear();
+  delete fDMUI;
+  delete fCMUI;
+}
+
 void 
 DesktopManager::NewEvent( Event& event )
 {

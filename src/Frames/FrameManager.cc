@@ -22,7 +22,11 @@ FrameManager::FrameManager( RectPtr rect,
 
 FrameManager::~FrameManager()
 {
+  for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
+    delete *iTer;
   delete fgRect;
+  delete fFMUI;
+  delete fFrameGrid;
 }
 
 void

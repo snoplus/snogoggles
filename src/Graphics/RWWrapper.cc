@@ -12,7 +12,7 @@ using namespace Viewer;
 RWWrapper::RWWrapper( sf::RenderWindow& renderWindow )
   : fRenderWindow( renderWindow )
 {
-
+  fFont = sf::Font::GetDefaultFont(); // Bug fix line, SFML issue #59
 }
 
 void 
@@ -28,7 +28,7 @@ RWWrapper::Draw( Sprite& object )
 void 
 RWWrapper::Draw( Text& object )
 {
-  sf::Text sfmlText( object.GetString() );
+  sf::Text sfmlText( object.GetString(), fFont );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
   sf::Rect<float> textRect = sfmlText.GetGlobalBounds(); 
   // The should be located at (0,0) at this stage, however it is often at (0,5) etc... due to character height matching

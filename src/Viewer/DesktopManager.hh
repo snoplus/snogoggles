@@ -35,6 +35,7 @@ public:
   DesktopManager( RectPtr globalMother, 
 		  double rightMargin,
 		  double bottomMargin );
+  ~DesktopManager();
   /// Deal with a new UI event
   void NewEvent( Event& event );
   /// The event loop
