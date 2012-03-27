@@ -7,6 +7,7 @@ using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/TextureManager.hh>
+#include <Viewer/GUITextureManager.hh>
 #include <Viewer/Configuration.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Rect.hh>
@@ -124,6 +125,9 @@ ViewerWindow::Destruct()
   saveConfig.SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
   saveConfig.SaveConfiguration();
   
+  // Must delete textures before the window, or get sfml segfault
+  TextureManager::GetInstance().ClearTextures();
+  GUITextureManager::GetInstance().ClearTextures();
   delete fWindowApp;
 }
 

@@ -38,7 +38,6 @@ Rect::NewDaughter( const sf::Rect<double>& rect,
 void
 Rect::DeleteDaughter( Rect* daughter )
 {
-  return;
   for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); )
     if( *iTer == daughter ) // Found daughter
       iTer = fDaughters.erase( iTer );
@@ -48,9 +47,12 @@ Rect::DeleteDaughter( Rect* daughter )
 
 Rect::~Rect()
 {
-  return;
   for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); iTer++ )
-    (*iTer)->fMother = NULL;
+    {
+      (*iTer)->fMother = NULL;
+      *iTer = NULL;
+    }
+  fDaughters.clear();
   if( fMother != NULL )
     fMother->DeleteDaughter( this );
 }

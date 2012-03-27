@@ -10,6 +10,12 @@ using namespace Viewer;
 
 TextureManager::~TextureManager()
 {
+  ClearTextures();
+}
+
+void
+TextureManager::ClearTextures()
+{
   for( map< string, sf::Texture* >::iterator iTer = fTextures.begin(); iTer != fTextures.end(); iTer++ )
     delete iTer->second;
   fTextures.clear();

@@ -13,6 +13,7 @@
 ////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
@@ -28,9 +29,17 @@ using namespace Viewer;
 using namespace xercesc;
 
 void Initialise();
+void PrintHelp();
 
 int main( int argc, char *argv[] )
 {
+  // Instant help string checking
+  if( argc < 2 || string( argv[1] ) == string( "-h") || string( argv[1] ) == string( "--help" ) )
+    {
+      PrintHelp();
+      return 1;
+    }
+
   XMLPlatformUtils::Initialize();
 
   ViewerWindow& viewer = ViewerWindow::GetInstance();
@@ -38,36 +47,38 @@ int main( int argc, char *argv[] )
   viewer.Initialise();
 
   Thread* loadData;
-  if( string( argv[1] ) == string( "-s" ) || string( argv[1] ) == string( "-p" ) ) // Temp horrible way...
+  if( string( argv[1] ) == string( "-s" ) ) // Temp horrible way...
     {
-      { // Scoping to protect semaphore from runtime errors and seg faults
-	Semaphore sema;
-	if( argc < 3 )
-	  {
-	    cout << "Wrong number of arguments, try snogoggles -s tcp://localhost:5024" << endl;
-	    return 1;
-	  }
-	if( string( argv[1] ) == string( "-p" ) )
-	  loadData = new ReceiverThread( argv[2], sema, false );
-	else
-	  loadData = new ReceiverThread( argv[2], sema, true );
-	// Wait for first event to be loaded
-	sema.Wait();
-      }
+      Semaphore sema;
+      if( argc < 3 )
+        {
+          PrintHelp();
+          viewer.Destruct();
+          return 1;
+        }
+      loadData = new ReceiverThread( argv[2], sema, true );
+      // Wait for first event to be loaded
+      sema.Wait();
+    }
+  else if( string( argv[1] ) == string( "-p" ) )
+    {
+      cout << "Not yet implmented" << endl;
     }
   else
     {
-      { // Scoping to protect semaphore from runtime errors and seg faults
-	Semaphore sema;
-	if( argc < 2 )
-	  {
-	    cout << "Wrong number of arguments, try snogoggles File.root" << endl;
-	    return 1;
-	  }
-	loadData = new LoadRootFileThread( argv[1], sema );
-	// Wait for first event to be loaded
-	sema.Wait();
-      }
+      Semaphore sema;
+      ifstream test( argv[1] );
+      if( test.good() == false )
+        {
+          PrintHelp();
+          test.close();
+          viewer.Destruct();
+          return 1;
+        }
+      test.close();
+      loadData = new LoadRootFileThread( argv[1], sema );
+      // Wait for first event to be loaded
+      sema.Wait();
     }
 
   Initialise();
@@ -81,8 +92,18 @@ int main( int argc, char *argv[] )
   return 0;
 }
 
-void Initialise()
+void 
+Initialise()
 {
   GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
   EventData::GetInstance().Initialise();
+}
+
+void 
+PrintHelp()
+{
+  cout << "usage:snogoggles [options] [-p] FileName.root\n" << " or: snogoggles -s port\n";
+  cout << "options:" << endl;
+  cout << " -h, --help        show this help message and exit" << endl;
+  cout << " -p                load packed format file" << endl;
 }

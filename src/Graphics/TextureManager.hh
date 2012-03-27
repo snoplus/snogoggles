@@ -61,6 +61,8 @@ public:
   ~TextureManager();
   /// Return a texture given a filename
   sf::Texture* GetTexture( const std::string& fileName );
+  /// Delete and clear the textures
+  void ClearTextures();
 private:
   std::map< std::string, sf::Texture* > fTextures;
 

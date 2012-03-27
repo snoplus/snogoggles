@@ -50,6 +50,8 @@ public:
 			   EGUITextureState state );
   /// Notify and change the colour scheme
   void ChangeColourScheme();
+  /// Delete and clear the textures
+  void ClearTextures();
 private:
   GUITextureManager();
 

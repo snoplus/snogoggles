@@ -15,15 +15,28 @@ GUITextureManager::GUITextureManager()
 
 GUITextureManager::~GUITextureManager()
 {
+  ClearTextures();
+}
+
+void
+GUITextureManager::ClearTextures()
+{
   for( GUIRectMap::iterator iTer = fSubRects.begin(); iTer != fSubRects.end(); iTer++ )
     {
       delete (fTextures[iTer->first])[eBase];
+      (fTextures[iTer->first])[eBase] = NULL;
       delete (fTextures[iTer->first])[eHighlight];
+      (fTextures[iTer->first])[eHighlight] = NULL;
       delete (fTextures[iTer->first])[eActive];
+      (fTextures[iTer->first])[eActive] = NULL;
     }
   fTextures.clear();
   fSubRects.clear();
-  delete[] fBasePixels;
+  if( fBasePixels )
+    {
+      delete[] fBasePixels;
+      fBasePixels = NULL;
+    }
   fBaseWidth = 0;
   fBaseHeight = 0;
 }
