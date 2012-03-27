@@ -1,4 +1,8 @@
 #include <cstddef>
+#include <stdlib.h>
+#include <sstream>
+using namespace std;
+
 #include <Viewer/Configuration.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/SerializableFactory.hh>
@@ -21,11 +25,13 @@ GeodesicSphere* GeodesicSphere::GetInstance()
 GeodesicSphere::GeodesicSphere()
 	: fColour( ColourPalette::gPalette->GetPrimaryColour( eGrey ) )
 {
-	Configuration config = Configuration( "data/geodesic.xml", false );
-	std::vector< ConfigurationTable* >::iterator itr;
-    itr = config.GetTableBegin();
-	ConfigurationTable* volumeTable = (*itr)->GetTable( "volume" );
-	fPolyhedron = SerializableFactory::GetInstance()->NewPtr< Polyhedron >( volumeTable, "polyhedron" );
+  stringstream configFileName;                                                                                                                                                                                                           
+  configFileName << getenv( "VIEWERROOT" ) << "/data/geodesic.xml";
+  Configuration config = Configuration( configFileName.str(), false );
+  std::vector< ConfigurationTable* >::iterator itr;
+  itr = config.GetTableBegin();
+  ConfigurationTable* volumeTable = (*itr)->GetTable( "volume" );
+  fPolyhedron = SerializableFactory::GetInstance()->NewPtr< Polyhedron >( volumeTable, "polyhedron" );
 }
 
 const Polyhedron& GeodesicSphere::GetPolyhedron()
