@@ -81,9 +81,12 @@ HistogramBase::DrawHistogram( const RenderState& renderState )
     {
       double binValue = 0.0;
       for( unsigned int iBin2 = iBin; iBin2 < iBin + binsPerPixel; iBin2++ )
-	binValue += fBins[iBin2];
+        binValue += fBins[iBin2];
       fMaxValue = max( fMaxValue, binValue );
     }
+  // Histogram of zeros....
+  if( fMaxValue == 0.0 )
+    return;
   // Now the histogram can be drawn 
   for( unsigned int iBin = 0; iBin < fBins.size(); iBin += binsPerPixel )
     {
@@ -94,11 +97,11 @@ HistogramBase::DrawHistogram( const RenderState& renderState )
       const double binRatio = static_cast<double>( iBin ) / static_cast<double>( fBins.size() );
       double binHeight = binValue / fMaxValue;
       if( fLogY && binValue > 0.0 && fMaxValue > 1.0 )
-	binHeight = log10( binValue ) / ( log10( fMaxValue ) - log10( 0.1 ) );
+        binHeight = log10( binValue ) / ( log10( fMaxValue ) - log10( 0.1 ) );
       sf::Vector2<double> pos( binRatio, 1.0 - binHeight );
       sf::Vector2<double> size( pixelBinWidth, binHeight );
       if( static_cast<double>( iBin ) > renderState.GetScalingMin() && static_cast<double>( iBin ) < renderState.GetScalingMax() )
-	fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( ( (double)( iBin ) - renderState.GetScalingMin() ) / ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
+        fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( ( (double)( iBin ) - renderState.GetScalingMin() ) / ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }
 
