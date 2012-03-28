@@ -60,15 +60,15 @@ public:
   
   inline std::vector< ConfigurationTable* >::iterator GetTableBegin();
   inline std::vector< ConfigurationTable* >::iterator GetTableEnd();
-  inline unsigned int GetNumTables();
+  inline unsigned int GetNumTables() const;
   
   ConfigurationTable* NewTable( const std::string& name );
 
   void SaveConfiguration();
 
-  int GetI( const std::string& name );
-  double GetD( const std::string& name );
-  std::string GetS( const std::string& name );
+  int GetI( const std::string& name ) const;
+  double GetD( const std::string& name ) const;
+  std::string GetS( const std::string& name ) const;
 
   void SetI( const std::string& name, const int value );
   void SetD( const std::string& name, const double value );
@@ -95,7 +95,7 @@ Configuration::GetTableEnd()
 }
 
 unsigned int
-Configuration::GetNumTables()
+Configuration::GetNumTables() const
 {
   return fConfigTables.size();
 }

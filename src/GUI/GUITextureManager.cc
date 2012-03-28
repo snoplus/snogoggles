@@ -99,7 +99,7 @@ GUITextureManager::ChangeColourScheme()
 
 void 
 GUITextureManager::Colourise( EGUITexture image,
-			      EGUITextureState state )
+                              EGUITextureState state )
 {
   GUIColourPalette* palette = GUIColourPalette::gPalette;
   sf::Rect<int> sourceRect = fSubRects[image];

@@ -37,7 +37,7 @@ FrameMasterUI::EventLoop()
 void 
 FrameMasterUI::SaveConfiguration( ConfigurationTable& configTable )
 {
-  // Just save current desktop
+
 }
 
 void 

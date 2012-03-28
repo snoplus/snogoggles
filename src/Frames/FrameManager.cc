@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 #include <Viewer/FrameManager.hh>
@@ -10,12 +11,13 @@ using namespace std;
 #include <Viewer/Rect.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/FrameMasterUI.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
 FrameManager::FrameManager( RectPtr rect,
 			    double rightMargin,
 			    double bottomMargin )
-  : fRect( rect ), fRightMargin( rightMargin ), fBottomMargin( bottomMargin )
+  : fRect( rect ), fRightMargin( rightMargin ), fBottomMargin( bottomMargin ), fFrameFactory( rect )
 {
 
 }
@@ -117,12 +119,6 @@ FrameManager::EventLoop()
 }
 
 void 
-FrameManager::SaveConfiguration( ConfigurationTable& configTable )
-{
-
-}
-
-void 
 FrameManager::Initialise()
 {
   // First create the frame grid
@@ -130,6 +126,7 @@ FrameManager::Initialise()
   defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0 - fBottomMargin;
   fgRect = new RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
   fFrameGrid = new FrameGrid( *fgRect );
+  fFrameGrid->Initialise();
   // Then initialise the UI
   defaultSize.Left = 0.0; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = fBottomMargin;
   RectPtr fmRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
@@ -143,10 +140,39 @@ FrameManager::Initialise()
 void 
 FrameManager::LoadConfiguration( ConfigurationTable& configTable )
 {
-  Initialise();
-  //for( vector<FrameManager*>::iterator iTer = fFrameManagers.begin(); iTer != fFrameManagers.end(); iTer++ )
-    // Need names of tables
+  fFrameGrid->LoadConfiguration( configTable );
+  // Now load the frames
+  try
+    {
+      unsigned int uFrame = 0;
+      while( true ) // throws to exit
+        {
+          stringstream tableName;
+          tableName << "Frame" << uFrame;
+          ConfigurationTable& currentConfig = *configTable.GetTable( tableName.str() );
+          string type = currentConfig.GetS( "type" );
+          NewFrame( uFrame, fFrameFactory.New( type ), currentConfig );
+          uFrame++;
+        }
+    }
+  catch( ConfigurationTable::NoTableError& e )
+    {
+      // No more tables to load...
+    }
+}
 
+void 
+FrameManager::SaveConfiguration( ConfigurationTable& configTable )
+{
+  fFrameGrid->SaveConfiguration( configTable );
+  // Now save the frame information
+  for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
+    {
+      stringstream tableName;
+      tableName << "Frame" << uFrame;
+      ConfigurationTable& currentConfig = *configTable.NewTable( tableName.str() );
+      fFrameContainers[uFrame]->SaveConfiguration( currentConfig );
+    }
 }
 
 void 
@@ -233,6 +259,22 @@ FrameManager::NewFrame( Frame* frame )
       RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eLocal ) );
       FrameContainer* newFrame = new FrameContainer( rectPtr );
       newFrame->Initialise( frame );
+      fFrameContainers.push_back( newFrame );
+    }
+}
+
+void
+FrameManager::NewFrame( unsigned int uFrame,
+                        Frame* frame,
+                        ConfigurationTable& configTable )
+{
+  sf::Rect<double> rect;
+  if( fFrameGrid->CheckFrame( uFrame, rect ) )
+    {
+      RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eLocal ) );
+      FrameContainer* newFrame = new FrameContainer( rectPtr );
+      newFrame->Initialise( frame );
+      newFrame->LoadConfiguration( configTable );
       fFrameContainers.push_back( newFrame );
     }
 }

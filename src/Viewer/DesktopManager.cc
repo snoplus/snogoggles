@@ -45,13 +45,6 @@ DesktopManager::EventLoop()
 }
 
 void 
-DesktopManager::SaveConfiguration( Configuration& config )
-{
-  //for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
-    // Need names of tables
-}
-
-void 
 DesktopManager::Initialise()
 {
   // First initialise the UI
@@ -80,8 +73,27 @@ DesktopManager::Initialise()
 void 
 DesktopManager::LoadConfiguration( Configuration& config )
 {
-  //for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
-    // Need names of tables
+  unsigned int uDesktop = 0;
+  for( vector< ConfigurationTable* >::iterator iTer = config.GetTableBegin(); iTer != config.GetTableEnd(); iTer++ )
+    {
+      ConfigurationTable& configTable = **iTer;
+      fDesktops[uDesktop]->LoadConfiguration( configTable );
+      uDesktop++;
+    }
+  fDMUI->LoadConfiguration( config );
+}
+
+void 
+DesktopManager::SaveConfiguration( Configuration& config )
+{
+  unsigned int uDesktop = 0;
+  for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
+    {
+      ConfigurationTable& configTable = *config.NewTable( "Desktop" );
+      fDesktops[uDesktop]->SaveConfiguration( configTable );
+      uDesktop++;
+    }
+  fDMUI->SaveConfiguration( config );
 }
 
 void 

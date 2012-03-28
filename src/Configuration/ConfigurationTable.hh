@@ -79,12 +79,12 @@ public:
   ConfigurationTable* GetTable( const std::string& name );
   inline std::map< std::string, ConfigurationTable* >::iterator GetTableBegin();
   inline std::map< std::string, ConfigurationTable* >::iterator GetTableEnd();
-  inline unsigned int GetNumTables();
+  inline unsigned int GetNumTables() const;
   ConfigurationTable* NewTable( const std::string& name );
 
-  int GetI( const std::string& name );
-  double GetD( const std::string& name );
-  std::string GetS( const std::string& name );
+  int GetI( const std::string& name ) const;
+  double GetD( const std::string& name ) const;
+  std::string GetS( const std::string& name ) const;
 
   void SetI( const std::string& name, const int value );
   void SetD( const std::string& name, const double value );
@@ -109,7 +109,7 @@ ConfigurationTable::GetTableEnd()
 }
   
 unsigned int
-ConfigurationTable::GetNumTables()
+ConfigurationTable::GetNumTables() const
 {
   return fConfigTables.size();
 }

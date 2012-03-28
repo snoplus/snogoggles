@@ -4,13 +4,8 @@
 #include <Viewer/TopBar.hh>
 #include <Viewer/Frame.hh>
 #include <Viewer/Event.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
-
-#include <Viewer/LambertProjection.hh>
-#include <Viewer/IcosahedralProjection.hh>
-#include <Viewer/CrateView.hh>
-#include <Viewer/HitFrame3d.hh>
-#include <Viewer/Histogram.hh>
 
 FrameContainer::FrameContainer( RectPtr rect )
   : fRect( rect )
@@ -57,12 +52,6 @@ FrameContainer::EventLoop()
 }
 
 void 
-FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
-{
-
-}
-
-void 
 FrameContainer::Initialise( Frame* frame )
 {
   fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
@@ -76,7 +65,16 @@ FrameContainer::Initialise( Frame* frame )
 void 
 FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
 {
+  fTopBar->LoadConfiguration( configTable );
+  fFrame->LoadConfiguration( configTable );
+}
 
+void 
+FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
+{
+  configTable.SetS( "type", fFrame->GetName() ); // Loaded in FrameManager!
+  fTopBar->SaveConfiguration( configTable );
+  fFrame->SaveConfiguration( configTable );
 }
 
 void 

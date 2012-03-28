@@ -3,6 +3,7 @@
 #include <Viewer/Event.hh>
 #include <Viewer/GUIImagePersist.hh>
 #include <Viewer/RWWrapper.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
 TopBar::TopBar( RectPtr rect )
@@ -25,14 +26,14 @@ TopBar::NewEvent( const Event& event )
     {
     case sf::Event::LostFocus:
       {
-	fLeft->NewEvent( event );
-	fBar->NewEvent( event );
-	fDecrease->NewEvent( event );
-	fIncrease->NewEvent( event );
-	fPin->NewEvent( event );
-	fClose->NewEvent( event );
-	fRight->NewEvent( event );
-	retEvent = FrameEvent( FrameEvent::eStopMove );
+        fLeft->NewEvent( event );
+        fBar->NewEvent( event );
+        fDecrease->NewEvent( event );
+        fIncrease->NewEvent( event );
+        fPin->NewEvent( event );
+        fClose->NewEvent( event );
+        fRight->NewEvent( event );
+        retEvent = FrameEvent( FrameEvent::eStopMove );
       }
       break;
     case sf::Event::MouseButtonPressed:
@@ -92,12 +93,6 @@ TopBar::NewEvent( const Event& event )
 }
 
 void 
-TopBar::SaveConfiguration( ConfigurationTable& configTable )
-{
-
-}
-
-void 
 TopBar::Initialise()
 {
   fLeft = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter() ), 0 );
@@ -119,7 +114,13 @@ TopBar::Initialise()
 void 
 TopBar::LoadConfiguration( ConfigurationTable& configTable )
 {
+  fPin->SetState( configTable.GetI( "pinned" ) );
+}
 
+void 
+TopBar::SaveConfiguration( ConfigurationTable& configTable )
+{
+  configTable.SetI( "pinned", fPin->GetState() );
 }
 
 void 

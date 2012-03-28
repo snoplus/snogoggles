@@ -8,6 +8,7 @@ using namespace std;
 #include <Viewer/FrameManager.hh>
 #include <Viewer/EventMasterUI.hh>
 #include <Viewer/RenderState.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
 Desktop::Desktop( RectPtr desktopRect,
@@ -39,13 +40,6 @@ Desktop::EventLoop()
 }
 
 void 
-Desktop::SaveConfiguration( ConfigurationTable& configTable )
-{
-  //for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
-    // Need names of tables
-}
-
-void 
 Desktop::Initialise()
 {
   // First initialise the UI
@@ -63,9 +57,19 @@ Desktop::Initialise()
 void 
 Desktop::LoadConfiguration( ConfigurationTable& configTable )
 {
-  Initialise();
-  //for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
-    // Need names of tables
+  ConfigurationTable& emTable = *configTable.GetTable( "eventMaster" );
+  fEMUI->LoadConfiguration( emTable );
+  ConfigurationTable& fmTable = *configTable.GetTable( "frameManager" );
+  fFrameManager->LoadConfiguration( fmTable );
+}
+
+void 
+Desktop::SaveConfiguration( ConfigurationTable& configTable )
+{
+  ConfigurationTable& emTable = *configTable.NewTable( "eventMaster" );
+  fEMUI->SaveConfiguration( emTable );
+  ConfigurationTable& fmTable = *configTable.NewTable( "frameManager" );
+  fFrameManager->SaveConfiguration( fmTable );
 }
 
 void 

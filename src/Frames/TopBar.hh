@@ -58,7 +58,6 @@ public:
   bool IsPinned();
 private:
   RectPtr fRect; /// < The Top bar location
-  Text* fTitle;
   GUIs::GUIImageButton* fLeft;
   GUIs::GUIImageButton* fBar;
   GUIs::GUIImageButton* fDecrease;

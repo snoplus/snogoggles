@@ -33,7 +33,7 @@ namespace sf
 namespace Viewer
 {
   class RWWrapper;
-  class ConfigurationTable;
+  class Configuration;
   class RenderState;
   class Event;
 namespace GUIs
@@ -52,11 +52,11 @@ public:
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( Configuration& config );
   /// Initialise without a configuration
   void Initialise();
   /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void LoadConfiguration( Configuration& config );
   /// Render the GUI objects
   void Render( RWWrapper& renderApp );
   /// Ask if object contains a point

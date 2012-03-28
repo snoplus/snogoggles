@@ -9,6 +9,7 @@
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/Event.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
 EventMasterUI::EventMasterUI( RectPtr rect )
@@ -48,23 +49,23 @@ EventMasterUI::EventLoop()
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
-	{
-	case 0: // Next EV
-	  events.Next();
-	  break;
-	case 1: // Prev EV
-	  events.Prev();
-	  break;
-	case 2: // Event type change 
-	case 3: // Event type change 
-	  // Must reset the scaling
-	  fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>() );
-	  fScalingBar->Reset();
-	  break;
-	case 5: // New Scaling
-	  fCurrentRenderState.ChangeScaling( fScalingBar->GetMin(), fScalingBar->GetMax() );
-	  break;
-	}
+        {
+        case 0: // Next EV
+          events.Next();
+          break;
+        case 1: // Prev EV
+          events.Prev();
+          break;
+        case 2: // Event type change 
+        case 3: // Event type change 
+          // Must reset the scaling
+          fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>() );
+          fScalingBar->Reset();
+          break;
+        case 5: // New Scaling
+          fCurrentRenderState.ChangeScaling( fScalingBar->GetMin(), fScalingBar->GetMax() );
+          break;
+        }
       fEvents.pop();
     }
   switch( fRefreshSelector->GetState() )
@@ -76,23 +77,17 @@ EventMasterUI::EventLoop()
       break;
     case 2: // 0.5 second
       if( fClock.GetElapsedTime().AsSeconds() > 0.5 )
-	{
-	  events.Next();
-	  fClock.Restart();
-	}
+        {
+          events.Next();
+          fClock.Restart();
+        }
     case 3: // 2 seconds
       if( fClock.GetElapsedTime().AsSeconds() > 2.0 )
-	{
-	  events.Next();
-	  fClock.Restart();
-	}
+        {
+          events.Next();
+          fClock.Restart();
+        }
     }
-}
-
-void 
-EventMasterUI::SaveConfiguration( ConfigurationTable& configTable )
-{
-  // Just save current desktop
 }
 
 void 
@@ -128,7 +123,18 @@ EventMasterUI::Initialise()
 void 
 EventMasterUI::LoadConfiguration( ConfigurationTable& configTable )
 {
-  // load current desktop
+  fSourceRadio->SetState( configTable.GetI( "sourceType" ) );
+  fTypeRadio->SetState( configTable.GetI( "dataType" ) );
+  fRefreshSelector->SetState( configTable.GetI( "refreshState" ) );
+  fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>() );
+}
+
+void 
+EventMasterUI::SaveConfiguration( ConfigurationTable& configTable )
+{
+  configTable.SetI( "sourceType", fSourceRadio->GetState() );
+  configTable.SetI( "dataType", fTypeRadio->GetState() );
+  configTable.SetI( "refreshState", fRefreshSelector->GetState() );
 }
 
 void 

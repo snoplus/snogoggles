@@ -8,6 +8,7 @@ using namespace std;
 #include <Viewer/DesktopMasterUI.hh>
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Event.hh>
+#include <Viewer/Configuration.hh>
 using namespace Viewer;
 
 DesktopMasterUI::DesktopMasterUI( RectPtr rect,
@@ -28,13 +29,13 @@ DesktopMasterUI::NewEvent( const Event& event )
   if( event.Type == sf::Event::KeyPressed )
     {
       if( event.Key.Code == sf::Keyboard::Up && event.Key.Control == true )
-	fDesktopRadio->SetState( ( fDesktopRadio->GetState() + 1 ) % fNumDesktops );
+        fDesktopRadio->SetState( ( fDesktopRadio->GetState() + 1 ) % fNumDesktops );
       else if( event.Key.Code == sf::Keyboard::Down && event.Key.Control == true )
-	fDesktopRadio->SetState( ( fDesktopRadio->GetState() - 1 ) % fNumDesktops );
+        fDesktopRadio->SetState( ( fDesktopRadio->GetState() - 1 ) % fNumDesktops );
       if( event.Key.Code == sf::Keyboard::Right && event.Key.Control == true )
-	fDesktopRadio->SetState( ( fDesktopRadio->GetState() + 2 ) % fNumDesktops );
+        fDesktopRadio->SetState( ( fDesktopRadio->GetState() + 2 ) % fNumDesktops );
       else if( event.Key.Code == sf::Keyboard::Left && event.Key.Control == true )
-	fDesktopRadio->SetState( ( fDesktopRadio->GetState() - 2 ) % fNumDesktops );
+        fDesktopRadio->SetState( ( fDesktopRadio->GetState() - 2 ) % fNumDesktops );
       fCurrentDesktop = fDesktopRadio->GetState();
     }
   GUIEvent guiEvent = fGUIManager.NewEvent( event );
@@ -48,19 +49,13 @@ DesktopMasterUI::EventLoop()
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
-	{
+        {
         case 0:
-	  fCurrentDesktop = fDesktopRadio->GetState();
-	  break;
-	}
+          fCurrentDesktop = fDesktopRadio->GetState();
+          break;
+        }
       fEvents.pop();
     }
-}
-
-void 
-DesktopMasterUI::SaveConfiguration( ConfigurationTable& configTable )
-{
-  // Just save current desktop
 }
 
 void 
@@ -81,9 +76,16 @@ DesktopMasterUI::Initialise()
 }
 
 void 
-DesktopMasterUI::LoadConfiguration( ConfigurationTable& configTable )
+DesktopMasterUI::LoadConfiguration( Configuration& config )
 {
-  // load current desktop
+  fCurrentDesktop = config.GetI( "currentDesktop" );
+  fDesktopRadio->SetState( fCurrentDesktop );
+}
+
+void 
+DesktopMasterUI::SaveConfiguration( Configuration& config )
+{
+  config.SetI( "currentDesktop", fCurrentDesktop );
 }
 
 void 

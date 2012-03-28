@@ -1,3 +1,4 @@
+#include <iostream>
 using namespace std;
 
 #include <Viewer/ConfigurationTable.hh>
@@ -15,19 +16,20 @@ ConfigurationTable::ConfigurationTable( xercesc_3_1::DOMElement* element, bool o
   fDOMDocument = domDocument;
   fDOMElement = element;
   fOutput = output;
+  fConfigTables.clear();
   // Now extract config tables
   DOMNodeList* children = fDOMElement->getChildNodes();
   for( XMLSize_t ix = 0; ix < children->getLength(); ++ix ) // Pre increment to save memory
     {
       DOMNode* currentNode = children->item(ix);
       if( currentNode->getNodeType() && currentNode->getNodeType() == DOMNode::ELEMENT_NODE ) 
-	{
-	  DOMElement* currentElement = dynamic_cast< xercesc::DOMElement* >( currentNode );
-	  char* name = XMLString::transcode( currentElement->getTagName() );
-	  string elementName( name );
-	  XMLString::release( &name ) ;
-	  fConfigTables[ elementName ] = new ConfigurationTable( currentElement, fOutput, fDOMDocument );
-	}
+        {
+          DOMElement* currentElement = dynamic_cast< xercesc::DOMElement* >( currentNode );
+          char* name = XMLString::transcode( currentElement->getTagName() );
+          string elementName( name );
+          XMLString::release( &name ) ;
+          fConfigTables[ elementName ] = new ConfigurationTable( currentElement, fOutput, fDOMDocument );
+        }
     }
 }
 
@@ -48,14 +50,14 @@ ConfigurationTable::NewTable( const string& name )
 ConfigurationTable* 
 ConfigurationTable::GetTable( const std::string& name )
 {
-  if( fConfigTables.count( name ) == 0 )
+  if( fConfigTables.empty() || fConfigTables.find( name ) == fConfigTables.end() )
     throw NoTableError( name );
   return fConfigTables[ name ];
 }
 
 
 int 
-ConfigurationTable::GetI( const string& name )
+ConfigurationTable::GetI( const string& name ) const
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
   if( !fDOMElement->hasAttribute( attributeName ) )
@@ -75,7 +77,7 @@ ConfigurationTable::GetI( const string& name )
 }
 
 double 
-ConfigurationTable::GetD( const string& name )
+ConfigurationTable::GetD( const string& name ) const
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
   if( !fDOMElement->hasAttribute( attributeName ) )
@@ -97,7 +99,7 @@ ConfigurationTable::GetD( const string& name )
 }
 
 string
-ConfigurationTable::GetS( const string& name )
+ConfigurationTable::GetS( const string& name ) const
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
   if( !fDOMElement->hasAttribute( attributeName ) )

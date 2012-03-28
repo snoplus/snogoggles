@@ -25,7 +25,7 @@ Configuration::Configuration( const string& fileName, bool output )
       
       int iretStat = stat( fFileName.c_str(), &fileStatus);
       if( iretStat != 0 )
-	throw NoFileError( fFileName );
+        throw NoFileError( fFileName );
       XercesDOMParser* fileParser = new XercesDOMParser;
       fileParser->setValidationScheme( XercesDOMParser::Val_Never );
       fileParser->setDoNamespaces( false );	   
@@ -39,17 +39,17 @@ Configuration::Configuration( const string& fileName, bool output )
       // Now extract config tables
       DOMNodeList* children = fRootElement->getChildNodes();
       for( XMLSize_t ix = 0; ix < children->getLength(); ++ix ) // Pre increment to save memory
-	{
-	  DOMNode* currentNode = children->item(ix);
-	  if( currentNode->getNodeType() && currentNode->getNodeType() == DOMNode::ELEMENT_NODE ) 
-	    {
-	      DOMElement* currentElement = dynamic_cast< xercesc::DOMElement* >( currentNode );
-	      char* name = xercesc::XMLString::transcode( currentElement->getTagName() );
-	      string elementName( name );
-	      xercesc::XMLString::release( &name ) ;
-	      fConfigTables.push_back( new ConfigurationTable( currentElement, fOutput, fDOMDocument ) );
-	    }
-	}
+        {
+          DOMNode* currentNode = children->item(ix);
+          if( currentNode->getNodeType() && currentNode->getNodeType() == DOMNode::ELEMENT_NODE ) 
+            {
+              DOMElement* currentElement = dynamic_cast< xercesc::DOMElement* >( currentNode );
+              char* name = xercesc::XMLString::transcode( currentElement->getTagName() );
+              string elementName( name );
+              xercesc::XMLString::release( &name ) ;
+              fConfigTables.push_back( new ConfigurationTable( currentElement, fOutput, fDOMDocument ) );
+            }
+        }
       delete fileParser; // no longer auses segFault, we've adopted the DOMDocument
     }
   else // Writing
@@ -99,7 +99,7 @@ Configuration::NewTable( const string& name )
   DOMElement* newElement = fDOMDocument->createElement( elementName );
   fRootElement->appendChild( newElement );
   XMLString::release( &elementName );
-  if( name == string( "Frame" ) )
+  if( name == string( "Desktop" ) )
     {
       ConfigurationTable* newTable = new ConfigurationTable( newElement, fOutput, fDOMDocument );
       fConfigTables.push_back( newTable );
@@ -109,9 +109,8 @@ Configuration::NewTable( const string& name )
     throw ConfigurationTable::NoTableError( name ); // TODO
 }
 
-
 int 
-Configuration::GetI( const string& name )
+Configuration::GetI( const string& name ) const
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
   if( !fRootElement->hasAttribute( attributeName ) )
@@ -131,7 +130,7 @@ Configuration::GetI( const string& name )
 }
 
 double 
-Configuration::GetD( const string& name )
+Configuration::GetD( const string& name ) const
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
   if( !fRootElement->hasAttribute( attributeName ) )
@@ -153,7 +152,7 @@ Configuration::GetD( const string& name )
 }
 
 string
-Configuration::GetS( const string& name )
+Configuration::GetS( const string& name ) const
 {
   XMLCh* attributeName = XMLString::transcode( name.c_str() );
   if( !fRootElement->hasAttribute( attributeName ) )

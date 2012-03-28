@@ -66,3 +66,9 @@ Selector::GetState() const
 {
   return fCurrentOption;
 }
+
+void
+Selector::SetState( unsigned int state )
+{
+  fCurrentOption = state;
+}

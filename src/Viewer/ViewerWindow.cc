@@ -3,6 +3,7 @@
 #include <SFML/OpenGL.hpp>
 
 #include <string>
+#include <stdio.h>
 using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
@@ -20,6 +21,8 @@ using namespace Viewer;
 
 ColourPaletteFactory ViewerWindow::gColourPaletteFactory;
 GUIColourPaletteFactory ViewerWindow::gGUIColourPaletteFactory;
+
+const int kConfigVersion = 1;
 
 ViewerWindow::ViewerWindow()
 {
@@ -46,42 +49,47 @@ ViewerWindow::Initialise()
   settings.DepthBits         = 24; // Request a 24 bits depth buffer
   settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
 
+  sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
+  fullScreen.Height -= 40.0; // Mac systems require this
+  fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, settings  ); 
+  Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+  Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
   // Load the configuration
-  /*  try
+  try
     {
       stringstream configFileName;
       configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
       Configuration loadConfig( configFileName.str(), false );  
-      int resX = loadConfig.GetI( "resX" ); 
-      int resY = loadConfig.GetI( "resY" );
-      fWindowApp = new sf::RenderWindow( sf::VideoMode( resX, resY ), "SNO Goggles", sf::Style::Default, settings );
-      Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
-      Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+      // Check file is up to date, if not throw a recoverable error (after deleting it)
+      try
+        {
+          if( loadConfig.GetI( "version" ) != kConfigVersion )
+            {
+              remove( configFileName.str().c_str() );
+              throw Configuration::NoFileError( "Configuration version miss match" );
+            }
+        }
+      catch( ConfigurationTable::NoAttributeError& e )
+        {
+          remove( configFileName.str().c_str() );
+          throw Configuration::NoFileError( "Configuration version miss match" );
+        }
+
       ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig.GetS( "colourPal" ) );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
       DrawSplash();
       fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
       fDesktopManager->Initialise();
       fDesktopManager->LoadConfiguration( loadConfig );
-      }
-      catch( Configuration::NoFileError& e )*/
+    }
+  catch( Configuration::NoFileError& e )
     {
-      sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
-      fullScreen.Height -= 40.0; // Mac systems require this
-      fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, settings  ); 
-      Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
-      Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
       ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" );
       DrawSplash();
       fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
       fDesktopManager->Initialise();
     }
-
-  // Now initialise the GUI
-  //GUIImageManager& guiIM = GUIImageManager::GetInstance();
-  //guiIM.Initialise();
-  //guiIM.ChangeColourScheme( GUIColourPalette::gPalette );
 }
 
 void
@@ -124,6 +132,8 @@ ViewerWindow::Destruct()
   Configuration saveConfig( configFileName.str(), true );
   saveConfig.SetS( "colourPal", ColourPalette::gPalette->GetName() );
   saveConfig.SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
+  saveConfig.SetI( "version", kConfigVersion );
+  fDesktopManager->SaveConfiguration( saveConfig );
   saveConfig.SaveConfiguration();
   
   // Must delete textures before the window, or get sfml segfault

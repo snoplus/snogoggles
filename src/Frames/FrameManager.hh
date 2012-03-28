@@ -24,6 +24,7 @@
 #include <Viewer/FrameGrid.hh>
 #include <Viewer/FrameEvent.hh>
 #include <Viewer/RectPtr.hh>
+#include <Viewer/FrameFactory.hh>
 
 namespace Viewer
 {
@@ -58,18 +59,22 @@ public:
   void LoadConfiguration( ConfigurationTable& configTable );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp, 
-		 const RenderState& renderState );
+                 const RenderState& renderState );
   /// Render all 3d objects
   void Render3d( RWWrapper& renderApp, 
-		 const RenderState& renderState );
+                 const RenderState& renderState );
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp, 
-		  const RenderState& renderState );
+                  const RenderState& renderState );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
-  /// Create a new frame 
+  /// Create a new frame, from FrameMasterUI
   void NewFrame( Frame* frame );
 private:
+  /// Create a new frame, locally called
+  void NewFrame( unsigned int uFrame,
+                 Frame* frame,
+                 ConfigurationTable& configTable );
 
   FrameEvent DispatchEvent( const Event& event,
 			    const int targetFrame );
@@ -90,6 +95,7 @@ private:
   void ResizeFrame( const FrameGrid::ESize size,
 		    const int targetFrame );
 
+  FrameFactory fFrameFactory; /// < The frame factory
   RectPtr fRect; /// < The frame manager rect
   RectPtr* fgRect; /// < The frame grid area rect
   std::vector<FrameContainer*> fFrameContainers; /// < The frames themselves.

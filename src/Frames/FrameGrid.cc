@@ -1,10 +1,12 @@
 #include <SFML/Graphics/Rect.hpp>
 
 #include <algorithm>
+#include <sstream>
 using namespace std;
 
 #include <Viewer/FrameGrid.hh>
 #include <Viewer/Rect.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
 const double kMinFrameWidth = 140.0;
@@ -12,11 +14,49 @@ const double kMinFrameWidth = 140.0;
 FrameGrid::FrameGrid( RectPtr rect )
   : fRect( rect )
 {
+
+}
+
+void
+FrameGrid::Initialise()
+{
   sf::Rect<double> gridSpace = fRect->GetRect( Rect::eResolution );
   fCols = static_cast<unsigned int>( gridSpace.Width / kMinFrameWidth ); 
   double colWidth = gridSpace.Width / static_cast<double>( fCols );
   fRows = static_cast<unsigned int>( gridSpace.Height / colWidth );
   fGrid.resize( fCols, vector<int>( fRows, -1 ) );
+}
+
+void
+FrameGrid::LoadConfiguration( ConfigurationTable& configTable )
+{
+  // Check to see if current window is large enough
+  const int cols = configTable.GetI( "cols" );
+  const int rows = configTable.GetI( "rows" );
+  if( cols > fCols || rows > fRows )
+    return; // No go, no frames will be configured
+  for( unsigned int iCol = 0; iCol < cols; iCol++ )
+    for( unsigned int iRow = 0; iRow < rows; iRow++ )
+      {
+        stringstream indexName;
+        indexName << "c" << iCol << "r" << iRow;
+        fGrid[iCol][iRow] = configTable.GetI( indexName.str() );
+      }
+  
+}
+
+void
+FrameGrid::SaveConfiguration( ConfigurationTable& configTable )
+{
+  configTable.SetI( "cols", fCols );
+  configTable.SetI( "rows", fRows );
+  for( unsigned int iCol = 0; iCol < fCols; iCol++ )
+    for( unsigned int iRow = 0; iRow < fRows; iRow++ )
+      {
+        stringstream indexName;
+        indexName << "c" << iCol << "r" << iRow;
+        configTable.SetI( indexName.str(), fGrid[iCol][iRow] );
+      }
 }
 
 bool
@@ -26,11 +66,11 @@ FrameGrid::NewFrame( unsigned int id,
   for( unsigned int iCol = 0; iCol < fCols; iCol++ )
     for( unsigned int iRow = 0; iRow < fRows; iRow++ )
       if( CheckEmptySquare( id, iCol, iRow ) ) // Found a free square so return the answer
-	{
-	  rect = GridToRect( iCol, iRow );
-	  fGrid[iCol][iRow] = id;
-	  return true;
-	}
+        {
+          rect = GridToRect( iCol, iRow );
+          fGrid[iCol][iRow] = id;
+          return true;
+        }
   // Failed to find space, thus return NULL
   return false;
 }
