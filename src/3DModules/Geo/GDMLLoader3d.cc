@@ -6,6 +6,10 @@
 #include <G4Point3D.hh>
 #include <G4Polyhedron.hh>
 
+#include <stdlib.h>
+#include <sstream>
+using namespace std;
+
 #include <TMath.h>
 
 #include <Viewer/GDMLLoader3d.hh>
@@ -21,7 +25,9 @@ int GDMLLoader3d::fColour = 0;
 World* GDMLLoader3d::GetWorld() 
 {
     G4GDMLParser parser;
-    parser.Read( "data/" + fFilename );
+    stringstream parserFileName;
+    parserFileName << getenv( "VIEWERROOT" ) << "/data/" << fFilename;
+    parser.Read( parserFileName.str() );
 
     Volume volume = CreateVolume( parser.GetWorldVolume() );
     VisMap visMap;
