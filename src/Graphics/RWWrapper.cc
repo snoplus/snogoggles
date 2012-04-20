@@ -30,22 +30,13 @@ RWWrapper::Draw( Text& object )
 {
   sf::Text sfmlText( object.GetString(), fFont );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
-  sf::Rect<float> textRect = sfmlText.GetGlobalBounds(); 
-  // The should be located at (0,0) at this stage, however it is often at (0,5) etc... due to character height matching
-  double widthRatio = ( textRect.Width - textRect.Left ) / resPos.Width;
-  double heightRatio = ( textRect.Height ) / resPos.Height; 
-  double topCorrection = textRect.Top;
-  if( widthRatio > heightRatio ) // Must minimise by width
-    {
-      sfmlText.Scale( 1.0 / widthRatio, 1.0 / widthRatio );
-      topCorrection *= 1.0 / widthRatio;
-    }
-  else
-    {
-      sfmlText.Scale( 1.0 / heightRatio, 1.0 / heightRatio );
-      topCorrection *= 1.0 / heightRatio;
-    }
-  sfmlText.SetPosition( resPos.Left, resPos.Top - topCorrection / 2.0 );
+  sfmlText.SetPosition( resPos.Left, resPos.Top );
+  // Now the character size, start with the height divided by number of lines
+  double characterSize = resPos.Height / object.GetNumLines();
+  if( characterSize * object.GetMaxLineLength() / 2.0 > resPos.Width )
+    // Too large go for safer smaller
+    characterSize = resPos.Width * 2.0 / object.GetMaxLineLength();
+  sfmlText.SetCharacterSize( characterSize ); // Must use this and not scale to avoid bounding box bug.
   sfmlText.SetColor( object.GetColour() );
   DrawObject( sfmlText );
 }
