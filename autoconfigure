@@ -24,7 +24,7 @@ export ZEROMQROOT=$ZEROMQROOT
 export LD_LIBRARY_PATH=\$RATROOT/lib:\$ROOTSYS/lib:\$AVALANCHEROOT/lib/cpp:\$ZEROMQROOT/lib:\$SFMLROOT/lib:\$XERCESCROOT/lib:\$GLEWROOT/lib:\$G4LIB/\$G4SYSTEM:\$LD_LIBRARY_PATH
 # For Mac OS X
 export DYLD_LIBRARY_PATH=\$RATROOT/lib:\$ROOTSYS/lib:\$AVALANCHEROOT/lib/cpp:\$ZEROMQROOT/lib:\$SFMLROOT/lib:\$XERCESCROOT/lib:\$GLEWROOT/lib:\$G4LIB/\$G4SYSTEM:\$DYLD_LIBRARY_PATH
-export PYTHONPATH=\$VIEWERROOT/python:$SCONS_LIB\$PYTHONPATH
+export PYTHONPATH=\$VIEWERROOT/python:\$RATROOT/python:$SCONS_LIB\$PYTHONPATH
 EOF
 [[ -e env.sh ]] && chmod +x env.sh && printf "OK\n"
 
@@ -51,9 +51,9 @@ else
  setenv LD_LIBRARY_PATH "\${RATROOT}/lib:\${ROOTSYS}/lib:\${AVALANCHEROOT}/lib/cpp:\${ZEROMQROOT}/lib:\${SFMLROOT}/lib:\${XERCESCROOT}/lib:\${GLEWROOT}/lib:\${G4LIB}/\${G4SYSTEM}"
 endif 
 if ({\$?PYTHONPATH}) then
- setenv PYTHONPATH "\${VIEWERROOT}/python:$SCONS_LIB:\$PYTHONPATH"
+ setenv PYTHONPATH "\${VIEWERROOT}/python:\${RATROOT}/python:$SCONS_LIB:\$PYTHONPATH"
 else
- setenv PYTHONPATH "\${VIEWERROOT}/python:$SCONS_LIB"
+ setenv PYTHONPATH "\${VIEWERROOT}/python:\${RATROOT}/python:$SCONS_LIB"
 endif
 EOF
 [[ -e env.csh ]] && chmod +x env.csh && printf "OK\n"

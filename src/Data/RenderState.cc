@@ -40,6 +40,16 @@ RenderState::Initialise()
   fsDefaultScalingMax[eCal][eQHL] = 4000.0;
   fsDefaultScalingMax[eCal][eQHS] = 4000.0;
   fsDefaultScalingMax[eCal][eQLX] = 1000.0;
+
+  fsDefaultScalingMin[eScript][eTAC] = 0.0;
+  fsDefaultScalingMin[eScript][eQHL] = 0.0;
+  fsDefaultScalingMin[eScript][eQHS] = 0.0;
+  fsDefaultScalingMin[eScript][eQLX] = 0.0;
+
+  fsDefaultScalingMax[eScript][eTAC] = 500.0;
+  fsDefaultScalingMax[eScript][eQHL] = 500.0;
+  fsDefaultScalingMax[eScript][eQHS] = 500.0;
+  fsDefaultScalingMax[eScript][eQLX] = 500.0;
 }
 
 void

@@ -8,7 +8,8 @@
 /// REVISION HISTORY:\n
 ///     12/05/11 : P.Jones - First Revision, new file. \n
 ///     27/02/12 : P.Jones - Second Revision, replace old version, 
-///                hopefully more stable.
+///                hopefully more stable. \n
+///     22/04/12 : P.Jones - Add scripting ability. \n
 ///
 /// \detail  Holds RAT::DS::Root events and the RAT::DS::Run data. 
 ///          Also has an index to the current DS event and then the 
@@ -23,6 +24,7 @@
 #include <vector>
 
 #include <Viewer/Mutex.hh>
+#include <Viewer/ScriptData.hh>
 
 namespace RAT
 {
@@ -63,6 +65,8 @@ public:
   inline RAT::DS::EV* GetCurrentEV();
   inline RAT::DS::MC* GetCurrentMC();
 
+  inline ScriptData& GetScriptData();
+
 private:
   Mutex fLock; /// < The lock
   // These must be locked to read/write
@@ -74,7 +78,7 @@ private:
   RAT::DS::Run* fRun; /// < Run tree
   // End locked vars
   unsigned int fEVIndex; /// < The current sub EV event (typically 0)
-  //ScriptData* fScriptData; /// < The script data TODO
+  ScriptData fScriptData; /// < The script data
 
   /// Prevent usage of
   EventData();
@@ -111,6 +115,12 @@ inline RAT::DS::MC*
 EventData::GetCurrentMC()
 {
   return GetCurrentDS()->GetMC();
+}
+
+inline ScriptData&
+EventData::GetScriptData()
+{
+  return fScriptData;
 }
 
 } //::Viewer

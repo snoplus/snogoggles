@@ -70,16 +70,19 @@ EventData::Latest()
 void 
 EventData::Next()
 {
-  Lock lock( fLock );
-  fDSIndex = ++fDSIndex % fEvents.size();
-  // Return to the previous event
-  if( fEvents[fDSIndex] == NULL )
-    {
-      fDSIndex = 0;
-    }
-  delete fDS;
-  fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
-  fEVIndex = 0;
+  {
+    Lock lock( fLock );
+    fDSIndex = ++fDSIndex % fEvents.size();
+    // Return to the previous event
+    if( fEvents[fDSIndex] == NULL )
+      {
+	fDSIndex = 0;
+      }
+    delete fDS;
+    fDS = new RAT::DS::Root( *fEvents[fDSIndex] );
+    fEVIndex = 0;
+  }
+  fScriptData.ProcessEvent( fDS );
 }
 
 void 

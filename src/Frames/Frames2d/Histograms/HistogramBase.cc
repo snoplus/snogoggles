@@ -1,7 +1,9 @@
 #include <RAT/DS/Root.hh>
 #include <RAT/DS/EV.hh>
+#include <RAT/DS/PMTCal.hh>
 
 #include <cmath>
+#include <iostream>
 using namespace std;
 
 #include <SFML/Graphics/Rect.hpp>
@@ -131,6 +133,7 @@ HistogramBase::CalculateHistogram( const RenderState& renderState )
 {
   EventData& events = EventData::GetInstance();
   RAT::DS::EV* rEV = events.GetCurrentEV();
+  vector<RAT::DS::PMTCal*> scriptHits = events.GetScriptData().GetData();
   fBins.clear();
   switch( renderState.GetDataSource() )
     {
@@ -147,7 +150,7 @@ HistogramBase::CalculateHistogram( const RenderState& renderState )
 		  int bin = static_cast<int>( tac );
 		  fBins[ bin ] += 1.0;
 		}
-	      }
+	    }
 	  break;
 	case RenderState::eQHL:
 	  fBins.resize( 4500, 0.0 );
@@ -201,8 +204,8 @@ HistogramBase::CalculateHistogram( const RenderState& renderState )
 		  fBins[ bin ] += 1.0;
 		}
 	    }
-	  break;
-	case RenderState::eQHL:
+      break;
+    case RenderState::eQHL:
           fBins.resize( 4000, 0.0 );
           for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
             {
@@ -238,6 +241,20 @@ HistogramBase::CalculateHistogram( const RenderState& renderState )
                 }
             }
           break;
+	}
+      break;
+    case RenderState::eScript:
+      switch( renderState.GetDataType() )
+	{
+        case RenderState::eTAC:
+	  cout << "Here " << scriptHits.size() << endl;
+	  fBins.resize( 500, 0.0 );
+	  for( unsigned int ipmt = 0; ipmt < scriptHits.size(); ipmt++ )
+	    {
+	      fBins[ scriptHits[ipmt]->GetTime() ] += 1.0;
+	      cout << scriptHits[ipmt]->GetTime() << endl;
+	    }
+	  break;
 	}
       break;
     }
