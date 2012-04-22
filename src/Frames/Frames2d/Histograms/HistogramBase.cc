@@ -252,7 +252,6 @@ HistogramBase::CalculateHistogram( const RenderState& renderState )
 	  for( unsigned int ipmt = 0; ipmt < scriptHits.size(); ipmt++ )
 	    {
 	      fBins[ scriptHits[ipmt]->GetTime() ] += 1.0;
-	      cout << scriptHits[ipmt]->GetTime() << endl;
 	    }
 	  break;
 	}

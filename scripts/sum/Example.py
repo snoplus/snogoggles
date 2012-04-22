@@ -9,15 +9,13 @@ def Hello( interestamond ):
 
 def SumEvent( event, result ):
     """ Sum this event to the resultVector. This just sums up the number of PMT hits in the TAC channel."""
-    print event
-    print event.GetEVCount()
-    #if event.GetEVCount() == 0:
-    #    return
-    #for ipmt in range( 0, event.GetEV(0).GetPMTCalCount() ):
-    #    print "Summing", ipmt
-    #    pmtCal = event.GetEV(0).GetPMTCal( ipmt )
-    #    resultPMT = result.At( pmtCal.GetID() )
-    #    resultPMT.SetTime( resultPMT.GetTime() + 1.0 )
+    if event.GetEVCount() == 0:
+        return
+    for ipmt in range( 0, event.GetEV(0).GetPMTCalCount() ):
+        print "Summing", ipmt
+        pmtCal = event.GetEV(0).GetPMTCal( ipmt )
+        resultPMT = result.At( pmtCal.GetID() )
+        resultPMT.SetTime( resultPMT.GetTime() + 1.0 )
     return
 
 def Clear( result ):

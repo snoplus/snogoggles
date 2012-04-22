@@ -46,6 +46,8 @@ int main( int argc, char *argv[] )
 
   viewer.Initialise();
 
+  EventData::GetInstance(); // Starts TPython on this thread
+
   Thread* loadData;
   if( string( argv[1] ) == string( "-s" ) ) // Temp horrible way...
     {

@@ -46,11 +46,8 @@ ScriptData::ProcessEvent( RAT::DS::Root* rDS )
   TPython pyWrapper;
   pyWrapper.LoadMacro( fScriptFileName.c_str() );
   pyWrapper.Bind( &fPyResultArray, "resultArray" );
-  //pyWrapper.Bind( rDS, "dsEvent" );
-  pyWrapper.Exec( "print 'hello'" );
-  pyWrapper.Exec( "Hello( 'bob' )");
-  pyWrapper.Exec( "Clear( resultArray )" );
-  //pyWrapper.Exec( "SumEvent( dsEvent, resultArray )" );
+  pyWrapper.Bind( rDS, "dsEvent" );
+  pyWrapper.Exec( "SumEvent( dsEvent, resultArray )" );
   fScriptData.clear();
   for( int i = 0; i < kNumChannels; i++ )
     {
