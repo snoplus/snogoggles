@@ -50,7 +50,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << fixed;
 
   DataStore& events = DataStore::GetInstance();
-  RIDS::Event& event = events.GetCurrentEvent();
+  const RIDS::Event& event = events.GetCurrentEvent();
   eventInfo << "GTID: " << event.GetEV().GetGTID() << endl;
   /*eventInfo << "Time: " << rEV->GetUTDays() << "d " << rEV->GetUTSecs() << "s" << endl;
   eventInfo << "Trigger: " << ToHexString( rEV->GetTrigType() ) << endl;

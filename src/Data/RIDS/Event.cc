@@ -55,7 +55,7 @@ Event::~Event()
 }
 
 vector<PMTHit> 
-Event::GetHitData( EDataSource source )
+Event::GetHitData( EDataSource source ) const
 {
   switch( source )
     {

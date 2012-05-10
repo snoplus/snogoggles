@@ -57,8 +57,15 @@ def Avalanche(env):
     env.Append( LIBPATH = [ avalancheLibPath, os.environ['ZEROMQROOT'] + "/lib" ] )
     env.Append( LIBS = [ "avalanche", "zmq" ] )
 
+# Append Python libraries                                                                                                                                              
+def Python(env):
+    env.ParseConfig( os.path.join('python-config') + " --includes  ")
+    env.ParseConfig( os.path.join('python-config') + " --ldflags ")
+    env.ParseConfig( os.path.join('python-config') + " --libs ")
+
 # Adds all packages
 def addpackages(env):
+    Python(env)
     xercesc(env)
     geant4(env)
     sfml(env)

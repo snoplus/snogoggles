@@ -25,7 +25,7 @@ HitInfo::Render( RWWrapper& renderApp,
   stringstream info;
   info << "LCN:" << pmtID << end.str();
   DataStore& events = DataStore::GetInstance();
-  RIDS::Event& event = events.GetCurrentEvent();
+  const RIDS::Event& event = events.GetCurrentEvent();
 
   bool hasData = false;
   vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );

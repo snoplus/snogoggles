@@ -53,7 +53,7 @@ public:
   int GetRunID() const { return fRunID; }
   int GetSubRunID() const { return fSubRunID; }
   /// Return a vector of PMTHits (data) by source, e.g. eCal
-  std::vector<PMTHit> GetHitData( EDataSource source );
+  std::vector<PMTHit> GetHitData( EDataSource source ) const;
 
 private:
   Event();

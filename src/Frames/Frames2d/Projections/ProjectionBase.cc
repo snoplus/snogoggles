@@ -119,7 +119,7 @@ void
 ProjectionBase::DrawHits( const RenderState& renderState )
 {
   DataStore& events = DataStore::GetInstance();
-  RIDS::Event& event = events.GetCurrentEvent();
+  const RIDS::Event& event = events.GetCurrentEvent();
   vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {

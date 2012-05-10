@@ -23,6 +23,9 @@
 #include <vector>
 
 #include <Viewer/Mutex.hh>
+#include <Viewer/ScriptData.hh>
+#include <Viewer/RIDS/RIDS.hh>
+#include <Viewer/RIDS/PMTHit.hh>
 
 namespace RAT
 {
@@ -59,8 +62,11 @@ public:
   /// Move to the previous event, rolls over
   void Prev();
 
-  inline RIDS::Event& GetCurrentEvent();
-  inline RAT::DS::Run& GetRun();
+  inline const RIDS::Event& GetCurrentEvent() const;
+  inline RAT::DS::Run& GetRun() const;
+
+  /// Convienience method
+  std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
 
 private:
   Mutex fLock; /// < The lock
@@ -72,6 +78,7 @@ private:
   RIDS::Event* fEvent; /// < Copy of the currently viewed event (stops it being deleted)
   RAT::DS::Run* fRun; /// < Run tree
   // END: End locked vars
+  ScriptData fScriptData; /// < The data as calculated by a python script
 
   /// Prevent usage of
   DataStore();
@@ -87,13 +94,13 @@ DataStore::GetInstance()
 }
 
 inline RAT::DS::Run&
-DataStore::GetRun()
+DataStore::GetRun() const
 {
   return *fRun;
 }
 
-inline RIDS::Event&
-DataStore::GetCurrentEvent()
+inline const RIDS::Event&
+DataStore::GetCurrentEvent() const
 {
   return *fEvent;
 }

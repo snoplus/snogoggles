@@ -40,9 +40,9 @@ public:
   EV( RAT::DS::EV& rEV );
   ~EV();
 
-  int GetGTID() { return fGTID; }
+  int GetGTID() const { return fGTID; }
   /// Return a vector of PMTHits (data) by source, e.g. eCal
-  std::vector<PMTHit> GetHitData( EDataSource source );
+  std::vector<PMTHit> GetHitData( EDataSource source ) const;
 
 private:
   EV();

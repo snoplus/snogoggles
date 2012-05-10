@@ -144,6 +144,8 @@ HistogramBase::CalculateHistogram( const RenderState& renderState )
           case RIDS::eCal:
             fBins.resize( 500, 0.0 );
             break;
+          default:
+            fBins.resize( 500, 0.0 );
           }
       }
       break;
@@ -156,9 +158,7 @@ HistogramBase::CalculateHistogram( const RenderState& renderState )
       break;
     }
 
-  DataStore& events = DataStore::GetInstance();
-  RIDS::Event& event = events.GetCurrentEvent();
-  vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
+  vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       int bin = static_cast<int>( iTer->GetData( renderState.GetDataType() ) );

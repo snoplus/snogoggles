@@ -22,6 +22,7 @@ DataStore::Initialise()
 {
   Lock lock( fLock );
   fEvent = new RIDS::Event( *fEvents[0] );
+  fScriptData.Initialise();
 }
 
 DataStore::~DataStore()
@@ -83,6 +84,7 @@ DataStore::Next()
     }
   delete fEvent;
   fEvent = new RIDS::Event( *fEvents[fReadIndex] );
+  fScriptData.ProcessEvent( *fEvent );
 }
 
 void 
@@ -99,3 +101,11 @@ DataStore::Prev()
   fEvent = new RIDS::Event( *fEvents[fReadIndex] );
 }
 
+vector<RIDS::PMTHit> 
+DataStore::GetHitData( RIDS::EDataSource source ) const
+{
+  if( source == RIDS::eScript )
+    return fScriptData.GetHitData();
+  else
+    return GetCurrentEvent().GetHitData( source );
+}
