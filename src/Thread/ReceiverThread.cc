@@ -12,13 +12,13 @@ using namespace ROOT;
 using namespace std;
 
 #include <Viewer/ReceiverThread.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 #include <Viewer/Semaphore.hh>
 using namespace Viewer;
 
 ReceiverThread::ReceiverThread( const std::string& port, 
-				Semaphore& semaphore,
-				bool goodBuilder )
+                                Semaphore& semaphore,
+                                bool goodBuilder )
   : fSemaphore( semaphore ), fPort( port ), fNumReceivedEvents(0), fGoodBuilder( goodBuilder )
 {
 
@@ -41,7 +41,7 @@ ReceiverThread::Run()
     {
       RAT::DS::PackedRec* rec = (RAT::DS::PackedRec*) fClient.recv();
       if( rec ) // avalanche is non-blocking
-	event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
+        event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
     }
   else // Events come as PackedEvent types
     {
@@ -51,11 +51,11 @@ ReceiverThread::Run()
     {
       cout << "Got an event " << event->NHits << endl;
       RAT::DS::Root* rDS = RAT::Pack::UnpackEvent( event, NULL, NULL );
-      EventData& events = EventData::GetInstance();
+      DataStore& events = DataStore::GetInstance();
       events.AddDS( rDS );
       fNumReceivedEvents++;
       if( fNumReceivedEvents == 1 )
-	fSemaphore.Signal();
+        fSemaphore.Signal();
       delete rDS;
       delete event;
     }
@@ -70,7 +70,7 @@ ReceiverThread::LoadRunTree()
   runTree->SetBranchAddress( "run", &rRun );
   runTree->GetEntry();
 
-  EventData& events = EventData::GetInstance();
+  DataStore& events = DataStore::GetInstance();
   events.SetRun( rRun );
   file->Close();
   delete file;

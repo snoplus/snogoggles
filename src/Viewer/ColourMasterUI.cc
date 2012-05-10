@@ -4,7 +4,7 @@
 #include <Viewer/GUIImageButton.hh>
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Selector.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/Event.hh>
@@ -33,7 +33,7 @@ ColourMasterUI::NewEvent( const Event& event )
 void 
 ColourMasterUI::EventLoop()
 {
-  EventData& events = EventData::GetInstance();
+  DataStore& events = DataStore::GetInstance();
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )

@@ -22,7 +22,7 @@ using namespace std;
 #include <Viewer/ReceiverThread.hh>
 
 #include <Viewer/GeodesicSphere.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 using namespace Viewer;
 
 #include <xercesc/util/PlatformUtils.hpp>
@@ -46,7 +46,7 @@ int main( int argc, char *argv[] )
 
   viewer.Initialise();
 
-  EventData::GetInstance(); // Starts TPython on this thread
+  DataStore::GetInstance(); // Starts TPython on this thread
 
   Thread* loadData;
   if( string( argv[1] ) == string( "-s" ) ) // Temp horrible way...
@@ -98,7 +98,7 @@ void
 Initialise()
 {
   GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
-  EventData::GetInstance().Initialise();
+  DataStore::GetInstance().Initialise();
 }
 
 void 

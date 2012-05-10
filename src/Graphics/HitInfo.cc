@@ -4,14 +4,17 @@ using namespace std;
 #include <Viewer/HitInfo.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 #include <Viewer/GUIColourPalette.hh>
+#include <Viewer/RIDS/RIDS.hh>
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/PMTHit.hh>
 using namespace Viewer;
 
 void
 HitInfo::Render( RWWrapper& renderApp,
-		 const RenderState& renderState,
-		 const unsigned int pmtID )
+                 const RenderState& renderState,
+                 const unsigned int pmtID )
 {
   stringstream end;
   if( fHorizontal )
@@ -21,44 +24,18 @@ HitInfo::Render( RWWrapper& renderApp,
  
   stringstream info;
   info << "LCN:" << pmtID << end.str();
-  EventData& events = EventData::GetInstance();
-  RAT::DS::EV* rEV = events.GetCurrentEV();
+  DataStore& events = DataStore::GetInstance();
+  RIDS::Event& event = events.GetCurrentEvent();
 
   bool hasData = false;
-  switch( renderState.GetDataSource() )
+  vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
+  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-    case RenderState::eUnCal:
-      {
-	for( unsigned int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-	  {
-	    RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-	    if( rPMTUnCal->GetID() == pmtID )
-	      {
-		info << "TAC:" << rPMTUnCal->GetsPMTt() << end.str();
-		info << "QHL:" << rPMTUnCal->GetsQHL() << end.str();
-		info << "QHS:" << rPMTUnCal->GetsQHS() << end.str();
-		info << "QLX:" << rPMTUnCal->GetsQLX() << end.str();
-		hasData = true;
-	      }
-	  }
-      }
-      break;
-    case RenderState::eCal:
-      {
-        for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-          {
-	    RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-            if( rPMTCal->GetID() == pmtID )
-              {
-                info << "TAC:" << rPMTCal->GetsPMTt() << end.str();
-                info << "QHL:" << rPMTCal->GetsQHL() << end.str();
-                info << "QHS:" << rPMTCal->GetsQHS() << end.str();
-                info << "QLX:" << rPMTCal->GetsQLX() << end.str();
-		hasData = true;
-              }
-          }
-      }
-      break;
+      info << "TAC:" << iTer->GetTAC() << end.str();
+      info << "QHL:" << iTer->GetQHL() << end.str();
+      info << "QHS:" << iTer->GetQHS() << end.str();
+      info << "QLX:" << iTer->GetQLX() << end.str();
+      hasData = true;
     }
   if( hasData )
     {

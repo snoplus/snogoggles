@@ -1,5 +1,5 @@
-#include <RAT/DS/Root.hh>
-#include <RAT/DS/EV.hh>
+#include <RAT/DS/Run.hh>
+#include <RAT/DS/PMTProperties.hh>
 
 #include <TVector3.h>
 
@@ -9,12 +9,15 @@ using namespace std;
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/ProjectionBase.hh>
-#include <Viewer/EventData.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/GeodesicSphere.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
+#include <Viewer/DataStore.hh>
+#include <Viewer/RIDS/RIDS.hh>
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/Polyhedron.hh>
 #include <Viewer/Polygon.hh>
 using namespace Viewer;
@@ -43,8 +46,8 @@ ProjectionBase::Initialise( const sf::Rect<double>& size )
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize, 1.5 * kLocalSize ) );
   // Firstly make the vector of PMT positions
-  EventData& events = EventData::GetInstance();
-  RAT::DS::PMTProperties* rPMTList = events.GetRun()->GetPMTProp();
+  DataStore& events = DataStore::GetInstance();
+  RAT::DS::PMTProperties* rPMTList = events.GetRun().GetPMTProp();
   for( int ipmt = 0; ipmt < rPMTList->GetPMTCount(); ipmt++ )
     fProjectedPMTs.push_back( Project( Vector3( rPMTList->GetPos( ipmt ) ) ) );
   // Secondly make the vector of geodesic dots
@@ -115,101 +118,15 @@ ProjectionBase::ProjectGeodesicLine( Vector3 v1,
 void
 ProjectionBase::DrawHits( const RenderState& renderState )
 {
-  EventData& events = EventData::GetInstance();
-  RAT::DS::EV* rEV = events.GetCurrentEV();
-
-  switch( renderState.GetDataSource() )
+  DataStore& events = DataStore::GetInstance();
+  RIDS::Event& event = events.GetCurrentEvent();
+  vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
+  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-    case RenderState::eUnCal:
-      switch( renderState.GetDataType() )
-        {
-        case RenderState::eTAC:  
-	  for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-	    {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-	      const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
-	      double tac = rEV->GetPMTUnCal( ipmt )->GetTime();
-	      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) / 
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-	    }
-	  break;
-	case RenderState::eQHL:
-          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-              const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
-              double qhl = rEV->GetPMTUnCal( ipmt )->GetsQHL();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-	case RenderState::eQHS:
-          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-              const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
-              double qhs = rEV->GetPMTUnCal( ipmt )->GetsQHS();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-	case RenderState::eQLX:
-          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-              const sf::Vector2<double> projPos = fProjectedPMTs[rPMTUnCal->GetID()];
-              double qlx = rEV->GetPMTUnCal( ipmt )->GetsQLX();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-	}
-      break;
-    case RenderState::eCal:
-      switch( renderState.GetDataType() )
-        {
-        case RenderState::eTAC:  
-	  for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-	    {
-	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-	      const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
-	      double tac = rEV->GetPMTCal( ipmt )->GetTime();
-	      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-	    }
-	  break;
-	case RenderState::eQHL:
-          for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-              const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
-              double qhl = rEV->GetPMTCal( ipmt )->GetsQHL();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-	case RenderState::eQHS:
-          for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-              const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
-              double qhs = rEV->GetPMTCal( ipmt )->GetsQHS();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-	case RenderState::eQLX:
-          for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-              const sf::Vector2<double> projPos = fProjectedPMTs[rPMTCal->GetID()];
-              double qlx = rEV->GetPMTCal( ipmt )->GetsQLX();
-              fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-	}
-      break;
+      const double data = iTer->GetData( renderState.GetDataType() );
+      const sf::Vector2<double> projPos = fProjectedPMTs[iTer->GetLCN()];
+      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( data - renderState.GetScalingMin() ) / 
+                                                                       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }
 

@@ -1,7 +1,3 @@
-#include <RAT/DS/Root.hh>
-#include <RAT/DS/EV.hh>
-#include <RAT/DS/PMTCal.hh>
-
 #include <cmath>
 #include <iostream>
 using namespace std;
@@ -9,11 +5,14 @@ using namespace std;
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/HistogramBase.hh>
-#include <Viewer/EventData.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
+#include <Viewer/DataStore.hh>
+#include <Viewer/RIDS/RIDS.hh>
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/PMTHit.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -131,130 +130,38 @@ HistogramBase::DrawTicks()
 void
 HistogramBase::CalculateHistogram( const RenderState& renderState )
 {
-  EventData& events = EventData::GetInstance();
-  RAT::DS::EV* rEV = events.GetCurrentEV();
-  vector<RAT::DS::PMTCal*> scriptHits = events.GetScriptData().GetData();
+  // Must manually set the number of bins, this is different to the scaling
   fBins.clear();
-  switch( renderState.GetDataSource() )
+  switch( renderState.GetDataType() )
     {
-    case RenderState::eUnCal:
-      switch( renderState.GetDataType() )
-	{
-	case RenderState::eTAC:
-	  fBins.resize( 4000, 0.0 );
-	  for( unsigned int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-	    {
-	      const double tac = rEV->GetPMTUnCal( ipmt )->GetsPMTt(); 
-	      if( tac > 0.0 && tac < fBins.size() )
-		{
-		  int bin = static_cast<int>( tac );
-		  fBins[ bin ] += 1.0;
-		}
-	    }
-	  break;
-	case RenderState::eQHL:
-	  fBins.resize( 4500, 0.0 );
-          for( unsigned int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      const double qhl = rEV->GetPMTUnCal( ipmt )->GetsQHL();
-              if( qhl > 0.0 && qhl < fBins.size() )
-		{
-                  int bin = static_cast<int>( qhl );
-                  fBins[ bin ] += 1.0;
-		}
-	    }
-	  break;
-	case RenderState::eQHS:
-          fBins.resize( 4500, 0.0 );
-          for( unsigned int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-              const double qhs = rEV->GetPMTUnCal( ipmt )->GetsQHS();
-              if( qhs > 0.0 && qhs < fBins.size() )
-                {
-                  int bin = static_cast<int>( qhs );
-                  fBins[ bin ] += 1.0;
-		}
-            }
-          break;
-	case RenderState::eQLX:
-          fBins.resize( 1400, 0.0 );
-          for( unsigned int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-              const double qlx = rEV->GetPMTUnCal( ipmt )->GetsQLX();
-              if( qlx > 0.0 && qlx < fBins.size() )
-		{
-                  int bin = static_cast<int>( qlx );
-                  fBins[ bin ] += 1.0;
-		}
-            }
-          break;
-	}
+    case RIDS::eTAC:
+      {
+        switch( renderState.GetDataSource() )
+          {
+          case RIDS::eUnCal:      
+            fBins.resize( 4000, 0.0 );
+            break;
+          case RIDS::eCal:
+            fBins.resize( 500, 0.0 );
+            break;
+          }
+      }
       break;
-    case RenderState::eCal:
-      switch( renderState.GetDataType() )
-	{
-	case RenderState::eTAC:
-	  fBins.resize( 500, 0.0 );
-	  for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-	    {
-	      const double tac = rEV->GetPMTCal( ipmt )->GetsPMTt();
-	      if( tac > 0.0 && tac < 500.0 )
-		{
-		  int bin = static_cast<int>( tac );
-		  fBins[ bin ] += 1.0;
-		}
-	    }
+    case RIDS::eQHL:
+    case RIDS::eQHS:
+      fBins.resize( 4500, 0.0 );
       break;
-    case RenderState::eQHL:
-          fBins.resize( 4000, 0.0 );
-          for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-            {
-              const double qhl = rEV->GetPMTCal( ipmt )->GetsQHL();
-              if( qhl > 0.0 && qhl < fBins.size() )
-                {
-                  int bin = static_cast<int>( qhl );
-                  fBins[ bin ] += 1.0;
-                }
-            }
-          break;
-        case RenderState::eQHS:
-          fBins.resize( 4000, 0.0 );
-          for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-            {
-              const double qhs = rEV->GetPMTCal( ipmt )->GetsQHS();
-              if( qhs > 0.0 && qhs < fBins.size() )
-                {
-                  int bin = static_cast<int>( qhs );
-                  fBins[ bin ] += 1.0;
-                }
-            }
-          break;
-	case RenderState::eQLX:
-          fBins.resize( 1000, 0.0 );
-          for( unsigned int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-            {
-              const double qlx = rEV->GetPMTCal( ipmt )->GetsQLX();
-              if( qlx > 0.0 && qlx < fBins.size() )
-                {
-                  int bin = static_cast<int>( qlx );
-                  fBins[ bin ] += 1.0;
-                }
-            }
-          break;
-	}
+    case RIDS::eQLX:
+      fBins.resize( 1500, 0.0 );
       break;
-    case RenderState::eScript:
-      switch( renderState.GetDataType() )
-	{
-        case RenderState::eTAC:
-	  cout << "Here " << scriptHits.size() << endl;
-	  fBins.resize( 500, 0.0 );
-	  for( unsigned int ipmt = 0; ipmt < scriptHits.size(); ipmt++ )
-	    {
-	      fBins[ scriptHits[ipmt]->GetTime() ] += 1.0;
-	    }
-	  break;
-	}
-      break;
+    }
+
+  DataStore& events = DataStore::GetInstance();
+  RIDS::Event& event = events.GetCurrentEvent();
+  vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
+  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+    {
+      int bin = static_cast<int>( iTer->GetData( renderState.GetDataType() ) );
+      fBins[ bin ] += 1.0;
     }
 }

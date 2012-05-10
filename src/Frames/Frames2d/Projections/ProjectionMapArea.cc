@@ -6,7 +6,7 @@ using namespace std;
 #include <Viewer/MapArea.hh>
 #include <Viewer/HitInfo.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -56,8 +56,5 @@ ProjectionMapArea::Render2d( RWWrapper& renderApp,
 {
   ProjectionBase::Render2d( renderApp, renderState );
   if( fPMTofInterest != -1 )
-    {
-      EventData& events = EventData::GetInstance();
-      fHitInfo->Render( renderApp, renderState, fPMTofInterest );
-    }
+    fHitInfo->Render( renderApp, renderState, fPMTofInterest );
 }

@@ -7,7 +7,9 @@
 using namespace std;
 
 #include <Viewer/EventInfo.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/EV.hh>
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
@@ -47,10 +49,10 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo.precision( 0 );
   eventInfo << fixed;
 
-  EventData& events = EventData::GetInstance();
-  RAT::DS::EV* rEV = events.GetCurrentEV();
-  eventInfo << "GTID: " << rEV->GetEventID() << endl;
-  eventInfo << "Time: " << rEV->GetUTDays() << "d " << rEV->GetUTSecs() << "s" << endl;
+  DataStore& events = DataStore::GetInstance();
+  RIDS::Event& event = events.GetCurrentEvent();
+  eventInfo << "GTID: " << event.GetEV().GetGTID() << endl;
+  /*eventInfo << "Time: " << rEV->GetUTDays() << "d " << rEV->GetUTSecs() << "s" << endl;
   eventInfo << "Trigger: " << ToHexString( rEV->GetTrigType() ) << endl;
   eventInfo << "Esum int/peak/diff: " << rEV->GetESumInt() << "/" << rEV->GetESumPeak() << "/" << rEV->GetESumDiff() << endl;
   eventInfo << "Data Clean: " << ToHexString( rEV->GetDataCleanFlags() ) << endl;
@@ -63,7 +65,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << "Nhit (FECD): " << rEV->GetPMTFECDCalCount() << endl;
   eventInfo << "Nhit (Spare): " << rEV->GetPMTSpareCalCount() << endl;
   eventInfo << "Nhit (Inv): " << rEV->GetPMTInvCalCount() << endl;
-
+  */
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   renderApp.Draw( *fInfoText );  

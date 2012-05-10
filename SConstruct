@@ -19,7 +19,9 @@ check_include()
 # src_module() returns list for each directory.
 viewer_obj = []
 for d in directories:
-	viewer_obj += src_module(env, d)
+    viewer_obj += src_module(env, d)
+# Add the RIDS directory
+viewer_obj += src_module( env, "Data/RIDS", True )
 
 # Find what architure we are using
 ROOTSYS = os.path.join(os.environ["ROOTSYS"], 'bin')

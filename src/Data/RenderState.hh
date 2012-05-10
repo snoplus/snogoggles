@@ -7,6 +7,7 @@
 ///
 /// REVISION HISTORY:\n
 ///     19/02/12 : P.Jones - New file, first revision \n
+///     07/05/12 : P.Jones - Update to use RIDS.\n
 ///
 /// \detail  This class is used to define what data to show.
 ///
@@ -19,68 +20,67 @@
 #include <map>
 #include <vector>
 
+#include <Viewer/RIDS/RIDS.hh>
+
 namespace Viewer
 {
 
 class RenderState
 {
 public:
-  enum EDataType { eTAC, eQHL, eQHS, eQLX };
-  enum EDataSource { eMC, eTruth, eUnCal, eCal, eScript };
-
   inline RenderState();
 
-  inline RenderState( EDataSource source,
-		      EDataType type );
+  inline RenderState( RIDS::EDataSource source,
+                      RIDS::EDataType type );
 
   static void Initialise();
 
-  void ChangeState( EDataSource source,
-		    EDataType type );
+  void ChangeState( RIDS::EDataSource source,
+                    RIDS::EDataType type );
   void ChangeScaling( double fractionalMin,
-		      double fractionalMax );
+                      double fractionalMax );
 
   static std::vector<std::string> GetSourceStrings();
   static std::vector<std::string> GetTypeStrings();
 
-  inline EDataSource GetDataSource() const;
-  inline EDataType GetDataType() const;
+  inline RIDS::EDataSource GetDataSource() const;
+  inline RIDS::EDataType GetDataType() const;
   inline double GetScalingMin() const;
   inline double GetScalingMax() const;
 
 private:
-  EDataSource fCurrentDataSource;
-  EDataType fCurrentDataType;
+  RIDS::EDataSource fCurrentDataSource;
+  RIDS::EDataType fCurrentDataType;
 
   double fCurrentScalingMin; /// < Lower numerical value to be displayed
   double fCurrentScalingMax; /// < Upper numerical value to be displayed
 
-  static std::map< EDataSource, std::string > fsSourceNames;
-  static std::map< EDataType, std::string > fsTypeNames;
-  static std::map< EDataSource, std::map< EDataType, double > > fsDefaultScalingMin;
-  static std::map< EDataSource, std::map< EDataType, double > > fsDefaultScalingMax;
+  static std::map< RIDS::EDataSource, std::string > fsSourceNames;
+  static std::map< RIDS::EDataType, std::string > fsTypeNames;
+  static std::map< RIDS::EDataSource, std::map< RIDS::EDataType, double > > fsDefaultScalingMin;
+  static std::map< RIDS::EDataSource, std::map< RIDS::EDataType, double > > fsDefaultScalingMax;
 };
 
 inline 
 RenderState::RenderState()
 {
-  ChangeState( eCal, eTAC );
+  ChangeState( RIDS::eCal, RIDS::eTAC );
 }
 
 inline 
-RenderState::RenderState( EDataSource source,
-			  EDataType type )
+RenderState::RenderState( RIDS::EDataSource source,
+                          RIDS::EDataType type )
 {
   ChangeState( source, type );
 }
 
-inline RenderState::EDataSource 
+inline RIDS::EDataSource 
 RenderState::GetDataSource() const
 {
   return fCurrentDataSource;
 }
 
-inline RenderState::EDataType 
+inline RIDS::EDataType 
 RenderState::GetDataType() const
 {
   return fCurrentDataType;

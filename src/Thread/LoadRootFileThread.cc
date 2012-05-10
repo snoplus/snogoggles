@@ -11,14 +11,14 @@ using namespace ROOT;
 using namespace std;
 
 #include <Viewer/LoadRootFileThread.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 #include <Viewer/Semaphore.hh>
 using namespace Viewer;
 
 void
 LoadRootFileThread::Run()
 {
-  EventData& events = EventData::GetInstance();
+  DataStore& events = DataStore::GetInstance();
 
   if( fTree == NULL )
     {
@@ -26,7 +26,7 @@ LoadRootFileThread::Run()
       events.SetRun( fRun );
       fTree->GetEntry( fMCEvent );
       events.AddDS( fDS );
-      
+      fSemaphore.Signal();
       fMCEvent++;
       return;
     }
@@ -36,7 +36,7 @@ LoadRootFileThread::Run()
       delete fFile;
       delete fDS;
       delete fRun;
-      fSemaphore.Signal();
+
       Kill();
     }
   else

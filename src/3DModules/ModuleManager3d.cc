@@ -11,7 +11,7 @@
 #include <Viewer/GeoManager3d.hh>
 #include <Viewer/FitterManager3d.hh>
 #include <Viewer/Axes3d.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/ModuleManager3d.hh>
 
@@ -108,16 +108,16 @@ void ModuleManager3d::Render2d( RWWrapper& windowApp )
 
 void ModuleManager3d::Render3d( RectPtr viewport )
 {
-    RAT::DS::EV* ev = EventData::GetInstance().GetCurrentEV();
-    RAT::DS::MC* mc = EventData::GetInstance().GetCurrentMC();
-    RAT::DS::PMTProperties* pmtList = EventData::GetInstance().GetRun()->GetPMTProp();
-
-    fCameraManager->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
-    HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
-    TrackManager3d::RenderTracksSafe( fTrackManager, mc );
-    GeoManager3d::RenderGeometrySafe( fGeoManager );
-    FitterManager3d::RenderFitVertexSafe( fFitterManager );
-	Axes3d::RenderAxesSafe( fAxes );
+  RAT::DS::EV* ev = NULL;//DataStore::GetInstance().GetCurrentEV();
+  RAT::DS::MC* mc = NULL;//DataStore::GetInstance().GetCurrentMC();
+  RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
+  
+  fCameraManager->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
+  HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
+  TrackManager3d::RenderTracksSafe( fTrackManager, mc );
+  GeoManager3d::RenderGeometrySafe( fGeoManager );
+  FitterManager3d::RenderFitVertexSafe( fFitterManager );
+  Axes3d::RenderAxesSafe( fAxes );
 }
 
 }; // namespace Frames

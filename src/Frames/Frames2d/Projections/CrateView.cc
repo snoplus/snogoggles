@@ -1,16 +1,18 @@
-#include <RAT/DS/Root.hh>
-#include <RAT/DS/EV.hh>
 #include <RAT/BitManip.hh>
 
+#include <vector>
 using namespace std;
 
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/CrateView.hh>
-#include <Viewer/EventData.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RenderState.hh>
+#include <Viewer/DataStore.hh>
+#include <Viewer/RIDS/RIDS.hh>
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/HitInfo.hh>
 #include <Viewer/MapArea.hh>
@@ -55,8 +57,8 @@ CrateView::Render2d( RWWrapper& renderApp,
       double xPos = ( iCrate % 10 ) * ( kCrateWidth + kXMargin );
       double yPos = ( iCrate / 10 ) * ( kCrateHeight + kYMargin );
       fImage->DrawHollowSquare( sf::Vector2<double>( xPos, yPos ),
-				sf::Vector2<double>( kCrateWidth, kCrateHeight ),
-				ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+                                sf::Vector2<double>( kCrateWidth, kCrateHeight ),
+                                ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
     }
   // Now draw the hits
   fPMTofInterest = -1;
@@ -89,8 +91,8 @@ CrateView::DrawPMT( const int lcn,
   double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth;
   double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight;
   fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
-		      sf::Vector2<double>( kHitWidth, kHitHeight ),
-		      colour );
+                      sf::Vector2<double>( kHitWidth, kHitHeight ),
+                      colour );
   // Draw the PMT info as well?
   const double closeRadius = 0.005;
   if( fabs( xPos - fMousePos.x ) < closeRadius && fabs( yPos - fMousePos.y ) < closeRadius )
@@ -101,92 +103,13 @@ CrateView::DrawPMT( const int lcn,
 void 
 CrateView::DrawPMTs( const RenderState& renderState )
 {
-  EventData& events = EventData::GetInstance();
-  RAT::DS::EV* rEV = events.GetCurrentEV();
-
-  switch( renderState.GetDataSource() )
+  DataStore& events = DataStore::GetInstance();
+  RIDS::Event& event = events.GetCurrentEvent();
+  vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
+  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-    case RenderState::eUnCal:
-      switch( renderState.GetDataType() )
-        {
-        case RenderState::eTAC:
-          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-              double tac = rEV->GetPMTUnCal( ipmt )->GetTime();
-              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-        case RenderState::eQHL:
-          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-              double qhl = rEV->GetPMTUnCal( ipmt )->GetsQHL();
-              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-        case RenderState::eQHS:
-	  for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-              double qhs = rEV->GetPMTUnCal( ipmt )->GetsQHS();
-              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-        case RenderState::eQLX:
-          for( int ipmt = 0; ipmt < rEV->GetPMTUnCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( ipmt );
-              double qlx = rEV->GetPMTUnCal( ipmt )->GetsQLX();
-              DrawPMT( rPMTUnCal->GetID(), ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
-									       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-        }
-      break;
-    case RenderState::eCal:
-      switch( renderState.GetDataType() )
-        {
-        case RenderState::eTAC:
-          for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-            {
-	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-              double tac = rEV->GetPMTCal( ipmt )->GetTime();
-              DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( tac - renderState.GetScalingMin() ) /
-									     ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-            }
-          break;
-        case RenderState::eQHL:
-         for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-	   {
-	     RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-	     double qhl = rEV->GetPMTCal( ipmt )->GetsQHL();
-	     DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( qhl - renderState.GetScalingMin() ) /
-									    ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-	   }
-	 break;
-	case RenderState::eQHS:
-	  for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-	    {
-	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-	      double qhs = rEV->GetPMTCal( ipmt )->GetsQHS();
-	      DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( qhs - renderState.GetScalingMin() ) /
-									     ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-	    }
-	  break;
-	case RenderState::eQLX:
-	  for( int ipmt = 0; ipmt < rEV->GetPMTCalCount(); ipmt++ )
-	    {
-	      RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( ipmt );
-	      double qlx = rEV->GetPMTCal( ipmt )->GetsQLX();
-	      DrawPMT( rPMTCal->GetID(), ColourPalette::gPalette->GetColour( ( qlx - renderState.GetScalingMin() ) /
-									     ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
-	    }
-	  break;
-	}
-      break;
+      const double data = iTer->GetData( renderState.GetDataType() );
+      DrawPMT( iTer->GetLCN(), ColourPalette::gPalette->GetColour( ( data - renderState.GetScalingMin() ) /
+                                                                   ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }

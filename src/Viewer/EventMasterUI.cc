@@ -5,11 +5,12 @@
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Selector.hh>
 #include <Viewer/ScalingBar.hh>
-#include <Viewer/EventData.hh>
+#include <Viewer/DataStore.hh>
 #include <Viewer/GUIColourPalette.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/RIDS/RIDS.hh>
 using namespace Viewer;
 
 EventMasterUI::EventMasterUI( RectPtr rect )
@@ -29,13 +30,13 @@ EventMasterUI::~EventMasterUI()
 void 
 EventMasterUI::NewEvent( const Event& event )
 {
-  EventData& events = EventData::GetInstance();
+  DataStore& events = DataStore::GetInstance();
   if( event.Type == sf::Event::KeyPressed )
     {
       if( event.Key.Code == sf::Keyboard::Right )
-	events.Next();
+        events.Next();
       else if( event.Key.Code == sf::Keyboard::Left )
-	events.Prev();
+        events.Prev();
     }
   GUIEvent guiEvent = fGUIManager.NewEvent( event );
   if( guiEvent.IsNULL() == false )
@@ -45,7 +46,7 @@ EventMasterUI::NewEvent( const Event& event )
 void 
 EventMasterUI::EventLoop()
 {
-  EventData& events = EventData::GetInstance();
+  DataStore& events = DataStore::GetInstance();
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
@@ -59,7 +60,7 @@ EventMasterUI::EventLoop()
         case 2: // Event type change 
         case 3: // Event type change 
           // Must reset the scaling
-          fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>() );
+          fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RIDS::EDataSource>(), fTypeRadio->GetEnumState<RIDS::EDataType>() );
           fScalingBar->Reset();
           break;
         case 5: // New Scaling
@@ -126,7 +127,7 @@ EventMasterUI::LoadConfiguration( ConfigurationTable& configTable )
   fSourceRadio->SetState( configTable.GetI( "sourceType" ) );
   fTypeRadio->SetState( configTable.GetI( "dataType" ) );
   fRefreshSelector->SetState( configTable.GetI( "refreshState" ) );
-  fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RenderState::EDataSource>(), fTypeRadio->GetEnumState<RenderState::EDataType>() );
+  fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RIDS::EDataSource>(), fTypeRadio->GetEnumState<RIDS::EDataType>() );
 }
 
 void 
