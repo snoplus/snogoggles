@@ -53,5 +53,5 @@ CheckBoxLabel::Render( RWWrapper& renderApp )
 
   renderApp.Draw( *fBox );
   fLabel->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  renderApp.Draw( *fLabel );
+//  renderApp.Draw( *fLabel );
 }
