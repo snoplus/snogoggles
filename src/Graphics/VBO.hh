@@ -29,7 +29,7 @@ public:
     void Bind();
     void AddVertex( const Vertex& v );
     void AddIndex( const unsigned short i );
-    void Render( GLenum mode );
+    void Render( GLenum mode ) const;
     void Clear();
 
     void Load( ConfigurationTable* configTable );

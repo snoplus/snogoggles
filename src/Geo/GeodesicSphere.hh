@@ -16,6 +16,8 @@
 #ifndef __Viewer_GeodesicSphere__
 #define __Viewer_GeodesicSphere__
 
+#include <Viewer/VBO.hh>
+
 namespace Viewer {
 	class Polyhedron;
 	class Colour;
@@ -26,8 +28,11 @@ private:
 	const Colour GetColour();
 public:
 	const Polyhedron& GetPolyhedron();
+    void Render() const;
 private:
 	Polyhedron* fPolyhedron;
+    VBO fOutlineVBO;
+    VBO fFullVBO;
 
 ////////////////////////////////////////////////////////////////////////
 // Static Section

@@ -39,7 +39,7 @@ void VBO::AddIndex( const unsigned short i )
     fIndices.push_back(i);
 }
 
-void VBO::Render( GLenum mode )
+void VBO::Render( GLenum mode ) const
 {
     glBindBuffer( GL_ARRAY_BUFFER, fVertexVBOID );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, fIndexVBOID );
@@ -90,6 +90,8 @@ void VBO::Load( ConfigurationTable* configTable )
         std::stringstream ss; ss << i;
         AddIndex( (unsigned short) indices->GetI( "i" + ss.str() ) ); 
     }
+    
+    Bind();
 
 }
 

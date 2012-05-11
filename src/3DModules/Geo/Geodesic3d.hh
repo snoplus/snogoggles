@@ -26,7 +26,7 @@ namespace Viewer {
 
 namespace Frames {
 
-class Geodesic3d : public WorldBase3d {
+class Geodesic3d : public GeoManager3d {
 
 public:
 
@@ -34,6 +34,7 @@ public:
     static std::string Name() { return "Geodesic"; }
     std::string GetName() { return Name(); }
 
+    void LoadFile();
     void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
     virtual void LoadConfiguration( ConfigurationTable* configTable ) { }
     virtual void SaveConfiguration( ConfigurationTable* configTable ) { }
