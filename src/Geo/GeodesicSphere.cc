@@ -23,7 +23,6 @@ GeodesicSphere* GeodesicSphere::GetInstance()
 }
 
 GeodesicSphere::GeodesicSphere()
-	: fColour( ColourPalette::gPalette->GetPrimaryColour( eGrey ) )
 {
   stringstream configFileName;                                                                                                                                                                                                           
   configFileName << getenv( "VIEWERROOT" ) << "/data/geodesic.xml";
@@ -36,12 +35,12 @@ GeodesicSphere::GeodesicSphere()
 
 const Polyhedron& GeodesicSphere::GetPolyhedron()
 {
-	return *fPolyhedron;
+  return *fPolyhedron;
 }
 
-const Colour& GeodesicSphere::GetColour()
+const Colour GeodesicSphere::GetColour()
 {
-	return fColour;
+  return ColourPalette::gPalette->GetPrimaryColour( eGrey );
 }
 
 }; // namespace Viewer

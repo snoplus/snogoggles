@@ -35,25 +35,44 @@ ViewerWindow::ViewerWindow()
 
 ViewerWindow::~ViewerWindow()
 {
-  delete fDesktopManager;
-  delete fMotherRect;
+  // All in the ~ViewerWindow, note MotherRect is deleted when reference count reaches zero.
 }
 
 void
-ViewerWindow::Initialise()
+ViewerWindow::PreInitialise()
 {
-  RenderState::Initialise();
   // Attempt to initialize the size of the depth and stencil buffers.
   // Fails on Linux, not sure about Mac.
   sf::ContextSettings settings;
   settings.DepthBits         = 24; // Request a 24 bits depth buffer
   settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
-
   sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
   fullScreen.Height -= 40.0; // Mac systems require this
   fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, settings  ); 
   Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
-  Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
+  Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );  
+
+  // This usage of width and height should not occur elsewhere in the viewer code, make use of Rects and Viewer::Sprite instead
+  TextureManager& textures = TextureManager::GetInstance();
+  sf::Texture* snoSplash = textures.GetTexture( "Logo.png" );
+  sf::Texture* sfmlSplash = textures.GetTexture( "sfml.png" );
+  const int windowWidth = fWindowApp->GetWidth();
+  const int windowHeight = fWindowApp->GetHeight();
+  // Can't draw textures directly, must wrap in a sprite and set the position.
+  sf::Sprite snoSprite( *snoSplash );
+  snoSprite.SetPosition( windowWidth / 2 - snoSplash->GetWidth() / 2, windowHeight / 2 - snoSplash->GetHeight() / 2 );
+  sf::Sprite sfmlSprite( *sfmlSplash );
+  sfmlSprite.SetPosition( windowWidth - sfmlSplash->GetWidth(), windowHeight - sfmlSplash->GetHeight() );
+  // Now draw these logos
+  fWindowApp->Clear( sf::Color( 255, 255, 255, 255 ) ); 
+  fWindowApp->Draw( snoSprite );
+  fWindowApp->Draw( sfmlSprite );
+  fWindowApp->Display();
+}
+
+void
+ViewerWindow::PostInitialise()
+{
   // Load the configuration
   try
     {
@@ -77,7 +96,6 @@ ViewerWindow::Initialise()
 
       ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig.GetS( "colourPal" ) );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
-      DrawSplash();
       fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
       fDesktopManager->Initialise();
       fDesktopManager->LoadConfiguration( loadConfig );
@@ -86,31 +104,9 @@ ViewerWindow::Initialise()
     {
       ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" );
-      DrawSplash();
       fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
       fDesktopManager->Initialise();
     }
-}
-
-void
-ViewerWindow::DrawSplash()
-{
-  // This usage of width and height should not occur elsewhere in the viewer code, make use of Rects and Viewer::Sprite instead
-  TextureManager& textures = TextureManager::GetInstance();
-  sf::Texture* snoSplash = textures.GetTexture( "Logo.png" );
-  sf::Texture* sfmlSplash = textures.GetTexture( "sfml.png" );
-  const int windowWidth = fWindowApp->GetWidth();
-  const int windowHeight = fWindowApp->GetHeight();
-  // Can't draw textures directly, must wrap in a sprite and set the position.
-  sf::Sprite snoSprite( *snoSplash );
-  snoSprite.SetPosition( windowWidth / 2 - snoSplash->GetWidth() / 2, windowHeight / 2 - snoSplash->GetHeight() / 2 );
-  sf::Sprite sfmlSprite( *sfmlSplash );
-  sfmlSprite.SetPosition( windowWidth - sfmlSplash->GetWidth(), windowHeight - sfmlSplash->GetHeight() );
-  // Now draw these logos
-  fWindowApp->Clear( sf::Color( 255, 255, 255, 255 ) ); 
-  fWindowApp->Draw( snoSprite );
-  fWindowApp->Draw( sfmlSprite );
-  fWindowApp->Display();
 }
 
 void

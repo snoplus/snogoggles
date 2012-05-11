@@ -19,7 +19,6 @@ CheckBoxLabel::CheckBoxLabel( RectPtr rect,
   fBoxTextures[0] = textureManager.GetTexture( eOpenBox, eBase );
   fBoxTextures[1] = textureManager.GetTexture( eCrossBox, eHighlight );
 
-
   sf::Rect<double> size = rect->GetRect( Rect::eResolution );
   sf::Rect<double> buttonSize = size;
   buttonSize.Width = size.Height;
