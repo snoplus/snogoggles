@@ -1,5 +1,6 @@
 #include <SFML/OpenGL.hpp>
 
+#include <iostream>
 using namespace std;
 
 #include <Viewer/Rect.hh>
@@ -35,26 +36,27 @@ Rect::NewDaughter( const sf::Rect<double>& rect,
   return daughter;
 }
 
+Rect::~Rect()
+{
+  // Unlink from mother's list
+  if( fMother != NULL )
+    fMother->RemoveDaughter( this );
+  // Deleting should cascade down from this mother rect (or the global one)
+  for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); iTer++ )
+    {
+      (*iTer)->fMother = NULL;
+    }
+  fDaughters.clear();
+}
+
 void
-Rect::DeleteDaughter( Rect* daughter )
+Rect::RemoveDaughter( Rect* daughter )
 {
   for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); )
     if( *iTer == daughter ) // Found daughter
       iTer = fDaughters.erase( iTer );
     else
       ++iTer;
-} 
-
-Rect::~Rect()
-{
-  for( vector<Rect*>::iterator iTer = fDaughters.begin(); iTer != fDaughters.end(); iTer++ )
-    {
-      (*iTer)->fMother = NULL;
-      *iTer = NULL;
-    }
-  fDaughters.clear();
-  if( fMother != NULL )
-    fMother->DeleteDaughter( this );
 }
 
 void 

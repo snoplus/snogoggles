@@ -41,6 +41,8 @@ public:
 		     ECoordSystem system );
   /// Destructor (must notify daughters)
   ~Rect();
+  /// Unlink a now deleted daughter
+  void RemoveDaughter( Rect* daughter );
   /// Set the rect in the stated coordinate system
   void SetRect( const sf::Rect<double>& rect, 
 		ECoordSystem system );
@@ -60,8 +62,6 @@ public:
   /// Helper function to set the gl viewport as the current rect
   void SetAsGLViewport();
 protected:
-  /// Unlink a daughter
-  void DeleteDaughter( Rect* daughter );
   /// Can only construct with a mother rectangle
   inline Rect( Rect* mother );
 

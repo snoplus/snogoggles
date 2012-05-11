@@ -35,8 +35,7 @@ ViewerWindow::ViewerWindow()
 
 ViewerWindow::~ViewerWindow()
 {
-  delete fDesktopManager;
-  delete fMotherRect;
+  // All in the ~ViewerWindow, note MotherRect is deleted when reference count reaches zero.
 }
 
 void
