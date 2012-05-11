@@ -32,15 +32,18 @@
 
 namespace RAT {
     namespace DS {
-        class EV;
         class PMTProperties;
-    };
-};
+    }; // namespace DS
+}; // namespace RAT
 
 namespace Viewer {
+    namespace RIDS {
+        class EV;
+    }; // namespace RIDS
+
+    class RenderState;
 
 namespace Frames {
-
     class FrontChecker3d;
 
 class HitManager3d : public Module3d {
@@ -61,11 +64,11 @@ public:
     }
 
     /// Renders hits.
-    virtual void RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList ) = 0;
-    static inline void RenderHitsSafe( HitManager3d* h, RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
+    virtual void RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState ) = 0;
+    static inline void RenderHitsSafe( HitManager3d* h, RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
     {
         if( h != NULL )
-            h->RenderHits( ev, pmtList );
+            h->RenderHits( ev, pmtList, renderState );
     }
 
 protected:

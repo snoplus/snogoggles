@@ -39,6 +39,7 @@ namespace Viewer {
 	class ConfigurationTable;
 	class RWWrapper;
 	class Rect;
+    class RenderState;
 
 namespace Frames {
 
@@ -72,8 +73,8 @@ public:
     void LoadModuleConfigurations( ConfigurationTable& configTable );
     void SaveModuleConfigurations( ConfigurationTable& configTable );
     void EventLoop();
-    void Render2d( RWWrapper& windowApp );
-    void Render3d( RectPtr viewport );
+    void Render2d( RWWrapper& windowApp, const RenderState& renderState );
+    void Render3d( RectPtr viewport, const RenderState& renderState );
 
     CameraManager3d*    fCameraManager;     ///< The camera manager	
     HitManager3d*       fHitManager;        ///< The hit manager.

@@ -13,13 +13,12 @@
 #include <Viewer/Axes3d.hh>
 #include <Viewer/DataStore.hh>
 #include <Viewer/Rect.hh>
+#include <Viewer/RIDS/EV.hh>
 #include <Viewer/ModuleManager3d.hh>
 
 namespace RAT {
     namespace DS {
-        class EV;
         class PMTProperties;
-        class MC;
     }; // namespace DS
 }; // namespace RAT
 
@@ -101,19 +100,19 @@ void ModuleManager3d::EventLoop()
 	Module3d::EventLoopSafe( fAxes );
 }
 
-void ModuleManager3d::Render2d( RWWrapper& windowApp )
+void ModuleManager3d::Render2d( RWWrapper& windowApp, const RenderState& renderState )
 {
 
 }
 
-void ModuleManager3d::Render3d( RectPtr viewport )
+void ModuleManager3d::Render3d( RectPtr viewport, const RenderState& renderState )
 {
-  RAT::DS::EV* ev = NULL;//DataStore::GetInstance().GetCurrentEV();
+  RIDS::EV ev = DataStore::GetInstance().GetCurrentEvent().GetEV();
   RAT::DS::MC* mc = NULL;//DataStore::GetInstance().GetCurrentMC();
   RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
   
   fCameraManager->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
-  HitManager3d::RenderHitsSafe( fHitManager, ev, pmtList );
+  HitManager3d::RenderHitsSafe( fHitManager, &ev, pmtList, renderState );
   TrackManager3d::RenderTracksSafe( fTrackManager, mc );
   GeoManager3d::RenderGeometrySafe( fGeoManager );
   FitterManager3d::RenderFitVertexSafe( fFitterManager );

@@ -11,6 +11,7 @@
 /// 	06/07/11 : Olivia Wasalski - Refactored so that hits are only
 ///                                  filtered when needed. \n
 ///     11/07/11 : Olivia Wasalski - Undid last revision. Hits are now displayed. \n
+///     xx/xx/xx : Olivia Wasalski - Basically rewritten to use VBOs \n
 ///
 /// \details 	
 ///
@@ -20,7 +21,9 @@
 #define __Viewer_Frames_DefaultHits3d__
 
 #include <Viewer/HitManager3d.hh>
-#include <Viewer/Hit.hh>
+#include <Viewer/HitBuffer.hh>
+#include <Viewer/Sphere.hh>
+#include <Viewer/RenderState.hh>
 #include <TVector3.h>
 
 #include <string>
@@ -28,10 +31,7 @@
 
 namespace RAT {
     namespace DS {
-        class EV;
         class PMTProperties;
-        class PMTUnCal;
-        class PMTCal;
     };
 };
 
@@ -40,6 +40,13 @@ namespace Viewer {
         class CheckBoxLabel;
     };
 
+    namespace RIDS {
+        class EV;
+        class PMTHit;
+    };
+
+    class ColourPalette;
+    class RenderState;
     class ConfigurationTable;
     class GUIManager;
 
@@ -56,35 +63,28 @@ public:
     void LoadConfiguration( ConfigurationTable* configTable );
     void SaveConfiguration( ConfigurationTable* configTable );
     void EventLoop( );
-    void RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
+    void RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState );
 
 private:
 
-    void SaveAllPMTs( RAT::DS::PMTProperties* pmtList );
-    void FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
+    bool NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderState );
+    void SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState );
+    bool Equals( const RenderState& a, const RenderState& b );
 
-    void FilterPMTCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
-    void FilterPMTUnCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList );
-
-    Colour AssignColour( RAT::DS::PMTUnCal* pmt );
-    Colour AssignColour( RAT::DS::PMTCal* pmt );
-
-    bool PassesFilters( const TVector3& pos );
-    bool FilterByFront( const TVector3& pos );
-
-    void DisplayHits( const std::vector< Hit >& hits, bool forceHollow );
-
-    RAT::DS::EV* fCurrentEV;
     RAT::DS::PMTProperties* fCurrentPMTList;
+    RIDS::EV* fCurrentEV;
+    RenderState fCurrentRenderState;
+    ColourPalette* fCurrentPalette;
 
-    std::vector< Hit > fFilteredHits;
-    std::vector< Hit > fAllPMTs;
+    HitBuffer fPMTListBuffer;
+    HitBuffer fFullBuffer;
+    HitBuffer fOutlineBuffer;
+    Sphere fSphere;
 
     static const std::string fDisplayAllPMTsTag;
     static const std::string fPMTTypeTag;
     static const std::string fDisplayFrontPMTsOnlyTag;
 
-    enum PMTType { UNCAL, CAL } fPMTType;   ///< Stores whether the PMTs are UnCal or Cal.
     bool fDisplayAllPMTs;
     bool fDisplayFrontPMTsOnly;
 
