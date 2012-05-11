@@ -45,8 +45,10 @@ public:
   inline static ViewerWindow& GetInstance();
   /// Initialise all the singletons
   void InitAll();
-  /// Start the viewer, load settings etc...
-  void Initialise();
+  /// Start the viewer, No Data access
+  void PreInitialise();
+  /// Load the frames, Data access allowed (post semaphore)
+  void PostInitialise();
   /// Run loop, polled by the thread
   void Run();
   /// Destroy the viewer, saving settings
@@ -54,8 +56,6 @@ public:
 private:
   /// Initialise this window
   ViewerWindow();
-  /// Draw a splash whilst loading the viewer
-  void DrawSplash();
   /// Deal with any UI events
   bool EventLoop();
   /// Draw stuff to the screen

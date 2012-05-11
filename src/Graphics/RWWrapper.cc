@@ -36,6 +36,8 @@ RWWrapper::Draw( Text& object )
   if( characterSize * object.GetMaxLineLength() / 2.0 > resPos.Width )
     // Too large go for safer smaller
     characterSize = resPos.Width * 2.0 / object.GetMaxLineLength();
+  if( characterSize < 1.0 )
+    characterSize = 1.0;
   sfmlText.SetCharacterSize( characterSize ); // Must use this and not scale to avoid bounding box bug.
   sfmlText.SetColor( object.GetColour() );
   DrawObject( sfmlText );

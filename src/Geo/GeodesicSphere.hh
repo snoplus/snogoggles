@@ -23,12 +23,11 @@ namespace Viewer {
 class GeodesicSphere {
 private:
 	GeodesicSphere();
-	const Colour& GetColour();
+	const Colour GetColour();
 public:
 	const Polyhedron& GetPolyhedron();
 private:
 	Polyhedron* fPolyhedron;
-	const Colour& fColour;
 
 ////////////////////////////////////////////////////////////////////////
 // Static Section

@@ -21,6 +21,7 @@ using namespace std;
 #include <Viewer/LoadRootFileThread.hh>
 #include <Viewer/ReceiverThread.hh>
 
+#include <Viewer/RenderState.hh>
 #include <Viewer/GeodesicSphere.hh>
 #include <Viewer/DataStore.hh>
 using namespace Viewer;
@@ -44,7 +45,7 @@ int main( int argc, char *argv[] )
 
   ViewerWindow& viewer = ViewerWindow::GetInstance();
 
-  viewer.Initialise();
+  viewer.PreInitialise();
 
   DataStore::GetInstance(); // Starts TPython on this thread
 
@@ -82,8 +83,8 @@ int main( int argc, char *argv[] )
       // Wait for first event to be loaded
       sema.Wait();
     }
-
   Initialise();
+  viewer.PostInitialise();
   viewer.Run();
   viewer.Destruct();
 
@@ -99,6 +100,7 @@ Initialise()
 {
   GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
   DataStore::GetInstance().Initialise();
+  RenderState::Initialise();
 }
 
 void 

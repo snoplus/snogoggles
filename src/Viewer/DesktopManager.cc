@@ -21,8 +21,8 @@ DesktopManager::DesktopManager( RectPtr globalMother,
 
 DesktopManager::~DesktopManager()
 {
-  for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
-    delete *iTer;
+  for( unsigned int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
+    delete fDesktops[iDesktop];
   fDesktops.clear();
   delete fDMUI;
   delete fCMUI;
