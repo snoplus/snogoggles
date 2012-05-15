@@ -45,12 +45,12 @@ DataStore::AddDS( RAT::DS::Root* rDS )
 {
   if( fLock.TryLock() == true )
     {
-      if( fEvents[fWriteIndex] != NULL )
-        delete fEvents[fWriteIndex];
+      delete fEvents[fWriteIndex];
       fEvents[fWriteIndex] = new RIDS::Event( *rDS, 0 ); // Always add 0, (may only be a mc event)
       fWriteIndex = (++fWriteIndex) % fEvents.size(); // Roll over
       for( unsigned int iEV = 1; iEV < rDS->GetEVCount(); iEV++ )
         {
+          delete fEvents[fWriteIndex];
           fEvents[fWriteIndex] = new RIDS::Event( *rDS, iEV );
           fWriteIndex = (++fWriteIndex) % fEvents.size(); // Roll over
         }
