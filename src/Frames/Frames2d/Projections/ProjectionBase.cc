@@ -118,9 +118,7 @@ ProjectionBase::ProjectGeodesicLine( Vector3 v1,
 void
 ProjectionBase::DrawHits( const RenderState& renderState )
 {
-  DataStore& events = DataStore::GetInstance();
-  const RIDS::Event& event = events.GetCurrentEvent();
-  vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
+  vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const double data = iTer->GetData( renderState.GetDataType() );

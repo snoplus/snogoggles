@@ -31,11 +31,14 @@ HitInfo::Render( RWWrapper& renderApp,
   vector<RIDS::PMTHit> hits = event.GetHitData( renderState.GetDataSource() );
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-      info << "TAC:" << iTer->GetTAC() << end.str();
-      info << "QHL:" << iTer->GetQHL() << end.str();
-      info << "QHS:" << iTer->GetQHS() << end.str();
-      info << "QLX:" << iTer->GetQLX() << end.str();
-      hasData = true;
+      if( pmtID == iTer->GetLCN() )
+        {
+          info << "TAC:" << iTer->GetTAC() << end.str();
+          info << "QHL:" << iTer->GetQHL() << end.str();
+          info << "QHS:" << iTer->GetQHS() << end.str();
+          info << "QLX:" << iTer->GetQLX() << end.str();
+          hasData = true;
+        }
     }
   if( hasData )
     {
