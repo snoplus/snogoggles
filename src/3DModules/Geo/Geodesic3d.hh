@@ -16,7 +16,7 @@
 #ifndef __Viewer_Frames_Geodesic3d__
 #define __Viewer_Frames_Geodesic3d__
 
-#include <Viewer/WorldBase3d.hh>
+#include <Viewer/GeoManager3d.hh>
 #include <string>
 
 namespace Viewer {
