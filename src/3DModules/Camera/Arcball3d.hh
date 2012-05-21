@@ -12,6 +12,7 @@
 ///     08/07/11 : Olivia Wasalski - Slight refactoring of the static private members. \n
 ///     12/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
 ///     05/21/12 : Olivia Wasalski - Added and implemented render screen method. \n
+///     05/21/12 : Olivia Wasalski - Removed inheritance from FrontChecker3d. \n
 ///
 /// \details 	
 ///
@@ -66,7 +67,6 @@ public:
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect );
 
-    bool IsFront( const TVector3& v );
     void RenderScreen();
 
     double SuggestedAxisLength() { return 1.5 * fRadius; }

@@ -132,12 +132,6 @@ void Arcball3d::RenderScreen()
     glColorMask( GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE );
 }
 
-bool Arcball3d::IsFront( const TVector3& v )
-{
-    if ( fCamera * v >= 0 ) return true;
-    else return false;
-}
-
 void Arcball3d::Spin( const TVector3& axis, int deltaTime )
 {
     fCamera.Rotate( fSpinSpeed * deltaTime, axis );

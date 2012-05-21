@@ -25,10 +25,9 @@ TrackFactory3d::TrackFactory3d()
     fFactory.Register( DefaultTracks3d::Name(), new Alloc<TrackManager3d, DefaultTracks3d>() );
 }
 
-TrackManager3d* TrackFactory3d::GetTrackManager( const std::string name, FrontChecker3d* f )
+TrackManager3d* TrackFactory3d::GetTrackManager( const std::string name )
 {
     TrackManager3d* t = fFactory.New( name );
-    TrackManager3d::SetFrontCheckerSafe( t, f );
     return t;
 }
 

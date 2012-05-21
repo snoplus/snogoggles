@@ -32,11 +32,10 @@ ModuleManager3d* ModuleManagerFactory3d::New(
 )
 {
 	ModuleManager3d* m = new ModuleManager3d();
-	CameraManager3d* c = CameraFactory3d::GetInstance()->GetCameraManager( camera );
 	m->SetAllModules(
-		c,
-		HitFactory3d::GetInstance()->GetHitManager( hits, c ),
-		TrackFactory3d::GetInstance()->GetTrackManager( tracks, c ),
+		CameraFactory3d::GetInstance()->GetCameraManager( camera ),
+		HitFactory3d::GetInstance()->GetHitManager( hits ),
+		TrackFactory3d::GetInstance()->GetTrackManager( tracks ),
 		GeoFactory3d::GetInstance()->GetGeoManager( geo ),
 		FitterFactory3d::GetInstance()->GetFitterManager( fitter )
 	);

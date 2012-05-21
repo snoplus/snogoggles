@@ -25,10 +25,9 @@ HitFactory3d::HitFactory3d()
     fFactory.Register( DefaultHits3d::Name(), new Alloc<HitManager3d, DefaultHits3d>() );
 }
 
-HitManager3d* HitFactory3d::GetHitManager( const std::string name, FrontChecker3d* f )
+HitManager3d* HitFactory3d::GetHitManager( const std::string name )
 {
     HitManager3d* h = fFactory.New( name );
-    HitManager3d::SetFrontCheckerSafe( h, f );
     return h;
 }
 

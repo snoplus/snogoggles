@@ -37,7 +37,6 @@
 #define __Viewer_Frames_CameraManager3d__
 
 #include <Viewer/Module3d.hh>
-#include <Viewer/FrontChecker3d.hh>
 #include <SFML/Graphics.hpp>
 #include <string>
 
@@ -45,7 +44,7 @@ namespace Viewer {
 
 namespace Frames {
 
-class CameraManager3d : public Module3d, public FrontChecker3d {
+class CameraManager3d : public Module3d {
 
 public:
 
