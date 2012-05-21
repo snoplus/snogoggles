@@ -27,8 +27,6 @@ DefaultHits3d::DefaultHits3d()
     fCurrentEV = NULL;
     fAllPMTsGUI = NULL;
     fFrontGUI = NULL;
-
-    fSphere.Bind();
 }
 
 void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
@@ -81,17 +79,12 @@ void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, c
         fOutlineBuffer.Render( GL_LINES );
 
     glEnable( GL_DEPTH_TEST );
-    glColorMask( GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE );
-    fSphere.Render( GL_TRIANGLES );
-    glColorMask( GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE );
 
     if( fDisplayAllPMTs )
         fPMTListBuffer.Render( GL_LINES );    
 
     fFullBuffer.Render( GL_TRIANGLES );
     glDisable( GL_DEPTH_TEST );
-
-    glClear( GL_DEPTH_BUFFER_BIT );
 }
 
 void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )

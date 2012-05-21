@@ -11,6 +11,7 @@
 /// 	06/07/11 : Olivia Wasalski - New File \n
 ///     08/07/11 : Olivia Wasalski - Slight refactoring of the static private members. \n
 ///     12/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
+///     05/21/12 : Olivia Wasalski - Added and implemented render screen method. \n
 ///
 /// \details 	
 ///
@@ -66,6 +67,7 @@ public:
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect );
 
     bool IsFront( const TVector3& v );
+    void RenderScreen();
 
     double SuggestedAxisLength() { return 1.5 * fRadius; }
 
@@ -89,6 +91,7 @@ private:
     TVector3 fCamera;                    ///< Position of the camera.
     TVector3 fEye;                       ///< Point to look at.
     TVector3 fUp;                        ///< Orient the scene upwards.
+    TVector3 fPlane[4];                 
     double fRadius;                     ///< Radius of the arcball.
     double fCameraDist;                 ///< Distance from the center of the camera.
     double fZoom;                       ///< Zoom factor.

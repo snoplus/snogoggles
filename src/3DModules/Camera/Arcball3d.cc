@@ -30,6 +30,12 @@ Arcball3d::Arcball3d()
     fSpinSpeed = 0.001;
     fZoomSpeed = 0.0001;
 	fSpinLeftButton = NULL;
+
+    double size = 10000;
+    fPlane[0] = TVector3( 0, size, size );
+    fPlane[1] = TVector3( 0, -size, size );
+    fPlane[2] = TVector3( 0, -size, -size );
+    fPlane[3] = TVector3( 0, size, -size );
 }
 
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
@@ -112,6 +118,20 @@ void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )
 
 }
 
+void Arcball3d::RenderScreen()
+{
+    glEnable( GL_DEPTH_TEST );
+    glColorMask( GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE );
+    glBegin( GL_QUADS );
+
+    for( int i = 0; i < 4; i++ ) 
+        glVertex3f( fPlane[i].X(), fPlane[i].Y(), fPlane[i].Z() );
+
+    glEnd();
+    glDisable( GL_DEPTH_TEST );
+    glColorMask( GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE );
+}
+
 bool Arcball3d::IsFront( const TVector3& v )
 {
     if ( fCamera * v >= 0 ) return true;
@@ -122,6 +142,8 @@ void Arcball3d::Spin( const TVector3& axis, int deltaTime )
 {
     fCamera.Rotate( fSpinSpeed * deltaTime, axis );
     fUp.Rotate( fSpinSpeed * deltaTime, axis );
+    for( int i = 0; i < 4; i++ )
+        fPlane[i].Rotate( fSpinSpeed * deltaTime, axis );
 }
 
 void Arcball3d::Zoom( float speed, int deltaTime )

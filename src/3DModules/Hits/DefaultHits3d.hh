@@ -12,6 +12,8 @@
 ///                                  filtered when needed. \n
 ///     11/07/11 : Olivia Wasalski - Undid last revision. Hits are now displayed. \n
 ///     xx/xx/xx : Olivia Wasalski - Basically rewritten to use VBOs \n
+///     05/21/12 : Olivia Wasalski - Removed dependence on global sphere; 
+///                                  was the source of lag. \n
 ///
 /// \details 	
 ///
@@ -22,7 +24,6 @@
 
 #include <Viewer/HitManager3d.hh>
 #include <Viewer/HitBuffer.hh>
-#include <Viewer/Sphere.hh>
 #include <Viewer/RenderState.hh>
 #include <TVector3.h>
 
@@ -79,7 +80,6 @@ private:
     HitBuffer fPMTListBuffer;
     HitBuffer fFullBuffer;
     HitBuffer fOutlineBuffer;
-    Sphere fSphere;
 
     static const std::string fDisplayAllPMTsTag;
     static const std::string fPMTTypeTag;

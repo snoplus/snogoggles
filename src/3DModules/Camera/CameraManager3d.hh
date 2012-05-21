@@ -10,6 +10,8 @@
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
 /// 	05/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
+///     05/21/12 : Olivia Wasalski - Added render screen method to differentiate between 
+///                                  front and back objects. \n
 ///
 /// \details 	The camera manager is responsible for: \n
 ///
@@ -57,6 +59,7 @@ public:
 
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect ) = 0;
+    virtual void RenderScreen() = 0;
 
     virtual double SuggestedAxisLength() = 0;
 

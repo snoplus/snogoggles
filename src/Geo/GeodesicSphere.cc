@@ -42,7 +42,6 @@ void GeodesicSphere::Render() const
     glColorMask( GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE );
     fOutlineVBO.Render( GL_LINES );
     glDisable( GL_DEPTH_TEST );
-    glClear( GL_DEPTH_BUFFER_BIT );
 }
 
 const Polyhedron& GeodesicSphere::GetPolyhedron()

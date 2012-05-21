@@ -49,7 +49,7 @@ void VBO::Render( GLenum mode ) const
     glEnableClientState( GL_COLOR_ARRAY );
 
     glVertexPointer( 3, GL_FLOAT, sizeof( struct Vertex::Data ), 0 );
-    glColorPointer( 4, GL_FLOAT, sizeof( struct Vertex::Data ), (const GLvoid*) (3*sizeof(float)) );
+    glColorPointer( 4, GL_FLOAT, sizeof( struct Vertex::Data ), (const GLvoid*) (3*sizeof(float)));
 
     glDrawElements( mode, fIndices.size(), GL_UNSIGNED_SHORT, 0 );
     
@@ -79,7 +79,7 @@ void VBO::Load( ConfigurationTable* configTable )
         std::stringstream ss; ss << i;
         ConfigurationTable* v = vertices->GetTable( "vertex" + ss.str() );
         AddVertex( Vertex (
-            TVector3( v->GetD("x"), v->GetD("y"), v->GetD("z") ),
+            (86/89.0)*TVector3( v->GetD("x"), v->GetD("y"), v->GetD("z") ),
             colour
         ) );
     }
