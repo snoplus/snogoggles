@@ -14,7 +14,8 @@
 ///     05/21/12 : Olivia Wasalski - Added and implemented render screen method. \n
 ///     05/21/12 : Olivia Wasalski - Removed inheritance from FrontChecker3d. \n
 ///
-/// \details 	
+/// \details 	Implements the responsibilities of the Camera Manager, which are 
+///             documented in detail in ./CameraManager3d.hh
 ///
 ////////////////////////////////////////////////////////////////////////
 

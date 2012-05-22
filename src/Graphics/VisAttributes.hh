@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::VisAttributes
 ///
-/// \brief   
+/// \brief   NEEDS TO CHANGE - OUTDATED
 ///
 /// \author  Olivia Wasalski <wasalski@triumf.ca>
 ///

@@ -23,6 +23,8 @@
 ///		the detector. \n
 ///		Creating GUI objects to manage the camera.\n
 ///		Appropriately responding when passed Viewer::Events. \n
+///     Drawing a blank screen at the zero line to act as a 
+///     filter for objects in the back half of the detector. \n
 ///
 ///		To create GUI objects, the camera manager needs both 
 ///		the area for the camera manager's GUI objects and an 

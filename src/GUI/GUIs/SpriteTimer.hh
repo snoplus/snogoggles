@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::GUIs::SpriteTimer
 ///
-/// \brief   Generic button with a sprite
+/// \brief   Generic timer with a sprite
 ///
 /// \author  Olivia Wasalski <wasalski@triumf.ca>
 ///                          <oliviawasalski@gmail.com>

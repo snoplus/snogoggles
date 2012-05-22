@@ -9,7 +9,9 @@
 /// REVISION HISTORY:\n
 ///     05/07/11 : Olivia Wasalski - First Revision, new file. \n
 ///
-/// \detail 
+/// \detail Register all of the possible camera managers in its
+///         constructor. Only time a specific camera manager is
+///         referenced by the child class. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -25,17 +27,12 @@ namespace Frames {
 class CameraFactory3d {
 
 public:
-
     static CameraFactory3d* GetInstance();
-
     CameraManager3d* GetCameraManager( const std::string name );
 
 private:
-
     CameraFactory3d();
-
     Factory<CameraManager3d> fFactory;
-
     static CameraFactory3d* fInstance;
 
 
