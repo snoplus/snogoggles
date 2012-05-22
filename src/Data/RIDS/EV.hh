@@ -42,7 +42,7 @@ public:
 
   int GetGTID() const { return fGTID; }
   /// Return a vector of PMTHits (data) by source, e.g. eCal
-  const std::vector<PMTHit>& GetHitData( EDataSource source ) const;
+  std::vector<PMTHit> GetHitData( EDataSource source ) const;
 
 private:
   EV();
