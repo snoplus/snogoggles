@@ -168,3 +168,12 @@ Rect::SetAsGLViewport()
   sf::Rect<double> thisWin = GetRect( eGL );
   glViewport( thisWin.Left, thisWin.Top, thisWin.Width, thisWin.Height );
 }
+
+sf::Vector2<double>
+Rect::GetOpenGLCoords( const sf::Vector2<double>& windowCoords )
+{
+    sf::Vector2<double> result = windowCoords;
+    result.x = result.x * fsWindowWidth / fsResolutionWidth;
+    result.y = fsWindowHeight - result.y * fsWindowHeight / fsResolutionHeight;
+    return result;
+}

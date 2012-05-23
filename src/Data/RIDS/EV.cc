@@ -25,7 +25,7 @@ EV::~EV()
   
 }
 
-const vector<PMTHit>&
+vector<PMTHit>
 EV::GetHitData( EDataSource source ) const
 {
   switch( source )
