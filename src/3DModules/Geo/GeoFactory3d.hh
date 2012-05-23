@@ -9,7 +9,9 @@
 /// REVISION HISTORY:\n
 ///     05/07/11 : Olivia Wasalski - First Revision, new file. \n
 ///
-/// \detail 
+/// \detail   Registers all of the possible geometry managers in a
+///           singleton factory. The only place a specific geometry
+///           manager is referenced. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -25,17 +27,12 @@ namespace Frames {
 class GeoFactory3d {
 
 public:
-
     static GeoFactory3d* GetInstance();
-
     GeoManager3d* GetGeoManager( const std::string name );
 
 private:
-
     GeoFactory3d();
-
     Factory<GeoManager3d> fFactory;
-
     static GeoFactory3d* fInstance;
 
 

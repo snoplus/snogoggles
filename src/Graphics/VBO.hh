@@ -1,14 +1,20 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class VBO
 ///
-/// \brief   
+/// \brief  Manages the OpenGL code needed to store, create, bind and render
+///         vertex buffer objects on the GPU.
 ///
 /// \author  Olivia Wasalski <oliviawasalski@gmail.com>
 ///
 /// REVISION HISTORY:\n
 ///     01/05/12 : O.Wasalski - First Revision, new file. \n
 ///
-/// \detail  
+/// \detail  Creates the vertex and index arrays needed. Binds the data to
+///          the GPU side memory, and uses this bound data to render. 
+///          10 times performance gain over using vertex arrays, and 100s
+///          time perfomrance gain over using immediate mode rendering.
+///          Should always be used to store and render large amounts of
+///          3D data. Creates dependence on OpenGL > version 1.5 (2002?) . \n
 ///
 ////////////////////////////////////////////////////////////////////////
 

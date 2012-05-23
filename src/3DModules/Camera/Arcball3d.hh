@@ -15,7 +15,8 @@
 ///     05/21/12 : Olivia Wasalski - Removed inheritance from FrontChecker3d. \n
 ///     05/21/12 : Olivia Wasalski - Added arcball. \n
 ///
-/// \details 	
+/// \details 	Implements the responsibilities of the Camera Manager, which are 
+///             documented in detail in ./CameraManager3d.hh
 ///
 ////////////////////////////////////////////////////////////////////////
 

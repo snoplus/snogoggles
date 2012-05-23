@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::Geodesic3d
 ///
-/// \brief   
+/// \brief  Geometry manager implementation that renders a geodesic sphere.
 ///
 /// \author Olivia Wasalski <wasalski@triumf.ca>
 ///			    <oliviawasalski@triumf.ca>
@@ -9,7 +9,10 @@
 /// REVISION HISTORY:\n
 /// 	12/07/11 : Olivia Wasalski - First Revision, New File \n
 ///
-/// \details 	
+/// \details Geo manager module implementation that renders a geodesic
+///          sphere. Utilizes the GeodesicSphere singleton to store the 
+///          VBOs necessary. A single GUI check box to enable or disable
+///          rendering the geometry. Standard geometry. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 

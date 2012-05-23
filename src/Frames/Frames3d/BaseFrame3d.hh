@@ -1,7 +1,8 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::BaseFrame3d
 ///
-/// \brief   	
+/// \brief   3D frame abstract class - uses module manager to implement 
+///          mandatory frame methods. \n
 ///
 /// \author Olivia Wasalski <wasalski@triumf.ca> 
 ///			    <oliviawasalski@gmail.com>

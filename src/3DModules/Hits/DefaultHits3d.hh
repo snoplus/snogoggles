@@ -15,7 +15,14 @@
 ///     05/21/12 : Olivia Wasalski - Removed dependence on global sphere; 
 ///                                  was the source of lag. \n
 ///
-/// \details 	
+/// \details    Implements functionality specified by the hit manager class.
+///             Filters hits if either the render state or the current EV 
+///             changes. Stores each hit 2 ways, as a full hexagon and an
+///             outline of a hexagon in 2 seperate VBOs. The full hexagon hits
+///             are rendered with the depth buffer enabled, and the outline 
+///             hits are rendered with the depth buffer disabled to create
+///             the effect that the hits in the back are outlines. Also has 
+///             a mode where it all of the PMT array. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 

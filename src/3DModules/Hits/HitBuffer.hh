@@ -1,14 +1,16 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class HitBuffer
 ///
-/// \brief   
+/// \brief  Special VBO to create, store and render vertices for hits.
 ///
 /// \author  Olivia Wasalski <oliviawasalski@gmail.com>
 ///
 /// REVISION HISTORY:\n
 ///     01/05/12 : O.Wasalski - First Revision, new file. \n
 ///
-/// \detail  
+/// \detail  Wraps the creation of the hexagons for each hit in methods
+///          detailing the creation of either a full or outline hexagon.
+///          Rendering is done using the parent VBO class. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 
