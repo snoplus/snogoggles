@@ -9,6 +9,7 @@
 /// REVISION HISTORY:\n
 ///     05/07/11 : Olivia Wasalski - First Revision, new file. \n
 ///     06/07/11 : Olivia Wasalski - Factory adds a front checker. \n
+///     05/21/12 : Olivia Wasalski - Removed dependence on front checker. \n
 ///
 /// \detail 
 ///
@@ -23,15 +24,13 @@
 namespace Viewer {
 namespace Frames {
 
-    class FrontChecker3d;
-
 class TrackFactory3d {
 
 public:
 
     static TrackFactory3d* GetInstance();
 
-    TrackManager3d* GetTrackManager( const std::string name, FrontChecker3d* f );
+    TrackManager3d* GetTrackManager( const std::string name );
 
 private:
 

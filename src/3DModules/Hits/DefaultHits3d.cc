@@ -4,11 +4,11 @@
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/RenderState.hh>
+#include <Viewer/RIDS/EV.hh>
+#include <Viewer/RIDS/PMTHit.hh>
 
-#include <RAT/DS/EV.hh>
 #include <RAT/DS/PMTProperties.hh>
-#include <RAT/DS/PMTUnCal.hh>
-#include <RAT/DS/PMTCal.hh>
 #include <SFML/OpenGL.hpp>
 
 #include <iostream>
@@ -23,10 +23,8 @@ const std::string DefaultHits3d::fDisplayFrontPMTsOnlyTag = "DisplayFrontPMTsOnl
 DefaultHits3d::DefaultHits3d()
 {
     fDisplayAllPMTs = false;
-    fPMTType = UNCAL;
     fDisplayFrontPMTsOnly = false;
     fCurrentEV = NULL;
-    fCurrentPMTList = NULL;
     fAllPMTsGUI = NULL;
     fFrontGUI = NULL;
 }
@@ -47,7 +45,6 @@ void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& opt
 void DefaultHits3d::LoadConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
-    ConfigTableUtils::GetEnumSafe< PMTType >( configTable, fPMTTypeTag, fPMTType );
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
 }
 
@@ -55,114 +52,99 @@ void DefaultHits3d::SaveConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::SetBoolean( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
     ConfigTableUtils::SetBoolean( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
-    configTable->SetI( fPMTTypeTag, fPMTType );
 }
 
 void DefaultHits3d::EventLoop( )
 {
     // TODO: Needs to be completed
+    fDisplayAllPMTs = fAllPMTsGUI->GetState();
+    fDisplayFrontPMTsOnly = fFrontGUI->GetState();
 }
 
-void DefaultHits3d::RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
 {
-	FilterHits( ev, pmtList ); // Added just to change colour right away for the collaboration meeting on August 9th, do not want to leave it like this because its hightly inefficient.
+    if( NeedToRecreateVBOs( ev, renderState ) ) 
+        SaveHitsToBuffer( ev, pmtList, renderState );
 
     if( fCurrentPMTList != pmtList )
     {
-        SaveAllPMTs( pmtList );
+        for( int i=0; i < pmtList->GetPMTCount(); i++ )
+            fPMTListBuffer.AddHitOutline( 
+                pmtList->GetPos( i ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+        fPMTListBuffer.Bind();
         fCurrentPMTList = pmtList;
     }
 
-    if( fCurrentEV != ev )
-    {
-        FilterHits( ev, pmtList );
-        fCurrentEV = ev;
-    }
+    if( !fDisplayFrontPMTsOnly )
+        fOutlineBuffer.Render( GL_LINES );
 
-    if( fAllPMTsGUI != NULL && fFrontGUI != NULL )
-    {
-        if( fAllPMTsGUI->GetState() != fDisplayAllPMTs || fFrontGUI->GetState() != fDisplayFrontPMTsOnly )
-        {
-            fDisplayAllPMTs = fAllPMTsGUI->GetState();
-            fDisplayFrontPMTsOnly = fFrontGUI->GetState();
-        }
-    }
+    glEnable( GL_DEPTH_TEST );
 
-    if( fDisplayAllPMTs == true )
-        DisplayHits( fAllPMTs, true );
+    if( fDisplayAllPMTs )
+        fPMTListBuffer.Render( GL_LINES );    
 
-    DisplayHits( fFilteredHits, false );
+    fFullBuffer.Render( GL_TRIANGLES );
+    glDisable( GL_DEPTH_TEST );
 }
 
-void DefaultHits3d::SaveAllPMTs( RAT::DS::PMTProperties* pmtList )
+void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
 {
-    fAllPMTs.clear();
-    for( int i = 0; i < pmtList->GetPMTCount(); i++ )
-        if( PassesFilters( pmtList->GetPos( i ) ) == true )
-            fAllPMTs.push_back( Hit( pmtList->GetPos( i ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) ) );
-}
+    fFullBuffer.Clear();
+    fOutlineBuffer.Clear();
 
-void DefaultHits3d::FilterHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
-{
-    fFilteredHits.clear();
-    if( fPMTType == CAL )
-        FilterPMTCal( ev, pmtList );
-    else
-        FilterPMTUnCal( ev, pmtList );
-}
-
-void DefaultHits3d::FilterPMTCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
-{
-    for( int i = 0; i < ev->GetPMTCalCount(); i++ )
-    {
-        RAT::DS::PMTCal* pmt = ev->GetPMTCal( i );
-        TVector3 pos = pmtList->GetPos( pmt->GetID() );
-        fFilteredHits.push_back( Hit( pos, AssignColour( pmt ) ) );
-    }
-}
-
-void DefaultHits3d::FilterPMTUnCal( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
-{
-    for( int i = 0; i < ev->GetPMTUnCalCount(); i++ )
-    {
-        RAT::DS::PMTUnCal* pmt = ev->GetPMTUnCal( i );
-        TVector3 pos = pmtList->GetPos( pmt->GetID() );
-        fFilteredHits.push_back( Hit( pos, AssignColour( pmt ) ) );
-    }
-}
-
-Colour DefaultHits3d::AssignColour( RAT::DS::PMTUnCal* pmt )
-{
-    return ColourPalette::gPalette->GetColour( pmt->GetsPMTt() / 4000.0 );
-}
-
-Colour DefaultHits3d::AssignColour( RAT::DS::PMTCal* pmt )
-{
-    return ColourPalette::gPalette->GetColour( pmt->GetsPMTt() / 500.0 );
-}
-
-bool DefaultHits3d::PassesFilters( const TVector3& pos )
-{
-    return FilterByFront( pos );
-}
-
-bool DefaultHits3d::FilterByFront( const TVector3& pos )
-{
-    if( fDisplayFrontPMTsOnly == true )
-        return fFront->IsFront( pos );
-    return true;
-}
-
-void DefaultHits3d::DisplayHits( const std::vector< Hit >& hits, bool forceHollow )
-{
+    std::vector<RIDS::PMTHit> hits = ev->GetHitData( renderState.GetDataSource() );
     for( int i = 0; i < hits.size(); i++ )
     {
-        bool fill = fFront->IsFront( hits.at(i).GetPos() );;
-        if( forceHollow ) fill = false;
-        if( PassesFilters( hits.at(i).GetPos() ) == true )
-            hits.at(i).Render( fill );
+        TVector3 p = pmtList->GetPos( hits[i].GetLCN() );
+
+        double max = renderState.GetScalingMax();
+        double min = renderState.GetScalingMin();
+        double data = hits[i].GetData( renderState.GetDataType() );
+        double c_frac = data / ( max - min );
+
+        Colour c = ColourPalette::gPalette->GetColour( c_frac );
+
+        fFullBuffer.AddHitFull( p, c );
+        fOutlineBuffer.AddHitOutline( p, c );
     }
+
+    fFullBuffer.Bind();
+    fOutlineBuffer.Bind();
 }
+
+bool DefaultHits3d::NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderState )
+{        
+    if( fCurrentEV != ev )
+    {
+        fCurrentEV = ev;
+        return true;
+    }
+
+    if( fCurrentPalette != ColourPalette::gPalette )
+    {
+        fCurrentPalette = ColourPalette::gPalette;
+        return true;
+    }
+
+    if( !Equals( fCurrentRenderState, renderState ) )
+    {
+        fCurrentRenderState = renderState;
+        return true;
+    }
+
+    return false;
+}
+
+bool DefaultHits3d::Equals( const RenderState& a, const RenderState& b )
+{
+    if( a.GetDataSource() == b.GetDataSource() &&
+        a.GetDataType() == b.GetDataType() &&
+        a.GetScalingMax() == b.GetScalingMax() &&
+        a.GetScalingMin() == b.GetScalingMin()
+    ) return true; 
+    return false;
+}
+
 
 }; // namespace Frames
 }; // namespace Viewer

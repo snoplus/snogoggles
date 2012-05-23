@@ -7,7 +7,6 @@
 #include <Viewer/Histogram.hh>
 #include <Viewer/HitFrame3d.hh>
 #include <Viewer/TrackFrame3d.hh>
-#include <Viewer/RATGeoFrame3d.hh>
 using namespace Viewer;
 
 #include <string>
@@ -24,8 +23,7 @@ FrameFactory::FrameFactory( RectPtr rect )
   RegisterFrame( Frames::CrateView::Name(),new AllocRect<Frame,Frames::CrateView>( rect ), Frame::e2d );
 
   RegisterFrame( Frames::HitFrame3d::Name(), new AllocRect<Frame, Frames::HitFrame3d>( rect ), Frame::e3d );
-  RegisterFrame( Frames::TrackFrame3d::Name(), new AllocRect<Frame, Frames::TrackFrame3d>( rect ), Frame::e3d );
-  RegisterFrame( Frames::RATGeoFrame3d::Name(), new AllocRect<Frame, Frames::RATGeoFrame3d>( rect ), Frame::e3d );
+  //RegisterFrame( Frames::TrackFrame3d::Name(), new AllocRect<Frame, Frames::TrackFrame3d>( rect ), Frame::e3d );
 }
 
 void

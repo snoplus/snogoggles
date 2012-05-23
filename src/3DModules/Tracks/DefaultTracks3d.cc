@@ -89,7 +89,7 @@ void DefaultTracks3d::EventLoop( )
 
 void DefaultTracks3d::RenderTracks( RAT::DS::MC* mc )
 {
-    if( fCurrentMC != mc || fRefilter == true )
+/*    if( fCurrentMC != mc || fRefilter == true )
     {
         fCurrentMC = mc;
         fRefilter = false;
@@ -117,7 +117,7 @@ void DefaultTracks3d::RenderTracks( RAT::DS::MC* mc )
             fLineStrips.at(i).RenderFull();
         else
             fLineStrips.at(i).RenderSymbolic();
-    }
+    }*/
 }
 
 bool DefaultTracks3d::FilterByPrimaryTrack( RAT::DS::MCTrack* tr )

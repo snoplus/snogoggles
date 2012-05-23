@@ -8,6 +8,7 @@
 ///
 /// REVISION HISTORY:\n
 /// 	07/07/11 : Olivia Wasalski - First Revision, New File \n
+///     05/21/12 : Olivia Wasalski - Removed functionality, RIDS does not support yet. \n
 ///
 /// \details 	
 ///
@@ -18,7 +19,6 @@
 
 #include <Viewer/TrackManager3d.hh>
 #include <Viewer/VisMap.hh>
-#include <Viewer/LineStrip.hh>
 
 #include <string>
 #include <vector>
@@ -81,7 +81,7 @@ private:
     GUIs::CheckBoxLabel* fFullTrackGUI;
 
     RAT::DS::MC* fCurrentMC;
-    std::vector< LineStrip > fLineStrips;
+//    std::vector< LineStrip > fLineStrips;
 
 }; // class DefaultTracks3d
 

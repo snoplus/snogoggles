@@ -24,23 +24,34 @@ GeodesicSphere* GeodesicSphere::GetInstance()
 
 GeodesicSphere::GeodesicSphere()
 {
-  stringstream configFileName;                                                                                                                                                                                                           
-  configFileName << getenv( "VIEWERROOT" ) << "/data/geodesic.xml";
-  Configuration config = Configuration( configFileName.str(), false );
-  std::vector< ConfigurationTable* >::iterator itr;
-  itr = config.GetTableBegin();
-  ConfigurationTable* volumeTable = (*itr)->GetTable( "volume" );
-  fPolyhedron = SerializableFactory::GetInstance()->NewPtr< Polyhedron >( volumeTable, "polyhedron" );
+    stringstream configFileName;                                                                                                                                                                                                      
+    configFileName << getenv( "VIEWERROOT" ) << "/data/geodesic.xml";
+    Configuration config = Configuration( configFileName.str(), false );
+    std::vector< ConfigurationTable* >::iterator itr;
+    itr = config.GetTableBegin();
+    fOutlineVBO.Load( *itr );
+    itr++;
+    fFullVBO.Load( *itr );
+}
+
+void GeodesicSphere::Render() const
+{
+    glEnable( GL_DEPTH_TEST );
+    glColorMask( GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE );
+    fFullVBO.Render( GL_TRIANGLES );
+    glColorMask( GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE );
+    fOutlineVBO.Render( GL_LINES );
+    glDisable( GL_DEPTH_TEST );
 }
 
 const Polyhedron& GeodesicSphere::GetPolyhedron()
 {
-  return *fPolyhedron;
+    return *fPolyhedron;
 }
 
 const Colour GeodesicSphere::GetColour()
 {
-  return ColourPalette::gPalette->GetPrimaryColour( eGrey );
+    return ColourPalette::gPalette->GetPrimaryColour( eGrey );
 }
 
 }; // namespace Viewer

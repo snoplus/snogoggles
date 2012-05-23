@@ -3,14 +3,16 @@
 ///
 /// \brief   All the modules share these capabilities.
 ///
-/// \author Olivia Wasalski <wasalski@triumf.ca>
-///			    <oliviawasalski@triumf.ca>
+/// \author Olivia Wasalski <wasalski@berkeley.edu>
+///			    <oliviawasalski@gmail.ca>
 ///
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
 ///     06/07/11 : Olivia Wasalski - Added the module tag. \n
 ///
-/// \details 	
+/// \details  Implements functionality that is shared by the camera, hit,
+///           track, geo and fitter modules. Also provides a nice abstraction
+///           for organizing these 5 different modules. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 

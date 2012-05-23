@@ -1,13 +1,16 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::HitFrame3d
 ///
-/// \brief   	
+/// \brief   Implements a basic frame to view hits.
 ///
 /// \author Olivia Wasalski <wasalski@triumf.ca> 
 ///			    <oliviawasalski@gmail.com>
 ///
 /// REVISION HISTORY:\n
 /// 	04/08/11 : Olivia Wasalski - New File \n
+///
+/// \details    Implements a basic frame to view hits using the
+///             default hits, arcball and geodesic modules. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 

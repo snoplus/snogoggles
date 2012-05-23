@@ -1,7 +1,8 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::BaseFrame3d
 ///
-/// \brief   	
+/// \brief   3D frame abstract class - uses module manager to implement 
+///          mandatory frame methods. \n
 ///
 /// \author Olivia Wasalski <wasalski@triumf.ca> 
 ///			    <oliviawasalski@gmail.com>
@@ -36,7 +37,7 @@ public:
 	virtual void LoadConfiguration( ConfigurationTable& configTable );
 	virtual void SaveConfiguration( ConfigurationTable& configTable );
 	virtual void EventLoop();
-  virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
+    virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
 	virtual void Render3d( RWWrapper& renderApp, const RenderState& renderState );
 
 	virtual ModuleManager3d* CreateModuleManager() = 0;

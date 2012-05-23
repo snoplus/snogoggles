@@ -11,6 +11,7 @@
 /// 	05/07/11 : Olivia Wasalski - New File \n
 ///     06/07/11 : Olivia Wasalski - FrontChecker3d is passed through a setter
 ///              instead of the constructor. \n
+///     05/22/12 : Olivia Wasalski - FrontChecker3d removed. \n
 ///
 /// \details 	The hit manager is responsible for: \n
 ///
@@ -26,22 +27,23 @@
 #define __Viewer_Frames_HitManager3d__
 
 #include <Viewer/Module3d.hh>
-#include <Viewer/FrontChecker3d.hh>
 
 #include <string>
 
 namespace RAT {
     namespace DS {
-        class EV;
         class PMTProperties;
-    };
-};
+    }; // namespace DS
+}; // namespace RAT
 
 namespace Viewer {
+    namespace RIDS {
+        class EV;
+    }; // namespace RIDS
+
+    class RenderState;
 
 namespace Frames {
-
-    class FrontChecker3d;
 
 class HitManager3d : public Module3d {
 
@@ -52,25 +54,13 @@ public:
     static std::string TableName() { return "HitManager3d"; }
     std::string GetTableName() { return TableName(); }
 
-    /// Stores the FrontChecker3d object.
-    void SetFrontChecker( FrontChecker3d* f ) { fFront = f; }
-    static inline void SetFrontCheckerSafe( HitManager3d* h, FrontChecker3d* f )
-    {
-        if( h != NULL )
-            h->SetFrontChecker( f );
-    }
-
     /// Renders hits.
-    virtual void RenderHits( RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList ) = 0;
-    static inline void RenderHitsSafe( HitManager3d* h, RAT::DS::EV* ev, RAT::DS::PMTProperties* pmtList )
+    virtual void RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState ) = 0;
+    static inline void RenderHitsSafe( HitManager3d* h, RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
     {
         if( h != NULL )
-            h->RenderHits( ev, pmtList );
+            h->RenderHits( ev, pmtList, renderState );
     }
-
-protected:
-
-    FrontChecker3d* fFront; ///< The front checker.
 
 
 }; // class HitManager3d

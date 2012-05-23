@@ -19,7 +19,6 @@
 #include <string>
 #include <map>
 
-#include <Viewer/WorldLoader3d.hh>
 #include <Viewer/Polyhedron.hh>
 
 class G4VPhysicalVolume;
@@ -33,13 +32,11 @@ namespace Viewer {
 
 namespace Frames {
 
-class GDMLLoader3d : public WorldLoader3d {
+class GDMLLoader3d {
 
 public:
 
-    GDMLLoader3d() : WorldLoader3d() { }
-    GDMLLoader3d( const std::string& filename ) 
-        : WorldLoader3d( filename ) { }
+    GDMLLoader3d() { }
     World* GetWorld();
 
 private:

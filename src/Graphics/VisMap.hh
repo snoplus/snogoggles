@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::VisMap
 ///
-/// \brief   
+/// \brief   NEEDS TO CHANGE - OUTDATED
 ///
 /// \author  Olivia Wasalski <wasalski@triumf.ca>
 ///

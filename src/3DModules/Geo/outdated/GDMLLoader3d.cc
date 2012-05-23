@@ -26,7 +26,7 @@ World* GDMLLoader3d::GetWorld()
 {
     G4GDMLParser parser;
     stringstream parserFileName;
-    parserFileName << getenv( "VIEWERROOT" ) << "/data/" << fFilename;
+    parserFileName << getenv( "VIEWERROOT" ) << "/data/";
     parser.Read( parserFileName.str() );
 
     Volume volume = CreateVolume( parser.GetWorldVolume() );

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::ModuleManager3d
 ///
-/// \brief   	
+/// \brief   Class which facilitates handling all of the possible modules. 
 ///
 /// \author Olivia Wasalski <wasalski@triumf.ca> 
 ///			    <oliviawasalski@gmail.com>
@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::ModuleManager3d::NoCameraError
 ///
-/// \brief   	
+/// \brief      Error that is thrown if a frame does not specify a camera manager.
 ///
 /// \author Olivia Wasalski <wasalski@triumf.ca> 
 ///			    <oliviawasalski@gmail.com>
@@ -22,7 +22,10 @@
 /// REVISION HISTORY:\n
 /// 	13/07/11 : Olivia Wasalski - New File \n
 ///
-/// \details
+/// \details    Without a camera manager, the OpenGL viewport is never set.
+///             Therefore a regular 3D frame cannot operate without it.
+///             Exception is thrown if the child frame who owns the module
+///             manager does not specify a camera manager. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -39,6 +42,7 @@ namespace Viewer {
 	class ConfigurationTable;
 	class RWWrapper;
 	class Rect;
+    class RenderState;
 
 namespace Frames {
 
@@ -72,8 +76,8 @@ public:
     void LoadModuleConfigurations( ConfigurationTable& configTable );
     void SaveModuleConfigurations( ConfigurationTable& configTable );
     void EventLoop();
-    void Render2d( RWWrapper& windowApp );
-    void Render3d( RectPtr viewport );
+    void Render2d( RWWrapper& windowApp, const RenderState& renderState );
+    void Render3d( RectPtr viewport, const RenderState& renderState );
 
     CameraManager3d*    fCameraManager;     ///< The camera manager	
     HitManager3d*       fHitManager;        ///< The hit manager.
@@ -81,8 +85,6 @@ public:
     GeoManager3d*       fGeoManager;        ///< The geometry manager.
     FitterManager3d*    fFitterManager;	    ///< The fitter manager.
 	Axes3d*				fAxes;				///< 3d Axes
-
-private:
 
 
 }; // class ModuleManager3d

@@ -1,7 +1,8 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::TrackFrame3d
 ///
-/// \brief   	
+/// \brief   Currently does not have any functionality - tracks have
+///          not been added to the RIDS data structure.
 ///
 /// \author Olivia Wasalski <wasalski@triumf.ca> 
 ///			    <oliviawasalski@gmail.com>

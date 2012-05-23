@@ -10,6 +10,8 @@
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
 /// 	05/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
+///     05/21/12 : Olivia Wasalski - Added render screen method to differentiate between 
+///                                  front and back objects. \n
 ///
 /// \details 	The camera manager is responsible for: \n
 ///
@@ -21,6 +23,8 @@
 ///		the detector. \n
 ///		Creating GUI objects to manage the camera.\n
 ///		Appropriately responding when passed Viewer::Events. \n
+///     Drawing a blank screen at the zero line to act as a 
+///     filter for objects in the back half of the detector. \n
 ///
 ///		To create GUI objects, the camera manager needs both 
 ///		the area for the camera manager's GUI objects and an 
@@ -35,7 +39,6 @@
 #define __Viewer_Frames_CameraManager3d__
 
 #include <Viewer/Module3d.hh>
-#include <Viewer/FrontChecker3d.hh>
 #include <SFML/Graphics.hpp>
 #include <string>
 
@@ -43,7 +46,7 @@ namespace Viewer {
 
 namespace Frames {
 
-class CameraManager3d : public Module3d, public FrontChecker3d {
+class CameraManager3d : public Module3d {
 
 public:
 
@@ -57,6 +60,7 @@ public:
 
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect ) = 0;
+    virtual void RenderScreen() = 0;
 
     virtual double SuggestedAxisLength() = 0;
 

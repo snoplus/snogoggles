@@ -44,12 +44,12 @@ void BaseFrame3d::EventLoop()
 
 void BaseFrame3d::Render2d( RWWrapper& renderApp, const RenderState& renderState )
 {
-	fModuleManager->Render2d( renderApp );
+	fModuleManager->Render2d( renderApp, renderState );
 }
 
 void BaseFrame3d::Render3d( RWWrapper& renderApp, const RenderState& renderState )
 {
-	fModuleManager->Render3d( fRect );
+	fModuleManager->Render3d( fRect, renderState );
 }
 
 void BaseFrame3d::LateInitialise()

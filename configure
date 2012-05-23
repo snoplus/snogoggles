@@ -52,35 +52,11 @@ function check_package_terminate {
 
 echo "Starting configure script for SNOGoggles..."
 echo " "
-echo -n "Would you like to see advanced options? [No]: "
-read ADVANCED_OPTIONS
-echo -n "Would you like to set Geant4, ROOT, SCons and RAT individually? [No]: "
+echo -n "Would you like to set snocave libraries individually? [No]: "
 read SET_NOT_SNOCAVE
 echo " "
 
-if [ "$ADVANCED_OPTIONS" = "Yes" ]; then
-
-	set_param ROOT_VERSION 5.28.00 "The version number of ROOT."
-	ROOT_VERSION=$return_value
-
-	set_param GEANT4_VERSION 4.9.4.p01 "The version number of Geant4."
-	GEANT4_VERSION=$return_value
-
-	set_param SCONS_VERSION 2.0.1 "The version number of SCons."
-	SCONS_VERSION=$return_value
-
-	set_param GLEWROOT /usr "The home directory for GLEW."
-	GLEWROOT=$return_value
-
-else
-
-	ROOT_VERSION=5.28.00
-	GEANT4_VERSION=4.9.4.p01
-	SCONS_VERSION=2.0.1
-
-	GLEWROOT=/usr
-
-fi
+GLEWROOT=/usr
 
 if [ "$SET_NOT_SNOCAVE" = "Yes" ]; then
 
@@ -96,24 +72,25 @@ if [ "$SET_NOT_SNOCAVE" = "Yes" ]; then
 	set_param RATROOT "" "The home directory of RAT."
 	RATROOT=$return_value
 
+    set_param SFMLROOT "" "Path to the SFML directory."
+    SFMLROOT=$return_value
+
+    set_param XERCESCROOT "" "Path to the Xerces-C++ home directory."
+    XERCESCROOT=$return_value
+
 else
 
 	set_param SNOCAVE_DIR "" "Path to the snocave directory."
 	SNOCAVE_DIR=$return_value
 
-	RATROOT=$SNOCAVE_DIR/sasquatch/dev/rat
-	GEANT4ROOT=$SNOCAVE_DIR/libraries/geant$GEANT4_VERSION
-	ROOTSYS=$SNOCAVE_DIR/libraries/root-$ROOT_VERSION
-	SCONSROOT=$SNOCAVE_DIR/libraries/scons-$SCONS_VERSION
+	RATROOT=$SNOCAVE_DIR/rat
+	GEANT4ROOT=$SNOCAVE_DIR/libraries/geant4.9.4.p01
+	ROOTSYS=$SNOCAVE_DIR/libraries/root-5.32.00
+	SCONSROOT=$SNOCAVE_DIR/libraries/scons-2.1.0
+    SFMLROOT=$SNOCAVE_DIR/libraries/sfml-2.0
+    XERCESCROOT=$SNOCAVE_DIR/libraries/xerces-c-3.1.1
 
 fi
-
-set_param SFMLROOT "" "Path to the SFML directory."
-SFMLROOT=$return_value
-
-set_param XERCESCROOT "" "Path to the Xerces-C++ home directory."
-XERCESCROOT=$return_value
-
 
 echo "Testing to ensure that all packages exist at specified directories..."
 
