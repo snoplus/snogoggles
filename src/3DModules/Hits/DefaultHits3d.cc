@@ -114,9 +114,16 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
 
 bool DefaultHits3d::NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderState )
 {        
-    if( fCurrentEV != ev )
+    if( fCurrentEV == NULL )
     {
         fCurrentEV = ev;
+        fSize = ev->GetHitData( RIDS::eCal ).size();
+        return true;
+    }
+
+    if( fSize != ev->GetHitData( RIDS::eCal ).size() )
+    {
+        fSize = ev->GetHitData( RIDS::eCal ).size();
         return true;
     }
 
