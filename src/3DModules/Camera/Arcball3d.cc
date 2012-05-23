@@ -30,7 +30,6 @@ Arcball3d::Arcball3d()
     fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
     fSpinSpeed = 0.001;
     fZoomSpeed = 0.0001;
-	fSpinLeftButton = NULL;
 
     double size = 10000;
     fPlane[0] = TVector3( 0, size, size );
@@ -41,31 +40,7 @@ Arcball3d::Arcball3d()
 
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    double shift = optionsArea.Width / 6;
 
-    sf::Rect<double> rect( 0, optionsArea.Top, optionsArea.Height, optionsArea.Height); 
-    fSpinLeftButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinLeftButton->SetTexture("Arrows/RotateLeft.png");
-
-    rect.Left += shift;
-    fSpinRightButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinRightButton->SetTexture("Arrows/RotateRight.png");
-
-    rect.Left += shift;
-    fSpinUpButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinUpButton->SetTexture("Arrows/RotateUp.png");
-
-    rect.Left += shift;
-    fSpinDownButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fSpinDownButton->SetTexture("Arrows/RotateDown.png");
-
-    rect.Left += shift;
-    fZoomInButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fZoomInButton->SetTexture("ZoomIn.png");
-
-    rect.Left += shift;
-    fZoomOutButton = g.NewGUI<GUIs::SpriteTimer>( rect );
-    fZoomOutButton->SetTexture("ZoomOut.png");
 }
 
 void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea )
@@ -92,15 +67,7 @@ void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
 
 void Arcball3d::EventLoop( )
 {
-	if( fSpinLeftButton != NULL )
-	{
-    	SpinButton( fUp, fSpinLeftButton );
-    	SpinButton( -fUp, fSpinRightButton );
-    	SpinButton( fCamera.Cross( fUp ), fSpinUpButton );
-    	SpinButton( -fCamera.Cross( fUp ), fSpinDownButton );
-    	ZoomButton( -fZoomSpeed, fZoomInButton );
-    	ZoomButton( fZoomSpeed, fZoomOutButton );
-	}
+
 }
 
 void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )
@@ -158,33 +125,6 @@ void Arcball3d::RenderScreen()
     glColorMask( GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE );
 }
 
-void Arcball3d::Spin( const TVector3& axis, int deltaTime )
-{
-    fCamera.Rotate( fSpinSpeed * deltaTime, axis );
-    fUp.Rotate( fSpinSpeed * deltaTime, axis );
-    for( int i = 0; i < 4; i++ )
-        fPlane[i].Rotate( fSpinSpeed * deltaTime, axis );
-}
-
-void Arcball3d::Zoom( float speed, int deltaTime )
-{
-    fZoom += speed * deltaTime;
-
-    if( fZoom > MAX_ZOOM ) fZoom = MAX_ZOOM;
-    else if( fZoom < MIN_ZOOM ) fZoom = MIN_ZOOM;
-}
-
-void Arcball3d::SpinButton( const TVector3& axis, GUIs::Timer* timer )
-{
-    if( timer->GetState() == true )
-      Spin( axis, timer->GetDeltaTime().AsMilliseconds() );
-}
-
-void Arcball3d::ZoomButton( float speed, GUIs::Timer* timer )
-{
-    if( timer->GetState() == true )
-      Zoom( speed, timer->GetDeltaTime().AsMilliseconds() );
-}
 
 }; // namespace Frames
 }; // namespace Viewer

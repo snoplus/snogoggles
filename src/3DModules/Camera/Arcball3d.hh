@@ -76,12 +76,6 @@ private:
 
     void RenderScreen();
 
-    void Spin( const TVector3& axis, int deltaTime );
-    void Zoom( float speed, int deltaTime );
-
-    void SpinButton( const TVector3& axis, GUIs::Timer* timer );
-    void ZoomButton( float speed, GUIs::Timer* timer );
-
     // All tags for saving data to config table.
     static const std::string CAMERA_TAG;        ///< Name used to save fCamera.
     static const std::string EYE_TAG;           ///< Name used to save fEye.
@@ -100,12 +94,6 @@ private:
     double fZoom;                       ///< Zoom factor.
 
     // All GUI objects.
-    GUIs::SpriteTimer* fSpinLeftButton;
-    GUIs::SpriteTimer* fSpinRightButton;
-    GUIs::SpriteTimer* fSpinUpButton;
-    GUIs::SpriteTimer* fSpinDownButton;
-    GUIs::SpriteTimer* fZoomInButton;
-    GUIs::SpriteTimer* fZoomOutButton;
     GUIs::Arcball* fArcball;
 
     // All others.
