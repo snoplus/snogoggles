@@ -33,12 +33,12 @@ class TrackBuffer {
 public:
     struct ParticleType {
         bool fVisible;
-        Colour fColour;
+        float fColour;
         VBO fAllStepsVBO;
         VBO fSimpleVBO;
     }; // struct ParticleType
 
-    void AddParticleType( const std::string& name, const Colour& colour );
+    void AddParticleType( const std::string& name, float colour );
     std::vector< std::string > GetNames();
     void LoadVisibility( ConfigurationTable* configTable );
     void SaveVisibility( ConfigurationTable* configTable );

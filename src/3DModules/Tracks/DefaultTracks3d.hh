@@ -32,6 +32,7 @@ namespace Viewer {
 
     class ConfigurationTable;
     class GUIManager;
+    class ColourPalette;
 
 namespace Frames {
 
@@ -59,7 +60,6 @@ private:
     bool fAllParticles;
     bool fPrimaryTracksOnly;
     bool fRenderFullTrack;
-    bool fRefilter;
 
     static const std::string ALL_PARTICLES;
     static const std::string PRIMARY_TRACKS_ONLY;
@@ -71,6 +71,8 @@ private:
     GUIs::CheckBoxLabel* fFullTrackGUI;
 
     TrackBuffer fTrackBuffer;
+    int fSize;
+    ColourPalette* fPreviousPalette;
 
 }; // class DefaultTracks3d
 

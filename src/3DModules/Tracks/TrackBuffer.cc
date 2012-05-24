@@ -2,11 +2,12 @@
 #include <Viewer/RIDS/MC.hh>
 #include <Viewer/RIDS/Track.hh>
 #include <Viewer/ConfigTableUtils.hh>
+#include <Viewer/ColourPalette.hh>
 #include <Viewer/TrackBuffer.hh>
 
 namespace Viewer {
 
-void TrackBuffer::AddParticleType( const std::string& name, const Colour& colour )
+void TrackBuffer::AddParticleType( const std::string& name, float colour )
 {
     struct ParticleType p;
     p.fColour = colour;
@@ -46,7 +47,7 @@ void TrackBuffer::SetAll( RIDS::MC& mc )
     {
         const std::string& name = tracks[i].GetParticleName();
         struct ParticleType& pt = fParticleTypes[ name ];
-        const Colour& c = pt.fColour;
+        const Colour& c = ColourPalette::gPalette->GetColour( pt.fColour );
         const std::vector< RIDS::TrackStep >& trackSteps = tracks[i].GetTrackSteps();
         
         AddLine( pt.fSimpleVBO, trackSteps[0].GetEndPos(), trackSteps[ trackSteps.size() - 1 ].GetEndPos(), c );

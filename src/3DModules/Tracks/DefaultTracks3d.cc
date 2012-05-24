@@ -3,6 +3,7 @@
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/RIDS/MC.hh>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/OpenGL.hpp>
@@ -23,8 +24,8 @@ DefaultTracks3d::DefaultTracks3d()
     fAllParticles = true;
     fPrimaryTracksOnly = false;
     fRenderFullTrack = false;
-    fRefilter = false;
 	fFullTrackGUI = NULL;
+    fPreviousPalette = NULL;
 
     AddParticleType( "opticalphoton", 0 );
     AddParticleType( "gamma", 1.f/6 );
@@ -83,13 +84,19 @@ void DefaultTracks3d::EventLoop( )
 
 void DefaultTracks3d::RenderTracks( RIDS::MC& mc )
 {
-    fTrackBuffer.SetAll( mc );
+    if( fSize != mc.GetTracks().size() || fPreviousPalette != ColourPalette::gPalette )
+    {
+        fTrackBuffer.SetAll( mc );
+        fSize = mc.GetTracks().size();
+        fPreviousPalette = ColourPalette::gPalette;
+    }
+
     fTrackBuffer.Render( fRenderFullTrack );
 }
 
 void DefaultTracks3d::AddParticleType( const std::string& name, float eColour )
 {
-    fTrackBuffer.AddParticleType( name, ColourPalette::gPalette->GetColour( eColour ) );
+    fTrackBuffer.AddParticleType( name, eColour );
 }
 
 }; // namespace Frames
