@@ -4,13 +4,14 @@
 /// \brief   Abstract class which is responsible for filtering
 ///	     and rendering tracks.
 ///
-/// \author Olivia Wasalski <wasalski@triumf.ca>
-///			    <oliviawasalski@triumf.ca>
+/// \author Olivia Wasalski <wasalski@berkeley.ca>
+///			    <oliviawasalski@gmail.ca>
 ///
 /// REVISION HISTORY:\n
 /// 	05/07/11 : Olivia Wasalski - New File \n
 ///     06/07/11 : Olivia Wasalski - FrontChecker3d is passed through a setter
 ///              instead of the constructor. \n
+///     May 23, 2012 : O. Wasalski - RIDS data structure instead of RAT::DS
 ///
 /// \details 	The track manager is responsible for: \n
 ///
@@ -27,19 +28,14 @@
 #define __Viewer_Frames_TrackManager3d__
 
 #include <Viewer/Module3d.hh>
-
 #include <string>
 
-namespace RAT {
-    namespace DS {
-        class MC;
-    };
-};
-
 namespace Viewer {
-namespace Frames {
+    namespace RIDS {
+        class MC;
+    }; // namespace RIDS
 
-    class FrontChecker3d;
+namespace Frames {
 
 class TrackManager3d : public Module3d {
 
@@ -50,26 +46,14 @@ public:
     static std::string TableName() { return "TrackManager3d"; }
     std::string GetTableName() { return TableName(); }
 
-    /// Stores the FrontChecker3d object.
-    void SetFrontChecker( FrontChecker3d* f ) { fFront = f; }
-    static inline void SetFrontCheckerSafe( TrackManager3d* t, FrontChecker3d* f )
-    {
-        if( t != NULL )
-            t->SetFrontChecker( f );
-    }
-
     /// Renders tracks.
-    virtual void RenderTracks( RAT::DS::MC* mc ) = 0;
+    virtual void RenderTracks( RIDS::MC& mc ) = 0;
 
-    static inline void RenderTracksSafe( TrackManager3d* t, RAT::DS::MC* mc )
+    static inline void RenderTracksSafe( TrackManager3d* t, RIDS::MC& mc )
     {
         if( t != NULL )
             t->RenderTracks( mc );
     }
-
-protected:
-
-    FrontChecker3d* fFront; ///< The front checker.
 
 
 }; // class TrackManager3d

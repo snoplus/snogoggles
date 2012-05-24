@@ -9,6 +9,7 @@
 /// REVISION HISTORY:\n
 /// 	07/07/11 : Olivia Wasalski - First Revision, New File \n
 ///     05/21/12 : Olivia Wasalski - Removed functionality, RIDS does not support yet. \n
+///     May 23, 2012 : O.Wasalski - Renders tracks through VBO and RIDS structure. \n
 ///
 /// \details 	
 ///
@@ -18,18 +19,11 @@
 #define __Viewer_Frames_DefaultTracks3d__
 
 #include <Viewer/TrackManager3d.hh>
-#include <Viewer/VisMap.hh>
+#include <Viewer/TrackBuffer.hh>
 
 #include <string>
 #include <vector>
 #include <map>
-
-namespace RAT {
-    namespace DS {
-        class MC;
-        class MCTrack;
-    };
-};
 
 namespace Viewer {
     namespace GUIs {
@@ -56,14 +50,11 @@ public:
     virtual void LoadConfiguration( ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
     virtual void EventLoop( );
-    virtual void RenderTracks( RAT::DS::MC* mc );
+    virtual void RenderTracks( RIDS::MC& mc );
 
 private:
 
-    bool FilterByPrimaryTrack( RAT::DS::MCTrack* tr );
-    bool FilterByParticleType( RAT::DS::MCTrack* tr );
-
-    void AddParticleType( const std::string& name, int eColour );
+    void AddParticleType( const std::string& name, float eColour );
 
     bool fAllParticles;
     bool fPrimaryTracksOnly;
@@ -76,12 +67,10 @@ private:
     static const std::string VIS_MAP;
 
     /// Map containing the supported particle types.
-    VisMap fVisMap; 
     std::map< std::string, GUIs::CheckBoxLabel* > fGUIs;
     GUIs::CheckBoxLabel* fFullTrackGUI;
 
-    RAT::DS::MC* fCurrentMC;
-//    std::vector< LineStrip > fLineStrips;
+    TrackBuffer fTrackBuffer;
 
 }; // class DefaultTracks3d
 

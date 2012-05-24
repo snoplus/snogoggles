@@ -15,7 +15,6 @@ using namespace std;
 #include <Viewer/GDMLLoader3d.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/World.hh>
-#include <Viewer/VisMap.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -30,23 +29,12 @@ World* GDMLLoader3d::GetWorld()
     parser.Read( parserFileName.str() );
 
     Volume volume = CreateVolume( parser.GetWorldVolume() );
-    VisMap visMap;
-    CreateVisMap( visMap, volume );
-    return new World( volume, visMap );
+//    VisMap visMap;
+//    CreateVisMap( visMap, volume );
+//    return new World( volume, visMap );
+    return new World( volume );
 }
 
-void GDMLLoader3d::CreateVisMap( VisMap& visMap, Volume& vol )
-{
-    if( visMap.Count( vol.GetName() ) == 0 )
-    {
-        EColour eColour = static_cast< EColour >( fColour % 7 + 2 );
-        visMap.AddVisAttributes( vol.GetName(), VisAttributes( ColourPalette::gPalette->GetPrimaryColour( eColour ), true ) );
-        fColour++;
-    }
-
-    for( int i = 0; i < vol.GetNoDaughters(); i++ )
-        CreateVisMap( visMap, *( vol.GetDaughter(i) ) );
-}
 
 Volume GDMLLoader3d::CreateVolume( G4VPhysicalVolume* vol )
 {

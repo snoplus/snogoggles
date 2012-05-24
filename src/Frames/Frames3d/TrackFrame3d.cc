@@ -23,7 +23,7 @@ ModuleManager3d* TrackFrame3d::CreateModuleManager()
 
 void TrackFrame3d::CreateGUIObjects()
 {
-    fModuleManager->fCameraManager->CreateGUIObjects( fGUIManager, sf::Rect<double>( 0 , 0.92 , 0.5 , 0.08 ) );
+    fModuleManager->fCameraManager->CreateDragArea( fGUIManager, sf::Rect<double>( 0 , 0 , 0.8 , 0.8 ) );
 	fModuleManager->fAxes->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.5, 0.94, 0.23, 0.04 ) );
 	fModuleManager->fGeoManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.75, 0.94, 0.23, 0.04 ) );
 	fModuleManager->fTrackManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.8, 0, 0.2, 0.92 ) );
