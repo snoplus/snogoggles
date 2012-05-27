@@ -122,20 +122,20 @@ EventMasterUI::Initialise()
 }
 
 void 
-EventMasterUI::LoadConfiguration( ConfigurationTable& configTable )
+EventMasterUI::LoadConfiguration( const ConfigurationTable* configTable )
 {
-  fSourceRadio->SetState( configTable.GetI( "sourceType" ) );
-  fTypeRadio->SetState( configTable.GetI( "dataType" ) );
-  fRefreshSelector->SetState( configTable.GetI( "refreshState" ) );
+  fSourceRadio->SetState( configTable->GetI( "sourceType" ) );
+  fTypeRadio->SetState( configTable->GetI( "dataType" ) );
+  fRefreshSelector->SetState( configTable->GetI( "refreshState" ) );
   fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RIDS::EDataSource>(), fTypeRadio->GetEnumState<RIDS::EDataType>() );
 }
 
 void 
-EventMasterUI::SaveConfiguration( ConfigurationTable& configTable )
+EventMasterUI::SaveConfiguration( ConfigurationTable* configTable )
 {
-  configTable.SetI( "sourceType", fSourceRadio->GetState() );
-  configTable.SetI( "dataType", fTypeRadio->GetState() );
-  configTable.SetI( "refreshState", fRefreshSelector->GetState() );
+  configTable->SetI( "sourceType", fSourceRadio->GetState() );
+  configTable->SetI( "dataType", fTypeRadio->GetState() );
+  configTable->SetI( "refreshState", fRefreshSelector->GetState() );
 }
 
 void 

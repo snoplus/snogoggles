@@ -24,7 +24,7 @@ std::vector< std::string > TrackBuffer::GetNames()
     return names;
 }
 
-void TrackBuffer::LoadVisibility( ConfigurationTable* configTable )
+void TrackBuffer::LoadVisibility( const ConfigurationTable* configTable )
 {
     std::map< std::string, struct ParticleType >::iterator itr;
     for( itr = fParticleTypes.begin(); itr != fParticleTypes.end(); itr++)

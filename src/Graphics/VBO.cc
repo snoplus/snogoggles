@@ -66,25 +66,25 @@ void VBO::Clear()
     fIndices.clear();
 }
 
-void VBO::Load( ConfigurationTable* configTable )
+void VBO::Load( const ConfigurationTable* configTable )
 {
     Clear();
 
     Colour colour;
     colour.Load( configTable->GetTable("colour") );
     
-    ConfigurationTable* vertices = configTable->GetTable("vertices");
+    const ConfigurationTable* vertices = configTable->GetTable("vertices");
     for( int i = 0; i < configTable->GetI("num_vertices"); i++ )
     {
         std::stringstream ss; ss << i;
-        ConfigurationTable* v = vertices->GetTable( "vertex" + ss.str() );
+        const ConfigurationTable* v = vertices->GetTable( "vertex" + ss.str() );
         AddVertex( Vertex (
             (86/89.0)*TVector3( v->GetD("x"), v->GetD("y"), v->GetD("z") ),
             colour
         ) );
     }
 
-    ConfigurationTable* indices = configTable->GetTable("indices");
+    const ConfigurationTable* indices = configTable->GetTable("indices");
     for( int i = 0; i < configTable->GetI("num_indices"); i++ )
     {
         std::stringstream ss; ss << i;

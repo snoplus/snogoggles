@@ -44,21 +44,21 @@ TopBar::NewEvent( const Event& event )
           fRight->NewEvent( event );
           retEvent = FrameEvent( FrameEvent::eStartMove );
         }
+      if( fPin->ContainsPoint( event.GetPos() ) )
+        {
+          fPin->NewEvent( event );
+          retEvent = FrameEvent( FrameEvent::eStartResize );
+        }
     case sf::Event::MouseMoved:
       {
-	if( fLeft->ContainsPoint( event.GetPos() ) || fBar->ContainsPoint( event.GetPos() ) || fRight->ContainsPoint( event.GetPos() ) )
-	  {
-	    fLeft->NewEvent( event );
-	    fBar->NewEvent( event );
-	    fRight->NewEvent( event );
-        }
-	if( fPin->ContainsPoint( event.GetPos() ) )
-      {
-        fPin->NewEvent( event );
-        retEvent = FrameEvent( FrameEvent::eStartResize );
-      }
-	if( fClose->ContainsPoint( event.GetPos() ) )
-	  fClose->NewEvent( event );
+        if( fLeft->ContainsPoint( event.GetPos() ) || fBar->ContainsPoint( event.GetPos() ) || fRight->ContainsPoint( event.GetPos() ) )
+          {
+            fLeft->NewEvent( event );
+            fBar->NewEvent( event );
+            fRight->NewEvent( event );
+          }
+        if( fClose->ContainsPoint( event.GetPos() ) )
+          fClose->NewEvent( event );
       }
       break;
     case sf::Event::MouseButtonReleased:
@@ -99,13 +99,13 @@ TopBar::Initialise()
 }
 
 void 
-TopBar::LoadConfiguration( ConfigurationTable& configTable )
+TopBar::LoadConfiguration( const ConfigurationTable* configTable )
 {
 
 }
 
 void 
-TopBar::SaveConfiguration( ConfigurationTable& configTable )
+TopBar::SaveConfiguration( ConfigurationTable* configTable )
 {
 
 }

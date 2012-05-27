@@ -47,20 +47,20 @@ public:
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable* configTable );
   /// Initialise without a configuration
   void Initialise( Frame* frame );
   /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void LoadConfiguration( const ConfigurationTable* configTable );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp, 
-	       const RenderState& renderState );
+                 const RenderState& renderState );
   /// Render all 3d objects
   void Render3d( RWWrapper& renderApp, 
-	       const RenderState& renderState );
+                 const RenderState& renderState );
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp, 
-		const RenderState& renderState );
+                  const RenderState& renderState );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
   /// Ask if rect overlaps this rect

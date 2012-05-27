@@ -32,14 +32,14 @@ void Axes3d::CreateGUIObjects( GUIManager& g, const sf::Rect< double >& optionsA
 	fDisplayGUI->SetLabel( "Display Axes" );
 }
 
-void Axes3d::LoadConfiguration( ConfigurationTable* configTable )
+void Axes3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
-	ConfigTableUtils::SetBoolean( configTable, "Display", fDisplay );
+  ConfigTableUtils::GetBooleanSafe( configTable, "Display", fDisplay ); // OLIVIA IS THIS CORRECT? Was below
 }
 
 void Axes3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-	ConfigTableUtils::GetBooleanSafe( configTable, "Display", fDisplay );
+  ConfigTableUtils::SetBoolean( configTable, "Display", fDisplay ); // OLIVIA IS THIS CORRECT? Was above
 }
 
 void Axes3d::EventLoop()

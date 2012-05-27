@@ -12,8 +12,8 @@ using namespace std;
 using namespace Viewer;
 
 Desktop::Desktop( RectPtr desktopRect,
-		  double rightMargin,
-		  double bottomMargin )
+                  double rightMargin,
+                  double bottomMargin )
   : fRect( desktopRect ), fBottomMargin( bottomMargin ), fRightMargin( rightMargin )
 {
 
@@ -55,20 +55,20 @@ Desktop::Initialise()
 }
 
 void 
-Desktop::LoadConfiguration( ConfigurationTable& configTable )
+Desktop::LoadConfiguration( const ConfigurationTable* configTable )
 {
-  ConfigurationTable& emTable = *configTable.GetTable( "eventMaster" );
+  const ConfigurationTable* emTable = configTable->GetTable( "eventMaster" );
   fEMUI->LoadConfiguration( emTable );
-  ConfigurationTable& fmTable = *configTable.GetTable( "frameManager" );
+  const ConfigurationTable* fmTable = configTable->GetTable( "frameManager" );
   fFrameManager->LoadConfiguration( fmTable );
 }
 
 void 
-Desktop::SaveConfiguration( ConfigurationTable& configTable )
+Desktop::SaveConfiguration( ConfigurationTable* configTable )
 {
-  ConfigurationTable& emTable = *configTable.NewTable( "eventMaster" );
+  ConfigurationTable* emTable = configTable->NewTable( "eventMaster" );
   fEMUI->SaveConfiguration( emTable );
-  ConfigurationTable& fmTable = *configTable.NewTable( "frameManager" );
+  ConfigurationTable* fmTable = configTable->NewTable( "frameManager" );
   fFrameManager->SaveConfiguration( fmTable );
 }
 

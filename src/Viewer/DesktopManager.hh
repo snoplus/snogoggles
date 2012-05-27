@@ -26,7 +26,7 @@ namespace Viewer
   class ColourMasterUI;
   class Desktop;
   class RWWrapper;
-  class Configuration;
+  class ConfigurationTable;
   class Event;
 
 class DesktopManager
@@ -41,11 +41,11 @@ public:
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( Configuration& config );
+  void SaveConfiguration( ConfigurationTable* config );
   /// Initialise without a configuration
   void Initialise();
   /// Load a configuration
-  void LoadConfiguration( Configuration& config );
+  void LoadConfiguration( const ConfigurationTable* config );
   /// Draw all 2d objects
   void Render2d( RWWrapper& renderApp );
   /// Draw all 3d objects

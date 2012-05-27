@@ -18,6 +18,7 @@ ConfigurationTable::ConfigurationTable( xercesc_3_1::DOMElement* element,
   fDOMDocument = domDocument;
   fDOMElement = element;
   fConfigTables.clear();
+  fName = name;
   // Now extract config tables
   DOMNodeList* children = fDOMElement->getChildNodes();
   for( XMLSize_t ix = 0; ix < children->getLength(); ++ix ) // Pre increment to save memory
@@ -32,6 +33,12 @@ ConfigurationTable::ConfigurationTable( xercesc_3_1::DOMElement* element,
           fConfigTables.push_back( new ConfigurationTable( currentElement, elementName, fDOMDocument ) );
         }
     }
+}
+
+ConfigurationTable::~ConfigurationTable()
+{
+  for( unsigned int iTable = 0; iTable < fConfigTables.size(); iTable++ )
+    delete fConfigTables[iTable];
 }
 
 ConfigurationTable*
@@ -64,10 +71,11 @@ ConfigurationTable::GetTable( const unsigned int iTable ) const
 const ConfigurationTable*
 ConfigurationTable::GetTable( const std::string& name ) const
 {
+  if( !HasTable( name ) )
+    throw NoTableError( name );
   for( unsigned int iTable = 0; iTable < fConfigTables.size(); iTable++ )
     if( fConfigTables[iTable]->GetName() == name )
         return fConfigTables[iTable];
-  return NULL;
 }
 
 bool

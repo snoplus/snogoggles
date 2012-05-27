@@ -51,8 +51,8 @@ ConfigurationFile::ConfigurationFile( const string& filePath, bool output )
 
 ConfigurationFile::~ConfigurationFile()
 {
-    delete fDOMDocument;
-    fDOMDocument = NULL;
+  delete fRootTable;
+  delete fDOMDocument;
 }
 
 void 
@@ -77,30 +77,30 @@ ConfigurationFile::Save()
   serializer->release();
 }
 
-const ConfigurationTable& 
+const ConfigurationTable*
 ConfigurationFile::GetTable() const
 {
   if( fOutput == true )
     throw WrongModeError( "Configuration file is in write only mode." );
-  return *fRootTable;
+  return fRootTable;
 }
 
-ConfigurationTable& 
+ConfigurationTable*
 ConfigurationFile::NewTable()
 {
   if( fOutput == false )
     throw WrongModeError( "Configuration file is in read only mode." );
-  return *fRootTable;
+  return fRootTable;
 }
 
 int
 ConfigurationFile::GetVersion() const
 {
-  return fVersion;
+  return fRootTable->GetI( "version" );
 }
 
 void
 ConfigurationFile::SetVersion( int version )
 {
-  fVersion = version;
+  fRootTable->SetI( "version", version );
 }

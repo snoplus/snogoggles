@@ -63,23 +63,23 @@ FrameContainer::Initialise( Frame* frame )
 }
 
 void 
-FrameContainer::LoadConfiguration( ConfigurationTable& configTable )
+FrameContainer::LoadConfiguration( const ConfigurationTable* configTable )
 {
   fTopBar->LoadConfiguration( configTable );
   fFrame->LoadConfiguration( configTable );
 }
 
 void 
-FrameContainer::SaveConfiguration( ConfigurationTable& configTable )
+FrameContainer::SaveConfiguration( ConfigurationTable* configTable )
 {
-  configTable.SetS( "type", fFrame->GetName() ); // Loaded in FrameManager!
+  configTable->SetS( "type", fFrame->GetName() ); // Loaded in FrameManager!
   fTopBar->SaveConfiguration( configTable );
   fFrame->SaveConfiguration( configTable );
 }
 
 void 
 FrameContainer::Render2d( RWWrapper& renderApp, 
-			  const RenderState& renderState )
+                          const RenderState& renderState )
 {
   fFrame->Render2d( renderApp, renderState );
 }

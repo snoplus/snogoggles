@@ -67,30 +67,28 @@ public:
     /// Just sets up a std::runtime_error
     NoTableError( const std::string& param ) : std::runtime_error( param ) {}
   }; 
-
   class NoAttributeError : public std::runtime_error
   {
   public:
     /// Just sets up a std::runtime_error
     NoAttributeError( const std::string& param ) : std::runtime_error( param ) {}
   };
-
+  
   ConfigurationTable( xercesc_3_1::DOMElement* element, 
                       const std::string& name, 
                       xercesc_3_1::DOMDocument* domDocument );
-
+  ~ConfigurationTable();
   bool HasTable( const std::string& name ) const;
   const ConfigurationTable* GetTable( const unsigned int iTable ) const;
   const ConfigurationTable* GetTable( const std::string& name ) const;
-  inline std::vector< ConfigurationTable* >::iterator GetTableBegin();
-  inline std::vector< ConfigurationTable* >::iterator GetTableEnd();
+  inline std::vector< ConfigurationTable* >::const_iterator GetTableBegin() const;
+  inline std::vector< ConfigurationTable* >::const_iterator GetTableEnd() const;
   inline unsigned int GetNumTables() const;
   ConfigurationTable* NewTable( const std::string& name );
-
-  /// Return true if property exists
-  bool Has( const std::string& name ) const;
   /// Get the table name
   std::string GetName() const;
+  /// Return true if property exists
+  bool Has( const std::string& name ) const;
 
   int GetI( const std::string& name ) const;
   double GetD( const std::string& name ) const;
@@ -106,14 +104,14 @@ private:
   xercesc_3_1::DOMElement* fDOMElement; /// < This element
 };
 
-std::vector< ConfigurationTable* >::iterator
-ConfigurationTable::GetTableBegin()
+std::vector< ConfigurationTable* >::const_iterator
+ConfigurationTable::GetTableBegin() const
 {
   return fConfigTables.begin();
 }
   
-std::vector< ConfigurationTable* >::iterator
-ConfigurationTable::GetTableEnd()
+std::vector< ConfigurationTable* >::const_iterator
+ConfigurationTable::GetTableEnd() const
 {
   return fConfigTables.end();
 }

@@ -37,7 +37,7 @@ public:
 	inline std::string GetName();
 	inline std::string GetTableName();
 	void CreateGUIObjects( GUIManager& g, const sf::Rect< double >& optionsArea );
-	void LoadConfiguration( ConfigurationTable* configTable );
+	void LoadConfiguration( const ConfigurationTable* configTable );
 	void SaveConfiguration( ConfigurationTable* configTable );
 	void EventLoop();
     void RenderAxes();

@@ -52,11 +52,11 @@ public:
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable* configTable );
   /// Initialise without a configuration
   void Initialise();
   /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void LoadConfiguration( const ConfigurationTable* configTable );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp, 
                  const RenderState& renderState );
@@ -74,7 +74,7 @@ private:
   /// Create a new frame, locally called
   void NewFrame( unsigned int uFrame,
                  Frame* frame,
-                 ConfigurationTable& configTable );
+                 const ConfigurationTable* configTable );
   /// Send an event to a frame container
   FrameEvent SendEvent( const int targetFrame,
                         const Event& event );

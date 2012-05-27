@@ -6,14 +6,14 @@ using namespace std;
 #include <Viewer/DesktopManager.hh>
 #include <Viewer/Desktop.hh>
 #include <Viewer/Rect.hh>
-#include <Viewer/Configuration.hh>
+#include <Viewer/ConfigurationTable.hh>
 #include <Viewer/DesktopMasterUI.hh>
 #include <Viewer/ColourMasterUI.hh>
 using namespace Viewer;
 
 DesktopManager::DesktopManager( RectPtr globalMother,
-				double rightMargin,
-				double bottomMargin )
+                                double rightMargin,
+                                double bottomMargin )
   : fGlobalMother( globalMother ), fBottomMargin( bottomMargin ), fRightMargin( rightMargin )
 {
   fDesktops.resize( 8 ); // Maximum allowed desktops
@@ -71,12 +71,12 @@ DesktopManager::Initialise()
 }
 
 void 
-DesktopManager::LoadConfiguration( Configuration& config )
+DesktopManager::LoadConfiguration( const ConfigurationTable* config )
 {
   unsigned int uDesktop = 0;
-  for( vector< ConfigurationTable* >::iterator iTer = config.GetTableBegin(); iTer != config.GetTableEnd(); iTer++ )
+  for( vector< ConfigurationTable* >::const_iterator iTer = config->GetTableBegin(); iTer != config->GetTableEnd(); iTer++ )
     {
-      ConfigurationTable& configTable = **iTer;
+      const ConfigurationTable* configTable = *iTer;
       fDesktops[uDesktop]->LoadConfiguration( configTable );
       uDesktop++;
     }
@@ -84,12 +84,12 @@ DesktopManager::LoadConfiguration( Configuration& config )
 }
 
 void 
-DesktopManager::SaveConfiguration( Configuration& config )
+DesktopManager::SaveConfiguration( ConfigurationTable* config )
 {
   unsigned int uDesktop = 0;
   for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
     {
-      ConfigurationTable& configTable = *config.NewTable( "Desktop" );
+      ConfigurationTable* configTable = config->NewTable( "Desktop" );
       fDesktops[uDesktop]->SaveConfiguration( configTable );
       uDesktop++;
     }

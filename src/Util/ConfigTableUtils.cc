@@ -14,32 +14,32 @@ void ConfigTableUtils::SetBoolean( ConfigurationTable* configTable, const std::s
     else configTable->SetS( name, FALSE_TAG );
 }
 
-bool ConfigTableUtils::GetBoolean( ConfigurationTable* configTable, const std::string& name )
+bool ConfigTableUtils::GetBoolean( const ConfigurationTable* configTable, const std::string& name )
 {
     std::string tag = configTable->GetS( name );
     if( tag == TRUE_TAG ) return true;
     else if ( tag == FALSE_TAG ) return false;
 }
 
-void ConfigTableUtils::GetISafe( ConfigurationTable* configTable, const std::string& name, int& value )
+void ConfigTableUtils::GetISafe( const ConfigurationTable* configTable, const std::string& name, int& value )
 {
     try { value = configTable->GetI( name ); }
     catch( ConfigurationTable::NoAttributeError& e ) { }
 }
 
-void ConfigTableUtils::GetDSafe( ConfigurationTable* configTable, const std::string& name, double& value )
+void ConfigTableUtils::GetDSafe( const ConfigurationTable* configTable, const std::string& name, double& value )
 {
     try { value = configTable->GetD( name ); }
     catch( ConfigurationTable::NoAttributeError& e ) { }
 }
 
-void ConfigTableUtils::GetSSafe( ConfigurationTable* configTable, const std::string& name, std::string& value )
+void ConfigTableUtils::GetSSafe( const ConfigurationTable* configTable, const std::string& name, std::string& value )
 {
     try { value = configTable->GetS( name ); }
     catch( ConfigurationTable::NoAttributeError& e ) { }
 }
 
-void ConfigTableUtils::GetBooleanSafe( ConfigurationTable* configTable, const std::string& name, bool& value )
+void ConfigTableUtils::GetBooleanSafe( const ConfigurationTable* configTable, const std::string& name, bool& value )
 {
     try { value = GetBoolean( configTable, name ); }
     catch( ConfigurationTable::NoAttributeError& e ) { }

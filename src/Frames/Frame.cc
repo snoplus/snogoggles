@@ -21,7 +21,7 @@ Frame::NewEvent( const Event& event )
 }
 
 void 
-Frame::SaveConfiguration( ConfigurationTable& configTable )
+Frame::SaveConfiguration( ConfigurationTable* configTable )
 {
 
 }
@@ -33,7 +33,7 @@ Frame::Initialise()
 }
 
 void 
-Frame::LoadConfiguration( ConfigurationTable& configTable )
+Frame::LoadConfiguration( const ConfigurationTable* configTable )
 {
 
 }

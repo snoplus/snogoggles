@@ -68,7 +68,7 @@ public:
     static std::string Name() { return "DefaultHits"; }
     std::string GetName() { return Name(); }
     void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    void LoadConfiguration( ConfigurationTable* configTable );
+    void LoadConfiguration( const ConfigurationTable* configTable );
     void SaveConfiguration( ConfigurationTable* configTable );
     void EventLoop( );
     void RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState );

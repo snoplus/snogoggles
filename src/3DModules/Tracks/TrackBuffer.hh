@@ -40,7 +40,7 @@ public:
 
     void AddParticleType( const std::string& name, float colour );
     std::vector< std::string > GetNames();
-    void LoadVisibility( ConfigurationTable* configTable );
+    void LoadVisibility( const ConfigurationTable* configTable );
     void SaveVisibility( ConfigurationTable* configTable );
     void SetAll( RIDS::MC& mc );
     void Render( bool renderAllSteps );

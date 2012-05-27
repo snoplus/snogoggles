@@ -41,7 +41,7 @@ public:
 
   inline Colour AddColourFraction( const Colour& newColour, double fraction ) const;
 
-  void Load( ConfigurationTable* configTable );
+  void Load( const ConfigurationTable* configTable );
   void Save( ConfigurationTable* configTable ) const;
 };
 

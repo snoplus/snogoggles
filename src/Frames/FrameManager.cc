@@ -14,8 +14,8 @@ using namespace std;
 using namespace Viewer;
 
 FrameManager::FrameManager( RectPtr rect,
-			    double rightMargin,
-			    double bottomMargin )
+                            double rightMargin,
+                            double bottomMargin )
   : fRect( rect ), fRightMargin( rightMargin ), fBottomMargin( bottomMargin ), fFrameFactory( rect )
 {
 
@@ -152,7 +152,7 @@ FrameManager::Initialise()
 }
 
 void 
-FrameManager::LoadConfiguration( ConfigurationTable& configTable )
+FrameManager::LoadConfiguration( const ConfigurationTable* configTable )
 {
   // Now load the frames
   try
@@ -162,8 +162,8 @@ FrameManager::LoadConfiguration( ConfigurationTable& configTable )
         {
           stringstream tableName;
           tableName << "Frame" << uFrame;
-          ConfigurationTable& currentConfig = *configTable.GetTable( tableName.str() );
-          string type = currentConfig.GetS( "type" );
+          const ConfigurationTable* currentConfig = configTable->GetTable( tableName.str() );
+          string type = currentConfig->GetS( "type" );
           NewFrame( uFrame, fFrameFactory.New( type ), currentConfig );
           uFrame++;
         }
@@ -175,14 +175,14 @@ FrameManager::LoadConfiguration( ConfigurationTable& configTable )
 }
 
 void 
-FrameManager::SaveConfiguration( ConfigurationTable& configTable )
+FrameManager::SaveConfiguration( ConfigurationTable* configTable )
 {
   // Now save the frame information
   for( unsigned int uFrame = 0; uFrame < fFrameContainers.size(); uFrame++ )
     {
       stringstream tableName;
       tableName << "Frame" << uFrame;
-      ConfigurationTable& currentConfig = *configTable.NewTable( tableName.str() );
+      ConfigurationTable* currentConfig = configTable->NewTable( tableName.str() );
       fFrameContainers[uFrame]->SaveConfiguration( currentConfig );
     }
 }
@@ -244,7 +244,7 @@ FrameManager::NewFrame( Frame* frame )
 void
 FrameManager::NewFrame( unsigned int uFrame,
                         Frame* frame,
-                        ConfigurationTable& configTable )
+                        const ConfigurationTable* configTable )
 {
   sf::Rect<double> rect;
   RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eLocal ) );

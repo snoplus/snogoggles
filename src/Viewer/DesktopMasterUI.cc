@@ -8,7 +8,7 @@ using namespace std;
 #include <Viewer/DesktopMasterUI.hh>
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Event.hh>
-#include <Viewer/Configuration.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
 DesktopMasterUI::DesktopMasterUI( RectPtr rect,
@@ -76,16 +76,16 @@ DesktopMasterUI::Initialise()
 }
 
 void 
-DesktopMasterUI::LoadConfiguration( Configuration& config )
+DesktopMasterUI::LoadConfiguration( const ConfigurationTable* config )
 {
-  fCurrentDesktop = config.GetI( "currentDesktop" );
+  fCurrentDesktop = config->GetI( "currentDesktop" );
   fDesktopRadio->SetState( fCurrentDesktop );
 }
 
 void 
-DesktopMasterUI::SaveConfiguration( Configuration& config )
+DesktopMasterUI::SaveConfiguration( ConfigurationTable* config )
 {
-  config.SetI( "currentDesktop", fCurrentDesktop );
+  config->SetI( "currentDesktop", fCurrentDesktop );
 }
 
 void 

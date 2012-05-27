@@ -46,17 +46,17 @@ public:
   /// The event loop
   virtual void EventLoop() = 0;
   /// Save the current configuration
-  virtual void SaveConfiguration( ConfigurationTable& configTable );
+  virtual void SaveConfiguration( ConfigurationTable* configTable );
   /// Initialise without a configuration
   virtual void Initialise();
   /// Load a configuration
-  virtual void LoadConfiguration( ConfigurationTable& configTable );
+  virtual void LoadConfiguration( const ConfigurationTable* configTable );
   /// Render all 2d objects
   virtual void Render2d( RWWrapper& renderApp, 
-			 const RenderState& renderState ) = 0;
+                         const RenderState& renderState ) = 0;
   /// Render all 3d objects
   virtual void Render3d( RWWrapper& renderApp, 
-			 const RenderState& renderState ) = 0;
+                         const RenderState& renderState ) = 0;
   /// Return the frame name
   virtual std::string GetName() = 0;
   /// Return the frames preferred aspect ratio, default to 1.0

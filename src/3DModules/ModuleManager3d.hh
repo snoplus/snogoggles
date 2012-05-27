@@ -73,8 +73,8 @@ public:
 
     void DeleteAllModules();
 	void LateInitialise();
-    void LoadModuleConfigurations( ConfigurationTable& configTable );
-    void SaveModuleConfigurations( ConfigurationTable& configTable );
+    void LoadModuleConfigurations( const ConfigurationTable* configTable );
+    void SaveModuleConfigurations( ConfigurationTable* configTable );
     void EventLoop();
     void Render2d( RWWrapper& windowApp, const RenderState& renderState );
     void Render3d( RectPtr viewport, const RenderState& renderState );

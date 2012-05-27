@@ -42,7 +42,7 @@ void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& opt
     fFrontGUI->SetState( fDisplayFrontPMTsOnly );
 }
 
-void DefaultHits3d::LoadConfiguration( ConfigurationTable* configTable )
+void DefaultHits3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );

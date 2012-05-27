@@ -34,8 +34,8 @@ public:
   BaseFrame3d( RectPtr rect );
 	virtual ~BaseFrame3d();
 	virtual void Initialise();
-	virtual void LoadConfiguration( ConfigurationTable& configTable );
-	virtual void SaveConfiguration( ConfigurationTable& configTable );
+	virtual void LoadConfiguration( const ConfigurationTable* configTable );
+	virtual void SaveConfiguration( ConfigurationTable* configTable );
 	virtual void EventLoop();
     virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
 	virtual void Render3d( RWWrapper& renderApp, const RenderState& renderState );

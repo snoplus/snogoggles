@@ -53,7 +53,7 @@ void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& o
     }
 }
 
-void DefaultTracks3d::LoadConfiguration( ConfigurationTable* configTable )
+void DefaultTracks3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetBooleanSafe( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
     ConfigTableUtils::GetBooleanSafe( configTable, PRIMARY_TRACKS_ONLY, fPrimaryTracksOnly );

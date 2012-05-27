@@ -23,12 +23,12 @@ void BaseFrame3d::Initialise()
 	fModuleManager = CreateModuleManager();
 }
 
-void BaseFrame3d::LoadConfiguration( ConfigurationTable& configTable )
+void BaseFrame3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
 	fModuleManager->LoadModuleConfigurations( configTable );
 }
 
-void BaseFrame3d::SaveConfiguration( ConfigurationTable& configTable )
+void BaseFrame3d::SaveConfiguration( ConfigurationTable* configTable )
 {
 	fModuleManager->SaveModuleConfigurations( configTable );
 }

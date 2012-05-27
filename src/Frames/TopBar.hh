@@ -43,11 +43,11 @@ public:
   /// Deal with a new UI event
   FrameEvent NewEvent( const Event& event );
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable* configTable );
   /// Initialise without a configuration
   void Initialise();
   /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void LoadConfiguration( const ConfigurationTable* configTable );
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp );
   /// Ask if object contains a point

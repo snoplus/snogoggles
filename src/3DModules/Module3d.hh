@@ -47,11 +47,11 @@ public:
     virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) = 0;
 
     /// Loads configuration
-    static void LoadConfigurationSafe( Module3d* module, ConfigurationTable& configTable );
-    virtual void LoadConfiguration( ConfigurationTable* configTable ) = 0;
+    static void LoadConfigurationSafe( Module3d* module, const ConfigurationTable* configTable );
+    virtual void LoadConfiguration( const ConfigurationTable* configTable ) = 0;
 
     /// Saves configuration
-    static void SaveConfigurationSafe( Module3d* module, ConfigurationTable& configTable );
+    static void SaveConfigurationSafe( Module3d* module, ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable ) = 0;
 
     /// Event loop for the camera manager.

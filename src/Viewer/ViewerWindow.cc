@@ -9,7 +9,7 @@ using namespace std;
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/TextureManager.hh>
 #include <Viewer/GUITextureManager.hh>
-#include <Viewer/Configuration.hh>
+#include <Viewer/ConfigurationFile.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/RectPtr.hh>
@@ -85,22 +85,22 @@ ViewerWindow::PostInitialise()
           if( fileConfig.GetVersion() != kConfigVersion )
             {
               remove( configFileName.str().c_str() );
-              throw Configuration::NoFileError( "Configuration version miss match" );
+              throw ConfigurationFile::NoFileError( "Configuration version miss match" );
             }
         }
       catch( ConfigurationTable::NoAttributeError& e )
         {
           remove( configFileName.str().c_str() );
-          throw Configuration::NoFileError( "Configuration version miss match" );
+          throw ConfigurationFile::NoFileError( "Configuration version miss match" );
         }
-      const ConfigurationTable loadConfig = fileConfig.GetTable();
-      ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig.GetS( "colourPal" ) );
-      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
+      const ConfigurationTable* loadConfig = fileConfig.GetTable();
+      ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig->GetS( "colourPal" ) );
+      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig->GetS( "guiPal" ) );
       fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
       fDesktopManager->Initialise();
       fDesktopManager->LoadConfiguration( loadConfig );
     }
-  catch( Configuration::NoFileError& e )
+  catch( ConfigurationFile::NoFileError& e )
     {
       ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" );
@@ -125,12 +125,13 @@ ViewerWindow::Destruct()
 {
   stringstream configFileName;
   configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-  Configuration saveConfig( configFileName.str(), true );
-  saveConfig.SetS( "colourPal", ColourPalette::gPalette->GetName() );
-  saveConfig.SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
-  saveConfig.SetI( "version", kConfigVersion );
+  ConfigurationFile saveConfigFile( configFileName.str(), true );
+  ConfigurationTable* saveConfig = saveConfigFile.NewTable();
+  saveConfig->SetS( "colourPal", ColourPalette::gPalette->GetName() );
+  saveConfig->SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
+  saveConfigFile.SetVersion( kConfigVersion );
   fDesktopManager->SaveConfiguration( saveConfig );
-  saveConfig.SaveConfiguration();
+  saveConfigFile.Save();
   
   // Must delete textures before the window, or get sfml segfault
   TextureManager::GetInstance().ClearTextures();

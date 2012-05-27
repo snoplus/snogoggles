@@ -41,11 +41,11 @@ public:
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable* configTable );
   /// Initialise without a configuration
   void Initialise();
   /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void LoadConfiguration( const ConfigurationTable* configTable );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp );
   /// Render all 3d objects

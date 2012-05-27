@@ -3,7 +3,7 @@
 
 namespace Viewer {
 
-void Colour::Load( ConfigurationTable* configTable )
+void Colour::Load( const ConfigurationTable* configTable )
 {
     // define this in two steps so that if an exception is thrown 
     // in one of the colours, none of them are changed.

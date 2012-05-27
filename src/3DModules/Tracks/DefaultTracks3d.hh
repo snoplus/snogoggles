@@ -48,7 +48,7 @@ public:
     virtual std::string GetName() { return Name(); }
 
     virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    virtual void LoadConfiguration( ConfigurationTable* configTable );
+    virtual void LoadConfiguration( const ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
     virtual void EventLoop( );
     virtual void RenderTracks( RIDS::MC& mc );

@@ -30,26 +30,26 @@ class ConfigTableUtils {
 
 public:
 
-    static void SetBoolean( ConfigurationTable* configTable, 
-        const std::string& name, bool value );
-    static bool GetBoolean( ConfigurationTable* configTable, 
-        const std::string& name );
-
-    template<typename T> static inline T
-        GetEnum( ConfigurationTable* configTable, const std::string& name );
-
-    // These methods catch the exception.
-    static void GetISafe( ConfigurationTable* configTable, 
-        const std::string& name, int& value );
-    static void GetDSafe( ConfigurationTable* configTable, 
-        const std::string& name, double& value );
-    static void GetSSafe( ConfigurationTable* configTable, 
-        const std::string& name, std::string& value );
-
-    static void GetBooleanSafe( ConfigurationTable* configTable, 
-        const std::string& name, bool& value );
-    template<typename T> static inline void GetEnumSafe( ConfigurationTable* configTable, 
-        const std::string& name, T& value );
+  static void SetBoolean( ConfigurationTable* configTable, 
+                          const std::string& name, bool value );
+  static bool GetBoolean( const ConfigurationTable* configTable, 
+                          const std::string& name );
+  
+  template<typename T> static inline T
+  GetEnum( const ConfigurationTable* configTable, const std::string& name );
+  
+  // These methods catch the exception.
+  static void GetISafe( const ConfigurationTable* configTable, 
+                        const std::string& name, int& value );
+  static void GetDSafe( const ConfigurationTable* configTable, 
+                        const std::string& name, double& value );
+  static void GetSSafe( const ConfigurationTable* configTable, 
+                        const std::string& name, std::string& value );
+  
+  static void GetBooleanSafe( const ConfigurationTable* configTable, 
+                              const std::string& name, bool& value );
+  template<typename T> static inline void GetEnumSafe( const ConfigurationTable* configTable, 
+                                                       const std::string& name, T& value );
 
 private:
 
@@ -60,14 +60,14 @@ private:
 }; // class ConfigTableUtils 
 
 template<typename T> inline T 
-ConfigTableUtils::GetEnum( ConfigurationTable* configTable, const std::string& name )
+ConfigTableUtils::GetEnum( const ConfigurationTable* configTable, const std::string& name )
 {
     int temp = configTable->GetI( name );
     return static_cast< T >( temp );
 }
 
 template<typename T> inline void 
-ConfigTableUtils::GetEnumSafe( ConfigurationTable* configTable, const std::string& name, T& value )
+ConfigTableUtils::GetEnumSafe( const ConfigurationTable* configTable, const std::string& name, T& value )
 {
     try{ value = GetEnum< T >( configTable, name ); }
     catch( ConfigurationTable::NoAttributeError& e ) { }

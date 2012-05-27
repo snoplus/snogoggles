@@ -58,7 +58,7 @@ public:
     virtual const VisAttributes* GetVisAttributes()
     { return fVisAttributes; }
 
-    void Load( ConfigurationTable* configTable );
+  void Load( const ConfigurationTable* configTable );
     void Save( ConfigurationTable* configTable ) const;
 
 private:

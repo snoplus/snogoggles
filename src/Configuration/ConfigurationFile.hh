@@ -77,9 +77,9 @@ public:
   /// Destructor cleans up memory
   ~ConfigurationFile();
   /// Get the Root table
-  const ConfigurationTable& GetTable() const;
+  const ConfigurationTable* GetTable() const;
   /// Access the writeable root table
-  ConfigurationTable& NewTable();
+  ConfigurationTable* NewTable();
   /// Invoke saving the configuration (loading is automatic)
   void Save();
   /// Get the file version
@@ -90,7 +90,6 @@ private:
   xercesc_3_1::DOMDocument* fDOMDocument; /// < The dom document, kept to delete on class destruction
   ConfigurationTable* fRootTable; /// < The root table
   bool fOutput; /// < Read or write mode?
-  int fVersion; /// < File version code
 };
 
 } // ::Viewer
