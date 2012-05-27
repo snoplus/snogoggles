@@ -28,7 +28,6 @@ namespace Viewer {
 
     class World;
     class Volume;
-    class VisMap;
 
 namespace Frames {
 
@@ -41,7 +40,6 @@ public:
 
 private:
 
-    void CreateVisMap( VisMap& visMap, Volume& vol );
     Volume CreateVolume( G4VPhysicalVolume* vol );
     Polyhedron CreatePolyhedron( G4Polyhedron *pol );
 

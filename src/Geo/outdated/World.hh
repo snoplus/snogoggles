@@ -30,7 +30,6 @@
 #define __Viewer_World__
 
 #include <Viewer/Volume.hh>
-#include <Viewer/VisMap.hh>
 #include <Viewer/Serializable.hh>
 #include <string>
 #include <stdexcept>
@@ -43,13 +42,11 @@ class World : public Serializable
 public:
 
     World() { }
-    World( Volume& volume, VisMap& visAttributes );
+    World( Volume& volume );
 
     inline const Volume& GetVolume() const;
     inline void SetVolume( Volume& volume );
 
-    inline const VisMap& GetVisMap() const;
-    void SetVisMap( VisMap& visMap );
     inline void SetVisibility( const std::string& name, bool visible );
     inline bool IsVisible( const std::string& name ) const;
 
@@ -63,7 +60,6 @@ private:
     void SetVisAttributes( Volume* volume );
 
     Volume fVolume;
-    VisMap fVisMap;
 
 }; // class World
 
@@ -81,10 +77,6 @@ void World::SetVolume( Volume& volume )
     fVolume = volume;
 }
 
-const VisMap& World::GetVisMap() const
-{
-    return fVisMap;
-}
 
 void World::Render()
 {
@@ -93,12 +85,12 @@ void World::Render()
 
 void World::SetVisibility( const std::string& name, bool visible )
 {
-    fVisMap.SetVisibility( name, visible );
+
 }
 
 bool World::IsVisible( const std::string& name ) const
 {
-    return fVisMap.IsVisible( name );
+
 }
 
 } // ::Viewer

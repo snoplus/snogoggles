@@ -81,6 +81,7 @@ private:
 
     RAT::DS::PMTProperties* fCurrentPMTList;
     RIDS::EV* fCurrentEV;
+    int fSize;
     RenderState fCurrentRenderState;
     ColourPalette* fCurrentPalette;
 

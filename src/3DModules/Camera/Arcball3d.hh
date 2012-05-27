@@ -13,6 +13,7 @@
 ///     12/07/11 : Olivia Wasalski - Added the SuggestedAxisLength method. \n
 ///     05/21/12 : Olivia Wasalski - Added and implemented render screen method. \n
 ///     05/21/12 : Olivia Wasalski - Removed inheritance from FrontChecker3d. \n
+///     05/21/12 : Olivia Wasalski - Added arcball. \n
 ///
 /// \details 	Implements the responsibilities of the Camera Manager, which are 
 ///             documented in detail in ./CameraManager3d.hh
@@ -35,6 +36,7 @@ namespace Viewer {
     namespace GUIs {
         class SpriteTimer;
         class Timer;
+        class Arcball;
     }; // namepsace GUIs
 
 namespace Frames {
@@ -68,17 +70,11 @@ public:
     /// Initializes the OpenGL modelview and projection matricies.
     virtual void SetUpCameraSystem( const sf::Rect<double>& viewportRect );
 
-    void RenderScreen();
-
     double SuggestedAxisLength() { return 1.5 * fRadius; }
 
 private:
 
-    void Spin( const TVector3& axis, int deltaTime );
-    void Zoom( float speed, int deltaTime );
-
-    void SpinButton( const TVector3& axis, GUIs::Timer* timer );
-    void ZoomButton( float speed, GUIs::Timer* timer );
+    void RenderScreen();
 
     // All tags for saving data to config table.
     static const std::string CAMERA_TAG;        ///< Name used to save fCamera.
@@ -98,12 +94,7 @@ private:
     double fZoom;                       ///< Zoom factor.
 
     // All GUI objects.
-    GUIs::SpriteTimer* fSpinLeftButton;
-    GUIs::SpriteTimer* fSpinRightButton;
-    GUIs::SpriteTimer* fSpinUpButton;
-    GUIs::SpriteTimer* fSpinDownButton;
-    GUIs::SpriteTimer* fZoomInButton;
-    GUIs::SpriteTimer* fZoomOutButton;
+    GUIs::Arcball* fArcball;
 
     // All others.
     static const double MAX_ZOOM = 1.5; ///< Upper limit on fZoom.

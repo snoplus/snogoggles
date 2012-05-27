@@ -20,6 +20,7 @@
 #include <vector>
 
 #include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/RIDS/Track.hh>
 
 namespace RAT
 {
@@ -43,10 +44,13 @@ public:
   /// Return a vector of PMTHits (data) by source, e.g. eCal
   std::vector<PMTHit> GetData( EDataSource source );
 
+  inline std::vector<Track>& GetTracks() { return fTracks; }
+
 private:
   MC();
   
   std::vector<PMTHit> fHits;
+  std::vector<Track> fTracks;
 };
 
 } // namespace RIDS

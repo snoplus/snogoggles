@@ -14,6 +14,7 @@
 #include <Viewer/DataStore.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/RIDS/EV.hh>
+#include <Viewer/RIDS/MC.hh>
 #include <Viewer/ModuleManager3d.hh>
 
 namespace RAT {
@@ -107,13 +108,11 @@ void ModuleManager3d::Render2d( RWWrapper& windowApp, const RenderState& renderS
 
 void ModuleManager3d::Render3d( RectPtr viewport, const RenderState& renderState )
 {
-  RIDS::EV ev = DataStore::GetInstance().GetCurrentEvent().GetEV();
-  RAT::DS::MC* mc = NULL;//DataStore::GetInstance().GetCurrentMC();
+  RIDS::EV& ev = DataStore::GetInstance().GetCurrentEvent().GetEV();
+  RIDS::MC& mc = DataStore::GetInstance().GetCurrentEvent().GetMC();
   RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
   
   fCameraManager->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
-  fCameraManager->RenderScreen();
-
   HitManager3d::RenderHitsSafe( fHitManager, &ev, pmtList, renderState );
   TrackManager3d::RenderTracksSafe( fTrackManager, mc );
   GeoManager3d::RenderGeometrySafe( fGeoManager );

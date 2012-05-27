@@ -23,7 +23,7 @@ FrameFactory::FrameFactory( RectPtr rect )
   RegisterFrame( Frames::CrateView::Name(),new AllocRect<Frame,Frames::CrateView>( rect ), Frame::e2d );
 
   RegisterFrame( Frames::HitFrame3d::Name(), new AllocRect<Frame, Frames::HitFrame3d>( rect ), Frame::e3d );
-  //RegisterFrame( Frames::TrackFrame3d::Name(), new AllocRect<Frame, Frames::TrackFrame3d>( rect ), Frame::e3d );
+  RegisterFrame( Frames::TrackFrame3d::Name(), new AllocRect<Frame, Frames::TrackFrame3d>( rect ), Frame::e3d );
 }
 
 void

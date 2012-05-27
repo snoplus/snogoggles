@@ -3,8 +3,8 @@
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/ColourPalette.hh>
 #include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/RIDS/MC.hh>
 
-#include <RAT/DS/MC.hh>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/OpenGL.hpp>
 
@@ -24,21 +24,20 @@ DefaultTracks3d::DefaultTracks3d()
     fAllParticles = true;
     fPrimaryTracksOnly = false;
     fRenderFullTrack = false;
-    fRefilter = false;
-    fCurrentMC = NULL;
 	fFullTrackGUI = NULL;
+    fPreviousPalette = NULL;
 
-    AddParticleType( "opticalphoton", eRed );
-    AddParticleType( "gamma", eYellow );
-    AddParticleType( "e-", eGreen );
-    AddParticleType( "neutrino", eBlue );
-    AddParticleType( "neutron", eIndigo );
-    AddParticleType( "unknown", eGrey );
+    AddParticleType( "opticalphoton", 0 );
+    AddParticleType( "gamma", 1.f/6 );
+    AddParticleType( "e-", 2.f/6 );
+    AddParticleType( "neutrino", 3.f/6 );
+    AddParticleType( "neutron", 4.f/6 );
+    AddParticleType( "unknown", 5.f/6 );
 }
 
 void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    std::vector< std::string > names = fVisMap.GetNames();
+    std::vector< std::string > names = fTrackBuffer.GetNames();
     int numGUIs = names.size() + 1;
     sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width / 5);
 
@@ -50,7 +49,7 @@ void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& o
         rect.Top += optionsArea.Height / numGUIs;
         fGUIs[ names.at(i) ] = g.NewGUI< GUIs::CheckBoxLabel >( rect );
         fGUIs[ names.at(i) ]->SetLabel( names.at(i) );
-        fGUIs[ names.at(i) ]->SetState( fVisMap.IsVisible( names.at(i) ) );
+        fGUIs[ names.at(i) ]->SetState( fTrackBuffer.fParticleTypes[ names.at(i) ].fVisible );
     }
 }
 
@@ -58,7 +57,7 @@ void DefaultTracks3d::LoadConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetBooleanSafe( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
     ConfigTableUtils::GetBooleanSafe( configTable, PRIMARY_TRACKS_ONLY, fPrimaryTracksOnly );
-    try{ fVisMap.LoadVisibility( configTable ); }
+    try{ fTrackBuffer.LoadVisibility( configTable ); }
     catch( ConfigurationTable::NoAttributeError& e ) { }
 }
 
@@ -66,7 +65,7 @@ void DefaultTracks3d::SaveConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::SetBoolean( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
     ConfigTableUtils::SetBoolean( configTable, PRIMARY_TRACKS_ONLY, fPrimaryTracksOnly );
-    fVisMap.SaveVisibility( configTable );
+    fTrackBuffer.SaveVisibility( configTable );
 }
 
 void DefaultTracks3d::EventLoop( )
@@ -79,64 +78,25 @@ void DefaultTracks3d::EventLoop( )
     {
         std::map< std::string, GUIs::CheckBoxLabel* >::iterator itr;
         for( itr = fGUIs.begin(); itr != fGUIs.end(); itr++ )
-            if( fVisMap.IsVisible( itr->first ) != itr->second->GetState() )
-            {
-                fVisMap.SetVisibility( itr->first, itr->second->GetState() );
-                fRefilter = true;
-            }
+            fTrackBuffer.fParticleTypes[ itr->first ].fVisible = fGUIs[ itr->first ]->GetState();
     }
 }
 
-void DefaultTracks3d::RenderTracks( RAT::DS::MC* mc )
+void DefaultTracks3d::RenderTracks( RIDS::MC& mc )
 {
-/*    if( fCurrentMC != mc || fRefilter == true )
+    if( fSize != mc.GetTracks().size() || fPreviousPalette != ColourPalette::gPalette )
     {
-        fCurrentMC = mc;
-        fRefilter = false;
-        fLineStrips.clear();
-        for( int i = 0; i < mc->GetMCTrackCount(); i++ )
-        {
-            RAT::DS::MCTrack* tr = mc->GetMCTrack( i );
-            if( FilterByPrimaryTrack( tr ) && FilterByParticleType( tr ) )
-            {
-                LineStrip lineStrip( tr );
-
-                if( fVisMap.Count( tr->GetParticleName() ) == 0 )
-                    lineStrip.SetVisAttributes( fVisMap.GetVisAttributes( "unknown" ) );
-                else
-                    lineStrip.SetVisAttributes( fVisMap.GetVisAttributes( tr->GetParticleName() ) );
-
-                fLineStrips.push_back( lineStrip );
-            }
-        }
+        fTrackBuffer.SetAll( mc );
+        fSize = mc.GetTracks().size();
+        fPreviousPalette = ColourPalette::gPalette;
     }
 
-    for( int i = 0; i < fLineStrips.size(); i++ )
-    {
-        if( fRenderFullTrack == true )
-            fLineStrips.at(i).RenderFull();
-        else
-            fLineStrips.at(i).RenderSymbolic();
-    }*/
+    fTrackBuffer.Render( fRenderFullTrack );
 }
 
-bool DefaultTracks3d::FilterByPrimaryTrack( RAT::DS::MCTrack* tr )
+void DefaultTracks3d::AddParticleType( const std::string& name, float eColour )
 {
-    if( fPrimaryTracksOnly == true )
-        if( tr->GetParentID() != 0 )
-            return false;
-
-    return true;
-}
-
-bool DefaultTracks3d::FilterByParticleType( RAT::DS::MCTrack* tr )
-{
-    return fVisMap.IsVisible( tr->GetParticleName() );
-}
-
-void DefaultTracks3d::AddParticleType( const std::string& name, int eColour )
-{
-    fVisMap.AddVisAttributes( name, VisAttributes( ColourPalette::gPalette->GetPrimaryColour( static_cast< EColour >(eColour) ), true ) );
+    fTrackBuffer.AddParticleType( name, eColour );
 }
 
 }; // namespace Frames

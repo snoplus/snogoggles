@@ -7,6 +7,8 @@
 ///
 /// REVISION HISTORY:\n
 ///     14/02/12 : P.Jones - First Revision, new file. \n
+///     05/22/12 : O. Wasalski - Added helper function to compute OpenGL coords
+///                              of a vector (mouse position) . \n
 ///
 /// \detail  All coordinates are rects, these are heirarchical allowing
 ///          both local and global values to be calculated at different
@@ -61,6 +63,8 @@ public:
 		      const ECoordSystem system );
   /// Helper function to set the gl viewport as the current rect
   void SetAsGLViewport();
+  /// Helper function to translate window mouse coordinates to OpenGL mouse coordinates
+  static sf::Vector2<double> GetOpenGLCoords( const sf::Vector2<double>& windowCoords );
 protected:
   /// Can only construct with a mother rectangle
   inline Rect( Rect* mother );
