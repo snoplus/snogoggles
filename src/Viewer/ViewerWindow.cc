@@ -78,11 +78,11 @@ ViewerWindow::PostInitialise()
     {
       stringstream configFileName;
       configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-      Configuration loadConfig( configFileName.str(), false );  
+      ConfigurationFile fileConfig( configFileName.str(), false );  
       // Check file is up to date, if not throw a recoverable error (after deleting it)
       try
         {
-          if( loadConfig.GetI( "version" ) != kConfigVersion )
+          if( fileConfig.GetVersion() != kConfigVersion )
             {
               remove( configFileName.str().c_str() );
               throw Configuration::NoFileError( "Configuration version miss match" );
@@ -93,7 +93,7 @@ ViewerWindow::PostInitialise()
           remove( configFileName.str().c_str() );
           throw Configuration::NoFileError( "Configuration version miss match" );
         }
-
+      const ConfigurationTable loadConfig = fileConfig.GetTable();
       ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig.GetS( "colourPal" ) );
       GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
       fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
