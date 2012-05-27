@@ -119,5 +119,11 @@ FrameContainer::SetRect( const sf::Rect<double>& rect,
 bool
 FrameContainer::IsPinned()
 {
-  fTopBar->IsPinned();
+  return fTopBar->IsPinned();
+}
+
+double
+FrameContainer::GetAspectRatio() const
+{
+  return fFrame->GetAspectRatio();
 }

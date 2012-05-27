@@ -62,7 +62,7 @@ private:
   GUIs::GUIImageButton* fBar;
   GUIs::GUIImageButton* fDecrease;
   GUIs::GUIImageButton* fIncrease;
-  GUIs::GUIImagePersist* fPin;
+  GUIs::GUIImageButton* fPin;
   GUIs::GUIImageButton* fClose;
   GUIs::GUIImageButton* fRight;
 };

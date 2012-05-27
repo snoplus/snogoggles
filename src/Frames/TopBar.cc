@@ -52,35 +52,22 @@ TopBar::NewEvent( const Event& event )
 	    fBar->NewEvent( event );
 	    fRight->NewEvent( event );
         }
-	if( fDecrease->ContainsPoint( event.GetPos() ) )
-	  fDecrease->NewEvent( event );
-	if( fIncrease->ContainsPoint( event.GetPos() ) )
-	  fIncrease->NewEvent( event );
 	if( fPin->ContainsPoint( event.GetPos() ) )
-	  fPin->NewEvent( event );
+      {
+        fPin->NewEvent( event );
+        retEvent = FrameEvent( FrameEvent::eStartResize );
+      }
 	if( fClose->ContainsPoint( event.GetPos() ) )
 	  fClose->NewEvent( event );
       }
       break;
     case sf::Event::MouseButtonReleased:
-      retEvent = FrameEvent( FrameEvent::eStopMove ); // Default only overide if something else happens
       if( fLeft->GetState() ) // Must return stop move if it is active
         break;
-
-      if( fDecrease->ContainsPoint( event.GetPos() ) )
-        {
-          fDecrease->NewEvent( event );
-          retEvent = FrameEvent( FrameEvent::eDecrease );
-        }
-      if( fIncrease->ContainsPoint( event.GetPos() ) )
-        {
-          fIncrease->NewEvent( event );
-          retEvent = FrameEvent( FrameEvent::eIncrease );
-        }
       if( fPin->ContainsPoint( event.GetPos() ) )
         {
           fPin->NewEvent( event );
-          retEvent = FrameEvent( FrameEvent::ePinned );
+          retEvent = FrameEvent( FrameEvent::eStopResize );
         }
       if( fClose->ContainsPoint( event.GetPos() ) )
 	{
@@ -103,7 +90,7 @@ TopBar::Initialise()
   fDecrease->Initialise( eDecrease );
   fIncrease = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter() ), 3 );
   fIncrease->Initialise( eIncrease );
-  fPin = new GUIs::GUIImagePersist( RectPtr( fRect->NewDaughter() ), 4 );
+  fPin = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter() ), 4 );
   fPin->Initialise( ePlus );
   fClose = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter() ), 5 );
   fClose->Initialise( eCross );
@@ -114,13 +101,13 @@ TopBar::Initialise()
 void 
 TopBar::LoadConfiguration( ConfigurationTable& configTable )
 {
-  fPin->SetState( configTable.GetI( "pinned" ) );
+
 }
 
 void 
 TopBar::SaveConfiguration( ConfigurationTable& configTable )
 {
-  configTable.SetI( "pinned", fPin->GetState() );
+
 }
 
 void 

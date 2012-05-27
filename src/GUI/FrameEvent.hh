@@ -21,14 +21,14 @@ namespace Viewer
 class FrameEvent
 {
 public: 
-  enum EEventType { eNone, ePinned, eClosed, eStartMove, eStopMove, eIncrease, eDecrease };
+  enum EEventType { eNone, eClosed, eStartMove, eStopMove, eStartResize, eStopResize };
 
   FrameEvent() : fType( eNone ) { }
 
   FrameEvent( EEventType type ) : fType( type ) { }
 
   EEventType fType;
-
+  sf::Vector2<double> fPos; /// < Event position (will be zero if not mouse)
   int fFrameID;
 };
 

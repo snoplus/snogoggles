@@ -59,9 +59,11 @@ public:
 			 const RenderState& renderState ) = 0;
   /// Return the frame name
   virtual std::string GetName() = 0;
+  /// Return the frames preferred aspect ratio, default to 1.0
+  virtual double GetAspectRatio() { return 1.0; }
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp, 
-		  const RenderState& renderState );
+                  const RenderState& renderState );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
 

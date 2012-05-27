@@ -63,8 +63,12 @@ public:
 		const RenderState& renderState );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
+  /// Ask if rect overlaps this rect
+  inline bool Overlaps( const sf::Rect<double>& rect );
 
-  inline RectPtr GetRect();
+  inline const sf::Rect<double> GetRect( const Rect::ECoordSystem& system );
+  /// Get the frames preferred aspect ratio
+  double GetAspectRatio() const;
 
   void SetRect( const sf::Rect<double>& rect,
 		const Rect::ECoordSystem& system );
@@ -82,10 +86,16 @@ FrameContainer::ContainsPoint( const sf::Vector2<double>& point )
   return fRect->ContainsPoint( point, Rect::eResolution );
 }
 
-inline RectPtr
-FrameContainer::GetRect()
+inline bool
+FrameContainer::Overlaps( const sf::Rect<double>& rect )
 {
-  return fRect;
+  return fRect->OverlapsRect( rect );
+}
+
+inline const sf::Rect<double>
+FrameContainer::GetRect( const Rect::ECoordSystem& system )
+{
+  return fRect->GetRect( system );
 }
 
 } //::Viewer
