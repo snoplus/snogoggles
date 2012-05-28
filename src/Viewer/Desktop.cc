@@ -40,27 +40,41 @@ Desktop::EventLoop()
 }
 
 void 
-Desktop::Initialise()
+Desktop::PreInitialise( const ConfigurationTable* configTable )
 {
   // First initialise the UI
   sf::Rect<double> defaultSize;
   defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 0.0; defaultSize.Width = fRightMargin; defaultSize.Height = 1.0 - 2.0 * fBottomMargin;
   fEMUI = new EventMasterUI( RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) ) );
-  fEMUI->Initialise();
   // Now initialise the FrameManager
   defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0;
   RectPtr frameRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
   fFrameManager = new FrameManager( frameRect, fRightMargin, fBottomMargin );
-  fFrameManager->Initialise();
+  if( configTable != NULL )
+    {
+      fEMUI->PreInitialise( configTable->GetTable( "eventMaster" ) );
+      fFrameManager->PreInitialise( configTable->GetTable( "frameManager" ) );
+    }
+  else
+    {
+      fEMUI->PreInitialise( NULL );
+      fFrameManager->PreInitialise( NULL );
+    }
 }
 
 void 
-Desktop::LoadConfiguration( const ConfigurationTable* configTable )
+Desktop::PostInitialise( const ConfigurationTable* configTable )
 {
-  const ConfigurationTable* emTable = configTable->GetTable( "eventMaster" );
-  fEMUI->LoadConfiguration( emTable );
-  const ConfigurationTable* fmTable = configTable->GetTable( "frameManager" );
-  fFrameManager->LoadConfiguration( fmTable );
+  if( configTable != NULL )
+    {
+      fEMUI->PostInitialise( configTable->GetTable( "eventMaster" ) );
+      fFrameManager->PostInitialise( configTable->GetTable( "frameManager" ) );
+    }
+  else
+    {
+      fEMUI->PostInitialise( NULL );
+      fFrameManager->PostInitialise( NULL );
+    }
 }
 
 void 

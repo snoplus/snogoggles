@@ -52,13 +52,13 @@ ColourMasterUI::EventLoop()
 }
 
 void 
-ColourMasterUI::SaveConfiguration( ConfigurationTable& configTable )
+ColourMasterUI::SaveConfiguration( ConfigurationTable* configTable )
 {
   // Just save current desktop
 }
 
 void 
-ColourMasterUI::Initialise()
+ColourMasterUI::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> size;
   size.Left = 0.8; size.Top = 0.1; size.Width = 0.1; size.Height = 0.05;
@@ -72,9 +72,9 @@ ColourMasterUI::Initialise()
 }
 
 void 
-ColourMasterUI::LoadConfiguration( ConfigurationTable& configTable )
+ColourMasterUI::PostInitialise( const ConfigurationTable* configTable )
 {
-  // load current desktop
+
 }
 
 void 

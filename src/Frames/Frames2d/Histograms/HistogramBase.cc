@@ -22,7 +22,7 @@ HistogramBase::~HistogramBase()
 }
 
 void
-HistogramBase::Initialise()
+HistogramBase::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> imageSize;
   imageSize.Left = 0.0; imageSize.Top = 0.0; imageSize.Width = 1.0; imageSize.Height = 1.0;
@@ -32,7 +32,6 @@ HistogramBase::Initialise()
 void
 HistogramBase::Initialise( sf::Rect<double> imageSize )
 {
-  Frame::Initialise();
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( imageSize, Rect::eLocal ) ) );
 }
 

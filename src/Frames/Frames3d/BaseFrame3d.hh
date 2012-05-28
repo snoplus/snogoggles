@@ -33,9 +33,12 @@ class BaseFrame3d : public Frame {
 public:
   BaseFrame3d( RectPtr rect );
 	virtual ~BaseFrame3d();
-	virtual void Initialise();
-	virtual void LoadConfiguration( const ConfigurationTable* configTable );
-	virtual void SaveConfiguration( ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  virtual void PostInitialise( const ConfigurationTable* configTable );
+  /// Save the configuration
+  virtual void SaveConfiguration( ConfigurationTable* configTable );
 	virtual void EventLoop();
     virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
 	virtual void Render3d( RWWrapper& renderApp, const RenderState& renderState );

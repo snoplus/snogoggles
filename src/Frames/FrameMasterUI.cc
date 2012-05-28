@@ -35,13 +35,13 @@ FrameMasterUI::EventLoop()
 }
 
 void 
-FrameMasterUI::SaveConfiguration( ConfigurationTable& configTable )
+FrameMasterUI::SaveConfiguration( ConfigurationTable* configTable )
 {
 
 }
 
 void 
-FrameMasterUI::Initialise()
+FrameMasterUI::PreInitialise( const ConfigurationTable* configTable )
 {
   // Decide the sizes first
   const double rowHeight = 20.0; const double colWidth = 120.0;
@@ -65,7 +65,7 @@ FrameMasterUI::Initialise()
 }
 
 void 
-FrameMasterUI::LoadConfiguration( ConfigurationTable& configTable )
+FrameMasterUI::PostInitialise( const ConfigurationTable* configTable )
 {
   // load current desktop
 }

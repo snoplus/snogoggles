@@ -39,7 +39,7 @@ public:
   virtual std::string GetName() { return Histogram::Name(); }
   static std::string Name() { return string("Histogram"); }
 
-  virtual void Initialise();
+  virtual void PreInitialise( const ConfigurationTable* configTable );
 
   virtual void EventLoop();
 

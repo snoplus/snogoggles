@@ -55,10 +55,10 @@ public:
   void EventLoop();
   /// Save the current configuration
   void SaveConfiguration( ConfigurationTable* configTable );
-  /// Initialise without a configuration
-  void Initialise();
-  /// Load a configuration
-  void LoadConfiguration( const ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable );
   /// Render the GUI objects
   void Render( RWWrapper& renderApp );
   /// Ask if object contains a point

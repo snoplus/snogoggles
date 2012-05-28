@@ -135,7 +135,7 @@ FrameManager::EventLoop()
 }
 
 void 
-FrameManager::Initialise()
+FrameManager::PreInitialise( const ConfigurationTable* configTable )
 {
   // First create the frame grid
   sf::Rect<double> defaultSize;
@@ -145,32 +145,35 @@ FrameManager::Initialise()
   defaultSize.Left = 0.0; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = fBottomMargin;
   RectPtr fmRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
   fFMUI = new FrameMasterUI( fmRect, *fgRect, this );
-  fFMUI->Initialise();
+  fFMUI->PreInitialise( configTable);
   // Now set the state
   fFocus = -1;
   fState = eNormal;
-}
-
-void 
-FrameManager::LoadConfiguration( const ConfigurationTable* configTable )
-{
-  // Now load the frames
-  try
+  if( configTable != NULL )
     {
-      unsigned int uFrame = 0;
-      while( true ) // throws to exit
+      for( unsigned int uFrame = 0; uFrame < configTable->GetNumTables(); uFrame++ )
         {
           stringstream tableName;
           tableName << "Frame" << uFrame;
-          const ConfigurationTable* currentConfig = configTable->GetTable( tableName.str() );
-          string type = currentConfig->GetS( "type" );
-          NewFrame( uFrame, fFrameFactory.New( type ), currentConfig );
-          uFrame++;
+          const ConfigurationTable* frameConfig = configTable->GetTable( tableName.str() );
+          NewFrame( uFrame, fFrameFactory.New( frameConfig->GetS( "type" ) ), frameConfig );
         }
     }
-  catch( ConfigurationTable::NoTableError& e )
+}
+
+void 
+FrameManager::PostInitialise( const ConfigurationTable* configTable )
+{
+  fFMUI->PostInitialise( configTable );
+  if( configTable != NULL )
     {
-      // No more tables to load...
+      for( unsigned int uFrame = 0; uFrame < configTable->GetNumTables(); uFrame++ )
+        {
+          stringstream tableName;
+          tableName << "Frame" << uFrame;
+          const ConfigurationTable* frameConfig = configTable->GetTable( tableName.str() );
+          fFrameContainers[uFrame]->PostInitialise( frameConfig );
+        }
     }
 }
 
@@ -228,7 +231,9 @@ FrameManager::NewFrame( Frame* frame )
   sf::Rect<double> rect( 0.0, 1.0, 121.0, 121.0 );
   RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eResolution ) );
   FrameContainer* newFrame = new FrameContainer( rectPtr );
-  newFrame->Initialise( frame );
+  newFrame->SetFrame( frame );
+  newFrame->PreInitialise( NULL );
+  newFrame->PostInitialise( NULL );
   fFrameContainers.push_back( newFrame );
   int frameID = fFrameContainers.size() - 1;
   for( double x = 0.0; x < fRect->GetRect( Rect::eResolution ).Width; x += 1.0 )
@@ -249,8 +254,8 @@ FrameManager::NewFrame( unsigned int uFrame,
   sf::Rect<double> rect;
   RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eLocal ) );
   FrameContainer* newFrame = new FrameContainer( rectPtr );
-  newFrame->Initialise( frame );
-  newFrame->LoadConfiguration( configTable );
+  newFrame->SetFrame( frame );
+  newFrame->PreInitialise( configTable );
   fFrameContainers.push_back( newFrame );
 }
 

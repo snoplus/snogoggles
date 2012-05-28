@@ -46,11 +46,11 @@ public:
   /// The event loop
   virtual void EventLoop() = 0;
   /// Save the current configuration
-  virtual void SaveConfiguration( ConfigurationTable* configTable );
-  /// Initialise without a configuration
-  virtual void Initialise();
-  /// Load a configuration
-  virtual void LoadConfiguration( const ConfigurationTable* configTable );
+  virtual void SaveConfiguration( ConfigurationTable* configTable ) = 0;
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable ) = 0;
+  /// Initilaise with DataStore access
+  virtual void PostInitialise( const ConfigurationTable* configTable ) = 0;
   /// Render all 2d objects
   virtual void Render2d( RWWrapper& renderApp, 
                          const RenderState& renderState ) = 0;

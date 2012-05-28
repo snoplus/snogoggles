@@ -45,7 +45,7 @@ DesktopManager::EventLoop()
 }
 
 void 
-DesktopManager::Initialise()
+DesktopManager::PreInitialise( const ConfigurationTable* configTable )
 {
   // First initialise the UI
   sf::Rect<double> defaultSize; // The default size
@@ -53,10 +53,10 @@ DesktopManager::Initialise()
   defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = fRightMargin; defaultSize.Height = fBottomMargin;
   dmRect->SetRect( defaultSize, Rect::eLocal );
   fDMUI = new DesktopMasterUI( dmRect, fDesktops.size() );
-  fDMUI->Initialise();
+  fDMUI->PreInitialise( configTable );
   defaultSize.Top = 1.0 - 2.0 * fBottomMargin; defaultSize.Height = fBottomMargin;
   fCMUI = new ColourMasterUI( RectPtr( fGlobalMother->NewDaughter( defaultSize, Rect::eLocal ) ) );
-  fCMUI->Initialise();
+  fCMUI->PreInitialise( configTable );
 
   // Now initialise the Desktops
   for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
@@ -66,34 +66,42 @@ DesktopManager::Initialise()
       defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0; defaultSize.Height = 1.0;
       desktopRect->SetRect( defaultSize, Rect::eLocal );
       fDesktops[iDesktop] = new Desktop( desktopRect, fRightMargin, fBottomMargin );
-      fDesktops[iDesktop]->Initialise();
+      stringstream tableName;
+      tableName << "Desktop" << iDesktop;
+      if( configTable != NULL )
+        fDesktops[iDesktop]->PreInitialise( configTable->GetTable( tableName.str() ) );
+      else
+        fDesktops[iDesktop]->PreInitialise( NULL );
     }
 }
 
 void 
-DesktopManager::LoadConfiguration( const ConfigurationTable* config )
+DesktopManager::PostInitialise( const ConfigurationTable* configTable )
 {
-  unsigned int uDesktop = 0;
-  for( vector< ConfigurationTable* >::const_iterator iTer = config->GetTableBegin(); iTer != config->GetTableEnd(); iTer++ )
+  for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
-      const ConfigurationTable* configTable = *iTer;
-      fDesktops[uDesktop]->LoadConfiguration( configTable );
-      uDesktop++;
+      stringstream tableName;
+      tableName << "Desktop" << iDesktop;
+      if( configTable != NULL )
+        fDesktops[iDesktop]->PreInitialise( configTable->GetTable( tableName.str() ) );
+      else
+        fDesktops[iDesktop]->PreInitialise( NULL );
     }
-  fDMUI->LoadConfiguration( config );
+  fCMUI->PostInitialise( configTable );
+  fDMUI->PostInitialise( configTable );
 }
 
 void 
-DesktopManager::SaveConfiguration( ConfigurationTable* config )
+DesktopManager::SaveConfiguration( ConfigurationTable* configTable )
 {
-  unsigned int uDesktop = 0;
-  for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
+  for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
-      ConfigurationTable* configTable = config->NewTable( "Desktop" );
-      fDesktops[uDesktop]->SaveConfiguration( configTable );
-      uDesktop++;
+      stringstream tableName;
+      tableName << "Desktop" << iDesktop;
+      fDesktops[iDesktop]->SaveConfiguration( configTable->NewTable( tableName.str() ) );
     }
-  fDMUI->SaveConfiguration( config );
+  fCMUI->SaveConfiguration( configTable );
+  fDMUI->SaveConfiguration( configTable );
 }
 
 void 

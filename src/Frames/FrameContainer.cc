@@ -52,21 +52,20 @@ FrameContainer::EventLoop()
 }
 
 void 
-FrameContainer::Initialise( Frame* frame )
+FrameContainer::PreInitialise( const ConfigurationTable* configTable )
 {
   fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
-  fTopBar->Initialise();
-  fFrame = frame;
+  fTopBar->PreInitialise( configTable );
   fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
-  fFrame->Initialise();
+  fFrame->PreInitialise( configTable );
 }
 
 void 
-FrameContainer::LoadConfiguration( const ConfigurationTable* configTable )
+FrameContainer::PostInitialise( const ConfigurationTable* configTable )
 {
-  fTopBar->LoadConfiguration( configTable );
-  fFrame->LoadConfiguration( configTable );
+  fTopBar->PostInitialise( configTable );
+  fFrame->PostInitialise( configTable );
 }
 
 void 

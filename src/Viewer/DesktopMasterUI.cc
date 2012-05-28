@@ -59,7 +59,7 @@ DesktopMasterUI::EventLoop()
 }
 
 void 
-DesktopMasterUI::Initialise()
+DesktopMasterUI::PreInitialise( const ConfigurationTable* configTable )
 {
   fCurrentDesktop = 0;
   sf::Rect<double> size;
@@ -73,13 +73,17 @@ DesktopMasterUI::Initialise()
       desktopNames.push_back( sName.str() );
     }
   fDesktopRadio->Initialise( desktopNames, 4 );
+  if( configTable != NULL )
+    {
+      fCurrentDesktop = configTable->GetI( "currentDesktop" );
+      fDesktopRadio->SetState( fCurrentDesktop );
+    }
 }
 
 void 
-DesktopMasterUI::LoadConfiguration( const ConfigurationTable* config )
+DesktopMasterUI::PostInitialise( const ConfigurationTable* configTable )
 {
-  fCurrentDesktop = config->GetI( "currentDesktop" );
-  fDesktopRadio->SetState( fCurrentDesktop );
+
 }
 
 void 

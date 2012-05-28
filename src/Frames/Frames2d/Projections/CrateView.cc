@@ -34,9 +34,8 @@ CrateView::~CrateView()
 }
 
 void 
-CrateView::Initialise() 
+CrateView::PreInitialise( const ConfigurationTable* configTable ) 
 {
-  Frame::Initialise();
   sf::Rect<double> size;
   size.Left = 0.0; size.Top = 0.0; size.Width = 1.0; size.Height = 0.95;
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );

@@ -33,6 +33,7 @@ namespace Viewer
 {
   class Rect;
   class DesktopManager;
+  class ConfigurationTable;
 
 class ViewerWindow
 {
@@ -46,12 +47,14 @@ public:
   /// Initialise all the singletons
   void InitAll();
   /// Start the viewer, No Data access
-  void PreInitialise();
+  void PreInitialise( const ConfigurationTable* configTable );
   /// Load the frames, Data access allowed (post semaphore)
-  void PostInitialise();
+  void PostInitialise( const ConfigurationTable* configTable );
   /// Run loop, polled by the thread
   void Run();
-  /// Destroy the viewer, saving settings
+  /// Save settings
+  void SaveConfiguration( ConfigurationTable* configTable );
+  /// Destroy the viewer
   void Destruct();
 private:
   /// Initialise this window

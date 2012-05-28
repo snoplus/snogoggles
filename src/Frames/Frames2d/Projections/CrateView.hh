@@ -40,7 +40,12 @@ public:
   CrateView( RectPtr rect ) : Frame( rect ) { }
   ~CrateView();
   
-  void Initialise();
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Save the configuration
+  void SaveConfiguration( ConfigurationTable* configTable ) { };
   
   virtual void EventLoop();
   

@@ -20,24 +20,6 @@ Frame::NewEvent( const Event& event )
     fEvents.push( guiEvent );
 }
 
-void 
-Frame::SaveConfiguration( ConfigurationTable* configTable )
-{
-
-}
-
-void 
-Frame::Initialise()
-{
-  
-}
-
-void 
-Frame::LoadConfiguration( const ConfigurationTable* configTable )
-{
-
-}
-
 void
 Frame::RenderGUI( RWWrapper& renderApp,
 		  const RenderState& renderState )

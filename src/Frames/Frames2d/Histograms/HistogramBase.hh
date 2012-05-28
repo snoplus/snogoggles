@@ -34,12 +34,13 @@ public:
   HistogramBase( RectPtr rect ) : Frame( rect ), fLogY( true ) { }
   ~HistogramBase();
 
-  virtual void Initialise();
   void Initialise( sf::Rect<double> imageSize );
-
-  void LoadConfiguration( ConfigurationTable& configTable ) { }
-
-  void SaveConfiguration( ConfigurationTable& configTable ) { }
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Save the configuration
+  void SaveConfiguration( ConfigurationTable* configTable ) { };
 
   virtual void EventLoop();
   

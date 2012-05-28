@@ -80,7 +80,7 @@ TopBar::NewEvent( const Event& event )
 }
 
 void 
-TopBar::Initialise()
+TopBar::PreInitialise( const ConfigurationTable* configTable )
 {
   fLeft = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter() ), 0 );
   fLeft->Initialise( eBarLeft );
@@ -99,7 +99,7 @@ TopBar::Initialise()
 }
 
 void 
-TopBar::LoadConfiguration( const ConfigurationTable* configTable )
+TopBar::PostInitialise( const ConfigurationTable* configTable )
 {
 
 }

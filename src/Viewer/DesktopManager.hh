@@ -42,10 +42,10 @@ public:
   void EventLoop();
   /// Save the current configuration
   void SaveConfiguration( ConfigurationTable* config );
-  /// Initialise without a configuration
-  void Initialise();
-  /// Load a configuration
-  void LoadConfiguration( const ConfigurationTable* config );
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* config );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* config );
   /// Draw all 2d objects
   void Render2d( RWWrapper& renderApp );
   /// Draw all 3d objects

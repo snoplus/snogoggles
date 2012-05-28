@@ -32,9 +32,14 @@ ProjectionBase::~ProjectionBase()
 }
 
 void
-ProjectionBase::Initialise()
+ProjectionBase::PreInitialise( const ConfigurationTable* configTable )
 {
-  Frame::Initialise();
+
+}
+
+void
+ProjectionBase::PostInitialise( const ConfigurationTable* configTable )
+{
   sf::Rect<double> imageSize;
   imageSize.Left = 0.0; imageSize.Top = 0.0; imageSize.Width = 1.0; imageSize.Height = 1.0;
   Initialise( imageSize );

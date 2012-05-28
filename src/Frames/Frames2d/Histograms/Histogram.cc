@@ -17,7 +17,7 @@ Histogram::~Histogram()
 }
 
 void 
-Histogram::Initialise()
+Histogram::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> size;
   size.Left = 0.1; size.Top = 0.0; size.Width = 0.9; size.Height = 0.9;

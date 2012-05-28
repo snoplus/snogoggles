@@ -31,7 +31,12 @@ public:
   About( RectPtr rect ) : Frame( rect ) { }
   ~About();
 
-  void Initialise();
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Save the configuration
+  void SaveConfiguration( ConfigurationTable* configTable ) { };
  
   virtual void EventLoop();
   

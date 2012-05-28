@@ -92,7 +92,7 @@ EventMasterUI::EventLoop()
 }
 
 void 
-EventMasterUI::Initialise()
+EventMasterUI::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> size;
   size.Left = 0.8; size.Top = 0.0; size.Width = 0.1; size.Height = 0.05;
@@ -119,15 +119,19 @@ EventMasterUI::Initialise()
 
   size.Left = 0.1; size.Top = 0.7; size.Width = 0.8; size.Height = 0.05;
   fScalingBar = fGUIManager.NewGUI<GUIs::ScalingBar>( size );
+  if( configTable != NULL )
+    {
+      fSourceRadio->SetState( configTable->GetI( "sourceType" ) );
+      fTypeRadio->SetState( configTable->GetI( "dataType" ) );
+      fRefreshSelector->SetState( configTable->GetI( "refreshState" ) );
+      fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RIDS::EDataSource>(), fTypeRadio->GetEnumState<RIDS::EDataType>() );
+    }
 }
 
 void 
-EventMasterUI::LoadConfiguration( const ConfigurationTable* configTable )
+EventMasterUI::PostInitialise( const ConfigurationTable* configTable )
 {
-  fSourceRadio->SetState( configTable->GetI( "sourceType" ) );
-  fTypeRadio->SetState( configTable->GetI( "dataType" ) );
-  fRefreshSelector->SetState( configTable->GetI( "refreshState" ) );
-  fCurrentRenderState.ChangeState( fSourceRadio->GetEnumState<RIDS::EDataSource>(), fTypeRadio->GetEnumState<RIDS::EDataType>() );
+
 }
 
 void 

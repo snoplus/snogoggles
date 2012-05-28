@@ -51,8 +51,8 @@ ConfigurationFile::ConfigurationFile( const string& filePath, bool output )
 
 ConfigurationFile::~ConfigurationFile()
 {
+  fDOMDocument->release(); // Apparently the correct xerces-c way
   delete fRootTable;
-  delete fDOMDocument;
 }
 
 void 

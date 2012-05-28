@@ -48,10 +48,10 @@ public:
   void EventLoop();
   /// Save the current configuration
   void SaveConfiguration( ConfigurationTable* configTable );
-  /// Initialise without a configuration
-  void Initialise( Frame* frame );
-  /// Load a configuration
-  void LoadConfiguration( const ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp, 
                  const RenderState& renderState );
@@ -74,6 +74,7 @@ public:
 		const Rect::ECoordSystem& system );
 
   bool IsPinned();
+  void SetFrame( Frame* frame ) { fFrame = frame; }
 private:
   RectPtr fRect; /// < The container rect
   Frame* fFrame; /// < Pointer to the frame

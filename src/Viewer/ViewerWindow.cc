@@ -9,7 +9,6 @@ using namespace std;
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/TextureManager.hh>
 #include <Viewer/GUITextureManager.hh>
-#include <Viewer/ConfigurationFile.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/RectPtr.hh>
@@ -39,7 +38,7 @@ ViewerWindow::~ViewerWindow()
 }
 
 void
-ViewerWindow::PreInitialise()
+ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
 {
   // Attempt to initialize the size of the depth and stencil buffers.
   // Fails on Linux, not sure about Mac.
@@ -68,45 +67,17 @@ ViewerWindow::PreInitialise()
   fWindowApp->Draw( snoSprite );
   fWindowApp->Draw( sfmlSprite );
   fWindowApp->Display();
+  ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" ); // TEMP SOlution
+  GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" ); // TEMP PHIL
+  // Now start building the desktop and frames
+  fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
+  fDesktopManager->PreInitialise( configTable );
 }
 
 void
-ViewerWindow::PostInitialise()
+ViewerWindow::PostInitialise( const ConfigurationTable* configTable )
 {
-  // Load the configuration
-  try
-    {
-      stringstream configFileName;
-      configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-      ConfigurationFile fileConfig( configFileName.str(), false );  
-      // Check file is up to date, if not throw a recoverable error (after deleting it)
-      try
-        {
-          if( fileConfig.GetVersion() != kConfigVersion )
-            {
-              remove( configFileName.str().c_str() );
-              throw ConfigurationFile::NoFileError( "Configuration version miss match" );
-            }
-        }
-      catch( ConfigurationTable::NoAttributeError& e )
-        {
-          remove( configFileName.str().c_str() );
-          throw ConfigurationFile::NoFileError( "Configuration version miss match" );
-        }
-      const ConfigurationTable* loadConfig = fileConfig.GetTable();
-      ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig->GetS( "colourPal" ) );
-      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig->GetS( "guiPal" ) );
-      fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
-      fDesktopManager->Initialise();
-      fDesktopManager->LoadConfiguration( loadConfig );
-    }
-  catch( ConfigurationFile::NoFileError& e )
-    {
-      ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" );
-      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" );
-      fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
-      fDesktopManager->Initialise();
-    }
+  fDesktopManager->PostInitialise( configTable );
 }
 
 void
@@ -119,20 +90,15 @@ ViewerWindow::Run()
       RenderLoop();
     }
 }
+void
+ViewerWindow::SaveConfiguration( ConfigurationTable* configTable )
+{
+  fDesktopManager->SaveConfiguration( configTable );
+}
 
 void
 ViewerWindow::Destruct()
 {
-  stringstream configFileName;
-  configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-  ConfigurationFile saveConfigFile( configFileName.str(), true );
-  ConfigurationTable* saveConfig = saveConfigFile.NewTable();
-  saveConfig->SetS( "colourPal", ColourPalette::gPalette->GetName() );
-  saveConfig->SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
-  saveConfigFile.SetVersion( kConfigVersion );
-  fDesktopManager->SaveConfiguration( saveConfig );
-  saveConfigFile.Save();
-  
   // Must delete textures before the window, or get sfml segfault
   TextureManager::GetInstance().ClearTextures();
   GUITextureManager::GetInstance().ClearTextures();
