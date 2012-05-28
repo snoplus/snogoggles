@@ -5,7 +5,7 @@ using namespace std;
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/GUITextureManager.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/Text.hh>
 using namespace Viewer;
@@ -51,6 +51,6 @@ CheckBoxLabel::Render( RWWrapper& renderApp )
     fBox->SetTexture( fBoxTextures[1] );
 
   renderApp.Draw( *fBox );
-  fLabel->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fLabel->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   renderApp.Draw( *fLabel );
 }

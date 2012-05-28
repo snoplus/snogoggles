@@ -9,7 +9,7 @@ using namespace std;
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/ProjectionBase.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/GeodesicSphere.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
@@ -96,14 +96,14 @@ void
 ProjectionBase::DrawAllPMTs()
 {
   for( vector< sf::Vector2<double> >::iterator iTer = fProjectedPMTs.begin(); iTer != fProjectedPMTs.end(); iTer++ )
-    fImage->DrawHollowSquare( *iTer, ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
+    fImage->DrawHollowSquare( *iTer, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
 }
 
 void
 ProjectionBase::DrawGeodesic()
 {
   for( vector< sf::Vector2<double> >::iterator iTer = fProjectedGeodesic.begin(); iTer != fProjectedGeodesic.end(); iTer++ )
-    fImage->DrawDot( *iTer, ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
+    fImage->DrawDot( *iTer, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
 }
 
 void
@@ -128,7 +128,7 @@ ProjectionBase::DrawHits( const RenderState& renderState )
     {
       const double data = iTer->GetData( renderState.GetDataType() );
       const sf::Vector2<double> projPos = fProjectedPMTs[iTer->GetLCN()];
-      fImage->DrawSquare( projPos, ColourPalette::gPalette.GetColour( ( data - renderState.GetScalingMin() ) / 
+      fImage->DrawSquare( projPos, GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - renderState.GetScalingMin() ) / 
                                                                        ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }

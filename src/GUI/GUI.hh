@@ -32,6 +32,8 @@ namespace Viewer
   class Event;
   class RWWrapper;
 
+  enum EGUIState { eBase, eHighlight, eActive };
+
 class GUI
 {
 public:

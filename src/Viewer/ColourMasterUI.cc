@@ -5,8 +5,6 @@
 #include <Viewer/RadioCheckBoxes.hh>
 #include <Viewer/Selector.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/GUIColourPalette.hh>
-#include <Viewer/ColourPalette.hh>
 #include <Viewer/Event.hh>
 using namespace Viewer;
 
@@ -44,7 +42,7 @@ ColourMasterUI::EventLoop()
           GUITextureManager::GetInstance().ChangeColourScheme();
           break;
         case 1: // Event Colour Selector
-          ColourPalette::gPalette.LoadColourPalette( fColourSelector->GetStringState() );
+          //ColourPalette::gPalette.LoadColourPalette( fColourSelector->GetStringState() );
           break;
         }
       fEvents.pop();
@@ -64,7 +62,7 @@ ColourMasterUI::PreInitialise( const ConfigurationTable* configTable )
   size.Left = 0.8; size.Top = 0.1; size.Width = 0.1; size.Height = 0.05;
   size.Top = 0.0; size.Left = 0.0; size.Height = 0.45; size.Width = 1.0;
   fGUIColourSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
-  fGUIColourSelector->Initialise( fGUIColourFactory.GetNames() );
+  //fGUIColourSelector->Initialise( fGUIColourFactory.GetNames() );
 
   size.Top = 0.55; size.Left = 0.0; size.Height = 0.45; size.Width = 1.0;
   fColourSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
@@ -83,5 +81,5 @@ ColourMasterUI::PostInitialise( const ConfigurationTable* configTable )
 void 
 ColourMasterUI::Render( RWWrapper& renderApp )
 {
-  fGUIManager.Render( renderApp );
+  //fGUIManager.Render( renderApp );
 }

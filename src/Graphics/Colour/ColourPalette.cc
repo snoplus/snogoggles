@@ -7,10 +7,13 @@ using namespace std;
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
-ColourPalette ColourPalette::gPalette = ColourPalette();
+ColourPalette::ColourPalette()
+{
+  Load( "default.xml" );
+}
 
 void 
-ColourPalette::LoadColourPalette( const std::string& fileName )
+ColourPalette::Load( const std::string& fileName )
 {
   stringstream configFileName;
   configFileName << getenv( "VIEWERROOT" ) << "/gui/colour/" << fileName;
@@ -37,7 +40,7 @@ ColourPalette::LoadColourPalette( const std::string& fileName )
 }
 
 Colour
-ColourPalette::GetColour( double value )
+ColourPalette::GetColour( double value ) const
 {
   unsigned int uStop = 0;
   for( uStop = 0; uStop < fColourStops.size() - 2; uStop++ )

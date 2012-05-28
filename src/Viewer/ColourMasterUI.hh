@@ -23,7 +23,6 @@
 #include <Viewer/RectPtr.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/GUIColourPaletteFactory.hh>
 
 namespace sf
 {
@@ -66,7 +65,6 @@ private:
   RectPtr fRect; /// < The DMUI drawable area
   GUIManager fGUIManager; /// < The GUI manager
   std::queue<GUIEvent> fEvents;
-  GUIColourPaletteFactory fGUIColourFactory; /// < The GUI Colour factory
 
   GUIs::Selector* fGUIColourSelector;
   GUIs::Selector* fColourSelector;

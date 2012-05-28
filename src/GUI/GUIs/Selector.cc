@@ -7,7 +7,7 @@ using namespace std;
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/Event.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
@@ -40,7 +40,7 @@ Selector::Render( RWWrapper& renderApp )
 {
   fNext->Render( renderApp );
   fPrev->Render( renderApp );
-  fText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   renderApp.Draw( *fText );
 }
 

@@ -28,7 +28,7 @@ using namespace std;
 #include <Viewer/RenderState.hh>
 #include <Viewer/GeodesicSphere.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 
 #include <xercesc/util/PlatformUtils.hpp>
@@ -54,11 +54,11 @@ int main( int argc, char *argv[] )
       return 1;
     }
   PreInitialise();
-  ColourPalette::gPalette.LoadColourPalette( "rainbow.xml" );
   ConfigurationFile* loadConfig = OpenConfiguration( false );
   const ConfigurationTable* loadConfigTable = NULL;
   if( loadConfig != NULL )
     loadConfigTable = loadConfig->GetTable();
+  GUIProperties::GetInstance().PreInitialise( loadConfigTable );
   ViewerWindow& viewer = ViewerWindow::GetInstance();
   viewer.PreInitialise( loadConfigTable );
   Thread* loadData;

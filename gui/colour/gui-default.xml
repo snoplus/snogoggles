@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<GUIColour version="1">
+  <Background>
+    <normal  r="255" g="255" b="255"/>
+    <inverted r="0" g="0" b="0"/>
+  </Background>
+  <ColourA>
+    <base r="96" g="75" b="216"/>
+    <highlight r="128" g="112" b="216"/>
+    <active r="96" g="75" b="216"/>
+  </ColourA>
+  <ColourB>
+    <base r="255" g="255" b="255"/>
+    <highlight r="158" g="0" b="22"/>
+    <active r="255" g="227" b="115"/>
+  </ColourB>
+  <ColourC>
+    <base r="255" g="255" b="255"/>
+    <highlight r="255" g="255" b="255"/>
+    <active r="255" g="255" b="255"/>
+  </ColourC>
+  <ColourD>
+    <base r="255" g="255" b="255"/>
+    <highlight r="255" g="255" b="255"/>
+    <active r="255" g="255" b="255"/>
+  </ColourD>
+  <ColourE>
+    <base r="255" g="255" b="255"/>
+    <highlight r="255" g="255" b="255"/>
+    <active r="255" g="255" b="255"/>
+  </ColourE>
+  <ColourF>
+    <base r="255" g="255" b="255"/>
+    <highlight r="255" g="255" b="255"/>
+    <active r="255" g="255" b="255"/>
+  </ColourF>
+</GUIColour>

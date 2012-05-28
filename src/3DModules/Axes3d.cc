@@ -1,6 +1,6 @@
 #include <Viewer/Axes3d.hh>
 #include <Viewer/Colour.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/ConfigTableUtils.hh>
@@ -15,9 +15,9 @@ Axes3d::Axes3d( double length )
 	fDisplay = true;
 	fDisplayGUI = NULL;
 
-    fXColour = ColourPalette::gPalette.GetPrimaryColour( eRed );
-    fYColour = ColourPalette::gPalette.GetPrimaryColour( eGreen );
-    fZColour = ColourPalette::gPalette.GetPrimaryColour( eBlue );
+    fXColour = GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eRed );
+    fYColour = GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGreen );
+    fZColour = GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eBlue );
 
     fXPoint = length * TVector3( 1, 0, 0 );
     fYPoint = length * TVector3( 0, 1, 0 );

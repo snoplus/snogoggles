@@ -23,7 +23,7 @@
 
 #include <map>
 
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUI.hh>
 
 namespace sf
 {
@@ -33,7 +33,7 @@ namespace sf
 namespace Viewer
 {
   enum EGUITexture { eBarLeft, eBar, eBarRight, eDecrease, eIncrease, ePlus, eCross, eOpenBox, eCrossBox, eNewFrameLeft, eNewFrame, eNewFrameRight };
-  typedef std::map< EGUITexture, std::map< EGUITextureState, sf::Texture* > > GUITextureMap;
+  typedef std::map< EGUITexture, std::map< EGUIState, sf::Texture* > > GUITextureMap;
   typedef std::map< EGUITexture, sf::Rect<int> > GUIRectMap;
 
 class GUITextureManager
@@ -47,7 +47,7 @@ public:
   void Initialise();
   /// Get a pointer to the gui-image-state texture
   sf::Texture* GetTexture( EGUITexture image,
-			   EGUITextureState state );
+                           EGUIState state );
   /// Notify and change the colour scheme
   void ChangeColourScheme();
   /// Delete and clear the textures
@@ -57,10 +57,10 @@ private:
 
   /// Colourise a single texture and add it to the fTextures map
   void Colourise( EGUITexture image,
-		  EGUITextureState state );
+                  EGUIState state );
   
   GUIRectMap fSubRects; /// < Maps the pixel extent of each GUITexture to an EGUITexture
-  GUITextureMap fTextures; /// < Maps the actual texture to an EGUITexture + EGUITextureState
+  GUITextureMap fTextures; /// < Maps the actual texture to an EGUITexture + EGUIState
   
   sf::Uint8* fBasePixels; /// < Base pixels
   unsigned int fBaseWidth; /// < Base pixel width

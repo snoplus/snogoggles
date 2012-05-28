@@ -7,7 +7,7 @@ using namespace std;
 #include <Viewer/Text.hh>
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -47,7 +47,7 @@ Histogram::EventLoop()
 
 void 
 Histogram::Render2d( RWWrapper& renderApp,
-		     const RenderState& renderState )
+                     const RenderState& renderState )
 {
   HistogramBase::Render2d( renderApp, renderState );
   if( fLogY )
@@ -72,10 +72,10 @@ Histogram::Render2d( RWWrapper& renderApp,
   value.str(""); value << 0.0;
   fMinX->SetString( value.str() );
 
-  fMinX->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fMinY->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fMaxX->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fMaxY->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fMinX->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fMinY->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fMaxX->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fMaxY->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   
   renderApp.Draw( *fMinX );
   renderApp.Draw( *fMaxX );

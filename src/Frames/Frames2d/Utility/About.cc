@@ -5,7 +5,7 @@
 using namespace std;
 
 #include <Viewer/About.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
 using namespace Viewer;
@@ -24,7 +24,7 @@ About::PreInitialise( const ConfigurationTable* configTable )
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
 }
 
 void 
@@ -45,6 +45,6 @@ About::Render2d( RWWrapper& renderApp,
   eventInfo << "SNOGoggles Air Fill" << "\nFrame Rate:";
   eventInfo << 1e6 / (double) renderApp.GetFrameTime().AsMicroseconds() << " Hz";
   fInfoText->SetString( eventInfo.str() );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   renderApp.Draw( *fInfoText );  
 }

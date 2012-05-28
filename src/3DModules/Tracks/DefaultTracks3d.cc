@@ -1,7 +1,7 @@
 #include <Viewer/DefaultTracks3d.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/RIDS/MC.hh>
 
@@ -88,7 +88,7 @@ void DefaultTracks3d::RenderTracks( RIDS::MC& mc )
     {
         fTrackBuffer.SetAll( mc );
         fSize = mc.GetTracks().size();
-        fPreviousPalette = &ColourPalette::gPalette;
+        fPreviousPalette = &GUIProperties::GetInstance().GetColourPalette();
     }
 
     fTrackBuffer.Render( fRenderFullTrack );

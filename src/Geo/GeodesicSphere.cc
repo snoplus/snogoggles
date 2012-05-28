@@ -7,7 +7,7 @@ using namespace std;
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/SerializableFactory.hh>
 #include <Viewer/Polyhedron.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/GeodesicSphere.hh>
 
 namespace Viewer {
@@ -49,7 +49,7 @@ const Polyhedron& GeodesicSphere::GetPolyhedron()
 
 const Colour GeodesicSphere::GetColour()
 {
-    return ColourPalette::gPalette.GetPrimaryColour( eGrey );
+  return GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey );
 }
 
 }; // namespace Viewer

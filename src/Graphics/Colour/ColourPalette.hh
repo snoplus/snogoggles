@@ -31,16 +31,15 @@ enum EColour { eBlack = 0, eWhite = 1, eRed = 2, eOrange = 3, eYellow = 4, eGree
 class ColourPalette
 {
 public:
+  ColourPalette();
+
   enum EScalingMode { eContinuous, eDiscrete };
   /// Load a colour palette given a fileName
-  void LoadColourPalette( const std::string& fileName );
+  void Load( const std::string& fileName );
   /// Get the colour given a value [0,1]
-  Colour GetColour( double value );
+  Colour GetColour( double value ) const ;
   /// Get a primary colour
-  inline Colour GetPrimaryColour( EColour value );
-  /// Get the current palette name
-  //std::string GetName();
-  static ColourPalette gPalette;
+  inline Colour GetPrimaryColour( EColour value ) const;
 private:
   std::map<EColour, Colour> fPrimaryColours; /// < The primary colours mapping
   std::vector< std::pair< double, Colour > > fColourStops; /// < The colour stop values and colours, in order
@@ -48,9 +47,9 @@ private:
 };
 
 inline Colour 
-ColourPalette::GetPrimaryColour( EColour value )
+ColourPalette::GetPrimaryColour( EColour value ) const
 {
-  return fPrimaryColours[value];
+  return fPrimaryColours.find(value)->second;
 }
 
 } // ::Viewer

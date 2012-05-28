@@ -16,9 +16,8 @@ using namespace std;
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/DesktopManager.hh>
 #include <Viewer/RenderState.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
-
-GUIColourPaletteFactory ViewerWindow::gGUIColourPaletteFactory;
 
 const int kConfigVersion = 1;
 
@@ -66,7 +65,6 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   fWindowApp->Draw( snoSprite );
   fWindowApp->Draw( sfmlSprite );
   fWindowApp->Display();
-  GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" ); // TEMP PHIL
   // Now start building the desktop and frames
   fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
   fDesktopManager->PreInitialise( configTable );
@@ -166,7 +164,7 @@ ViewerWindow::RenderLoop()
 void 
 ViewerWindow::SetGlobalGLStates()
 {
-  GUIColourPalette::gPalette->GetBGColour( eBase ).ClearOpenGL();
+  GUIProperties::GetInstance().GetGUIColourPalette().GetBackground().ClearOpenGL();
   glClearDepth(1.f); // Sets the depth buffer clear to 1.
   glClearStencil(0); // Sets the stencil buffer clear to 0.
 

@@ -1,7 +1,7 @@
 #include <Viewer/DefaultHits3d.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/CheckBoxLabel.hh>
 #include <Viewer/RenderState.hh>
@@ -69,8 +69,8 @@ void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, c
     if( fCurrentPMTList != pmtList )
     {
         for( int i=0; i < pmtList->GetPMTCount(); i++ )
-            fPMTListBuffer.AddHitOutline( 
-                pmtList->GetPos( i ), ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
+          fPMTListBuffer.AddHitOutline( 
+                                       pmtList->GetPos( i ), GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
         fPMTListBuffer.Bind();
         fCurrentPMTList = pmtList;
     }
@@ -102,7 +102,7 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
         double data = hits[i].GetData( renderState.GetDataType() );
         double c_frac = data / ( max - min );
 
-        Colour c = ColourPalette::gPalette.GetColour( c_frac );
+        Colour c = GUIProperties::GetInstance().GetColourPalette().GetColour( c_frac );
 
         fFullBuffer.AddHitFull( p, c );
         fOutlineBuffer.AddHitOutline( p, c );
@@ -129,7 +129,7 @@ bool DefaultHits3d::NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderS
 
     //if( fCurrentPalette != ColourPalette::gPalette )
     {
-      fCurrentPalette = &ColourPalette::gPalette;
+      fCurrentPalette = &GUIProperties::GetInstance().GetColourPalette();
         return true;
     }
 

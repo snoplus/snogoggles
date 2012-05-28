@@ -5,7 +5,7 @@ using namespace std;
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/HistogramBase.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
@@ -101,7 +101,7 @@ HistogramBase::DrawHistogram( const RenderState& renderState )
       sf::Vector2<double> pos( binRatio, 1.0 - binHeight );
       sf::Vector2<double> size( pixelBinWidth, binHeight );
       if( static_cast<double>( iBin ) > renderState.GetScalingMin() && static_cast<double>( iBin ) < renderState.GetScalingMax() )
-        fImage->DrawSquare( pos, size, ColourPalette::gPalette.GetColour( ( (double)( iBin ) - renderState.GetScalingMin() ) / ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
+        fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetColour( ( (double)( iBin ) - renderState.GetScalingMin() ) / ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }
 
@@ -114,7 +114,7 @@ HistogramBase::DrawTicks()
       double xPos =  (double)iTic / 10.0;
       sf::Vector2<double> pos( xPos, 1.0 - ticSize );
       sf::Vector2<double> size( 1.0 / fImage->GetWidth(), ticSize );
-      fImage->DrawSquare( pos, size, ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
+      fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
       double yPos = (double)iTic / 10.0 * fMaxValue;
       if( fLogY && yPos != 0.0 )
 	yPos = log10( yPos ) / ( log10( fMaxValue ) - log10( 0.1 ) );
@@ -122,7 +122,7 @@ HistogramBase::DrawTicks()
 	yPos /= fMaxValue;
       pos = sf::Vector2<double>( 0.0, yPos );
       size = sf::Vector2<double>( ticSize, 1.0 / fImage->GetWidth() );
-      fImage->DrawSquare( pos, size, ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
+      fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
     }
 }
 

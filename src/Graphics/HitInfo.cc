@@ -5,7 +5,7 @@ using namespace std;
 #include <Viewer/RenderState.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/RIDS/RIDS.hh>
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/PMTHit.hh>
@@ -43,7 +43,7 @@ HitInfo::Render( RWWrapper& renderApp,
   if( hasData )
     {
       fInfoText.SetString( info.str() );
-      fInfoText.SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+      fInfoText.SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
       renderApp.Draw( fInfoText );
     }
 }

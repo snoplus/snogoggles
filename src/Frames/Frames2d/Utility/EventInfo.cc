@@ -10,7 +10,7 @@ using namespace std;
 #include <Viewer/DataStore.hh>
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/EV.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
 using namespace Viewer;
@@ -29,7 +29,7 @@ EventInfo::PreInitialise( const ConfigurationTable* configTable )
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
 }
 
 void 
@@ -66,7 +66,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << "Nhit (Inv): " << rEV->GetPMTInvCalCount() << endl;
   */
   fInfoText->SetString( eventInfo.str() );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   renderApp.Draw( *fInfoText );  
 }
 

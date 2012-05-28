@@ -72,7 +72,7 @@ private:
 
     TrackBuffer fTrackBuffer;
     int fSize;
-    ColourPalette* fPreviousPalette;
+  const ColourPalette* fPreviousPalette;
 
 }; // class DefaultTracks3d
 

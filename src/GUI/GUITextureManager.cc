@@ -7,6 +7,7 @@ using namespace std;
 
 #include <Viewer/GUITextureManager.hh>
 #include <Viewer/Colour.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 
 GUITextureManager::GUITextureManager()
@@ -82,7 +83,7 @@ GUITextureManager::Initialise()
 
 sf::Texture* 
 GUITextureManager::GetTexture( EGUITexture image,
-			       EGUITextureState state )
+                               EGUIState state )
 {
   return (fTextures[image])[state];
 }
@@ -100,9 +101,8 @@ GUITextureManager::ChangeColourScheme()
 
 void 
 GUITextureManager::Colourise( EGUITexture image,
-                              EGUITextureState state )
+                              EGUIState state )
 {
-  GUIColourPalette* palette = GUIColourPalette::gPalette;
   sf::Rect<int> sourceRect = fSubRects[image];
   sf::Uint8* pixels = new sf::Uint8[ sourceRect.Width * sourceRect.Height * 4 ];
   for( int xPixel = 0; xPixel < sourceRect.Width; xPixel++ )
@@ -116,10 +116,10 @@ GUITextureManager::Colourise( EGUITexture image,
                                 fBasePixels[basePixel + 3] );
 
           Colour pixelColour;
-          pixelColour = palette->GetBaseColour( state );
-          pixelColour = pixelColour.AddColourFraction( palette->GetBGColour( state ),
+          pixelColour = GUIProperties::GetInstance().GetGUIColourPalette().GetA( state );
+          pixelColour = pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetB( state ),
                                                        static_cast<double>( currentColour.g ) / 255.0 );
-          pixelColour = pixelColour.AddColourFraction( palette->GetItemColour( state ),
+          pixelColour = pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetC( state ),
                                                        static_cast<double>( currentColour.r ) / 255.0 );
           const int pixel = ( xPixel + yPixel * sourceRect.Width ) * 4;
           pixels[ pixel ] = pixelColour.r;
