@@ -6,6 +6,7 @@
 using namespace std;
 
 #include <Viewer/GUITextureManager.hh>
+#include <Viewer/Colour.hh>
 using namespace Viewer;
 
 GUITextureManager::GUITextureManager()

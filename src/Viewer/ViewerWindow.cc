@@ -18,7 +18,6 @@ using namespace std;
 #include <Viewer/RenderState.hh>
 using namespace Viewer;
 
-ColourPaletteFactory ViewerWindow::gColourPaletteFactory;
 GUIColourPaletteFactory ViewerWindow::gGUIColourPaletteFactory;
 
 const int kConfigVersion = 1;
@@ -67,7 +66,6 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   fWindowApp->Draw( snoSprite );
   fWindowApp->Draw( sfmlSprite );
   fWindowApp->Display();
-  ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" ); // TEMP SOlution
   GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" ); // TEMP PHIL
   // Now start building the desktop and frames
   fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL

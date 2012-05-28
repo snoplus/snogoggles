@@ -96,14 +96,14 @@ void
 ProjectionBase::DrawAllPMTs()
 {
   for( vector< sf::Vector2<double> >::iterator iTer = fProjectedPMTs.begin(); iTer != fProjectedPMTs.end(); iTer++ )
-    fImage->DrawHollowSquare( *iTer, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+    fImage->DrawHollowSquare( *iTer, ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
 }
 
 void
 ProjectionBase::DrawGeodesic()
 {
   for( vector< sf::Vector2<double> >::iterator iTer = fProjectedGeodesic.begin(); iTer != fProjectedGeodesic.end(); iTer++ )
-    fImage->DrawDot( *iTer, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+    fImage->DrawDot( *iTer, ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
 }
 
 void
@@ -128,7 +128,7 @@ ProjectionBase::DrawHits( const RenderState& renderState )
     {
       const double data = iTer->GetData( renderState.GetDataType() );
       const sf::Vector2<double> projPos = fProjectedPMTs[iTer->GetLCN()];
-      fImage->DrawSquare( projPos, ColourPalette::gPalette->GetColour( ( data - renderState.GetScalingMin() ) / 
+      fImage->DrawSquare( projPos, ColourPalette::gPalette.GetColour( ( data - renderState.GetScalingMin() ) / 
                                                                        ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }

@@ -37,16 +37,16 @@ ColourMasterUI::EventLoop()
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
-	{
-	case 0: // GUI Colour Selector
-	  GUIColourPalette::gPalette = fGUIColourFactory.New( fGUIColourSelector->GetStringState() );
-	  // Notify the GUI textures that they have changed...
-	  GUITextureManager::GetInstance().ChangeColourScheme();
-	  break;
-	case 1: // Event Colour Selector
-	  ColourPalette::gPalette = fColourFactory.New( fColourSelector->GetStringState() );
-	  break;
-	}
+        {
+        case 0: // GUI Colour Selector
+          //GUIColourPalette::gPalette.LoadColourPalette( fGUIColourSelector->GetStringState() );
+          // Notify the GUI textures that they have changed...
+          GUITextureManager::GetInstance().ChangeColourScheme();
+          break;
+        case 1: // Event Colour Selector
+          ColourPalette::gPalette.LoadColourPalette( fColourSelector->GetStringState() );
+          break;
+        }
       fEvents.pop();
     }
 }
@@ -68,7 +68,10 @@ ColourMasterUI::PreInitialise( const ConfigurationTable* configTable )
 
   size.Top = 0.55; size.Left = 0.0; size.Height = 0.45; size.Width = 1.0;
   fColourSelector = fGUIManager.NewGUI<GUIs::Selector>( size );
-  fColourSelector->Initialise( fColourFactory.GetNames() );
+  vector<string> colourSchemes;
+  colourSchemes.push_back( "rainbow.xml" );
+  colourSchemes.push_back( "greyscale.xml" );
+  fColourSelector->Initialise( colourSchemes );
 }
 
 void 

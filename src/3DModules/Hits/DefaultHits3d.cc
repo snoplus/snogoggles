@@ -70,7 +70,7 @@ void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, c
     {
         for( int i=0; i < pmtList->GetPMTCount(); i++ )
             fPMTListBuffer.AddHitOutline( 
-                pmtList->GetPos( i ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+                pmtList->GetPos( i ), ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
         fPMTListBuffer.Bind();
         fCurrentPMTList = pmtList;
     }
@@ -102,7 +102,7 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
         double data = hits[i].GetData( renderState.GetDataType() );
         double c_frac = data / ( max - min );
 
-        Colour c = ColourPalette::gPalette->GetColour( c_frac );
+        Colour c = ColourPalette::gPalette.GetColour( c_frac );
 
         fFullBuffer.AddHitFull( p, c );
         fOutlineBuffer.AddHitOutline( p, c );
@@ -127,15 +127,15 @@ bool DefaultHits3d::NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderS
         return true;
     }
 
-    if( fCurrentPalette != ColourPalette::gPalette )
+    //if( fCurrentPalette != ColourPalette::gPalette )
     {
-        fCurrentPalette = ColourPalette::gPalette;
+      fCurrentPalette = &ColourPalette::gPalette;
         return true;
     }
 
     if( !Equals( fCurrentRenderState, renderState ) )
     {
-        fCurrentRenderState = renderState;
+      fCurrentRenderState = renderState;
         return true;
     }
 

@@ -84,11 +84,11 @@ void DefaultTracks3d::EventLoop( )
 
 void DefaultTracks3d::RenderTracks( RIDS::MC& mc )
 {
-    if( fSize != mc.GetTracks().size() || fPreviousPalette != ColourPalette::gPalette )
+  if( fSize != mc.GetTracks().size() )
     {
         fTrackBuffer.SetAll( mc );
         fSize = mc.GetTracks().size();
-        fPreviousPalette = ColourPalette::gPalette;
+        fPreviousPalette = &ColourPalette::gPalette;
     }
 
     fTrackBuffer.Render( fRenderFullTrack );

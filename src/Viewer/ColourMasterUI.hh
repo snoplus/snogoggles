@@ -24,7 +24,6 @@
 #include <Viewer/RenderState.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/GUIColourPaletteFactory.hh>
-#include <Viewer/ColourPaletteFactory.hh>
 
 namespace sf
 {
@@ -68,7 +67,6 @@ private:
   GUIManager fGUIManager; /// < The GUI manager
   std::queue<GUIEvent> fEvents;
   GUIColourPaletteFactory fGUIColourFactory; /// < The GUI Colour factory
-  ColourPaletteFactory fColourFactory; /// < The event colour factory
 
   GUIs::Selector* fGUIColourSelector;
   GUIs::Selector* fColourSelector;

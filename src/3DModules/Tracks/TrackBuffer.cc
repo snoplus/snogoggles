@@ -47,7 +47,7 @@ void TrackBuffer::SetAll( RIDS::MC& mc )
     {
         const std::string& name = tracks[i].GetParticleName();
         struct ParticleType& pt = fParticleTypes[ name ];
-        const Colour& c = ColourPalette::gPalette->GetColour( pt.fColour );
+        const Colour& c = ColourPalette::gPalette.GetColour( pt.fColour );
         const std::vector< RIDS::TrackStep >& trackSteps = tracks[i].GetTrackSteps();
         
         AddLine( pt.fSimpleVBO, trackSteps[0].GetEndPos(), trackSteps[ trackSteps.size() - 1 ].GetEndPos(), c );

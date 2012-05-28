@@ -35,11 +35,12 @@ public:
   Colour() : sf::Color( 255, 255, 255, 255 ) { };
   Colour( sf::Uint8 red, sf::Uint8 green, sf::Uint8 blue, sf::Uint8 alpha = 255 ) : sf::Color( red, green, blue, alpha ) { }
   Colour( const sf::Color& color ) : sf::Color( color ) { }
+  Colour( const ConfigurationTable* configTable );
 
   inline void SetOpenGL() const;
   inline void ClearOpenGL() const;
 
-  inline Colour AddColourFraction( const Colour& newColour, double fraction ) const;
+  Colour AddColourFraction( const Colour& newColour, double fraction ) const;
 
   void Load( const ConfigurationTable* configTable );
   void Save( ConfigurationTable* configTable ) const;
@@ -61,20 +62,6 @@ Colour::SetOpenGL() const
 	     static_cast<float>( g ) / 255.0f, 
 	     static_cast<float>( b ) / 255.0f, 
 	     static_cast<float>( a ) / 255.0f );
-}
-
-Colour
-Colour::AddColourFraction( const Colour& newColour, double fraction ) const
-{
-  double nR = this->r + fraction * ( newColour.r - this->r );
-  double nG = this->g + fraction * ( newColour.g - this->g );
-  double nB = this->b + fraction * ( newColour.b - this->b );
-  double nA = this->a + fraction * ( newColour.a - this->a );
-
-  return Colour( static_cast<sf::Uint8>( nR ), 
-                 static_cast<sf::Uint8>( nG ), 
-                 static_cast<sf::Uint8>( nB ), 
-                 static_cast<sf::Uint8>( nA ) );
 }
 
 } // ::Viewer

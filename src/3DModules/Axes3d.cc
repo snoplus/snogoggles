@@ -15,9 +15,9 @@ Axes3d::Axes3d( double length )
 	fDisplay = true;
 	fDisplayGUI = NULL;
 
-    fXColour = ColourPalette::gPalette->GetPrimaryColour( eRed );
-    fYColour = ColourPalette::gPalette->GetPrimaryColour( eGreen );
-    fZColour = ColourPalette::gPalette->GetPrimaryColour( eBlue );
+    fXColour = ColourPalette::gPalette.GetPrimaryColour( eRed );
+    fYColour = ColourPalette::gPalette.GetPrimaryColour( eGreen );
+    fZColour = ColourPalette::gPalette.GetPrimaryColour( eBlue );
 
     fXPoint = length * TVector3( 1, 0, 0 );
     fYPoint = length * TVector3( 0, 1, 0 );

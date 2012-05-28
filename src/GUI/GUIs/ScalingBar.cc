@@ -60,12 +60,12 @@ ScalingBar::Render( RWWrapper& renderApp )
   fImage->Clear();
   sf::Vector2<double> pos( fMinValue, 0.25 );
   sf::Vector2<double> size( 0.05, 0.5 );
-  fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( fMinValue ) );
+  fImage->DrawSquare( pos, size, ColourPalette::gPalette.GetColour( fMinValue ) );
   pos.x = fMaxValue - size.x;
-  fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( fMaxValue ) );
+  fImage->DrawSquare( pos, size, ColourPalette::gPalette.GetColour( fMaxValue ) );
   pos = sf::Vector2<double>( 0.0, 0.5 - size.x / 2.0 );
   size = sf::Vector2<double>( 1.0, size.x );
-  fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+  fImage->DrawSquare( pos, size, ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
   fImage->Update();
   renderApp.Draw( *fImage );
 }

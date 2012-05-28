@@ -57,7 +57,7 @@ CrateView::Render2d( RWWrapper& renderApp,
       double yPos = ( iCrate / 10 ) * ( kCrateHeight + kYMargin );
       fImage->DrawHollowSquare( sf::Vector2<double>( xPos, yPos ),
                                 sf::Vector2<double>( kCrateWidth, kCrateHeight ),
-                                ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+                                ColourPalette::gPalette.GetPrimaryColour( eGrey ) );
     }
   // Now draw the hits
   fPMTofInterest = -1;
@@ -106,7 +106,7 @@ CrateView::DrawPMTs( const RenderState& renderState )
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const double data = iTer->GetData( renderState.GetDataType() );
-      DrawPMT( iTer->GetLCN(), ColourPalette::gPalette->GetColour( ( data - renderState.GetScalingMin() ) /
+      DrawPMT( iTer->GetLCN(), ColourPalette::gPalette.GetColour( ( data - renderState.GetScalingMin() ) /
                                                                    ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }

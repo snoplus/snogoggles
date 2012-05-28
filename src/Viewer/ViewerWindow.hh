@@ -21,7 +21,6 @@
 
 #include <cstddef> //NULL and other things
 
-#include <Viewer/ColourPaletteFactory.hh>
 #include <Viewer/GUIColourPaletteFactory.hh>
 
 namespace sf
@@ -38,7 +37,6 @@ namespace Viewer
 class ViewerWindow
 {
 public:
-  static ColourPaletteFactory gColourPaletteFactory;
   static GUIColourPaletteFactory gGUIColourPaletteFactory;
   /// Destructor
   ~ViewerWindow();

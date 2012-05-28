@@ -49,7 +49,7 @@ const Polyhedron& GeodesicSphere::GetPolyhedron()
 
 const Colour GeodesicSphere::GetColour()
 {
-    return ColourPalette::gPalette->GetPrimaryColour( eGrey );
+    return ColourPalette::gPalette.GetPrimaryColour( eGrey );
 }
 
 }; // namespace Viewer
