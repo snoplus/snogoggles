@@ -44,7 +44,12 @@ public:
   /// Make a GUI object under management, deleted by this class
   template<class T> inline
   T* NewGUI( const sf::Rect<double>& rect,
-	     Rect::ECoordSystem system = Rect::eLocal );
+             Rect::ECoordSystem system = Rect::eLocal );
+  /// Make a GUI object under management, deleted by this class With a specific id
+  template<class T> inline
+  T* NewGUI( const sf::Rect<double>& rect,
+             int guid,
+             Rect::ECoordSystem system = Rect::eLocal );
   /// Return a GUI object given the local guiID
   GUI* GetGUI( unsigned int guiID );
   /// Delete all GUI objects
@@ -72,10 +77,22 @@ GUIManager::GUIManager( RectPtr rect )
 template<class T>
 T* 
 GUIManager::NewGUI( const sf::Rect<double>& rect,
-		    Rect::ECoordSystem system )
+                    Rect::ECoordSystem system )
 {
   RectPtr rectPtr( fRect->NewDaughter( rect, system ) );
   T* gui = new T( rectPtr, fGUIObjects.size() );
+  fGUIObjects.push_back( gui );
+  return gui;
+}
+
+template<class T>
+T* 
+GUIManager::NewGUI( const sf::Rect<double>& rect,
+                    int guid,
+                    Rect::ECoordSystem system )
+{
+  RectPtr rectPtr( fRect->NewDaughter( rect, system ) );
+  T* gui = new T( rectPtr, guid );
   fGUIObjects.push_back( gui );
   return gui;
 }

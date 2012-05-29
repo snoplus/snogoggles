@@ -66,7 +66,7 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   fWindowApp->Draw( sfmlSprite );
   fWindowApp->Display();
   // Now start building the desktop and frames
-  fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
+  fDesktopManager = new DesktopManager( RectPtr( fMotherRect ) );
   fDesktopManager->PreInitialise( configTable );
 }
 

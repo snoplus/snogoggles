@@ -21,9 +21,9 @@ Colour
 GUIColourPalette::GetBackground() const
 {
   if( fInverted )
-    return fBackground;
-  else
     return fInvBackground;
+  else
+    return fBackground;
 }
 
 void 

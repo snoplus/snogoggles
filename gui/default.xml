@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<GUI version="1" desktops="8" frameX="0.0" frameY="0.0" frameWidth="0.9" frameHieght="0.9">
+<GUI version="1" desktops="8">
   <GUIColours>
     <guicolour filename="gui-default.xml" name="Default"/>
   </GUIColours>
@@ -7,11 +7,21 @@
     <colour filename="default.xml" name="Rainbow"/>
     <colour filename="greyscale.xml" name="Greyscale"/>
   </Colours>
-  <Desktop x="0.0" y="0.0" width="1.0" height="0.9"/>
-  <FrameManager x="0.0" y="0.0" width="0.9" height="1.0"/>
-  <EventPanel x="0.9" y="0.0" width="0.1" height="0.5">
+  <GUIPanel x="0.9" y="0.5" width="0.1" height="0.5">
     <gui effect="0" x="0.1" y="0.1" width="0.5" height="0.1" font-ring="0" />
-    <text caption="bob" x="0.1" y="0.1" width="0.5" height="0.1" font-ring="0" />
-  </EventPanel>
+    <gui effect="1" x="0.1" y="0.5" width="0.5" height="0.1" font-ring="0" />
+    <text caption="bob" x="0.6" y="0.1" width="0.5" height="0.1" font-ring="0" />
+  </GUIPanel>
+  <DesktopPanel x="0.7" y="0.9" width="0.2" height="0.1">
+    <gui effect="10" x="0.1" y="0.1" width="0.1" height="0.3" />
+    <gui effect="11" x="0.2" y="0.1" width="0.1" height="0.3" />
+    <gui effect="12" x="0.3" y="0.1" width="0.1" height="0.3" />
+    <gui effect="13" x="0.4" y="0.1" width="0.1" height="0.3" />
+    <gui effect="14" x="0.5" y="0.1" width="0.1" height="0.3" />
+    <gui effect="15" x="0.6" y="0.1" width="0.1" height="0.3" />
+    <gui effect="16" x="0.7" y="0.1" width="0.1" height="0.3" />
+    <gui effect="17" x="0.8" y="0.1" width="0.1" height="0.3" />
+  </DesktopPanel>
+  <FrameManager x="0.0" y="0.0" width="0.9" height="1.0"/>
 
 </GUI>

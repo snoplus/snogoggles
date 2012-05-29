@@ -28,30 +28,36 @@ class GUIProperties
 {
 public:
   /// Destruct and delete textures
-  virtual ~GUIProperties();
+  ~GUIProperties();
+  void Destruct();
+
   /// Return the singleton instance
   inline static GUIProperties& GetInstance();
 
   void PreInitialise( const ConfigurationTable* config );
 
-  /// Get the list of colour scheme names
-  std::vector< std::string > GetColourSchemes();
-  /// Get the list of colour scheme names
-  std::vector< std::string > GetGUIColourSchemes();
   /// Get the xml configuration information for object
   const ConfigurationTable* GetConfiguration( const std::string& object ) const;
   /// Get the number of desktops
   unsigned int GetNumDesktops() const;
+  /// Load new gui colour scheme
+  inline void LoadGUIColourPalette( const std::string& filename );
+  /// Load new colour scheme
+  inline void LoadColourPalette( const std::string& filename );
   /// Get the current gui colour scheme
   inline const GUIColourPalette& GetGUIColourPalette() const;
   /// Get the current colour scheme
   inline const ColourPalette& GetColourPalette() const;
+
+  inline void Reset();
+  inline bool Changed() const;
 private:
   GUIProperties();
 
   GUIColourPalette fGUIColourPalette; /// < The gui colour palette
   ColourPalette fColourPalette; /// < The general colour palette
   ConfigurationFile* fGUIConfiguration; /// < The stored gui configuration xml data
+  bool fChanged; /// < Has the gui changed in the last frame
 
   /// Stop usage of
   GUIProperties( GUIProperties const& );
@@ -63,6 +69,18 @@ GUIProperties::GetInstance()
 {
   static GUIProperties instance;
   return instance;
+}
+
+inline void 
+GUIProperties::LoadGUIColourPalette( const std::string& filename )
+{
+  fGUIColourPalette.Load( filename );
+}
+
+inline void 
+GUIProperties::LoadColourPalette( const std::string& filename )
+{
+  fColourPalette.Load( filename );
 }
 
 inline const GUIColourPalette&

@@ -19,13 +19,14 @@ BaseFrame3d::~BaseFrame3d()
 
 void BaseFrame3d::PreInitialise( const ConfigurationTable* configTable )
 {
-
+  fModuleManager = CreateModuleManager();
+  if( configTable != NULL )
+    fModuleManager->LoadModuleConfigurations( configTable );
 }
 
 void BaseFrame3d::PostInitialise( const ConfigurationTable* configTable )
 {
-  fModuleManager = CreateModuleManager();
-  fModuleManager->LoadModuleConfigurations( configTable );
+
 }
 
 void BaseFrame3d::SaveConfiguration( ConfigurationTable* configTable )

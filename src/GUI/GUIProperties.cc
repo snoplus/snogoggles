@@ -13,6 +13,12 @@ GUIProperties::GUIProperties()
 
 GUIProperties::~GUIProperties()
 {
+
+}
+
+void
+GUIProperties::Destruct()
+{
   delete fGUIConfiguration;
 }
 

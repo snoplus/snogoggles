@@ -11,10 +11,8 @@ using namespace std;
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
-Desktop::Desktop( RectPtr desktopRect,
-                  double rightMargin,
-                  double bottomMargin )
-  : fRect( desktopRect ), fBottomMargin( bottomMargin ), fRightMargin( rightMargin )
+Desktop::Desktop( RectPtr desktopRect )
+  : fRect( desktopRect )
 {
 
 }
@@ -44,12 +42,12 @@ Desktop::PreInitialise( const ConfigurationTable* configTable )
 {
   // First initialise the UI
   sf::Rect<double> defaultSize;
-  defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 0.0; defaultSize.Width = fRightMargin; defaultSize.Height = 1.0 - 2.0 * fBottomMargin;
+  defaultSize.Left = 1.0 - 0.1; defaultSize.Top = 0.0; defaultSize.Width = 0.1; defaultSize.Height = 1.0 - 2.0 * 0.1;
   fEMUI = new EventMasterUI( RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) ) );
   // Now initialise the FrameManager
-  defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0;
+  defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - 0.1; defaultSize.Height = 1.0;
   RectPtr frameRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
-  fFrameManager = new FrameManager( frameRect, fRightMargin, fBottomMargin );
+  fFrameManager = new FrameManager( frameRect, 0.1, 0.1 );
   if( configTable != NULL )
     {
       fEMUI->PreInitialise( configTable->GetTable( "eventMaster" ) );

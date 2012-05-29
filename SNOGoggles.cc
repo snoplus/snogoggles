@@ -106,6 +106,7 @@ int main( int argc, char *argv[] )
   // Finish the thread
   loadData->KillAndWait();
   delete loadData;
+  GUIProperties::GetInstance().Destruct();
   XMLPlatformUtils::Terminate();
   return 0;
 }

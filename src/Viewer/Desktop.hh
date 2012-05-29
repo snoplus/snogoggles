@@ -32,9 +32,7 @@ class Desktop
 {
 public:
   /// Construct with a rect and global margin sizes
-  Desktop( RectPtr desktopRect, 
-	   double rightMargin,
-	   double bottomMargin );
+  Desktop( RectPtr desktopRect );
   ~Desktop();
   /// Deal with a new UI event
   void NewEvent( Event& event );
@@ -56,8 +54,6 @@ private:
   RectPtr fRect; /// < The desktop rect
   FrameManager* fFrameManager; /// < The frame maanager
   EventMasterUI* fEMUI; /// < The UI which controls the render state (Charge, Time, UnCal etc...)
-  double fRightMargin; /// < Local coord size of right margin
-  double fBottomMargin; /// < Local coord size of bottom margin
 };
 
 } //::Viewer
