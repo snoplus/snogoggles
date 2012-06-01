@@ -116,13 +116,16 @@ PreInitialise()
 {
   XMLPlatformUtils::Initialize();
   DataStore::GetInstance();
-  GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
   RenderState::Initialise();
 }
 
 void 
 PostInitialise()
 {
+  // Forces it to load, should be initialised, PHIL
+  // Needs to be initialized AFTER a window is opened, causes segfaults, OLIVIA
+  GeodesicSphere::GetInstance();
+
   DataStore::GetInstance().Initialise();
 }
 
