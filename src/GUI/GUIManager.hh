@@ -51,7 +51,7 @@ public:
              int guid,
              Rect::ECoordSystem system = Rect::eLocal );
   /// Return a GUI object given the local guiID
-  GUI* GetGUI( unsigned int guiID );
+  GUI* GetGUI( unsigned int guiID ) const;
   /// Delete all GUI objects
   void Clear();
   /// Delete a gui object by ID

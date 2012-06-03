@@ -26,6 +26,8 @@ public:
   
   static double ScaleTime( double time );
 
+  TimeAxis( RectPtr rect ) : PixelImage( rect ) { };
+
   void Fill();
 };
 

@@ -32,11 +32,11 @@ class PixelImage
 public:
   /// Constructor, must pass a Rect. Assumes you want the maximum texture size
   inline PixelImage( RectPtr rect,
-		     const double aspectRatio = 1.0 );
+                     const double aspectRatio = 1.0 );
   /// Constructor, must pass a Rect. Set the texture size
   inline PixelImage( RectPtr rect,
-		     const int width, 
-		     const int height );
+                     const int width, 
+                     const int height );
   /// Clear the texture to the current GUI bg colour
   void Clear();
   /// Clear the texture with a colour
@@ -62,7 +62,7 @@ protected:
 
 inline 
 PixelImage::PixelImage( RectPtr rect,
-			const double aspectRatio )
+                        const double aspectRatio )
   : fLocalRect(rect)
 {
   int totalPixels = 250000.0; // I think this lies static_cast<int>( sf::Texture::GetMaximumSize() ) * 9;
@@ -74,8 +74,8 @@ PixelImage::PixelImage( RectPtr rect,
 
 inline
 PixelImage::PixelImage( RectPtr rect,
-			const int width,
-			const int height )
+                        const int width,
+                        const int height )
   : fLocalRect(rect)
 {
   fWidth = width;

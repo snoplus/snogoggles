@@ -6,7 +6,7 @@ using namespace std;
 #include <Viewer/Desktop.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/FrameManager.hh>
-#include <Viewer/EventMasterUI.hh>
+#include <Viewer/EventPanel.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
@@ -19,7 +19,7 @@ Desktop::Desktop( RectPtr desktopRect )
 
 Desktop::~Desktop()
 {
-  delete fEMUI;
+  delete fEventPanel;
   delete fFrameManager;
 }
 
@@ -27,13 +27,13 @@ void
 Desktop::NewEvent( Event& event )
 {
   // Check the UI first
-  fEMUI->NewEvent( event );
+  fEventPanel->NewEvent( event );
   fFrameManager->NewEvent( event );
 }
 void 
 Desktop::EventLoop()
 {
-  fEMUI->EventLoop();
+  fEventPanel->EventLoop();
   fFrameManager->EventLoop();
 }
 
@@ -42,20 +42,19 @@ Desktop::PreInitialise( const ConfigurationTable* configTable )
 {
   // First initialise the UI
   sf::Rect<double> defaultSize;
-  defaultSize.Left = 1.0 - 0.1; defaultSize.Top = 0.0; defaultSize.Width = 0.1; defaultSize.Height = 1.0 - 2.0 * 0.1;
-  fEMUI = new EventMasterUI( RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) ) );
+  fEventPanel = new EventPanel( RectPtr( fRect->NewDaughter() ) );
   // Now initialise the FrameManager
   defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - 0.1; defaultSize.Height = 1.0;
   RectPtr frameRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
   fFrameManager = new FrameManager( frameRect, 0.1, 0.1 );
   if( configTable != NULL )
     {
-      fEMUI->PreInitialise( configTable->GetTable( "eventMaster" ) );
+      fEventPanel->PreInitialise( configTable->GetTable( "eventPanel" ) );
       fFrameManager->PreInitialise( configTable->GetTable( "frameManager" ) );
     }
   else
     {
-      fEMUI->PreInitialise( NULL );
+      fEventPanel->PreInitialise( NULL );
       fFrameManager->PreInitialise( NULL );
     }
 }
@@ -65,12 +64,12 @@ Desktop::PostInitialise( const ConfigurationTable* configTable )
 {
   if( configTable != NULL )
     {
-      fEMUI->PostInitialise( configTable->GetTable( "eventMaster" ) );
+      fEventPanel->PostInitialise( configTable->GetTable( "eventPanel" ) );
       fFrameManager->PostInitialise( configTable->GetTable( "frameManager" ) );
     }
   else
     {
-      fEMUI->PostInitialise( NULL );
+      fEventPanel->PostInitialise( NULL );
       fFrameManager->PostInitialise( NULL );
     }
 }
@@ -78,8 +77,8 @@ Desktop::PostInitialise( const ConfigurationTable* configTable )
 void 
 Desktop::SaveConfiguration( ConfigurationTable* configTable )
 {
-  ConfigurationTable* emTable = configTable->NewTable( "eventMaster" );
-  fEMUI->SaveConfiguration( emTable );
+  ConfigurationTable* emTable = configTable->NewTable( "eventPanel" );
+  fEventPanel->SaveConfiguration( emTable );
   ConfigurationTable* fmTable = configTable->NewTable( "frameManager" );
   fFrameManager->SaveConfiguration( fmTable );
 }
@@ -87,21 +86,21 @@ Desktop::SaveConfiguration( ConfigurationTable* configTable )
 void 
 Desktop::Render2d( RWWrapper& renderApp )
 {
-  RenderState renderState = fEMUI->GetRenderState();
+  const RenderState renderState = fEventPanel->GetRenderState();
   fFrameManager->Render2d( renderApp, renderState );
 }
 
 void 
 Desktop::Render3d( RWWrapper& renderApp )
 {
-  RenderState renderState = fEMUI->GetRenderState();
+  const RenderState renderState = fEventPanel->GetRenderState();
   fFrameManager->Render3d( renderApp, renderState );
 }
 
 void 
 Desktop::RenderGUI( RWWrapper& renderApp )
 {
-  RenderState renderState = fEMUI->GetRenderState();
+  const RenderState renderState = fEventPanel->GetRenderState();
   fFrameManager->RenderGUI( renderApp, renderState );
-  fEMUI->Render( renderApp );
+  fEventPanel->Render( renderApp );
 }
