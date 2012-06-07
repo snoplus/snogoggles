@@ -27,12 +27,12 @@ RadioSelector::Initialise( const vector<string>& options )
   const double rowSpacing = 2.0;
 
   sf::Rect<double> size;
-  size.Left = 0.0;
+  size.Left = fullSize.Left;
   size.Width = fullSize.Width;
   size.Height = rowHeight - rowSpacing;
   for( int iLabel = 0; iLabel < options.size(); iLabel++ )
     {
-      size.Top = rowHeight * iLabel;
+      size.Top = rowHeight * iLabel + fullSize.Top;
       fPersistLabels.push_back( fGUIManager.NewGUI<GUIs::PersistLabel>( size, Rect::eResolution ) );
       dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( iLabel ) )->Initialise( 12, options[iLabel] );
     }

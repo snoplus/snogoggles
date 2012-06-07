@@ -12,7 +12,7 @@ using namespace Viewer::GUIs;
 
 PersistLabel::PersistLabel( RectPtr rect, 
                             unsigned int guiID )
-  : GUI( rect, guiID ), fPersist( RectPtr( rect->NewDaughter() ), 0 ), fText( RectPtr( rect->NewDaughter() ) )
+  : GUI( rect, guiID ), fPersist( RectPtr( rect->NewDaughter() ), guiID ), fText( RectPtr( rect->NewDaughter() ) )
 {
   sf::Rect<double> size = rect->GetRect( Rect::eResolution );
   sf::Rect<double> buttonSize = size;

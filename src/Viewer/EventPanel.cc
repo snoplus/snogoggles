@@ -6,8 +6,9 @@ using namespace std;
 #include <Viewer/Event.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
-#include <Viewer/Button.hh>
 #include <Viewer/DataStore.hh>
+#include <Viewer/Button.hh>
+#include <Viewer/RadioSelector.hh>
 using namespace Viewer;
 
 EventPanel::EventPanel( RectPtr rect )
@@ -76,16 +77,35 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
         {
           sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
           int effect = objectConfig->GetI( "effect" );
-          if( effect == 0 )
+          switch( effect )
             {
-              fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 10 );
-            }
-          else if( effect == 1 )
-            {
-              fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+            case 0:
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
               dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 11 );
+              break;
+            case 1:
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 10 );
+              break;
+            case 2:
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
+                vector<string> sourceOptions;
+                sourceOptions.push_back( "MC" ); sourceOptions.push_back( "Truth" );
+                sourceOptions.push_back( "UnCal" ); sourceOptions.push_back( "Cal" ); sourceOptions.push_back( "Script" );
+                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( sourceOptions );
+              }
+              break;
+            case 3:
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
+                vector<string> typeOptions;
+                typeOptions.push_back( "TAC" ); typeOptions.push_back( "QHL" ); typeOptions.push_back( "QHS" ); typeOptions.push_back( "QLX" );
+                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( typeOptions );
+              }
+              break;
             }
+          
         }
     }
 }
