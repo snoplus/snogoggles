@@ -54,7 +54,9 @@ Selector::NewEvent( const Event& event )
         fState = ( fState + 1 ) % fOptions.size();
        if( returnedEvent.fguiID == 1 ) // Prev option
         fState = ( fState - 1 ) % fOptions.size();
+       return GUIEvent( fID, fGlobalID );
     }
+  return GUIEvent();
 }
 
 void 
