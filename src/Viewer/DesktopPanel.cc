@@ -52,7 +52,6 @@ DesktopPanel::EventLoop()
       for( unsigned int iDesktop = 10; iDesktop < 10 + GUIProperties::GetInstance().GetNumDesktops(); iDesktop++ )
         if( iDesktop != fCurrentDesktop + 10 )
           dynamic_cast<GUIs::Persist*>( fGUIs[iDesktop] )->SetState( false );
-      //      switch( fEvents.front().fguiID )
       fEvents.pop();
     }
   if( fLabels.count( 0 ) )

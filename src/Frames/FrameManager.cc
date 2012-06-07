@@ -9,32 +9,27 @@ using namespace std;
 #include <Viewer/FrameContainer.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/Event.hh>
-#include <Viewer/FrameMasterUI.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 
-FrameManager::FrameManager( RectPtr rect,
-                            double rightMargin,
-                            double bottomMargin )
-  : fRect( rect ), fRightMargin( rightMargin ), fBottomMargin( bottomMargin ), fFrameFactory( rect )
+FrameManager::FrameManager( RectPtr rect )
+  : fRect( rect ), fFrameFactory( rect )
 {
-
+  const ConfigurationTable* guiConfig = GUIProperties::GetInstance().GetConfiguration( "FrameManager" );
+  sf::Rect<double> frameRect( guiConfig->GetD( "x" ), guiConfig->GetD( "y" ), guiConfig->GetD( "width" ), guiConfig->GetD( "height" ) );
+  fRect->SetRect( frameRect, Rect::eLocal );
 }
 
 FrameManager::~FrameManager()
 {
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
     delete *iTer;
-  delete fgRect;
-  delete fFMUI;
 }
 
 void
 FrameManager::NewEvent( const Event& event )
 {
-  if( fFMUI->ContainsPoint( event.GetPos() ) ) // TO REMOVE with panels
-    fFMUI->NewEvent( event ); // TO REMOVE with panels
-
   int oldFocus = fFocus;
   FrameEvent eventReturned;
   switch( fState )
@@ -129,7 +124,6 @@ void
 FrameManager::EventLoop()
 {
   // Now pass on to the frames
-  fFMUI->EventLoop();
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
     (*iTer)->EventLoop();
 }
@@ -137,15 +131,6 @@ FrameManager::EventLoop()
 void 
 FrameManager::PreInitialise( const ConfigurationTable* configTable )
 {
-  // First create the frame grid
-  sf::Rect<double> defaultSize;
-  defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0 - fBottomMargin;
-  fgRect = new RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
-  // Then initialise the UI
-  defaultSize.Left = 0.0; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = fBottomMargin;
-  RectPtr fmRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
-  fFMUI = new FrameMasterUI( fmRect, *fgRect, this );
-  fFMUI->PreInitialise( configTable);
   // Now set the state
   fFocus = -1;
   fState = eNormal;
@@ -164,7 +149,6 @@ FrameManager::PreInitialise( const ConfigurationTable* configTable )
 void 
 FrameManager::PostInitialise( const ConfigurationTable* configTable )
 {
-  fFMUI->PostInitialise( configTable );
   if( configTable != NULL )
     {
       for( unsigned int uFrame = 0; uFrame < configTable->GetNumTables(); uFrame++ )
@@ -212,7 +196,6 @@ FrameManager::RenderGUI( RWWrapper& renderApp,
 {
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
     (*iTer)->RenderGUI( renderApp, renderState );
-  fFMUI->Render( renderApp );
 }
 
 int 
@@ -229,7 +212,7 @@ void
 FrameManager::NewFrame( Frame* frame )
 {
   sf::Rect<double> rect( 0.0, 1.0, 121.0, 121.0 );
-  RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eResolution ) );
+  RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eResolution ) );
   FrameContainer* newFrame = new FrameContainer( rectPtr );
   newFrame->SetFrame( frame );
   newFrame->PreInitialise( NULL );
@@ -252,7 +235,7 @@ FrameManager::NewFrame( unsigned int uFrame,
                         const ConfigurationTable* configTable )
 {
   sf::Rect<double> rect;
-  RectPtr rectPtr( (*fgRect)->NewDaughter( rect, Rect::eLocal ) );
+  RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eLocal ) );
   FrameContainer* newFrame = new FrameContainer( rectPtr );
   newFrame->SetFrame( frame );
   newFrame->PreInitialise( configTable );

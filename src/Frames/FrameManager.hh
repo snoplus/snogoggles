@@ -31,7 +31,6 @@ namespace Viewer
   class Event;
   class RenderState;
   class FrameContainer;
-  class FrameMasterUI;
   class ConfigurationTable;
   class RWWrapper;
   class Frame;
@@ -42,9 +41,7 @@ public:
   /// State of the Frame manager (is it moving a frame)
   enum EState { eNormal, eMoving, eResizing };
 
-  FrameManager( RectPtr rect,
-                double rightMargin,
-                double bottomMargin );
+  FrameManager( RectPtr rect );
 
   virtual ~FrameManager();
   /// Deal with a new UI event
@@ -92,15 +89,11 @@ private:
 
   FrameFactory fFrameFactory; /// < The frame factory
   RectPtr fRect; /// < The frame manager rect
-  RectPtr* fgRect; /// < The frame grid area rect
-  FrameMasterUI* fFMUI; /// < The UI that controls which frames should be created.
   std::vector<FrameContainer*> fFrameContainers; /// < The frames themselves.
   sf::Vector2<double> fPressPosition; /// < Position (resolution) when mouse was pressed
   sf::Vector2<double> fPressOffset; /// < Vector between fPressPosition and frame top left on press, from top left to press pos
   int fFocus; /// < The current frame focus
   EState fState; /// < Current Frame manager state
-  double fBottomMargin; /// < Local coord size of bottom margin
-  double fRightMargin; /// < Local coord size of right margin
 };
 
 inline bool
