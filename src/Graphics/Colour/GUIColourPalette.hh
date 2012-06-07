@@ -34,6 +34,8 @@ public:
   void Load( const std::string& fileName );
   /// Get the background colour, no states here
   Colour GetBackground() const;
+  /// Get the text colour, no states here
+  Colour GetText() const;
   /// Get the colour for state
   Colour GetA( EGUIState state ) const { return fA.find(state)->second; };
   Colour GetB( EGUIState state ) const { return fB.find(state)->second; };
@@ -47,6 +49,8 @@ private:
   /// The comment refers to suggested usage, the code and images define the actual usage.
   Colour fBackground; /// < Background colour
   Colour fInvBackground; /// < Inverted background colour
+  Colour fText; /// < Text colour
+  Colour fInvText; /// < Inverted text colour
   bool fInverted; /// < Invert the background colour
   std::map< EGUIState, Colour > fA; /// < This is the effective fill colour
   std::map< EGUIState, Colour > fB; /// < This is the effective accent colour (text)

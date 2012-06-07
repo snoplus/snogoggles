@@ -1,74 +1,49 @@
-#include <SFML/Graphics/Rect.hpp>
-
 using namespace std;
 
+#include <SFML/Graphics/Texture.hpp>
+
 #include <Viewer/Selector.hh>
-#include <Viewer/GUIImageButton.hh>
-#include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/Event.hh>
 #include <Viewer/GUIProperties.hh>
+#include <Viewer/Sprite.hh>
+#include <Viewer/Text.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
+Selector::Selector( RectPtr rect, 
+                    unsigned int guiID )
+  : GUI( rect, guiID ), fText( RectPtr( rect->NewDaughter() ) ), fGUIManager( rect )
+{
+  sf::Rect<double> size = rect->GetRect( Rect::eResolution );
+  sf::Rect<double> textSize = size;
+  textSize.Width = size.Width - 2.0 * size.Height;
+  textSize.Left = size.Height + size.Left;
+  fText.GetRect()->SetRect( textSize, Rect::eResolution );
+  string temp( "Check Box" );
+  fText.SetString( temp );
+}
+
 Selector::~Selector()
 {
-  delete fNext, fPrev, fText;
+
 }
 
-void 
-Selector::Initialise( const vector<string>& labels )
+void
+Selector::Initialise( vector<string> options )
 {
-  sf::Rect<double> size;
-  size.Left = 0.0; size.Top = 0.0; size.Width = 1.0; size.Height = 1.0;
-  fOptions = labels;
-  size.Left = 0.9;
-  size.Width = 0.1;
-  fNext = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) , 0 );
-  fNext->Initialise( eIncrease );
-  size.Left = 0.0;
-  fPrev = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) , 1 );
-  fPrev->Initialise( eDecrease );
-  size.Left = 0.1; size.Width = 0.8;
-  fText = new Text( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
-  fCurrentOption = 0;
-  fText->SetString( fOptions[fCurrentOption] );
-}
-
-void 
-Selector::Render( RWWrapper& renderApp )
-{
-  fNext->Render( renderApp );
-  fPrev->Render( renderApp );
-  fText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
-  renderApp.Draw( *fText );
+  fOptions = options;
 }
 
 GUIEvent 
 Selector::NewEvent( const Event& event )
 {
-  GUIEvent retEvent; // Defaul NULL
-  // Broadcast lost focus events to all, otherwise find which to broadcast to
-  if( event.Type == sf::Event::MouseButtonReleased )
-    {
-      if( fNext->ContainsPoint( event.GetPos() ) )
-	fCurrentOption = ( fCurrentOption + 1 ) % fOptions.size();
-      else if( fPrev->ContainsPoint( event.GetPos() ) )
-	fCurrentOption = ( fCurrentOption - 1 ) % fOptions.size();
-      retEvent = GUIEvent( fID, fGlobalID );
-    }
-  fText->SetString( fOptions[fCurrentOption] );
-  return retEvent;
+  return fGUIManager.NewEvent( event );
 }
 
-unsigned int
-Selector::GetState() const
+void 
+Selector::Render( RWWrapper& renderApp )
 {
-  return fCurrentOption;
-}
 
-void
-Selector::SetState( unsigned int state )
-{
-  fCurrentOption = state;
+  fText.SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
+  renderApp.Draw( fText );
 }

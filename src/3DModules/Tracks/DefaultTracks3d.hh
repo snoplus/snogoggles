@@ -27,7 +27,7 @@
 
 namespace Viewer {
     namespace GUIs {
-        class CheckBoxLabel;
+        class PersistLabel;
     };
 
     class ConfigurationTable;
@@ -67,8 +67,8 @@ private:
     static const std::string VIS_MAP;
 
     /// Map containing the supported particle types.
-    std::map< std::string, GUIs::CheckBoxLabel* > fGUIs;
-    GUIs::CheckBoxLabel* fFullTrackGUI;
+    std::map< std::string, GUIs::PersistLabel* > fGUIs;
+    GUIs::PersistLabel* fFullTrackGUI;
 
     TrackBuffer fTrackBuffer;
     int fSize;

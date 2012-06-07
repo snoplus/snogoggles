@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIs::Selector
+/// \class Viewer::GUIs::PersistLabel
 ///
 /// \brief   Label with a check box next to it
 ///
@@ -13,63 +13,53 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIs_Selector__
-#define __Viewer_GUIs_Selector__
+#ifndef __Viewer_GUIs_PersistLabel__
+#define __Viewer_GUIs_PersistLabel__
 
 #include <string>
 
 #include <Viewer/GUI.hh>
+#include <Viewer/Persist.hh>
 #include <Viewer/RectPtr.hh>
 #include <Viewer/Text.hh>
-#include <Viewer/GUIManager.hh>
 
 namespace Viewer
 { 
-  class Button;
   class RWWrapper;
 
 namespace GUIs
 {
 
-class Selector : public GUI
+class PersistLabel : public GUI
 {
 public:
-  Selector( RectPtr rect, unsigned int guiID );
-  virtual ~Selector();
+  PersistLabel( RectPtr rect, unsigned int guiID );
+  virtual ~PersistLabel();
 
-  void Initialise( std::vector<std::string> options );
+  void Initialise( unsigned int textureNumber, 
+                   const std::string& label );
+  void SetLabel( const std::string& label ); //REMOVE ME
 
   GUIEvent NewEvent( const Event& event );
   void Render( RWWrapper& windowApp );
   
-  inline void SetState( unsigned int state );
-  inline unsigned int GetState() const;
-  inline std::string GetStringState() const;
+  inline void SetState( bool state );
+  inline bool GetState() const;
 protected:
-  GUIManager fGUIManager;
-  std::vector<std::string> fOptions;
-  Button* fLeft;
-  Button* fRight;
+  Persist fPersist;
   Text fText;
-  unsigned int fState;
 };
 
 void
-Selector::SetState( unsigned int state )
+PersistLabel::SetState( bool state )
 {
-  fState = state;
+  fPersist.SetState( state );
 }
 
-unsigned int
-Selector::GetState() const
+bool
+PersistLabel::GetState() const
 {
-  return fState;
-}
-
-std::string
-Selector::GetStringState() const
-{
-  return fOptions[fState];
+  return fPersist.GetState();
 }
 
 } // ::GUIs

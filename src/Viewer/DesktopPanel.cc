@@ -5,7 +5,7 @@ using namespace std;
 #include <Viewer/DesktopPanel.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/GUIImageButton.hh>
+#include <Viewer/Persist.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
@@ -73,8 +73,8 @@ DesktopPanel::LoadGUIConfiguration( const ConfigurationTable* config )
       if( objectConfig->GetName() == string( "gui" ) )
         {
           sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
-          fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::GUIImageButton >( posRect, objectConfig->GetI( "effect" ) );
-          dynamic_cast<GUIs::GUIImageButton*>( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( eOpenBox );
+          fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Persist >( posRect, objectConfig->GetI( "effect" ) );
+          dynamic_cast<GUIs::Persist*>( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( 12 );
         }
     }
 }

@@ -24,7 +24,7 @@
 
 namespace Viewer {
 	namespace GUIs {
-		class CheckBoxLabel;
+		class PersistLabel;
 	}; // namespace GUIs
 
 namespace Frames {
@@ -57,7 +57,7 @@ private:
     TVector3 fZPoint;
 
 	bool fDisplay;
-	GUIs::CheckBoxLabel* fDisplayGUI;
+	GUIs::PersistLabel* fDisplayGUI;
 
 }; // class Axes3d
 

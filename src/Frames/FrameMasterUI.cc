@@ -2,7 +2,7 @@
 using namespace std;
 
 #include <Viewer/FrameMasterUI.hh>
-#include <Viewer/NewFrameButton.hh>
+#include <Viewer/ButtonLabel.hh>
 #include <Viewer/FrameManager.hh>
 using namespace Viewer;
 
@@ -59,8 +59,8 @@ FrameMasterUI::PreInitialise( const ConfigurationTable* configTable )
 
       size.Left = ( colWidth + colSpacing ) * ( iFrame / numRows ) + fullSize.Left;
       size.Top = ( rowHeight + rowSpacing ) * ( iFrame % numRows ) + fullSize.Top;
-      fButtons.push_back( fGUIManager.NewGUI<GUIs::NewFrameButton>( size, Rect::eResolution ) );
-      fButtons[iFrame]->Initialise( frameNames[iFrame] );
+      fButtons.push_back( fGUIManager.NewGUI<GUIs::ButtonLabel>( size, Rect::eResolution ) );
+      fButtons[iFrame]->Initialise( 2, frameNames[iFrame] );
     }
 }
 

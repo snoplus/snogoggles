@@ -4,23 +4,27 @@
     <normal  r="255" g="255" b="255"/>
     <inverted r="0" g="0" b="0"/>
   </Background>
+  <Text>
+    <normal r="0" g="0" b="0"/>
+    <inverted  r="255" g="255" b="255"/>
+  </Text>
   <ColourA>
-    <base r="96" g="75" b="216"/>
+    <base r="0" g="48" b="255"/>
     <highlight r="128" g="112" b="216"/>
     <active r="96" g="75" b="216"/>
   </ColourA>
   <ColourB>
-    <base r="255" g="255" b="255"/>
+    <base r="214" g="223" b="255"/>
     <highlight r="158" g="0" b="22"/>
     <active r="255" g="227" b="115"/>
   </ColourB>
   <ColourC>
-    <base r="255" g="255" b="255"/>
+    <base r="123" g="154" b="255"/>
     <highlight r="255" g="255" b="255"/>
     <active r="255" g="255" b="255"/>
   </ColourC>
   <ColourD>
-    <base r="255" g="255" b="255"/>
+    <base r="173" g="173" b="173"/>
     <highlight r="255" g="255" b="255"/>
     <active r="255" g="255" b="255"/>
   </ColourD>

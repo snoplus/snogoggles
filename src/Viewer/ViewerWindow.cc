@@ -8,7 +8,7 @@ using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/TextureManager.hh>
-#include <Viewer/GUITextureManager.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/RectPtr.hh>
@@ -97,7 +97,7 @@ ViewerWindow::Destruct()
 {
   // Must delete textures before the window, or get sfml segfault
   TextureManager::GetInstance().ClearTextures();
-  GUITextureManager::GetInstance().ClearTextures();
+  GUIProperties::GetInstance().Destruct();
   delete fDesktopManager;
   fWindowApp->Close();
   delete fWindowApp;

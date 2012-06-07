@@ -6,7 +6,7 @@ using namespace std;
 #include <Viewer/Event.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
-#include <Viewer/GUIImageButton.hh>
+#include <Viewer/Button.hh>
 #include <Viewer/DataStore.hh>
 using namespace Viewer;
 
@@ -78,13 +78,13 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
           int effect = objectConfig->GetI( "effect" );
           if( effect == 0 )
             {
-              fGUIs[effect]  = fGUIManager.NewGUI< GUIs::GUIImageButton >( posRect, effect );
-              dynamic_cast<GUIs::GUIImageButton*>( fGUIs[effect] )->Initialise( eDecrease );
+              fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 10 );
             }
           else if( effect == 1 )
             {
-              fGUIs[effect]  = fGUIManager.NewGUI< GUIs::GUIImageButton >( posRect, effect );
-              dynamic_cast<GUIs::GUIImageButton*>( fGUIs[effect] )->Initialise( eIncrease );
+              fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 11 );
             }
         }
     }

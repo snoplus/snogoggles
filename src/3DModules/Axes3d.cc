@@ -2,7 +2,7 @@
 #include <Viewer/Colour.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/ConfigTableUtils.hh>
 
 #include <SFML/OpenGL.hpp>
@@ -27,7 +27,7 @@ Axes3d::Axes3d( double length )
 void Axes3d::CreateGUIObjects( GUIManager& g, const sf::Rect< double >& optionsArea )
 {
 	sf::Rect< double > rect = optionsArea;
-	fDisplayGUI = g.NewGUI< GUIs::CheckBoxLabel >( rect );
+	fDisplayGUI = g.NewGUI< GUIs::PersistLabel >( rect );
 	fDisplayGUI->SetState( fDisplay );
 	fDisplayGUI->SetLabel( "Display Axes" );
 }

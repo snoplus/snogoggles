@@ -24,7 +24,7 @@ namespace Viewer
   class RenderState;
 namespace GUIs
 {
-  class CheckBoxLabel;
+  class PersistLabel;
 }
 
 namespace Frames
@@ -48,7 +48,7 @@ public:
 
 protected:
   
-  GUIs::CheckBoxLabel* fLogYBox;
+  GUIs::PersistLabel* fLogYBox;
   Text* fMinX;
   Text* fMaxX;
   Text* fMinY;

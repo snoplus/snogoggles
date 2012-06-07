@@ -5,7 +5,7 @@ using namespace std;
 
 #include <Viewer/Histogram.hh>
 #include <Viewer/Text.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/GUIProperties.hh>
 using namespace Viewer;
@@ -31,7 +31,7 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
   size.Left = 0.9;
   fMaxX = new Text( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   size.Left = 0.9; size.Top = 0.0; size.Width = 0.1; size.Height = 0.025;
-  fLogYBox = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( size, Rect::eLocal );
+  fLogYBox = fGUIManager.NewGUI<GUIs::PersistLabel>( size, Rect::eLocal );
   fLogYBox->SetLabel( "Log_10 Y?" );
 }
 

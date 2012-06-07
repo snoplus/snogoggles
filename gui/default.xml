@@ -7,6 +7,10 @@
     <colour filename="default.xml" name="Rainbow"/>
     <colour filename="greyscale.xml" name="Greyscale"/>
   </Colours>
+  <FontRing>
+    <ring id="0" pixel="20"/>
+    <ring id="1" size="0.1"/>
+  </FontRing>
   <GUIPanel x="0.9" y="0.5" width="0.1" height="0.5">
     <gui effect="0" x="0.1" y="0.1" width="0.5" height="0.1" font-ring="0" />
     <gui effect="1" x="0.1" y="0.5" width="0.5" height="0.1" font-ring="0" />

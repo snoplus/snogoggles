@@ -1,6 +1,6 @@
 #include <Viewer/Geodesic3d.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/GeodesicSphere.hh>
 
 namespace Viewer {
@@ -19,7 +19,7 @@ void Geodesic3d::LoadFile()
 void Geodesic3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     sf::Rect< double > rect( optionsArea );
-    fDisplayGUI = g.NewGUI< GUIs::CheckBoxLabel >( rect );
+    fDisplayGUI = g.NewGUI< GUIs::PersistLabel >( rect );
     fDisplayGUI->SetLabel( "Geodesic Geo" );
     fDisplayGUI->SetState( true );
 }

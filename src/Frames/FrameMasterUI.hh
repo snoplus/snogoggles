@@ -34,7 +34,7 @@ namespace Viewer
 
 namespace GUIs
 {
-  class NewFrameButton;
+  class ButtonLabel;
 }
 
 class FrameMasterUI
@@ -62,7 +62,7 @@ private:
   RectPtr fRect; /// < The DMUI drawable area
   FrameFactory fFrameFactory; /// < Frame factory, contains frame types
   FrameManager* fFrameManager; /// < Pointer to the associated frame manager
-  std::vector<GUIs::NewFrameButton*> fButtons; /// < Vector of frame buttons
+  std::vector<GUIs::ButtonLabel*> fButtons; /// < Vector of frame buttons
   std::queue<GUIEvent> fEvents; /// < The events from the GUI objects
 };
 

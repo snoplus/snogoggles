@@ -26,6 +26,15 @@ GUIColourPalette::GetBackground() const
     return fBackground;
 }
 
+Colour
+GUIColourPalette::GetText() const
+{
+  if( fInverted )
+    return fInvText;
+  else
+    return fText;
+}
+
 void 
 GUIColourPalette::Load( const std::string& fileName )
 {
@@ -39,6 +48,11 @@ GUIColourPalette::Load( const std::string& fileName )
     const ConfigurationTable* config = rootTable->GetTable( "Background" );
     fBackground = Colour( config->GetTable( "normal" ) );
     fInvBackground = Colour( config->GetTable( "inverted" ) );
+  }
+  {
+    const ConfigurationTable* config = rootTable->GetTable( "Text" );
+    fText = Colour( config->GetTable( "normal" ) );
+    fInvText = Colour( config->GetTable( "inverted" ) );
   }
   {
     const ConfigurationTable* config = rootTable->GetTable( "ColourA" );

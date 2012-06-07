@@ -17,6 +17,7 @@
 #define __Viewer_GUIProperties__
 
 #include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUITextureManager.hh>
 #include <Viewer/ColourPalette.hh>
 
 namespace Viewer
@@ -44,6 +45,8 @@ public:
   inline void LoadGUIColourPalette( const std::string& filename );
   /// Load new colour scheme
   inline void LoadColourPalette( const std::string& filename );
+  /// Get the gui texture manager
+  inline const GUITextureManager& GetGUITextures() const;
   /// Get the current gui colour scheme
   inline const GUIColourPalette& GetGUIColourPalette() const;
   /// Get the current colour scheme
@@ -54,6 +57,7 @@ public:
 private:
   GUIProperties();
 
+  GUITextureManager fGUITextures; /// < Manages the gui textures
   GUIColourPalette fGUIColourPalette; /// < The gui colour palette
   ColourPalette fColourPalette; /// < The general colour palette
   ConfigurationFile* fGUIConfiguration; /// < The stored gui configuration xml data
@@ -81,6 +85,12 @@ inline void
 GUIProperties::LoadColourPalette( const std::string& filename )
 {
   fColourPalette.Load( filename );
+}
+
+inline const GUITextureManager&
+GUIProperties::GetGUITextures() const
+{
+  return fGUITextures;
 }
 
 inline const GUIColourPalette&

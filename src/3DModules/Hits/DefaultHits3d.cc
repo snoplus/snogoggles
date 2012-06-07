@@ -3,7 +3,7 @@
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/RIDS/EV.hh>
 #include <Viewer/RIDS/PMTHit.hh>
@@ -32,12 +32,12 @@ DefaultHits3d::DefaultHits3d()
 void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width / 2.2, optionsArea.Height); 
-    fAllPMTsGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fAllPMTsGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fAllPMTsGUI->SetLabel( "Display All PMTs" );
     fAllPMTsGUI->SetState( fDisplayAllPMTs );
 
     rect.Left += optionsArea.Width/2;
-    fFrontGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fFrontGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fFrontGUI->SetLabel( "Show Front PMTs Only" );
     fFrontGUI->SetState( fDisplayFrontPMTsOnly );
 }
