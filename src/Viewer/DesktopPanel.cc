@@ -1,5 +1,6 @@
 #include <SFML/Window/Event.hpp>
 
+#include <sstream>
 using namespace std;
 
 #include <Viewer/DesktopPanel.hh>
@@ -8,6 +9,7 @@ using namespace std;
 #include <Viewer/Persist.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/Text.hh>
 using namespace Viewer;
 
 DesktopPanel::DesktopPanel( RectPtr rect )
@@ -47,8 +49,17 @@ DesktopPanel::EventLoop()
     {
       if( fEvents.front().fguiID >= 10 && fEvents.front().fguiID < 10 + GUIProperties::GetInstance().GetNumDesktops() )
         fCurrentDesktop = fEvents.front().fguiID - 10;
+      for( unsigned int iDesktop = 10; iDesktop < 10 + GUIProperties::GetInstance().GetNumDesktops(); iDesktop++ )
+        if( iDesktop != fCurrentDesktop + 10 )
+          dynamic_cast<GUIs::Persist*>( fGUIs[iDesktop] )->SetState( false );
       //      switch( fEvents.front().fguiID )
       fEvents.pop();
+    }
+  if( fLabels.count( 0 ) )
+    {
+      stringstream temp;
+      temp << fCurrentDesktop;
+      fLabels[0]->SetString( temp.str() );
     }
 }
 
@@ -56,6 +67,7 @@ void
 DesktopPanel::PreInitialise( const ConfigurationTable* configTable )
 {
   Panel::PreInitialise( configTable );
+  dynamic_cast<GUIs::Persist*>( fGUIs[fCurrentDesktop + 10] )->SetState( true );
 }
 
 void
