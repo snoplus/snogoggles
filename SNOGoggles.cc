@@ -116,13 +116,13 @@ PreInitialise()
 {
   XMLPlatformUtils::Initialize();
   DataStore::GetInstance();
-  GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
   RenderState::Initialise();
 }
 
 void 
 PostInitialise()
 {
+  GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
   DataStore::GetInstance().Initialise();
 }
 
