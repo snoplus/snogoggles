@@ -219,11 +219,15 @@ FrameManager::NewFrame( Frame* frame )
   newFrame->PostInitialise( NULL );
   fFrameContainers.push_back( newFrame );
   int frameID = fFrameContainers.size() - 1;
-  for( double x = 0.0; x < fRect->GetRect( Rect::eResolution ).Width; x += 1.0 )
+  for( double x = 0.1; x < fRect->GetRect( Rect::eResolution ).Width; x += 10.0 )
     {
-      rect.Left = x;
-      if( UpdateFrameRect( frameID, rect ) )
-        return;
+      for( double y = 0.1; y < fRect->GetRect( Rect::eResolution ).Height; y += 10.0 )
+        {
+          rect.Left = x;
+          rect.Top = y;
+          if( UpdateFrameRect( frameID, rect ) )
+            return;
+        }
     }
   // If we get here, must delete frame
   DeleteFrame( frameID );

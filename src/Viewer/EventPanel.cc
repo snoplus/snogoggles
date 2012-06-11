@@ -39,6 +39,7 @@ EventPanel::NewEvent( const Event& event )
 void
 EventPanel::EventLoop()
 {
+  fRenderState.Reset(); // Reset the changed information
   DataStore& events = DataStore::GetInstance();
   while( !fEvents.empty() )
     {
@@ -49,6 +50,11 @@ EventPanel::EventLoop()
           break;
         case 1: // Next
           events.Next();
+          break;
+        case 2: // Source change
+        case 3: // Type change
+          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
+                                    dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
           break;
         }
       fEvents.pop();
@@ -91,17 +97,13 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
                 vector<string> sourceOptions;
-                sourceOptions.push_back( "MC" ); sourceOptions.push_back( "Truth" );
-                sourceOptions.push_back( "UnCal" ); sourceOptions.push_back( "Cal" ); sourceOptions.push_back( "Script" );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( sourceOptions );
+                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetSourceStrings() );
               }
               break;
             case 3:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                vector<string> typeOptions;
-                typeOptions.push_back( "TAC" ); typeOptions.push_back( "QHL" ); typeOptions.push_back( "QHS" ); typeOptions.push_back( "QLX" );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( typeOptions );
+                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetTypeStrings() );
               }
               break;
             }

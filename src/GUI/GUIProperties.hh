@@ -53,7 +53,7 @@ public:
   inline const ColourPalette& GetColourPalette() const;
 
   inline void Reset();
-  inline bool Changed() const;
+  inline bool HasChanged() const;
 private:
   GUIProperties();
 
@@ -103,6 +103,18 @@ inline const ColourPalette&
 GUIProperties::GetColourPalette() const
 {
   return fColourPalette;
+}
+
+inline bool
+GUIProperties::HasChanged() const
+{
+  return fChanged;
+}
+
+inline void
+GUIProperties::Reset()
+{
+  fChanged = false;
 }
 
 } // ::Viewer

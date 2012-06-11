@@ -8,7 +8,7 @@ using namespace Viewer;
 
 GUIProperties::GUIProperties()
 {
-  
+  fChanged = true;
 }
 
 GUIProperties::~GUIProperties()
