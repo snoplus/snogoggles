@@ -44,7 +44,7 @@ public:
   Colour GetE( EGUIState state ) const { return fE.find(state)->second; };
   Colour GetF( EGUIState state ) const { return fF.find(state)->second; };
   /// Switch the background colour
-  void SwitchBackground() { fInverted = !fInverted; };
+  void Invert() { fInverted = !fInverted; };
 private:
   /// The comment refers to suggested usage, the code and images define the actual usage.
   Colour fBackground; /// < Background colour

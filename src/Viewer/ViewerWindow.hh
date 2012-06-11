@@ -31,6 +31,7 @@ namespace Viewer
   class Rect;
   class DesktopManager;
   class ConfigurationTable;
+  class RWWrapper;
 
 class ViewerWindow
 {
@@ -67,6 +68,7 @@ private:
   DesktopManager* fDesktopManager; /// < Manages which desktop is shown
   Rect* fMotherRect; /// < The global mother rect
   sf::RenderWindow* fWindowApp; /// < The sfml window to draw on
+  RWWrapper* fRWWrapper; /// < The render wrapper
 };
 
 inline ViewerWindow&

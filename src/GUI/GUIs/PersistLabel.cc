@@ -42,7 +42,7 @@ PersistLabel::Initialise( unsigned int textureNumber,
 void
 PersistLabel::SetLabel( const string& label )
 {
-  Initialise( 12, label );
+  Initialise( 14, label );
 }
 
 GUIEvent 

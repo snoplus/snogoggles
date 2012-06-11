@@ -68,6 +68,7 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   // Now start building the desktop and frames
   fDesktopManager = new DesktopManager( RectPtr( fMotherRect ) );
   fDesktopManager->PreInitialise( configTable );
+  fRWWrapper = new RWWrapper( *fWindowApp );
 }
 
 void
@@ -99,6 +100,7 @@ ViewerWindow::Destruct()
   TextureManager::GetInstance().ClearTextures();
   delete fDesktopManager;
   fWindowApp->Close();
+  delete fRWWrapper;
   delete fWindowApp;
 }
 
@@ -142,6 +144,7 @@ ViewerWindow::EventLoop()
 void
 ViewerWindow::RenderLoop()
 {
+  fRWWrapper->NewFrame();
   fWindowApp->SetActive();
   SetGlobalGLStates();
 
@@ -149,12 +152,10 @@ ViewerWindow::RenderLoop()
   // This SFML call is unnecessary.
   //fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
 
-  RWWrapper renderApp( *fWindowApp );
-
-  fDesktopManager->Render3d( renderApp );
+  fDesktopManager->Render3d( *fRWWrapper );
   fWindowApp->PushGLStates(); // This call seems to be necessary.
-  fDesktopManager->Render2d( renderApp );
-  fDesktopManager->RenderGUI( renderApp );
+  fDesktopManager->Render2d( *fRWWrapper );
+  fDesktopManager->RenderGUI( *fRWWrapper );
   fWindowApp->PopGLStates(); // Matches the save call above.
 
   fWindowApp->Display();

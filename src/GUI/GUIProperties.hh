@@ -45,6 +45,8 @@ public:
   inline void LoadGUIColourPalette( const std::string& filename );
   /// Load new colour scheme
   inline void LoadColourPalette( const std::string& filename );
+  /// Invert the gui colour scheme
+  inline void InvertGUI();
   /// Get the gui texture manager
   inline const GUITextureManager& GetGUITextures() const;
   /// Get the current gui colour scheme
@@ -78,13 +80,22 @@ GUIProperties::GetInstance()
 inline void 
 GUIProperties::LoadGUIColourPalette( const std::string& filename )
 {
+  fChanged = true;
   fGUIColourPalette.Load( filename );
 }
 
 inline void 
 GUIProperties::LoadColourPalette( const std::string& filename )
 {
+  fChanged = true;
   fColourPalette.Load( filename );
+}
+
+inline void
+GUIProperties::InvertGUI()
+{
+  fChanged = true;
+  fGUIColourPalette.Invert();
 }
 
 inline const GUITextureManager&

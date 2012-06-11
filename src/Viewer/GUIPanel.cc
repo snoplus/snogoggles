@@ -5,6 +5,7 @@ using namespace std;
 #include <Viewer/GUIPanel.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/DataStore.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/Selector.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
@@ -24,6 +25,7 @@ GUIPanel::~GUIPanel()
 void
 GUIPanel::EventLoop()
 {
+  GUIProperties::GetInstance().Reset();
   DataStore& events = DataStore::GetInstance();
   while( !fEvents.empty() )
     {
@@ -34,6 +36,9 @@ GUIPanel::EventLoop()
           break;
         case 1: // Change in colour
           GUIProperties::GetInstance().LoadColourPalette( fColours[dynamic_cast<GUIs::Selector*>( fGUIs[1] )->GetStringState()] );
+          break;
+        case 2: // Invert the gui
+          GUIProperties::GetInstance().InvertGUI();
           break;
         }
       fEvents.pop();
@@ -77,7 +82,17 @@ GUIPanel::LoadGUIConfiguration( const ConfigurationTable* config )
       if( objectConfig->GetName() == string( "gui" ) )
         {
           sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
-          fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
+          switch( objectConfig->GetI( "effect" ) )
+            {
+            case 0:
+            case 1:
+              fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
+              break;
+            case 2:
+              fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, objectConfig->GetI( "effect" ) );
+              dynamic_cast< GUIs::PersistLabel* >( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( 14, "Invert Colours?" );
+              break;
+            }
         }
     }
 }

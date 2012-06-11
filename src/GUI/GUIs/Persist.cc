@@ -15,9 +15,9 @@ Persist::Initialise( unsigned int textureNumber )
   fPersistOff[0] = textureManager.GetTexture( textureNumber, eBase );
   fPersistOff[1] = textureManager.GetTexture( textureNumber, eHighlight );
   fPersistOff[2] = textureManager.GetTexture( textureNumber, eActive );
-  fPersistOn[0] = textureManager.GetTexture( textureNumber + 1, eBase );
+  fPersistOn[2] = textureManager.GetTexture( textureNumber + 1, eBase );
   fPersistOn[1] = textureManager.GetTexture( textureNumber + 1, eHighlight );
-  fPersistOn[2] = textureManager.GetTexture( textureNumber + 1, eActive );
+  fPersistOn[0] = textureManager.GetTexture( textureNumber + 1, eActive );
 }
 
 Persist::~Persist()
