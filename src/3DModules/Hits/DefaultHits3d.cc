@@ -69,8 +69,8 @@ void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, c
     if( fCurrentPMTList != pmtList )
     {
         for( int i=0; i < pmtList->GetPMTCount(); i++ )
-          fPMTListBuffer.AddHitOutline( 
-                                       pmtList->GetPos( i ), GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
+          fPMTListBuffer.AddHitOutline( pmtList->GetPos( i ), 
+            GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
         fPMTListBuffer.Bind();
         fCurrentPMTList = pmtList;
     }
@@ -91,6 +91,8 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
 {
     fFullBuffer.Clear();
     fOutlineBuffer.Clear();
+
+    if( ev == NULL ) return;
 
     std::vector<RIDS::PMTHit> hits = ev->GetHitData( renderState.GetDataSource() );
     for( int i = 0; i < hits.size(); i++ )
@@ -114,6 +116,16 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
 
 bool DefaultHits3d::NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderState )
 {        
+    if( ev == NULL )
+    {
+        if( fCurrentEV == NULL )
+            return false;
+
+        fCurrentEV = ev;
+        fSize = 0;
+        return true;
+    }
+
     if( fCurrentEV == NULL )
     {
         fCurrentEV = ev;

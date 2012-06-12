@@ -41,6 +41,7 @@ void TrackBuffer::SaveVisibility( ConfigurationTable* configTable )
 void TrackBuffer::SetAll( RIDS::MC& mc )
 {
     ClearAll();
+    if( &mc == NULL ) return;
 
     std::vector< RIDS::Track >& tracks = mc.GetTracks();
     for( int i = 0; i < tracks.size(); i++ )
