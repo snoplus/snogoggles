@@ -9,7 +9,7 @@ using namespace Viewer;
 GUIColourPalette::GUIColourPalette()
 {
   fInverted = false;
-  Load( "gui-default.xml" );
+  Load( "default" );
 }
 
 GUIColourPalette::~GUIColourPalette()
@@ -39,7 +39,7 @@ void
 GUIColourPalette::Load( const std::string& fileName )
 {
   stringstream configFileName;
-  configFileName << getenv( "VIEWERROOT" ) << "/gui/colour/" << fileName;
+  configFileName << getenv( "VIEWERROOT" ) << "/gui/gui-colour/" << fileName << ".xml";
   ConfigurationFile loadConfig( configFileName.str(), false );
   if( loadConfig.GetVersion() != 1 )
     throw ConfigurationFile::NoFileError( "Configuration version miss match" );

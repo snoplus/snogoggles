@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <GUI version="1" desktops="8">
-  <GUIColours>
-    <guicolour filename="gui-default.xml" name="Default"/>
-  </GUIColours>
-  <Colours>
-    <colour filename="default.xml" name="Rainbow"/>
-    <colour filename="greyscale.xml" name="Greyscale"/>
-  </Colours>
   <FontRing>
     <ring id="0" pixel="20"/>
     <ring id="1" size="0.1"/>
@@ -17,7 +10,10 @@
     <gui effect="1" x="0.1" y="0.4" width="0.8" height="0.3" font-ring="0" />
     <gui effect="2" x="0.1" y="0.8" width="0.8" height="0.2" font-ring="0" />
   </GUIPanel>
-  <DesktopPanel x="0.7" y="0.9" width="0.2" height="0.1">
+  <ScriptPanel x="0.7" y="0.9" width="0.2" height="0.1">
+    <gui effect="0" x="0.1" y="0.0" width="0.8" height="0.3" font-ring="0" />
+  </ScriptPanel>
+  <DesktopPanel x="0.5" y="0.9" width="0.2" height="0.1">
     <text caption="Current Desktop:" x="0.1" y="0.0" width="0.6" height="0.3" />
     <label result="0" x="0.7" y="0.0" width="0.3" height="0.3" />
     <gui effect="10" x="0.1" y="0.5" width="0.1" height="0.3" />
@@ -29,7 +25,7 @@
     <gui effect="16" x="0.7" y="0.5" width="0.1" height="0.3" />
     <gui effect="17" x="0.8" y="0.5" width="0.1" height="0.3" />
   </DesktopPanel>
-  <FramePanel x="0.0" y="0.9" width="0.4" height="0.1">
+  <FramePanel x="0.0" y="0.9" width="0.5" height="0.1">
     <frameButtonArea x="0.0" y="0.0" width="1.0" height="1.0" />
   </FramePanel>
   <EventPanel x="0.9" y="0.0" width="0.1" height="0.5">

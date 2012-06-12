@@ -1,30 +1,30 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::GUIPanel
+/// \class Viewer::ScriptPanel
 ///
-/// \brief   Panel to control the gui settings e.g. colour
+/// \brief   Panel to control the script settings
 ///
 /// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     25/05/12 : P.Jones - New file, first revision \n
+///     12/06/12 : P.Jones - New file, first revision \n
 ///
-/// \detail  This panel deals with gui colours etc...
+/// \detail  This panel deals with which scripts are active
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_GUIPanel__
-#define __Viewer_GUIPanel__
+#ifndef __Viewer_ScriptPanel__
+#define __Viewer_ScriptPanel__
 
 #include <Viewer/Panel.hh>
 
 namespace Viewer
 {
 
-class GUIPanel : public Panel
+class ScriptPanel : public Panel
 {
 public:
-  GUIPanel( RectPtr rect );
-  ~GUIPanel();
+  ScriptPanel( RectPtr rect );
+  ~ScriptPanel();
   /// The event loop
   virtual void EventLoop();
   /// Initialise without using the DataStore

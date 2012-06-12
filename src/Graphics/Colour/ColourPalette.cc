@@ -9,14 +9,14 @@ using namespace Viewer;
 
 ColourPalette::ColourPalette()
 {
-  Load( "default.xml" );
+  Load( "default" );
 }
 
 void 
 ColourPalette::Load( const std::string& fileName )
 {
   stringstream configFileName;
-  configFileName << getenv( "VIEWERROOT" ) << "/gui/colour/" << fileName;
+  configFileName << getenv( "VIEWERROOT" ) << "/gui/colour/" << fileName << ".xml";
   ConfigurationFile loadConfig( configFileName.str(), false );
   if( loadConfig.GetVersion() != 1 )
     throw ConfigurationFile::NoFileError( "Configuration version miss match" );
