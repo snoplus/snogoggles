@@ -46,10 +46,3 @@ GUIProperties::GetNumDesktops() const
 {
   return fGUIConfiguration->GetTable()->GetI( "desktops" );
 }
-
-/*sf::Rect<double>
-GUIProperties::GetFrameArea() const
-{
-  return sf::Rect<double>( fGUIConfiguration->GetTable()->GetD( "frameX" ), fGUIConfiguration->GetTable()->GetD( "frameY" ), 
-                           fGUIConfiguration->GetTable()->GetD( "frameWidth" ), fGUIConfiguration->GetTable()->GetD( "frameHeight" ) );
-                           }*/

@@ -15,9 +15,6 @@
 #ifndef __Viewer_GUIPanel__
 #define __Viewer_GUIPanel__
 
-#include <map>
-#include <string>
-
 #include <Viewer/Panel.hh>
 
 namespace Viewer
@@ -39,9 +36,6 @@ public:
 protected:
   /// Load the GUI configuration specific to the panel
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
-
-  std::map< std::string, std::string > fGUIColours; /// < Map name to filename
-  std::map< std::string, std::string > fColours; /// < Map name to filename
 };
 
 } //::Viewer

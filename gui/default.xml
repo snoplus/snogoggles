@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <GUI version="1" desktops="8">
-  <GUIColours>
-    <guicolour filename="gui-default.xml" name="Default"/>
-  </GUIColours>
-  <Colours>
-    <colour filename="default.xml" name="Rainbow"/>
-    <colour filename="greyscale.xml" name="Greyscale"/>
-  </Colours>
   <FontRing>
     <ring id="0" pixel="20"/>
     <ring id="1" size="0.1"/>
