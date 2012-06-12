@@ -37,7 +37,7 @@ public:
 
     void Render() const;
 
-    void Load( ConfigurationTable* configTable );
+    void Load( const ConfigurationTable* configTable );
     void Save( ConfigurationTable* configTable ) const;
 
 private:

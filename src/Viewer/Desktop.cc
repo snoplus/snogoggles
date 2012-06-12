@@ -6,22 +6,22 @@ using namespace std;
 #include <Viewer/Desktop.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/FrameManager.hh>
-#include <Viewer/EventMasterUI.hh>
+#include <Viewer/EventPanel.hh>
+#include <Viewer/FramePanel.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
-Desktop::Desktop( RectPtr desktopRect,
-		  double rightMargin,
-		  double bottomMargin )
-  : fRect( desktopRect ), fBottomMargin( bottomMargin ), fRightMargin( rightMargin )
+Desktop::Desktop( RectPtr desktopRect )
+  : fRect( desktopRect )
 {
 
 }
 
 Desktop::~Desktop()
 {
-  delete fEMUI;
+  delete fEventPanel;
+  delete fFramePanel;
   delete fFrameManager;
 }
 
@@ -29,67 +29,89 @@ void
 Desktop::NewEvent( Event& event )
 {
   // Check the UI first
-  fEMUI->NewEvent( event );
+  fEventPanel->NewEvent( event );
+  fFramePanel->NewEvent( event );
   fFrameManager->NewEvent( event );
 }
 void 
 Desktop::EventLoop()
 {
-  fEMUI->EventLoop();
+  fEventPanel->EventLoop();
+  fFramePanel->EventLoop();
   fFrameManager->EventLoop();
 }
 
 void 
-Desktop::Initialise()
+Desktop::PreInitialise( const ConfigurationTable* configTable )
 {
   // First initialise the UI
-  sf::Rect<double> defaultSize;
-  defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 0.0; defaultSize.Width = fRightMargin; defaultSize.Height = 1.0 - 2.0 * fBottomMargin;
-  fEMUI = new EventMasterUI( RectPtr( fRect->NewDaughter( defaultSize, Rect::eLocal ) ) );
-  fEMUI->Initialise();
+  fEventPanel = new EventPanel( RectPtr( fRect->NewDaughter() ) );
   // Now initialise the FrameManager
-  defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0 - fRightMargin; defaultSize.Height = 1.0;
-  RectPtr frameRect( fRect->NewDaughter( defaultSize, Rect::eLocal ) );
-  fFrameManager = new FrameManager( frameRect, fRightMargin, fBottomMargin );
-  fFrameManager->Initialise();
+  RectPtr frameMotherRect = RectPtr( fRect->NewDaughter() );
+  fFrameManager = new FrameManager( frameMotherRect );
+  // Now the FramePanel
+  fFramePanel = new FramePanel( RectPtr( fRect->NewDaughter() ), frameMotherRect, *fFrameManager );
+  if( configTable != NULL )
+    {
+      fEventPanel->PreInitialise( configTable->GetTable( "eventPanel" ) );
+      fFramePanel->PreInitialise( configTable->GetTable( "framePanel" ) );
+      fFrameManager->PreInitialise( configTable->GetTable( "frameManager" ) );
+    }
+  else
+    {
+      fEventPanel->PreInitialise( NULL );
+      fFramePanel->PreInitialise( NULL );
+      fFrameManager->PreInitialise( NULL );
+    }
 }
 
 void 
-Desktop::LoadConfiguration( ConfigurationTable& configTable )
+Desktop::PostInitialise( const ConfigurationTable* configTable )
 {
-  ConfigurationTable& emTable = *configTable.GetTable( "eventMaster" );
-  fEMUI->LoadConfiguration( emTable );
-  ConfigurationTable& fmTable = *configTable.GetTable( "frameManager" );
-  fFrameManager->LoadConfiguration( fmTable );
+  if( configTable != NULL )
+    {
+      fEventPanel->PostInitialise( configTable->GetTable( "eventPanel" ) );
+      fFramePanel->PreInitialise( configTable->GetTable( "framePanel" ) );
+      fFrameManager->PostInitialise( configTable->GetTable( "frameManager" ) );
+    }
+  else
+    {
+      fEventPanel->PostInitialise( NULL );
+      fFramePanel->PreInitialise( NULL );
+      fFrameManager->PostInitialise( NULL );
+    }
 }
 
 void 
-Desktop::SaveConfiguration( ConfigurationTable& configTable )
+Desktop::SaveConfiguration( ConfigurationTable* configTable )
 {
-  ConfigurationTable& emTable = *configTable.NewTable( "eventMaster" );
-  fEMUI->SaveConfiguration( emTable );
-  ConfigurationTable& fmTable = *configTable.NewTable( "frameManager" );
+  ConfigurationTable* epTable = configTable->NewTable( "eventPanel" );
+  fEventPanel->SaveConfiguration( epTable );
+  ConfigurationTable* fpTable = configTable->NewTable( "framePanel" );
+  fFramePanel->SaveConfiguration( fpTable );
+  ConfigurationTable* fmTable = configTable->NewTable( "frameManager" );
   fFrameManager->SaveConfiguration( fmTable );
 }
 
 void 
 Desktop::Render2d( RWWrapper& renderApp )
 {
-  RenderState renderState = fEMUI->GetRenderState();
+  const RenderState renderState = fEventPanel->GetRenderState();
   fFrameManager->Render2d( renderApp, renderState );
 }
 
 void 
 Desktop::Render3d( RWWrapper& renderApp )
 {
-  RenderState renderState = fEMUI->GetRenderState();
+  const RenderState renderState = fEventPanel->GetRenderState();
   fFrameManager->Render3d( renderApp, renderState );
 }
 
 void 
 Desktop::RenderGUI( RWWrapper& renderApp )
 {
-  RenderState renderState = fEMUI->GetRenderState();
+  const RenderState renderState = fEventPanel->GetRenderState();
   fFrameManager->RenderGUI( renderApp, renderState );
-  fEMUI->Render( renderApp );
+  fEventPanel->Render( renderApp );
+  fFramePanel->Render( renderApp );
 }

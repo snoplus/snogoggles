@@ -6,7 +6,7 @@
 
 namespace Viewer {
 
-void Polyhedron::Load( ConfigurationTable* configTable )
+void Polyhedron::Load( const ConfigurationTable* configTable )
 {
     std::vector< Polygon > polygons;
     int i = 0;

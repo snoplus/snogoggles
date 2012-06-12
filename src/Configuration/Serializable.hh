@@ -25,13 +25,13 @@ class Serializable
 {
 public:
 
-    virtual void Load( ConfigurationTable* configTable ) = 0;
+    virtual void Load( const ConfigurationTable* configTable ) = 0;
     virtual void Save( ConfigurationTable* configTable ) const = 0;
 
-    void LoadFromParentTable( ConfigurationTable* parentTable, const std::string& name );
+    void LoadFromParentTable( const ConfigurationTable* parentTable, const std::string& name );
     void SaveToParentTable( ConfigurationTable* parentTable, const std::string& name ) const;
 
-    void LoadSafeFromParentTable( ConfigurationTable* parentTable, const std::string& name );
+    void LoadSafeFromParentTable( const ConfigurationTable* parentTable, const std::string& name );
 
 }; // class Serializable
 

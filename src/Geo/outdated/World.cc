@@ -23,7 +23,7 @@ void World::SetVisAttributes( Volume* volume )
 //    SetVisAttributes( &fVolume );
 }*/
 
-void World::Load( ConfigurationTable* configTable )
+void World::Load( const ConfigurationTable* configTable )
 {
     SerializableFactory* s = SerializableFactory::GetInstance();
     Volume volume = s->New< Volume >( configTable, "volume" );

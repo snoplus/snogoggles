@@ -35,7 +35,7 @@ void Vector3::Render() const
     );
 }
 
-void Vector3::Load( ConfigurationTable* configTable )
+void Vector3::Load( const ConfigurationTable* configTable )
 {
     double x = configTable->GetD( "x" );
     double y = configTable->GetD( "y" );

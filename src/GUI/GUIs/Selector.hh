@@ -1,72 +1,77 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::GUIs::Selector
 ///
-/// \brief   A Text option with left and right selectors
+/// \brief   Select strings iteratively
 ///
-/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
+/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     22/02/12 : P.Jones - First Revision, new file. \n
+///     07/06/12 : P.Jones - First Revision, new file. \n
 ///
-/// \detail  By selecting the left and right buttons the correct option 
-///          can be chosen.
+/// \detail  Allows user to select through a list of strings till the 
+///          required one is found.
 ///
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef __Viewer_GUIs_Selector__
 #define __Viewer_GUIs_Selector__
 
-#include <vector>
 #include <string>
 
 #include <Viewer/GUI.hh>
-#include <Viewer/RectPtr.hh>
+#include <Viewer/Text.hh>
+#include <Viewer/GUIManager.hh>
+#include <Viewer/Sprite.hh>
 
 namespace Viewer
-{
-  class Event;
-  class Text;
+{ 
+
 namespace GUIs
 {
-  class GUIImageButton;
 
 class Selector : public GUI
 {
 public:
-  inline Selector( RectPtr rect, 
-		   unsigned int guiID );
+  /// Standard GUI Constructor
+  Selector( RectPtr rect, unsigned int guiID );
+  /// Desctuctor
   virtual ~Selector();
- 
-  void Render( RWWrapper& renderApp );
+  /// Initialise with a vector of strings
+  void Initialise( const std::vector<std::string>& options );
+  /// New GUI Event
   GUIEvent NewEvent( const Event& event );
-
-  void Initialise( const std::vector<std::string>& labels );
-  void SetState( unsigned int state );
-  /// Return the state as an unsigned int
-  unsigned int GetState() const;
-
+  /// On render call
+  void Render( RWWrapper& windowApp );
+  /// Set the current state by position is option list
+  inline void SetState( unsigned int state );
+  /// Get the current state by position
+  inline unsigned int GetState() const;
+  /// Get the current state by string value
   inline std::string GetStringState() const;
-
 protected:
-  std::vector<std::string> fOptions; /// < The selectable options
-  GUIs::GUIImageButton* fNext; /// < Right next option button
-  GUIs::GUIImageButton* fPrev; /// < Left previous option button 
-  Text* fText; /// < Text inbetween
-  unsigned int fCurrentOption; // The current selected option
+  GUIManager fGUIManager; /// < GUI Manager, manages the buttons
+  std::vector<std::string> fOptions; /// < The string options
+  Text fText; /// < Displays the current option
+  unsigned int fState; /// < Current state position
+  Sprite fBackground; /// < Draws background to text
 };
 
-inline
-Selector::Selector( RectPtr rect, 
-		    unsigned int guiID ) 
-  : GUI( rect, guiID )
-{ 
-
+void
+Selector::SetState( unsigned int state )
+{
+  fState = state;
 }
 
-inline std::string
+unsigned int
+Selector::GetState() const
+{
+  return fState;
+}
+
+std::string
 Selector::GetStringState() const
 {
-  return fOptions[fCurrentOption];
+  return fOptions[fState];
 }
 
 } // ::GUIs

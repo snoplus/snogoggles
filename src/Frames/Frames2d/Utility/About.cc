@@ -5,7 +5,7 @@
 using namespace std;
 
 #include <Viewer/About.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
 using namespace Viewer;
@@ -17,15 +17,14 @@ About::~About()
 }
 
 void 
-About::Initialise()
+About::PreInitialise( const ConfigurationTable* configTable )
 {
-  Frame::Initialise();
   sf::Rect<double> textSize;
   textSize.Left = 0.0; textSize.Top = 0.0; textSize.Width = 1.0; textSize.Height = 1.0;
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
 }
 
 void 
@@ -38,14 +37,15 @@ About::EventLoop()
 }
 void 
 About::Render2d( RWWrapper& renderApp,
-		 const RenderState& renderState )
+                 const RenderState& renderState )
 {
   stringstream eventInfo;
   eventInfo.precision( 0 );
   eventInfo << fixed;
   eventInfo << "SNOGoggles Air Fill" << "\nFrame Rate:";
   eventInfo << 1e6 / (double) renderApp.GetFrameTime().AsMicroseconds() << " Hz";
+  if( GUIProperties::GetInstance().HasChanged() )
+    fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   fInfoText->SetString( eventInfo.str() );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
   renderApp.Draw( *fInfoText );  
 }

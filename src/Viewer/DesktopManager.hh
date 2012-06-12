@@ -22,30 +22,28 @@
 
 namespace Viewer
 {
-  class DesktopMasterUI;
-  class ColourMasterUI;
+  class DesktopPanel;
+  class GUIPanel;
   class Desktop;
   class RWWrapper;
-  class Configuration;
+  class ConfigurationTable;
   class Event;
 
 class DesktopManager
 {
 public:
-  DesktopManager( RectPtr globalMother, 
-		  double rightMargin,
-		  double bottomMargin );
+  DesktopManager( RectPtr globalMother );
   ~DesktopManager();
   /// Deal with a new UI event
   void NewEvent( Event& event );
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( Configuration& config );
-  /// Initialise without a configuration
-  void Initialise();
-  /// Load a configuration
-  void LoadConfiguration( Configuration& config );
+  void SaveConfiguration( ConfigurationTable* config );
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* config );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* config );
   /// Draw all 2d objects
   void Render2d( RWWrapper& renderApp );
   /// Draw all 3d objects
@@ -55,10 +53,8 @@ public:
 private:
   std::vector<Desktop*> fDesktops; /// < The available desktops
   RectPtr fGlobalMother; /// < The gloabl mother rect, this class does not need it's own
-  DesktopMasterUI* fDMUI; /// < The UI which controls which desktop is visible
-  ColourMasterUI* fCMUI; /// < The UI which controls the current colour scheme
-  double fRightMargin; /// < Local coord size of right margin
-  double fBottomMargin; /// < Local coord size of bottom margin
+  DesktopPanel* fDesktopPanel; /// < The panel which controls which desktop is visible
+  GUIPanel* fGUIPanel; /// < The panel which controls the gui settings
 };
 
 } //::Viewer

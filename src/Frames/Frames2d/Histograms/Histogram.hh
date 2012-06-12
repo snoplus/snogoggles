@@ -24,7 +24,7 @@ namespace Viewer
   class RenderState;
 namespace GUIs
 {
-  class CheckBoxLabel;
+  class PersistLabel;
 }
 
 namespace Frames
@@ -39,7 +39,7 @@ public:
   virtual std::string GetName() { return Histogram::Name(); }
   static std::string Name() { return string("Histogram"); }
 
-  virtual void Initialise();
+  virtual void PreInitialise( const ConfigurationTable* configTable );
 
   virtual void EventLoop();
 
@@ -48,7 +48,7 @@ public:
 
 protected:
   
-  GUIs::CheckBoxLabel* fLogYBox;
+  GUIs::PersistLabel* fLogYBox;
   Text* fMinX;
   Text* fMaxX;
   Text* fMinY;

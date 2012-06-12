@@ -50,7 +50,7 @@ void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggable
     fArcball->Initialise( fRadius );
 }
 
-void Arcball3d::LoadConfiguration( ConfigurationTable* configTable )
+void Arcball3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetDSafe( configTable, RADIUS_TAG, fRadius );
     ConfigTableUtils::GetDSafe( configTable, CAMERA_DIST_TAG, fCameraDist );

@@ -11,7 +11,7 @@ from buildhelp import src_module, check_include
 from packages import addpackages
 
 # Get build environment
-env = Environment()
+env = Environment( ENV=os.environ )
 
 # Checks whether the include directory exists
 check_include()

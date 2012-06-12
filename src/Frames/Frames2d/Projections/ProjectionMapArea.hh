@@ -34,7 +34,7 @@ public:
   ProjectionMapArea( RectPtr rect ) : ProjectionBase( rect ), fPMTofInterest( -1 ) { }
   virtual ~ProjectionMapArea();
 
-  virtual void Initialise();
+  virtual void PostInitialise( const ConfigurationTable* configTable );
 
   virtual void EventLoop();
 

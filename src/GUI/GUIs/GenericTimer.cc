@@ -1,7 +1,7 @@
 #include <Viewer/GenericTimer.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/Colour.hh>
-#include <Viewer/GUITextureManager.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/Sprite.hh>
 
 namespace Viewer
@@ -13,10 +13,10 @@ GenericTimer::GenericTimer( RectPtr rect, unsigned int guiID )
   : Timer( rect, guiID )
 {
   fSprite = new Sprite( rect );
-  GUITextureManager& textureManager = GUITextureManager::GetInstance();
-  fTextures[0] = textureManager.GetTexture( eNewFrame, eBase );
-  fTextures[1] = textureManager.GetTexture( eNewFrame, eHighlight );
-  fTextures[2] = textureManager.GetTexture( eNewFrame, eActive );
+  const GUITextureManager& textureManager = GUIProperties::GetInstance().GetGUITextures();
+  fTextures[0] = textureManager.GetTexture( 2, eBase );
+  fTextures[1] = textureManager.GetTexture( 2, eHighlight );
+  fTextures[2] = textureManager.GetTexture( 2, eActive );
 }
 
 GenericTimer::~GenericTimer()

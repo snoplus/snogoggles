@@ -1,5 +1,5 @@
 #include <Viewer/PixelImage.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 
 void
@@ -12,7 +12,7 @@ PixelImage::Construct()
 void
 PixelImage::Clear()
 {
-  Clear( GUIColourPalette::gPalette->GetBGColour( eBase ) );
+  Clear( GUIProperties::GetInstance().GetGUIColourPalette().GetBackground() );
 }
 
 void 

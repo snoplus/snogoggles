@@ -10,7 +10,7 @@ using namespace std;
 #include <Viewer/DataStore.hh>
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/EV.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
 using namespace Viewer;
@@ -22,15 +22,14 @@ EventInfo::~EventInfo()
 }
 
 void 
-EventInfo::Initialise()
+EventInfo::PreInitialise( const ConfigurationTable* configTable )
 {
-  Frame::Initialise();
   sf::Rect<double> textSize;
   textSize.Left = 0.0; textSize.Top = 0.0; textSize.Width = 1.0; textSize.Height = 1.0;
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
 }
 
 void 
@@ -67,7 +66,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << "Nhit (Inv): " << rEV->GetPMTInvCalCount() << endl;
   */
   fInfoText->SetString( eventInfo.str() );
-  fInfoText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   renderApp.Draw( *fInfoText );  
 }
 

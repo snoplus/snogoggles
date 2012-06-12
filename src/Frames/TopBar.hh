@@ -31,8 +31,8 @@ namespace Viewer
   class Text;
 namespace GUIs
 {
-  class GUIImageButton;
-  class GUIImagePersist;
+  class Button;
+  class Persist;
 }
 
 class TopBar
@@ -43,11 +43,11 @@ public:
   /// Deal with a new UI event
   FrameEvent NewEvent( const Event& event );
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
-  /// Initialise without a configuration
-  void Initialise();
-  /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable );
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp );
   /// Ask if object contains a point
@@ -58,13 +58,10 @@ public:
   bool IsPinned();
 private:
   RectPtr fRect; /// < The Top bar location
-  GUIs::GUIImageButton* fLeft;
-  GUIs::GUIImageButton* fBar;
-  GUIs::GUIImageButton* fDecrease;
-  GUIs::GUIImageButton* fIncrease;
-  GUIs::GUIImagePersist* fPin;
-  GUIs::GUIImageButton* fClose;
-  GUIs::GUIImageButton* fRight;
+  GUIs::Button* fLeft;
+  GUIs::Button* fBar;
+  GUIs::Button* fClose;
+  GUIs::Button* fRight;
 };
 
 inline bool 

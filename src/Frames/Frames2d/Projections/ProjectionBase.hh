@@ -36,12 +36,13 @@ public:
   ProjectionBase( RectPtr rect ) : Frame( rect ) { }
   virtual ~ProjectionBase();
 
-  virtual void Initialise();
-
   void Initialise( const sf::Rect<double>& size );
-  void LoadConfiguration( ConfigurationTable& configTable ) { }
-
-  void SaveConfiguration( ConfigurationTable& configTable ) { }
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  virtual void PostInitialise( const ConfigurationTable* configTable );
+  /// Save the configuration
+  void SaveConfiguration( ConfigurationTable* configTable ) { };
 
   virtual void EventLoop();
   

@@ -3,11 +3,11 @@
 #include <sstream>
 using namespace std;
 
-#include <Viewer/Configuration.hh>
+#include <Viewer/ConfigurationFile.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/SerializableFactory.hh>
 #include <Viewer/Polyhedron.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/GeodesicSphere.hh>
 
 namespace Viewer {
@@ -24,14 +24,12 @@ GeodesicSphere* GeodesicSphere::GetInstance()
 
 GeodesicSphere::GeodesicSphere()
 {
-    stringstream configFileName;                                                                                                                                                                                                      
+    stringstream configFileName;
     configFileName << getenv( "VIEWERROOT" ) << "/data/geodesic.xml";
-    Configuration config = Configuration( configFileName.str(), false );
-    std::vector< ConfigurationTable* >::iterator itr;
-    itr = config.GetTableBegin();
-    fOutlineVBO.Load( *itr );
-    itr++;
-    fFullVBO.Load( *itr );
+    ConfigurationFile config( configFileName.str(), false );
+    const ConfigurationTable* configTable = config.GetTable();
+    fOutlineVBO.Load( configTable->GetTable(0) );
+    fFullVBO.Load( configTable->GetTable(1) );
 }
 
 void GeodesicSphere::Render() const
@@ -51,7 +49,7 @@ const Polyhedron& GeodesicSphere::GetPolyhedron()
 
 const Colour GeodesicSphere::GetColour()
 {
-    return ColourPalette::gPalette->GetPrimaryColour( eGrey );
+  return GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey );
 }
 
 }; // namespace Viewer

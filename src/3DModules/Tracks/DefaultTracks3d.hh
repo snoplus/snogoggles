@@ -27,7 +27,7 @@
 
 namespace Viewer {
     namespace GUIs {
-        class CheckBoxLabel;
+        class PersistLabel;
     };
 
     class ConfigurationTable;
@@ -48,7 +48,7 @@ public:
     virtual std::string GetName() { return Name(); }
 
     virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    virtual void LoadConfiguration( ConfigurationTable* configTable );
+    virtual void LoadConfiguration( const ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
     virtual void EventLoop( );
     virtual void RenderTracks( RIDS::MC& mc );
@@ -67,12 +67,12 @@ private:
     static const std::string VIS_MAP;
 
     /// Map containing the supported particle types.
-    std::map< std::string, GUIs::CheckBoxLabel* > fGUIs;
-    GUIs::CheckBoxLabel* fFullTrackGUI;
+    std::map< std::string, GUIs::PersistLabel* > fGUIs;
+    GUIs::PersistLabel* fFullTrackGUI;
 
     TrackBuffer fTrackBuffer;
     int fSize;
-    ColourPalette* fPreviousPalette;
+  const ColourPalette* fPreviousPalette;
 
 }; // class DefaultTracks3d
 

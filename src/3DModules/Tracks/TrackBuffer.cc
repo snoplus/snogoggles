@@ -2,7 +2,7 @@
 #include <Viewer/RIDS/MC.hh>
 #include <Viewer/RIDS/Track.hh>
 #include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/TrackBuffer.hh>
 
 namespace Viewer {
@@ -24,7 +24,7 @@ std::vector< std::string > TrackBuffer::GetNames()
     return names;
 }
 
-void TrackBuffer::LoadVisibility( ConfigurationTable* configTable )
+void TrackBuffer::LoadVisibility( const ConfigurationTable* configTable )
 {
     std::map< std::string, struct ParticleType >::iterator itr;
     for( itr = fParticleTypes.begin(); itr != fParticleTypes.end(); itr++)
@@ -47,7 +47,7 @@ void TrackBuffer::SetAll( RIDS::MC& mc )
     {
         const std::string& name = tracks[i].GetParticleName();
         struct ParticleType& pt = fParticleTypes[ name ];
-        const Colour& c = ColourPalette::gPalette->GetColour( pt.fColour );
+        const Colour& c = GUIProperties::GetInstance().GetColourPalette().GetColour( pt.fColour );
         const std::vector< RIDS::TrackStep >& trackSteps = tracks[i].GetTrackSteps();
         
         AddLine( pt.fSimpleVBO, trackSteps[0].GetEndPos(), trackSteps[ trackSteps.size() - 1 ].GetEndPos(), c );

@@ -40,27 +40,28 @@ public:
   Rect* NewDaughter(); 
   /// Create a new Daughter pre defining the rect
   Rect* NewDaughter( const sf::Rect<double>& rect,
-		     ECoordSystem system );
+                     ECoordSystem system );
   /// Destructor (must notify daughters)
   ~Rect();
   /// Unlink a now deleted daughter
   void RemoveDaughter( Rect* daughter );
   /// Set the rect in the stated coordinate system
   void SetRect( const sf::Rect<double>& rect, 
-		ECoordSystem system );
+                ECoordSystem system );
   /// Get the local rect coordinates in terms of the 'level' mother, 
   /// default to local to this class's mother i.e. level 0.
   /// Call with level < 0  to get a local coordinate in the mothers system
   sf::Rect<double> GetRect( int level = 0 );
   /// Get the rect in a particular coordinate system
-  sf::Rect<double> GetRect( ECoordSystem system );
-  /// Returns true if testRect is fully contained in this rect
-  /// Always tests in global values for simplicity
+  sf::Rect<double> GetRect( const ECoordSystem& system );
+  /// Returns true if the rects overlap in any way
+  bool OverlapsRect( const sf::Rect<double>& testRect );
+  /// Returns true if testRect is fully contained in this rect Always tests in global values for simplicity
   bool ContainsRect( const sf::Rect<double>& testRect,
-		     const ECoordSystem system );
+                     const ECoordSystem system );
   /// Returns true if the window coordinate is within this rect
   bool ContainsPoint( const sf::Vector2<double>& testPoint,
-		      const ECoordSystem system );
+                      const ECoordSystem system );
   /// Helper function to set the gl viewport as the current rect
   void SetAsGLViewport();
   /// Helper function to translate window mouse coordinates to OpenGL mouse coordinates

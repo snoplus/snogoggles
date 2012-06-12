@@ -38,7 +38,7 @@ public:
     void Render( GLenum mode ) const;
     void Clear();
 
-    void Load( ConfigurationTable* configTable );
+    void Load( const ConfigurationTable* configTable );
     void Save( ConfigurationTable* configTable ) const;
 
     std::vector<struct Vertex::Data> fVertices;

@@ -11,12 +11,14 @@ using namespace Viewer;
 using namespace xercesc;
 
 
-ConfigurationTable::ConfigurationTable( xercesc_3_1::DOMElement* element, bool output, DOMDocument* domDocument )
+ConfigurationTable::ConfigurationTable( xercesc_3_1::DOMElement* element, 
+                                        const string& name, 
+                                        DOMDocument* domDocument )
 {
   fDOMDocument = domDocument;
   fDOMElement = element;
-  fOutput = output;
   fConfigTables.clear();
+  fName = name;
   // Now extract config tables
   DOMNodeList* children = fDOMElement->getChildNodes();
   for( XMLSize_t ix = 0; ix < children->getLength(); ++ix ) // Pre increment to save memory
@@ -25,12 +27,18 @@ ConfigurationTable::ConfigurationTable( xercesc_3_1::DOMElement* element, bool o
       if( currentNode->getNodeType() && currentNode->getNodeType() == DOMNode::ELEMENT_NODE ) 
         {
           DOMElement* currentElement = dynamic_cast< xercesc::DOMElement* >( currentNode );
-          char* name = XMLString::transcode( currentElement->getTagName() );
-          string elementName( name );
-          XMLString::release( &name ) ;
-          fConfigTables[ elementName ] = new ConfigurationTable( currentElement, fOutput, fDOMDocument );
+          char* xName = XMLString::transcode( currentElement->getTagName() );
+          string elementName( xName );
+          XMLString::release( &xName ) ;
+          fConfigTables.push_back( new ConfigurationTable( currentElement, elementName, fDOMDocument ) );
         }
     }
+}
+
+ConfigurationTable::~ConfigurationTable()
+{
+  for( unsigned int iTable = 0; iTable < fConfigTables.size(); iTable++ )
+    delete fConfigTables[iTable];
 }
 
 ConfigurationTable*
@@ -40,21 +48,57 @@ ConfigurationTable::NewTable( const string& name )
   DOMElement* newElement = fDOMDocument->createElement( elementName );
   fDOMElement->appendChild( newElement );
   XMLString::release( &elementName );
-  ConfigurationTable* newTable = new ConfigurationTable( newElement, fOutput, fDOMDocument );
-  if( fConfigTables.count( name ) == 1 )
-    throw NoTableError( name );
-  fConfigTables[ name ] = newTable;
+  ConfigurationTable* newTable = new ConfigurationTable( newElement, name, fDOMDocument );
+  fConfigTables.push_back( newTable );
   return newTable;
 }
 
-ConfigurationTable* 
-ConfigurationTable::GetTable( const std::string& name )
+bool
+ConfigurationTable::HasTable( const std::string& name ) const
 {
-  if( fConfigTables.empty() || fConfigTables.find( name ) == fConfigTables.end() )
-    throw NoTableError( name );
-  return fConfigTables[ name ];
+  for( unsigned int iTable = 0; iTable < fConfigTables.size(); iTable++ )
+    if( fConfigTables[iTable]->GetName() == name )
+      return true;
+  return false;
 }
 
+const ConfigurationTable*
+ConfigurationTable::GetTable( const unsigned int iTable ) const
+{
+  return fConfigTables[iTable];
+}
+
+const ConfigurationTable*
+ConfigurationTable::GetTable( const std::string& name ) const
+{
+  if( !HasTable( name ) )
+    throw NoTableError( name );
+  for( unsigned int iTable = 0; iTable < fConfigTables.size(); iTable++ )
+    if( fConfigTables[iTable]->GetName() == name )
+        return fConfigTables[iTable];
+}
+
+bool
+ConfigurationTable::Has( const string& name ) const
+{
+  XMLCh* attributeName = XMLString::transcode( name.c_str() );
+  if( !fDOMElement->hasAttribute( attributeName ) )
+    {
+      XMLString::release( &attributeName );
+      return false;
+    }
+  XMLString::release( &attributeName );
+  return true;
+}
+
+string
+ConfigurationTable::GetName() const
+{
+  char* name = XMLString::transcode( fDOMElement->getTagName() );
+  string elementName( name );
+  XMLString::release( &name );
+  return elementName;
+}
 
 int 
 ConfigurationTable::GetI( const string& name ) const

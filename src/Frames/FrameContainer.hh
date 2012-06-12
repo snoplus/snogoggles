@@ -36,6 +36,10 @@ namespace Viewer
   class Event;
   class Frame;
   class TopBar;
+namespace GUIs
+{
+  class Button;
+}
 
 class FrameContainer
 {
@@ -47,33 +51,39 @@ public:
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
-  /// Initialise without a configuration
-  void Initialise( Frame* frame );
-  /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp, 
-	       const RenderState& renderState );
+                 const RenderState& renderState );
   /// Render all 3d objects
   void Render3d( RWWrapper& renderApp, 
-	       const RenderState& renderState );
+                 const RenderState& renderState );
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp, 
-		const RenderState& renderState );
+                  const RenderState& renderState );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
+  /// Ask if rect overlaps this rect
+  inline bool Overlaps( const sf::Rect<double>& rect );
 
-  inline RectPtr GetRect();
+  inline const sf::Rect<double> GetRect( const Rect::ECoordSystem& system );
+  /// Get the frames preferred aspect ratio
+  double GetAspectRatio() const;
 
   void SetRect( const sf::Rect<double>& rect,
 		const Rect::ECoordSystem& system );
 
   bool IsPinned();
+  void SetFrame( Frame* frame ) { fFrame = frame; }
 private:
   RectPtr fRect; /// < The container rect
-  Frame* fFrame; /// < Pointer to the frame
-  TopBar* fTopBar; /// < Pointer to the top bar GUI
+  Frame* fFrame; /// < The frame
+  TopBar* fTopBar; /// < The top bar GUI
+  GUIs::Button* fResizeButton; /// < The resize button (bottom right)
 };
 
 inline bool
@@ -82,10 +92,16 @@ FrameContainer::ContainsPoint( const sf::Vector2<double>& point )
   return fRect->ContainsPoint( point, Rect::eResolution );
 }
 
-inline RectPtr
-FrameContainer::GetRect()
+inline bool
+FrameContainer::Overlaps( const sf::Rect<double>& rect )
 {
-  return fRect;
+  return fRect->OverlapsRect( rect );
+}
+
+inline const sf::Rect<double>
+FrameContainer::GetRect( const Rect::ECoordSystem& system )
+{
+  return fRect->GetRect( system );
 }
 
 } //::Viewer

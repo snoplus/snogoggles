@@ -2,7 +2,7 @@
 
 #include <Viewer/Rect.hh>
 #include <Viewer/Colour.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/TimeAxis.hh>
 using namespace Viewer;
 
@@ -22,14 +22,14 @@ TimeAxis::Fill()
     {
       const double time = static_cast<double>( fHeight - yPixel - 1 ) / static_cast<double>( fHeight ) * 500.0;
       const double scale = ScaleTime( time );
-      Colour colour = ColourPalette::gPalette->GetColour( scale );
+      Colour colour = GUIProperties::GetInstance().GetColourPalette().GetColour( scale );
       for( unsigned int xPixel = 0; xPixel < fWidth; xPixel++ )
-	{
-	  int pixel = ( xPixel + yPixel * fWidth ) * 4;
-	  fPixels[pixel] = colour.r;
-	  fPixels[pixel + 1] = colour.g;
-	  fPixels[pixel + 2] = colour.b;
-	  fPixels[pixel + 3] = colour.a;
-	}
+        {
+          int pixel = ( xPixel + yPixel * fWidth ) * 4;
+          fPixels[pixel] = colour.r;
+          fPixels[pixel + 1] = colour.g;
+          fPixels[pixel + 2] = colour.b;
+          fPixels[pixel + 3] = colour.a;
+        }
     }
 }

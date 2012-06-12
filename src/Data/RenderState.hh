@@ -48,12 +48,16 @@ public:
   inline double GetScalingMin() const;
   inline double GetScalingMax() const;
 
+  inline bool HasChanged() const;
+  inline void Reset();
+
 private:
   RIDS::EDataSource fCurrentDataSource;
   RIDS::EDataType fCurrentDataType;
 
   double fCurrentScalingMin; /// < Lower numerical value to be displayed
   double fCurrentScalingMax; /// < Upper numerical value to be displayed
+  bool fChanged; /// < Mark if data source/type has changed in the last frame
 
   static std::map< RIDS::EDataSource, std::string > fsSourceNames;
   static std::map< RIDS::EDataType, std::string > fsTypeNames;
@@ -64,6 +68,7 @@ private:
 inline 
 RenderState::RenderState()
 {
+  fChanged = true;
   ChangeState( RIDS::eCal, RIDS::eTAC );
 }
 
@@ -96,6 +101,18 @@ inline double
 RenderState::GetScalingMax() const
 {
   return fCurrentScalingMax;
+}
+
+inline bool
+RenderState::HasChanged() const
+{
+  return fChanged;
+}
+
+inline void
+RenderState::Reset()
+{
+  fChanged = false;
 }
 
 } //::Viewer

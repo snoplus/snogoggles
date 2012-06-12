@@ -29,7 +29,7 @@ Rect::NewDaughter()
 
 Rect*
 Rect::NewDaughter( const sf::Rect<double>& rect,
-		   ECoordSystem system = eLocal )
+                   ECoordSystem system = eLocal )
 {
   Rect* daughter = NewDaughter();
   daughter->SetRect( rect, system );
@@ -103,7 +103,7 @@ Rect::GetRect( int level )
 }
 
 sf::Rect<double> 
-Rect::GetRect( ECoordSystem system )
+Rect::GetRect( const ECoordSystem& system )
 {
   if( system == eLocal )
     return GetRect( 0 );
@@ -135,16 +135,32 @@ Rect::GetRect( ECoordSystem system )
     }
 }
 
+bool
+Rect::OverlapsRect( const sf::Rect<double>& testRect )
+{
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left, testRect.Top ), eResolution ) ) return true;
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left + testRect.Width, testRect.Top ), eResolution ) ) return true;
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left, testRect.Top + testRect.Height ), eResolution ) ) return true;
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left + testRect.Width, testRect.Top + testRect.Height), eResolution ) ) return true;
+  sf::Rect<double> thisRect = this->GetRect( eResolution );
+  RectPtr testTemp( fMother->NewDaughter( testRect, eResolution ) ); // Will be deleted on loss of scope
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left, thisRect.Top ), eResolution ) ) return true;
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left + thisRect.Width, thisRect.Top ), eResolution ) ) return true;
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left, thisRect.Top + thisRect.Height ), eResolution ) ) return true;
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left + thisRect.Width, thisRect.Top + thisRect.Height), eResolution ) ) return true;
+  return false;
+}
+
 bool 
 Rect::ContainsRect( const sf::Rect<double>& testRect,
-		    const ECoordSystem system )
+                    const ECoordSystem system )
 {
   sf::Rect<double> thisRes = GetRect( system );
   const double thisRight = thisRes.Left + thisRes.Width;
   const double testRight = testRect.Left + testRect.Width;
   const double thisBottom = thisRes.Top + thisRes.Height;
   const double testBottom = testRect.Top + testRect.Height;
-  if( thisRes.Left < testRect.Left && thisRight > testRight && thisRes.Top < testRect.Top && thisBottom > testBottom )
+  if( thisRes.Left <= testRect.Left && thisRight >= testRight && thisRes.Top <= testRect.Top && thisBottom >= testBottom )
     return true;
   else
     return false;      
@@ -152,7 +168,7 @@ Rect::ContainsRect( const sf::Rect<double>& testRect,
 
 bool 
 Rect::ContainsPoint( const sf::Vector2<double>& testPoint,
-		     const ECoordSystem system )
+                     const ECoordSystem system )
 {
   sf::Rect<double> testRect;
   testRect.Left = testPoint.x;

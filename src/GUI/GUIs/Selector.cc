@@ -1,74 +1,71 @@
-#include <SFML/Graphics/Rect.hpp>
-
 using namespace std;
 
 #include <Viewer/Selector.hh>
-#include <Viewer/GUIImageButton.hh>
-#include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/Event.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/Button.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
 
+Selector::Selector( RectPtr rect, 
+                    unsigned int guiID )
+  : GUI( rect, guiID ), fText( RectPtr( rect->NewDaughter() ) ), fGUIManager( rect ), fBackground( RectPtr( rect->NewDaughter() ) )
+{
+  fState = 0;
+  /// Initialise the text, left button, right button and background in that order
+  sf::Rect<double> size = rect->GetRect( Rect::eResolution );
+  const double buttonWidth = size.Height; // Button size is defined by height
+  sf::Rect<double> textSize = size;
+  textSize.Width = size.Width - 2.0 * buttonWidth;
+  textSize.Left = buttonWidth + size.Left;
+  fText.GetRect()->SetRect( textSize, Rect::eResolution );
+  sf::Rect<double> buttonSize = size;
+  buttonSize.Width = buttonWidth;
+  GUIs::Button* temp = fGUIManager.NewGUI< GUIs::Button >( buttonSize, Rect::eResolution );
+  temp->Initialise( 20 );
+  buttonSize.Left = size.Left + size.Width - buttonWidth;
+  temp = fGUIManager.NewGUI< GUIs::Button >( buttonSize, Rect::eResolution );
+  temp->Initialise( 21 );
+  size.Left = size.Left + buttonWidth;
+  size.Width = size.Width - 2.0 * buttonWidth;
+  fBackground.GetRect()->SetRect( size, Rect::eResolution );
+  const GUITextureManager& textureManager = GUIProperties::GetInstance().GetGUITextures();
+  fBackground.SetTexture( textureManager.GetTexture( 22, eBase ) );
+}
+
 Selector::~Selector()
 {
-  delete fNext, fPrev, fText;
+
 }
 
-void 
-Selector::Initialise( const vector<string>& labels )
+void
+Selector::Initialise( const vector<string>& options )
 {
-  sf::Rect<double> size;
-  size.Left = 0.0; size.Top = 0.0; size.Width = 1.0; size.Height = 1.0;
-  fOptions = labels;
-  size.Left = 0.9;
-  size.Width = 0.1;
-  fNext = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) , 0 );
-  fNext->Initialise( eIncrease );
-  size.Left = 0.0;
-  fPrev = new GUIs::GUIImageButton( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) , 1 );
-  fPrev->Initialise( eDecrease );
-  size.Left = 0.1; size.Width = 0.8;
-  fText = new Text( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
-  fCurrentOption = 0;
-  fText->SetString( fOptions[fCurrentOption] );
-}
-
-void 
-Selector::Render( RWWrapper& renderApp )
-{
-  fNext->Render( renderApp );
-  fPrev->Render( renderApp );
-  fText->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  renderApp.Draw( *fText );
+  fOptions = options;
 }
 
 GUIEvent 
 Selector::NewEvent( const Event& event )
 {
-  GUIEvent retEvent; // Defaul NULL
-  // Broadcast lost focus events to all, otherwise find which to broadcast to
-  if( event.Type == sf::Event::MouseButtonReleased )
+  GUIEvent returnedEvent = fGUIManager.NewEvent( event );
+  if( !returnedEvent.IsNULL() )
     {
-      if( fNext->ContainsPoint( event.GetPos() ) )
-	fCurrentOption = ( fCurrentOption + 1 ) % fOptions.size();
-      else if( fPrev->ContainsPoint( event.GetPos() ) )
-	fCurrentOption = ( fCurrentOption - 1 ) % fOptions.size();
-      retEvent = GUIEvent( fID, fGlobalID );
+      if( returnedEvent.fguiID == 0 ) // Next option
+        fState = ( fState + 1 ) % fOptions.size();
+       if( returnedEvent.fguiID == 1 ) // Prev option
+        fState = ( fState - 1 ) % fOptions.size();
+       return GUIEvent( fID, fGlobalID );
     }
-  fText->SetString( fOptions[fCurrentOption] );
-  return retEvent;
+  return GUIEvent();
 }
 
-unsigned int
-Selector::GetState() const
+void 
+Selector::Render( RWWrapper& renderApp )
 {
-  return fCurrentOption;
-}
-
-void
-Selector::SetState( unsigned int state )
-{
-  fCurrentOption = state;
+  fGUIManager.Render( renderApp );
+  renderApp.Draw( fBackground );
+  fText.SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
+  if( !fOptions.empty() )
+    fText.SetString( fOptions[fState] );
+  renderApp.Draw( fText );
 }

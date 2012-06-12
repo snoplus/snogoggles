@@ -19,20 +19,22 @@ void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::
         module->CreateGUIObjects( g, optionsArea );
 }
 
-void Module3d::LoadConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
+void Module3d::LoadConfigurationSafe( Module3d* module, 
+                                      const ConfigurationTable* configTable )
 {
     if( module != NULL ) 
     {
-        try { module->LoadConfiguration( configTable.GetTable( module->GetTableName() ) ); }
+        try { module->LoadConfiguration( configTable->GetTable( module->GetTableName() ) ); }
         catch( ConfigurationTable::NoTableError& e ) { }
     }
 }
 
-void Module3d::SaveConfigurationSafe( Module3d* module, ConfigurationTable& configTable )
+void Module3d::SaveConfigurationSafe( Module3d* module, 
+                                      ConfigurationTable* configTable )
 {
     if( module != NULL ) 
     {
-        ConfigurationTable* newConfigTable = configTable.NewTable( module->GetTableName() );
+        ConfigurationTable* newConfigTable = configTable->NewTable( module->GetTableName() );
         newConfigTable->SetS( MODULE_TAG, module->GetName() );
         module->SaveConfiguration( newConfigTable );
     }

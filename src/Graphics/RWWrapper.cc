@@ -62,5 +62,5 @@ RWWrapper::DrawObject( sf::Drawable& object )
 sf::Time
 RWWrapper::GetFrameTime()
 {
-  return fClock.Restart();
+  return fClock.GetElapsedTime();
 }

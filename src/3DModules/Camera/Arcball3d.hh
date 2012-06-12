@@ -59,7 +59,7 @@ public:
     virtual void CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea );
 
     /// Loads configuration
-    virtual void LoadConfiguration( ConfigurationTable* configTable );
+    virtual void LoadConfiguration( const ConfigurationTable* configTable );
 
     /// Saves configuration
     virtual void SaveConfiguration( ConfigurationTable* configTable );

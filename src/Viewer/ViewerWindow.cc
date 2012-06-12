@@ -8,8 +8,7 @@ using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/TextureManager.hh>
-#include <Viewer/GUITextureManager.hh>
-#include <Viewer/Configuration.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/RectPtr.hh>
@@ -17,10 +16,8 @@ using namespace std;
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/DesktopManager.hh>
 #include <Viewer/RenderState.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
-
-ColourPaletteFactory ViewerWindow::gColourPaletteFactory;
-GUIColourPaletteFactory ViewerWindow::gGUIColourPaletteFactory;
 
 const int kConfigVersion = 1;
 
@@ -39,7 +36,7 @@ ViewerWindow::~ViewerWindow()
 }
 
 void
-ViewerWindow::PreInitialise()
+ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
 {
   // Attempt to initialize the size of the depth and stencil buffers.
   // Fails on Linux, not sure about Mac.
@@ -68,45 +65,16 @@ ViewerWindow::PreInitialise()
   fWindowApp->Draw( snoSprite );
   fWindowApp->Draw( sfmlSprite );
   fWindowApp->Display();
+  // Now start building the desktop and frames
+  fDesktopManager = new DesktopManager( RectPtr( fMotherRect ) );
+  fDesktopManager->PreInitialise( configTable );
+  fRWWrapper = new RWWrapper( *fWindowApp );
 }
 
 void
-ViewerWindow::PostInitialise()
+ViewerWindow::PostInitialise( const ConfigurationTable* configTable )
 {
-  // Load the configuration
-  try
-    {
-      stringstream configFileName;
-      configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-      Configuration loadConfig( configFileName.str(), false );  
-      // Check file is up to date, if not throw a recoverable error (after deleting it)
-      try
-        {
-          if( loadConfig.GetI( "version" ) != kConfigVersion )
-            {
-              remove( configFileName.str().c_str() );
-              throw Configuration::NoFileError( "Configuration version miss match" );
-            }
-        }
-      catch( ConfigurationTable::NoAttributeError& e )
-        {
-          remove( configFileName.str().c_str() );
-          throw Configuration::NoFileError( "Configuration version miss match" );
-        }
-
-      ColourPalette::gPalette = gColourPaletteFactory.New( loadConfig.GetS( "colourPal" ) );
-      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( loadConfig.GetS( "guiPal" ) );
-      fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
-      fDesktopManager->Initialise();
-      fDesktopManager->LoadConfiguration( loadConfig );
-    }
-  catch( Configuration::NoFileError& e )
-    {
-      ColourPalette::gPalette = gColourPaletteFactory.New( "Discrete Rainbow" );
-      GUIColourPalette::gPalette = gGUIColourPaletteFactory.New( "Default" );
-      fDesktopManager = new DesktopManager( RectPtr( fMotherRect ), 0.1, 0.1 ); //TEMP PHIL
-      fDesktopManager->Initialise();
-    }
+  fDesktopManager->PostInitialise( configTable );
 }
 
 void
@@ -119,24 +87,20 @@ ViewerWindow::Run()
       RenderLoop();
     }
 }
+void
+ViewerWindow::SaveConfiguration( ConfigurationTable* configTable )
+{
+  fDesktopManager->SaveConfiguration( configTable );
+}
 
 void
 ViewerWindow::Destruct()
 {
-  stringstream configFileName;
-  configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
-  Configuration saveConfig( configFileName.str(), true );
-  saveConfig.SetS( "colourPal", ColourPalette::gPalette->GetName() );
-  saveConfig.SetS( "guiPal", GUIColourPalette::gPalette->GetName() );
-  saveConfig.SetI( "version", kConfigVersion );
-  fDesktopManager->SaveConfiguration( saveConfig );
-  saveConfig.SaveConfiguration();
-  
   // Must delete textures before the window, or get sfml segfault
   TextureManager::GetInstance().ClearTextures();
-  GUITextureManager::GetInstance().ClearTextures();
   delete fDesktopManager;
   fWindowApp->Close();
+  delete fRWWrapper;
   delete fWindowApp;
 }
 
@@ -180,6 +144,7 @@ ViewerWindow::EventLoop()
 void
 ViewerWindow::RenderLoop()
 {
+  fRWWrapper->NewFrame();
   fWindowApp->SetActive();
   SetGlobalGLStates();
 
@@ -187,12 +152,10 @@ ViewerWindow::RenderLoop()
   // This SFML call is unnecessary.
   //fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
 
-  RWWrapper renderApp( *fWindowApp );
-
-  fDesktopManager->Render3d( renderApp );
+  fDesktopManager->Render3d( *fRWWrapper );
   fWindowApp->PushGLStates(); // This call seems to be necessary.
-  fDesktopManager->Render2d( renderApp );
-  fDesktopManager->RenderGUI( renderApp );
+  fDesktopManager->Render2d( *fRWWrapper );
+  fDesktopManager->RenderGUI( *fRWWrapper );
   fWindowApp->PopGLStates(); // Matches the save call above.
 
   fWindowApp->Display();
@@ -201,7 +164,7 @@ ViewerWindow::RenderLoop()
 void 
 ViewerWindow::SetGlobalGLStates()
 {
-  GUIColourPalette::gPalette->GetBGColour( eBase ).ClearOpenGL();
+  GUIProperties::GetInstance().GetGUIColourPalette().GetBackground().ClearOpenGL();
   glClearDepth(1.f); // Sets the depth buffer clear to 1.
   glClearStencil(0); // Sets the stencil buffer clear to 0.
 

@@ -1,8 +1,8 @@
 #include <Viewer/DefaultTracks3d.hh>
 #include <Viewer/GUIManager.hh>
 #include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/ColourPalette.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/RIDS/MC.hh>
 
 #include <SFML/Graphics/Rect.hpp>
@@ -41,19 +41,19 @@ void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& o
     int numGUIs = names.size() + 1;
     sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width / 5);
 
-    fFullTrackGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fFullTrackGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fFullTrackGUI->SetLabel( "Render All Track Steps" );
 
     for( int i = 0; i < names.size(); i++ )
     {
         rect.Top += optionsArea.Height / numGUIs;
-        fGUIs[ names.at(i) ] = g.NewGUI< GUIs::CheckBoxLabel >( rect );
+        fGUIs[ names.at(i) ] = g.NewGUI< GUIs::PersistLabel >( rect );
         fGUIs[ names.at(i) ]->SetLabel( names.at(i) );
         fGUIs[ names.at(i) ]->SetState( fTrackBuffer.fParticleTypes[ names.at(i) ].fVisible );
     }
 }
 
-void DefaultTracks3d::LoadConfiguration( ConfigurationTable* configTable )
+void DefaultTracks3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetBooleanSafe( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
     ConfigTableUtils::GetBooleanSafe( configTable, PRIMARY_TRACKS_ONLY, fPrimaryTracksOnly );
@@ -76,7 +76,7 @@ void DefaultTracks3d::EventLoop( )
 
     if( fGUIs.empty() == false )
     {
-        std::map< std::string, GUIs::CheckBoxLabel* >::iterator itr;
+        std::map< std::string, GUIs::PersistLabel* >::iterator itr;
         for( itr = fGUIs.begin(); itr != fGUIs.end(); itr++ )
             fTrackBuffer.fParticleTypes[ itr->first ].fVisible = fGUIs[ itr->first ]->GetState();
     }
@@ -84,11 +84,11 @@ void DefaultTracks3d::EventLoop( )
 
 void DefaultTracks3d::RenderTracks( RIDS::MC& mc )
 {
-    if( fSize != mc.GetTracks().size() || fPreviousPalette != ColourPalette::gPalette )
+  if( fSize != mc.GetTracks().size() )
     {
         fTrackBuffer.SetAll( mc );
         fSize = mc.GetTracks().size();
-        fPreviousPalette = ColourPalette::gPalette;
+        fPreviousPalette = &GUIProperties::GetInstance().GetColourPalette();
     }
 
     fTrackBuffer.Render( fRenderFullTrack );

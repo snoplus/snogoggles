@@ -17,18 +17,19 @@ BaseFrame3d::~BaseFrame3d()
 	fModuleManager = NULL;
 }
 
-void BaseFrame3d::Initialise()
+void BaseFrame3d::PreInitialise( const ConfigurationTable* configTable )
 {
-  Frame::Initialise();
-	fModuleManager = CreateModuleManager();
+  fModuleManager = CreateModuleManager();
+  if( configTable != NULL )
+    fModuleManager->LoadModuleConfigurations( configTable );
 }
 
-void BaseFrame3d::LoadConfiguration( ConfigurationTable& configTable )
+void BaseFrame3d::PostInitialise( const ConfigurationTable* configTable )
 {
-	fModuleManager->LoadModuleConfigurations( configTable );
+
 }
 
-void BaseFrame3d::SaveConfiguration( ConfigurationTable& configTable )
+void BaseFrame3d::SaveConfiguration( ConfigurationTable* configTable )
 {
 	fModuleManager->SaveModuleConfigurations( configTable );
 }

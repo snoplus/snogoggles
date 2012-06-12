@@ -24,7 +24,7 @@
 
 namespace Viewer {
     namespace GUIs {
-        class CheckBoxLabel;
+        class PersistLabel;
     };
 
 namespace Frames {
@@ -39,13 +39,13 @@ public:
 
     void LoadFile();
     void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    virtual void LoadConfiguration( ConfigurationTable* configTable ) { }
+    virtual void LoadConfiguration( const ConfigurationTable* configTable ) { }
     virtual void SaveConfiguration( ConfigurationTable* configTable ) { }
     virtual void EventLoop() { }
     void RenderGeometry();
 
 private:
-    GUIs::CheckBoxLabel* fDisplayGUI;
+    GUIs::PersistLabel* fDisplayGUI;
 
 }; // class Geodesic3d
 

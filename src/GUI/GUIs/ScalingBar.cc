@@ -3,7 +3,7 @@
 #include <Viewer/ScalingBar.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/ProjectionImage.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/RWWrapper.hh>
 using namespace Viewer;
 using namespace Viewer::GUIs;
@@ -60,12 +60,12 @@ ScalingBar::Render( RWWrapper& renderApp )
   fImage->Clear();
   sf::Vector2<double> pos( fMinValue, 0.25 );
   sf::Vector2<double> size( 0.05, 0.5 );
-  fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( fMinValue ) );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetColour( fMinValue ) );
   pos.x = fMaxValue - size.x;
-  fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetColour( fMaxValue ) );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetColour( fMaxValue ) );
   pos = sf::Vector2<double>( 0.0, 0.5 - size.x / 2.0 );
   size = sf::Vector2<double>( 1.0, size.x );
-  fImage->DrawSquare( pos, size, ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
   fImage->Update();
   renderApp.Draw( *fImage );
 }

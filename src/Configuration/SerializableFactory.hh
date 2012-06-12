@@ -26,14 +26,14 @@ class SerializableFactory
 {
 public:
     template< typename T > inline T 
-    New( ConfigurationTable* configTable, const std::string& name );
+    New( const ConfigurationTable* configTable, const std::string& name );
 
     template< typename T > inline T* 
-    NewPtr( ConfigurationTable* configTable, const std::string& name );
+    NewPtr( const ConfigurationTable* configTable, const std::string& name );
 
     // Only called from XMLLoader3d.cc, should not be used.
     template< typename T > inline T* 
-    NewPtrFromThisTable( ConfigurationTable* configTable );
+    NewPtrFromThisTable( const ConfigurationTable* configTable );
 
 ////////////////////////////////////////////////////////////////////////
 // static section
@@ -50,7 +50,7 @@ private:
 ////////////////////////////////////////////////////////////////////////
 
 template< typename T > inline T 
-SerializableFactory::New( ConfigurationTable* configTable, const std::string& name )
+SerializableFactory::New( const ConfigurationTable* configTable, const std::string& name )
 {
     T t;
     t.LoadFromParentTable( configTable, name );
@@ -58,7 +58,7 @@ SerializableFactory::New( ConfigurationTable* configTable, const std::string& na
 }
 
 template< typename T > inline T* 
-SerializableFactory::NewPtr( ConfigurationTable* configTable, const std::string& name )
+SerializableFactory::NewPtr( const ConfigurationTable* configTable, const std::string& name )
 {
     T* t = new T();
     t->LoadFromParentTable( configTable, name );
@@ -66,7 +66,7 @@ SerializableFactory::NewPtr( ConfigurationTable* configTable, const std::string&
 }
 
 template< typename T > inline T* 
-SerializableFactory::NewPtrFromThisTable( ConfigurationTable* configTable )
+SerializableFactory::NewPtrFromThisTable( const ConfigurationTable* configTable )
 {
     T* t = new T();
     t->Load( configTable );

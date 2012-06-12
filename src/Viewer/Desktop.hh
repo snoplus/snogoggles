@@ -22,7 +22,8 @@
 
 namespace Viewer
 {
-  class EventMasterUI;
+  class EventPanel;
+  class FramePanel;
   class FrameManager;
   class Event;
   class ConfigurationTable;
@@ -32,20 +33,18 @@ class Desktop
 {
 public:
   /// Construct with a rect and global margin sizes
-  Desktop( RectPtr desktopRect, 
-	   double rightMargin,
-	   double bottomMargin );
+  Desktop( RectPtr desktopRect );
   ~Desktop();
   /// Deal with a new UI event
   void NewEvent( Event& event );
   /// The event loop
   void EventLoop();
   /// Save the current configuration
-  void SaveConfiguration( ConfigurationTable& configTable );
-  /// Initialise without a configuration
-  void Initialise();
-  /// Load a configuration
-  void LoadConfiguration( ConfigurationTable& configTable );
+  void SaveConfiguration( ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp );
   /// Render all 3d objects
@@ -55,9 +54,8 @@ public:
 private:
   RectPtr fRect; /// < The desktop rect
   FrameManager* fFrameManager; /// < The frame maanager
-  EventMasterUI* fEMUI; /// < The UI which controls the render state (Charge, Time, UnCal etc...)
-  double fRightMargin; /// < Local coord size of right margin
-  double fBottomMargin; /// < Local coord size of bottom margin
+  EventPanel* fEventPanel; /// < The GUI which controls the render state (Charge, Time, UnCal etc...)
+  FramePanel* fFramePanel; /// < GUI control of the frame existance
 };
 
 } //::Viewer

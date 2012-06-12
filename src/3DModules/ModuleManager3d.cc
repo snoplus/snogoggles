@@ -71,7 +71,7 @@ void ModuleManager3d::LateInitialise()
 	GeoManager3d::LoadFileSafe( fGeoManager );
 }
 
-void ModuleManager3d::LoadModuleConfigurations( ConfigurationTable& configTable )
+void ModuleManager3d::LoadModuleConfigurations( const ConfigurationTable* configTable )
 {
 	Module3d::LoadConfigurationSafe( fCameraManager, configTable );
 	Module3d::LoadConfigurationSafe( fHitManager, configTable );
@@ -81,7 +81,7 @@ void ModuleManager3d::LoadModuleConfigurations( ConfigurationTable& configTable 
 	Module3d::LoadConfigurationSafe( fAxes, configTable );
 }
 
-void ModuleManager3d::SaveModuleConfigurations( ConfigurationTable& configTable )
+void ModuleManager3d::SaveModuleConfigurations( ConfigurationTable* configTable )
 {
 	Module3d::SaveConfigurationSafe( fCameraManager, configTable );
 	Module3d::SaveConfigurationSafe( fHitManager, configTable );

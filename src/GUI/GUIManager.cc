@@ -71,7 +71,7 @@ GUIManager::Render( RWWrapper& windowApp )
   
 
 GUI* 
-GUIManager::GetGUI( unsigned int guiID )
+GUIManager::GetGUI( unsigned int guiID ) const
 {
   return fGUIObjects[guiID];
 }

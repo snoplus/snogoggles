@@ -18,7 +18,7 @@ void Polygon::Render() const
     glEnd();
 }
 
-void Polygon::Load( ConfigurationTable* configTable )
+void Polygon::Load( const ConfigurationTable* configTable )
 {
     std::vector< Vector3 > vertices;
     int i = 0;

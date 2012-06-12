@@ -1,9 +1,9 @@
 #include <Viewer/DefaultHits3d.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/RIDS/EV.hh>
 #include <Viewer/RIDS/PMTHit.hh>
@@ -32,17 +32,17 @@ DefaultHits3d::DefaultHits3d()
 void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width / 2.2, optionsArea.Height); 
-    fAllPMTsGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fAllPMTsGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fAllPMTsGUI->SetLabel( "Display All PMTs" );
     fAllPMTsGUI->SetState( fDisplayAllPMTs );
 
     rect.Left += optionsArea.Width/2;
-    fFrontGUI = g.NewGUI<GUIs::CheckBoxLabel>( rect );
+    fFrontGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fFrontGUI->SetLabel( "Show Front PMTs Only" );
     fFrontGUI->SetState( fDisplayFrontPMTsOnly );
 }
 
-void DefaultHits3d::LoadConfiguration( ConfigurationTable* configTable )
+void DefaultHits3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
     ConfigTableUtils::GetBooleanSafe( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
@@ -69,8 +69,8 @@ void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, c
     if( fCurrentPMTList != pmtList )
     {
         for( int i=0; i < pmtList->GetPMTCount(); i++ )
-            fPMTListBuffer.AddHitOutline( 
-                pmtList->GetPos( i ), ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+          fPMTListBuffer.AddHitOutline( 
+                                       pmtList->GetPos( i ), GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
         fPMTListBuffer.Bind();
         fCurrentPMTList = pmtList;
     }
@@ -102,7 +102,7 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
         double data = hits[i].GetData( renderState.GetDataType() );
         double c_frac = data / ( max - min );
 
-        Colour c = ColourPalette::gPalette->GetColour( c_frac );
+        Colour c = GUIProperties::GetInstance().GetColourPalette().GetColour( c_frac );
 
         fFullBuffer.AddHitFull( p, c );
         fOutlineBuffer.AddHitOutline( p, c );
@@ -127,15 +127,15 @@ bool DefaultHits3d::NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderS
         return true;
     }
 
-    if( fCurrentPalette != ColourPalette::gPalette )
+    //if( fCurrentPalette != ColourPalette::gPalette )
     {
-        fCurrentPalette = ColourPalette::gPalette;
+      fCurrentPalette = &GUIProperties::GetInstance().GetColourPalette();
         return true;
     }
 
     if( !Equals( fCurrentRenderState, renderState ) )
     {
-        fCurrentRenderState = renderState;
+      fCurrentRenderState = renderState;
         return true;
     }
 

@@ -5,9 +5,9 @@ using namespace std;
 
 #include <Viewer/Histogram.hh>
 #include <Viewer/Text.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -17,7 +17,7 @@ Histogram::~Histogram()
 }
 
 void 
-Histogram::Initialise()
+Histogram::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> size;
   size.Left = 0.1; size.Top = 0.0; size.Width = 0.9; size.Height = 0.9;
@@ -31,7 +31,7 @@ Histogram::Initialise()
   size.Left = 0.9;
   fMaxX = new Text( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   size.Left = 0.9; size.Top = 0.0; size.Width = 0.1; size.Height = 0.025;
-  fLogYBox = fGUIManager.NewGUI<GUIs::CheckBoxLabel>( size, Rect::eLocal );
+  fLogYBox = fGUIManager.NewGUI<GUIs::PersistLabel>( size, Rect::eLocal );
   fLogYBox->SetLabel( "Log_10 Y?" );
 }
 
@@ -47,7 +47,7 @@ Histogram::EventLoop()
 
 void 
 Histogram::Render2d( RWWrapper& renderApp,
-		     const RenderState& renderState )
+                     const RenderState& renderState )
 {
   HistogramBase::Render2d( renderApp, renderState );
   if( fLogY )
@@ -72,10 +72,10 @@ Histogram::Render2d( RWWrapper& renderApp,
   value.str(""); value << 0.0;
   fMinX->SetString( value.str() );
 
-  fMinX->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fMinY->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fMaxX->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
-  fMaxY->SetColour( GUIColourPalette::gPalette->GetTextColour( eBase ) );
+  fMinX->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fMinY->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fMaxX->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fMaxY->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   
   renderApp.Draw( *fMinX );
   renderApp.Draw( *fMaxX );

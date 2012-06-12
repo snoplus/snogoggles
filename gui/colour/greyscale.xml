@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Colour version="1">
+  <PrimaryColours>
+    <colour0 r="0" g="0" b="0" a="255"/>
+    <colour1 r="255" g="255" b="255" a="255"/>
+    <colour2 r="76" g="76" b="76" a="255"/>
+    <colour3 r="158" g="158" b="158" a="255"/>
+    <colour4 r="226" g="226" b="226" a="255"/>
+    <colour5 r="150" g="150" b="150" a="255"/>
+    <colour6 r="29" g="29" b="29" a="255"/>
+    <colour7 r="37" g="37" b="37" a="255"/>
+    <colour8 r="47" g="47" b="47" a="255"/>
+    <colour9 r="200" g="200" b="200" a="255"/>
+  </PrimaryColours>
+  <ColourStops>
+    <stop0 r="0" g="0" b="0" a="255" value="0.0"/>
+    <stop1 r="255" g="255" b="255" a="255" value="1.0"/>
+  </ColourStops>
+</Colour>

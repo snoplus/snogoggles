@@ -21,9 +21,6 @@
 
 #include <cstddef> //NULL and other things
 
-#include <Viewer/ColourPaletteFactory.hh>
-#include <Viewer/GUIColourPaletteFactory.hh>
-
 namespace sf
 {
   class RenderWindow;
@@ -33,12 +30,12 @@ namespace Viewer
 {
   class Rect;
   class DesktopManager;
+  class ConfigurationTable;
+  class RWWrapper;
 
 class ViewerWindow
 {
 public:
-  static ColourPaletteFactory gColourPaletteFactory;
-  static GUIColourPaletteFactory gGUIColourPaletteFactory;
   /// Destructor
   ~ViewerWindow();
   /// Singleton accessor 
@@ -46,12 +43,14 @@ public:
   /// Initialise all the singletons
   void InitAll();
   /// Start the viewer, No Data access
-  void PreInitialise();
+  void PreInitialise( const ConfigurationTable* configTable );
   /// Load the frames, Data access allowed (post semaphore)
-  void PostInitialise();
+  void PostInitialise( const ConfigurationTable* configTable );
   /// Run loop, polled by the thread
   void Run();
-  /// Destroy the viewer, saving settings
+  /// Save settings
+  void SaveConfiguration( ConfigurationTable* configTable );
+  /// Destroy the viewer
   void Destruct();
 private:
   /// Initialise this window
@@ -69,6 +68,7 @@ private:
   DesktopManager* fDesktopManager; /// < Manages which desktop is shown
   Rect* fMotherRect; /// < The global mother rect
   sf::RenderWindow* fWindowApp; /// < The sfml window to draw on
+  RWWrapper* fRWWrapper; /// < The render wrapper
 };
 
 inline ViewerWindow&

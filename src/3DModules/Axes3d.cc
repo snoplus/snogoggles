@@ -1,8 +1,8 @@
 #include <Viewer/Axes3d.hh>
 #include <Viewer/Colour.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/CheckBoxLabel.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/ConfigTableUtils.hh>
 
 #include <SFML/OpenGL.hpp>
@@ -15,9 +15,9 @@ Axes3d::Axes3d( double length )
 	fDisplay = true;
 	fDisplayGUI = NULL;
 
-    fXColour = ColourPalette::gPalette->GetPrimaryColour( eRed );
-    fYColour = ColourPalette::gPalette->GetPrimaryColour( eGreen );
-    fZColour = ColourPalette::gPalette->GetPrimaryColour( eBlue );
+    fXColour = GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eRed );
+    fYColour = GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGreen );
+    fZColour = GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eBlue );
 
     fXPoint = length * TVector3( 1, 0, 0 );
     fYPoint = length * TVector3( 0, 1, 0 );
@@ -27,19 +27,19 @@ Axes3d::Axes3d( double length )
 void Axes3d::CreateGUIObjects( GUIManager& g, const sf::Rect< double >& optionsArea )
 {
 	sf::Rect< double > rect = optionsArea;
-	fDisplayGUI = g.NewGUI< GUIs::CheckBoxLabel >( rect );
+	fDisplayGUI = g.NewGUI< GUIs::PersistLabel >( rect );
 	fDisplayGUI->SetState( fDisplay );
 	fDisplayGUI->SetLabel( "Display Axes" );
 }
 
-void Axes3d::LoadConfiguration( ConfigurationTable* configTable )
+void Axes3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
-	ConfigTableUtils::SetBoolean( configTable, "Display", fDisplay );
+  ConfigTableUtils::GetBooleanSafe( configTable, "Display", fDisplay ); // OLIVIA IS THIS CORRECT? Was below
 }
 
 void Axes3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-	ConfigTableUtils::GetBooleanSafe( configTable, "Display", fDisplay );
+  ConfigTableUtils::SetBoolean( configTable, "Display", fDisplay ); // OLIVIA IS THIS CORRECT? Was above
 }
 
 void Axes3d::EventLoop()

@@ -16,8 +16,9 @@ ProjectionMapArea::~ProjectionMapArea()
 }
 
 void 
-ProjectionMapArea::Initialise()
+ProjectionMapArea::PostInitialise( const ConfigurationTable* configTable )
 {
+  ProjectionBase::PostInitialise( configTable );
   sf::Rect<double> size;
   size.Left = 0.025; size.Top = 0.0; size.Width = 0.95; size.Height = 0.95;
   ProjectionBase::Initialise( size );

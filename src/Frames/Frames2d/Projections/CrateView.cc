@@ -6,7 +6,7 @@ using namespace std;
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/CrateView.hh>
-#include <Viewer/ColourPalette.hh>
+#include <Viewer/GUIProperties.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/DataStore.hh>
@@ -34,9 +34,8 @@ CrateView::~CrateView()
 }
 
 void 
-CrateView::Initialise() 
+CrateView::PreInitialise( const ConfigurationTable* configTable ) 
 {
-  Frame::Initialise();
   sf::Rect<double> size;
   size.Left = 0.0; size.Top = 0.0; size.Width = 1.0; size.Height = 0.95;
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
@@ -58,7 +57,7 @@ CrateView::Render2d( RWWrapper& renderApp,
       double yPos = ( iCrate / 10 ) * ( kCrateHeight + kYMargin );
       fImage->DrawHollowSquare( sf::Vector2<double>( xPos, yPos ),
                                 sf::Vector2<double>( kCrateWidth, kCrateHeight ),
-                                ColourPalette::gPalette->GetPrimaryColour( eGrey ) );
+                                GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
     }
   // Now draw the hits
   fPMTofInterest = -1;
@@ -107,7 +106,7 @@ CrateView::DrawPMTs( const RenderState& renderState )
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const double data = iTer->GetData( renderState.GetDataType() );
-      DrawPMT( iTer->GetLCN(), ColourPalette::gPalette->GetColour( ( data - renderState.GetScalingMin() ) /
+      DrawPMT( iTer->GetLCN(), GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - renderState.GetScalingMin() ) /
                                                                    ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
 }

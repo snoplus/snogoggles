@@ -6,15 +6,13 @@ using namespace std;
 #include <Viewer/DesktopManager.hh>
 #include <Viewer/Desktop.hh>
 #include <Viewer/Rect.hh>
-#include <Viewer/Configuration.hh>
-#include <Viewer/DesktopMasterUI.hh>
-#include <Viewer/ColourMasterUI.hh>
+#include <Viewer/ConfigurationTable.hh>
+#include <Viewer/DesktopPanel.hh>
+#include <Viewer/GUIPanel.hh>
 using namespace Viewer;
 
-DesktopManager::DesktopManager( RectPtr globalMother,
-				double rightMargin,
-				double bottomMargin )
-  : fGlobalMother( globalMother ), fBottomMargin( bottomMargin ), fRightMargin( rightMargin )
+DesktopManager::DesktopManager( RectPtr globalMother )
+  : fGlobalMother( globalMother )
 {
   fDesktops.resize( 8 ); // Maximum allowed desktops
 }
@@ -24,94 +22,93 @@ DesktopManager::~DesktopManager()
   for( unsigned int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     delete fDesktops[iDesktop];
   fDesktops.clear();
-  delete fDMUI;
-  delete fCMUI;
+  delete fDesktopPanel;
+  delete fGUIPanel;
 }
 
 void 
 DesktopManager::NewEvent( Event& event )
 {
   // Check the UI first
-  fDMUI->NewEvent( event ); 
-  fCMUI->NewEvent( event );
-  fDesktops[fDMUI->GetCurrentDesktop()]->NewEvent( event );
+  fDesktopPanel->NewEvent( event ); 
+  fGUIPanel->NewEvent( event );
+  fDesktops[fDesktopPanel->GetCurrentDesktop()]->NewEvent( event );
 }
 void 
 DesktopManager::EventLoop()
 {
-  fDMUI->EventLoop();
-  fCMUI->EventLoop();
-  fDesktops[fDMUI->GetCurrentDesktop()]->EventLoop();
+  fDesktopPanel->EventLoop();
+  fGUIPanel->EventLoop();
+  fDesktops[fDesktopPanel->GetCurrentDesktop()]->EventLoop();
 }
 
 void 
-DesktopManager::Initialise()
+DesktopManager::PreInitialise( const ConfigurationTable* configTable )
 {
-  // First initialise the UI
-  sf::Rect<double> defaultSize; // The default size
-  RectPtr dmRect( fGlobalMother->NewDaughter() );
-  defaultSize.Left = 1.0 - fRightMargin; defaultSize.Top = 1.0 - fBottomMargin; defaultSize.Width = fRightMargin; defaultSize.Height = fBottomMargin;
-  dmRect->SetRect( defaultSize, Rect::eLocal );
-  fDMUI = new DesktopMasterUI( dmRect, fDesktops.size() );
-  fDMUI->Initialise();
-  defaultSize.Top = 1.0 - 2.0 * fBottomMargin; defaultSize.Height = fBottomMargin;
-  fCMUI = new ColourMasterUI( RectPtr( fGlobalMother->NewDaughter( defaultSize, Rect::eLocal ) ) );
-  fCMUI->Initialise();
+  fDesktopPanel = new DesktopPanel( RectPtr( fGlobalMother->NewDaughter() ) );
+  fDesktopPanel->PreInitialise( configTable );
+  fGUIPanel = new GUIPanel( RectPtr( fGlobalMother->NewDaughter() ) );
+  fGUIPanel->PreInitialise( configTable );
 
   // Now initialise the Desktops
   for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
-      RectPtr desktopRect( fGlobalMother->NewDaughter() );
-      sf::Rect<double> defaultSize; // The default desktop size
-      defaultSize.Left = 0.0; defaultSize.Top = 0.0; defaultSize.Width = 1.0; defaultSize.Height = 1.0;
-      desktopRect->SetRect( defaultSize, Rect::eLocal );
-      fDesktops[iDesktop] = new Desktop( desktopRect, fRightMargin, fBottomMargin );
-      fDesktops[iDesktop]->Initialise();
+      sf::Rect<double> defaultSize( 0.0, 0.0, 1.0, 1.0 );
+      fDesktops[iDesktop] = new Desktop( RectPtr( fGlobalMother->NewDaughter( defaultSize, Rect::eLocal ) ) );
+      stringstream tableName;
+      tableName << "Desktop" << iDesktop;
+      if( configTable != NULL )
+        fDesktops[iDesktop]->PreInitialise( configTable->GetTable( tableName.str() ) );
+      else
+        fDesktops[iDesktop]->PreInitialise( NULL );
     }
 }
 
 void 
-DesktopManager::LoadConfiguration( Configuration& config )
+DesktopManager::PostInitialise( const ConfigurationTable* configTable )
 {
-  unsigned int uDesktop = 0;
-  for( vector< ConfigurationTable* >::iterator iTer = config.GetTableBegin(); iTer != config.GetTableEnd(); iTer++ )
+  fDesktopPanel->PostInitialise( configTable );
+  fGUIPanel->PostInitialise( configTable );
+  for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
-      ConfigurationTable& configTable = **iTer;
-      fDesktops[uDesktop]->LoadConfiguration( configTable );
-      uDesktop++;
+      stringstream tableName;
+      tableName << "Desktop" << iDesktop;
+      if( configTable != NULL )
+        fDesktops[iDesktop]->PreInitialise( configTable->GetTable( tableName.str() ) );
+      else
+        fDesktops[iDesktop]->PreInitialise( NULL );
     }
-  fDMUI->LoadConfiguration( config );
 }
 
 void 
-DesktopManager::SaveConfiguration( Configuration& config )
+DesktopManager::SaveConfiguration( ConfigurationTable* configTable )
 {
-  unsigned int uDesktop = 0;
-  for( vector<Desktop*>::iterator iTer = fDesktops.begin(); iTer != fDesktops.end(); iTer++ )
+  for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
-      ConfigurationTable& configTable = *config.NewTable( "Desktop" );
-      fDesktops[uDesktop]->SaveConfiguration( configTable );
-      uDesktop++;
+      stringstream tableName;
+      tableName << "Desktop" << iDesktop;
+      fDesktops[iDesktop]->SaveConfiguration( configTable->NewTable( tableName.str() ) );
     }
-  fDMUI->SaveConfiguration( config );
+  fGUIPanel->SaveConfiguration( configTable );
+  fDesktopPanel->SaveConfiguration( configTable );
 }
 
 void 
 DesktopManager::Render2d( RWWrapper& renderApp )
 {
-  fDesktops[fDMUI->GetCurrentDesktop()]->Render2d( renderApp );
+  fDesktops[fDesktopPanel->GetCurrentDesktop()]->Render2d( renderApp );
 }
 
 void 
 DesktopManager::Render3d( RWWrapper& renderApp )
 {
-  fDesktops[fDMUI->GetCurrentDesktop()]->Render3d( renderApp );
+  fDesktops[fDesktopPanel->GetCurrentDesktop()]->Render3d( renderApp );
 }
 
 void 
 DesktopManager::RenderGUI( RWWrapper& renderApp )
 {
-  fDMUI->Render( renderApp );
-  fCMUI->Render( renderApp );
-  fDesktops[fDMUI->GetCurrentDesktop()]->RenderGUI( renderApp );
+  fDesktopPanel->Render( renderApp );
+  fGUIPanel->Render( renderApp );
+  fDesktops[fDesktopPanel->GetCurrentDesktop()]->RenderGUI( renderApp );
 }

@@ -45,7 +45,7 @@ namespace RAT {
 
 namespace Viewer {
     namespace GUIs {
-        class CheckBoxLabel;
+        class PersistLabel;
     };
 
     namespace RIDS {
@@ -68,7 +68,7 @@ public:
     static std::string Name() { return "DefaultHits"; }
     std::string GetName() { return Name(); }
     void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    void LoadConfiguration( ConfigurationTable* configTable );
+    void LoadConfiguration( const ConfigurationTable* configTable );
     void SaveConfiguration( ConfigurationTable* configTable );
     void EventLoop( );
     void RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState );
@@ -82,8 +82,8 @@ private:
     RAT::DS::PMTProperties* fCurrentPMTList;
     RIDS::EV* fCurrentEV;
     int fSize;
-    RenderState fCurrentRenderState;
-    ColourPalette* fCurrentPalette;
+  RenderState fCurrentRenderState;
+  const ColourPalette* fCurrentPalette;
 
     HitBuffer fPMTListBuffer;
     HitBuffer fFullBuffer;
@@ -96,8 +96,8 @@ private:
     bool fDisplayAllPMTs;
     bool fDisplayFrontPMTsOnly;
 
-    GUIs::CheckBoxLabel* fAllPMTsGUI;
-    GUIs::CheckBoxLabel* fFrontGUI;
+    GUIs::PersistLabel* fAllPMTsGUI;
+    GUIs::PersistLabel* fFrontGUI;
 
 }; // class DefaultHits3d
 

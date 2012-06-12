@@ -41,7 +41,7 @@ void Volume::Render() const
     glPopMatrix();
 }
 
-void Volume::Load( ConfigurationTable* configTable )
+void Volume::Load( const ConfigurationTable* configTable )
 {
     SerializableFactory* s = SerializableFactory::GetInstance();
     std::string name = configTable->GetS( "name" );
