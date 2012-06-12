@@ -46,8 +46,12 @@ FrameContainer::NewEvent( const Event& event )
           returnEvent = fTopBar->NewEvent( event );
           return returnEvent;
         }
+      else
+        fTopBar->NewEvent( Event( sf::Event::LostFocus ) );
       if( fResizeButton->ContainsPoint( event.GetPos() ) )
         fResizeButton->NewEvent( event );
+      else
+        fTopBar->NewEvent( Event( sf::Event::LostFocus ) );
       break;
     }
   fFrame->NewEvent( event );
