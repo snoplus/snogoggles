@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::GUIs::PersistLabel
 ///
-/// \brief   Label with a check box next to it
+/// \brief   Label with a persist button
 ///
 /// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
 ///
@@ -9,7 +9,7 @@
 ///     30/06/11 : P.Jones - First Revision, new file. \n
 ///     07/06/12 : P.Jones - Second Revision, composite object.\n
 ///
-/// \detail  As brief
+/// \detail  Persist combined with a label. 
 ///
 ////////////////////////////////////////////////////////////////////////
 
