@@ -9,6 +9,7 @@ using namespace std;
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/DesktopPanel.hh>
 #include <Viewer/GUIPanel.hh>
+#include <Viewer/ScriptPanel.hh>
 using namespace Viewer;
 
 DesktopManager::DesktopManager( RectPtr globalMother )
@@ -24,6 +25,7 @@ DesktopManager::~DesktopManager()
   fDesktops.clear();
   delete fDesktopPanel;
   delete fGUIPanel;
+  delete fScriptPanel;
 }
 
 void 
@@ -32,6 +34,7 @@ DesktopManager::NewEvent( Event& event )
   // Check the UI first
   fDesktopPanel->NewEvent( event ); 
   fGUIPanel->NewEvent( event );
+  fScriptPanel->NewEvent( event );
   fDesktops[fDesktopPanel->GetCurrentDesktop()]->NewEvent( event );
 }
 void 
@@ -39,6 +42,7 @@ DesktopManager::EventLoop()
 {
   fDesktopPanel->EventLoop();
   fGUIPanel->EventLoop();
+  fScriptPanel->EventLoop();
   fDesktops[fDesktopPanel->GetCurrentDesktop()]->EventLoop();
 }
 
@@ -49,6 +53,8 @@ DesktopManager::PreInitialise( const ConfigurationTable* configTable )
   fDesktopPanel->PreInitialise( configTable );
   fGUIPanel = new GUIPanel( RectPtr( fGlobalMother->NewDaughter() ) );
   fGUIPanel->PreInitialise( configTable );
+  fScriptPanel = new ScriptPanel( RectPtr( fGlobalMother->NewDaughter() ) );
+  fScriptPanel->PreInitialise( configTable );
 
   // Now initialise the Desktops
   for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
@@ -69,6 +75,7 @@ DesktopManager::PostInitialise( const ConfigurationTable* configTable )
 {
   fDesktopPanel->PostInitialise( configTable );
   fGUIPanel->PostInitialise( configTable );
+  fScriptPanel->PostInitialise( configTable );
   for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
       stringstream tableName;
@@ -90,6 +97,7 @@ DesktopManager::SaveConfiguration( ConfigurationTable* configTable )
       fDesktops[iDesktop]->SaveConfiguration( configTable->NewTable( tableName.str() ) );
     }
   fGUIPanel->SaveConfiguration( configTable );
+  fScriptPanel->SaveConfiguration( configTable );
   fDesktopPanel->SaveConfiguration( configTable );
 }
 
@@ -110,5 +118,6 @@ DesktopManager::RenderGUI( RWWrapper& renderApp )
 {
   fDesktopPanel->Render( renderApp );
   fGUIPanel->Render( renderApp );
+  fScriptPanel->Render( renderApp );
   fDesktops[fDesktopPanel->GetCurrentDesktop()]->RenderGUI( renderApp );
 }

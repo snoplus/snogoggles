@@ -99,8 +99,8 @@ ViewerWindow::Destruct()
   // Must delete textures before the window, or get sfml segfault
   TextureManager::GetInstance().ClearTextures();
   delete fDesktopManager;
-  fWindowApp->Close();
   delete fRWWrapper;
+  fWindowApp->Close();
   delete fWindowApp;
 }
 

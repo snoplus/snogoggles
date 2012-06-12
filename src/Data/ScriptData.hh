@@ -21,6 +21,7 @@ typedef _object PyObject;
 #endif
 
 #include <vector>
+#include <string>
 
 #include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/RIDS/Event.hh>
@@ -31,8 +32,11 @@ namespace Viewer
 class ScriptData
 {
 public:
+  ScriptData();
+  ~ScriptData();
 
-  void Initialise();
+  /// Load a script
+  void Load( const std::string& scriptName );
   /// Reset the data and clear
   void Clear();
   /// Process the event

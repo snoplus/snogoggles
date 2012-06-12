@@ -48,8 +48,16 @@ TopBar::NewEvent( const Event& event )
             fBar->NewEvent( event );
             fRight->NewEvent( event );
           }
+        else
+          {
+            fLeft->NewEvent( Event( sf::Event::LostFocus ) );
+            fBar->NewEvent( Event( sf::Event::LostFocus ) );
+            fRight->NewEvent( Event( sf::Event::LostFocus ) );
+          }
         if( fClose->ContainsPoint( event.GetPos() ) )
           fClose->NewEvent( event );
+        else
+          fClose->NewEvent( Event( sf::Event::LostFocus ) );
       }
       break;
     case sf::Event::MouseButtonReleased:
@@ -107,12 +115,11 @@ TopBar::SetRect( const sf::Rect<double>& rect )
   // Left portion is 20.0 wide
   size.Width = 20.0;
   fLeft->GetRect()->SetRect( size, Rect::eResolution );
-  size.Width = rect.Width - 120.0;
+  size.Width = rect.Width - 60.0;
   size.Left = rect.Left + 20.0;
   fBar->GetRect()->SetRect( size, Rect::eResolution );
-  size.Left = rect.Left + rect.Width - 100.0;
   size.Width = 20.0;
-    size.Left = rect.Left + rect.Width - 40.0;
+  size.Left = rect.Left + rect.Width - 40.0;
   fClose->GetRect()->SetRect( size, Rect::eResolution );
   size.Left = rect.Left + rect.Width - 20.0;
   fRight->GetRect()->SetRect( size, Rect::eResolution );
