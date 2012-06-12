@@ -5,6 +5,7 @@
 #include <Viewer/Frame.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/Button.hh>
 using namespace Viewer;
 
 FrameContainer::FrameContainer( RectPtr rect )
@@ -17,6 +18,7 @@ FrameContainer::~FrameContainer()
 {
   delete fFrame;
   delete fTopBar;
+  delete fResizeButton;
 }
 
 FrameEvent 
@@ -27,18 +29,25 @@ FrameContainer::NewEvent( const Event& event )
     {
     case sf::Event::LostFocus:
       returnEvent = fTopBar->NewEvent( event );
+      if( !fResizeButton->NewEvent( event ).IsNULL() )
+        return FrameEvent( FrameEvent::eStopResize );
       break;
     case sf::Event::MouseButtonReleased:
       // Mouse must be down to move
       returnEvent = FrameEvent( FrameEvent::eStopMove );
-    case sf::Event::MouseMoved:
+      if( fResizeButton->ContainsPoint( event.GetPos() ) )
+        return FrameEvent( FrameEvent::eStopResize );
     case sf::Event::MouseButtonPressed:
+      if( fResizeButton->ContainsPoint( event.GetPos() ) )
+        return FrameEvent( FrameEvent::eStartResize );
+    case sf::Event::MouseMoved:
       if( fTopBar->ContainsPoint( event.GetPos() ) )
-	{
-	  returnEvent = fTopBar->NewEvent( event );
-	  return returnEvent;
-	}
-      // Do NOT CONTINUE if the event is destined for the top bar
+        {
+          returnEvent = fTopBar->NewEvent( event );
+          return returnEvent;
+        }
+      if( fResizeButton->ContainsPoint( event.GetPos() ) )
+        fResizeButton->NewEvent( event );
       break;
     }
   fFrame->NewEvent( event );
@@ -56,6 +65,8 @@ FrameContainer::PreInitialise( const ConfigurationTable* configTable )
 {
   fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
   fTopBar->PreInitialise( configTable );
+  fResizeButton = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 0 );
+  fResizeButton->Initialise( 4 );
   fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
   fFrame->PreInitialise( configTable );
@@ -85,22 +96,23 @@ FrameContainer::Render2d( RWWrapper& renderApp,
 
 void 
 FrameContainer::Render3d( RWWrapper& renderApp, 
-			  const RenderState& renderState )
+                          const RenderState& renderState )
 {
   fFrame->Render3d( renderApp, renderState );
 }
 
 void 
 FrameContainer::RenderGUI( RWWrapper& renderApp, 
-			   const RenderState& renderState )
+                           const RenderState& renderState )
 {
-  fTopBar->RenderGUI( renderApp );
   fFrame->RenderGUI( renderApp, renderState );
+  fTopBar->RenderGUI( renderApp );
+  fResizeButton->Render( renderApp );
 }
 
 void
 FrameContainer::SetRect( const sf::Rect<double>& rect,
-			 const Rect::ECoordSystem& system )
+                         const Rect::ECoordSystem& system )
 {
   sf::Rect<double> size = rect;
   fRect->SetRect( size, system );
@@ -113,6 +125,11 @@ FrameContainer::SetRect( const sf::Rect<double>& rect,
   size.Height = height - 22.0;
   size.Top += 20.0;
   fFrame->GetRect()->SetRect( size, Rect::eResolution );
+  size.Height = 20.0;
+  size.Width = 20.0;
+  size.Left = rect.Left + rect.Width - 20.0;
+  size.Top = rect.Top + rect.Height - 20.0;
+  fResizeButton->GetRect()->SetRect( size, Rect::eResolution );
 }
 
 bool

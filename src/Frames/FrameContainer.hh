@@ -36,6 +36,10 @@ namespace Viewer
   class Event;
   class Frame;
   class TopBar;
+namespace GUIs
+{
+  class Button;
+}
 
 class FrameContainer
 {
@@ -77,8 +81,9 @@ public:
   void SetFrame( Frame* frame ) { fFrame = frame; }
 private:
   RectPtr fRect; /// < The container rect
-  Frame* fFrame; /// < Pointer to the frame
-  TopBar* fTopBar; /// < Pointer to the top bar GUI
+  Frame* fFrame; /// < The frame
+  TopBar* fTopBar; /// < The top bar GUI
+  GUIs::Button* fResizeButton; /// < The resize button (bottom right)
 };
 
 inline bool

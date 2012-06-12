@@ -22,8 +22,7 @@ TextureManager::ClearTextures()
 }
 
 sf::Texture*
-TextureManager::GetTexture(
-		       const string& fileName )
+TextureManager::GetTexture( const string& fileName )
 {
   sf::Texture* texture = fTextures[fileName];
   if( texture == NULL )
@@ -33,7 +32,7 @@ TextureManager::GetTexture(
       stringstream fileLocation;
       fileLocation << getenv( "VIEWERROOT" ) << "/textures/" << fileName;
       if( !texture->LoadFromFile( fileLocation.str().c_str() ) ) // No file with that name & extension
-	throw TextureNotFoundError( fileName );
+        throw TextureNotFoundError( fileName );
       fTextures[fileName] = texture;
     }
   return texture;

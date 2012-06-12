@@ -8,10 +8,13 @@
 /// REVISION HISTORY:\n
 ///     07/08/11 : P.Jones - First Revision, new file. \n
 ///     20/02/12 : P.Jones - Second Revision, refactor the code. \n
+///     03/06/12 : P.Jones - Third Revision, no longer a singleton.\n
 ///
 /// \detail  A GUI base image is loaded and then coloured at run time 
 ///          to produce the GUI textures (buttons). This class holds the
-///          GUI textures, returning a usable reference.
+///          GUI textures, returning a usable reference. Textures are
+///          now indexed by number with the texture position being the
+///          (number/10, number%10)*20 pixels.
 ///
 ////////////////////////////////////////////////////////////////////////
 
@@ -22,7 +25,9 @@
 #include <SFML/Config.hpp>
 
 #include <map>
+#include <vector>
 
+#include <Viewer/Colour.hh>
 #include <Viewer/GUI.hh>
 
 namespace sf
@@ -32,51 +37,39 @@ namespace sf
 
 namespace Viewer
 {
-  enum EGUITexture { eBarLeft, eBar, eBarRight, eDecrease, eIncrease, ePlus, eCross, eOpenBox, eCrossBox, eNewFrameLeft, eNewFrame, eNewFrameRight };
-  typedef std::map< EGUITexture, std::map< EGUIState, sf::Texture* > > GUITextureMap;
-  typedef std::map< EGUITexture, sf::Rect<int> > GUIRectMap;
 
 class GUITextureManager
 {
 public:
+  GUITextureManager();
   /// Destruct and delete textures
-  virtual ~GUITextureManager();
-  /// Return the singleton instance
-  inline static GUITextureManager& GetInstance();
+  ~GUITextureManager();
   /// Initialise and load the pixels
   void Initialise();
-  /// Get a pointer to the gui-image-state texture
-  sf::Texture* GetTexture( EGUITexture image,
-                           EGUIState state );
-  /// Notify and change the colour scheme
-  void ChangeColourScheme();
   /// Delete and clear the textures
   void ClearTextures();
+  /// Get a pointer to the gui-image-state texture
+  sf::Texture* GetTexture( unsigned int textureNumber,
+                           EGUIState state ) const;
+  /// Notify on change of the colour scheme
+  void Update();
 private:
-  GUITextureManager();
+  void FillPixels( sf::Uint8* pixels, 
+                   sf::Rect<int> sourceRect,
+                   EGUIState state );
 
-  /// Colourise a single texture and add it to the fTextures map
-  void Colourise( EGUITexture image,
-                  EGUIState state );
+  /// Produce the Pixel colour from the shape colours
+  Colour Colourise( Colour shapeA, 
+                    Colour shapeB,
+                    EGUIState state );
   
-  GUIRectMap fSubRects; /// < Maps the pixel extent of each GUITexture to an EGUITexture
-  GUITextureMap fTextures; /// < Maps the actual texture to an EGUITexture + EGUIState
+  std::map< EGUIState, std::vector< sf::Texture*> > fTextures;
   
-  sf::Uint8* fBasePixels; /// < Base pixels
+  sf::Uint8* fBasePixelsA; /// < Base pixels from image A
+  sf::Uint8* fBasePixelsB; /// < Base pixels from image B
   unsigned int fBaseWidth; /// < Base pixel width
   unsigned int fBaseHeight; /// < Base pixel height
-  
-  /// Stop usage of
-  GUITextureManager( GUITextureManager const& );
-  void operator=( GUITextureManager const& );
 };
-
-inline GUITextureManager&
-GUITextureManager::GetInstance()
-{
-  static GUITextureManager instance;
-  return instance;
-}
 
 } // ::Viewer
 

@@ -45,7 +45,7 @@ namespace RAT {
 
 namespace Viewer {
     namespace GUIs {
-        class CheckBoxLabel;
+        class PersistLabel;
     };
 
     namespace RIDS {
@@ -96,8 +96,8 @@ private:
     bool fDisplayAllPMTs;
     bool fDisplayFrontPMTsOnly;
 
-    GUIs::CheckBoxLabel* fAllPMTsGUI;
-    GUIs::CheckBoxLabel* fFrontGUI;
+    GUIs::PersistLabel* fAllPMTsGUI;
+    GUIs::PersistLabel* fFrontGUI;
 
 }; // class DefaultHits3d
 

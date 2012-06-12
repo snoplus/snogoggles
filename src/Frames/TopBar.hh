@@ -31,8 +31,8 @@ namespace Viewer
   class Text;
 namespace GUIs
 {
-  class GUIImageButton;
-  class GUIImagePersist;
+  class Button;
+  class Persist;
 }
 
 class TopBar
@@ -58,13 +58,10 @@ public:
   bool IsPinned();
 private:
   RectPtr fRect; /// < The Top bar location
-  GUIs::GUIImageButton* fLeft;
-  GUIs::GUIImageButton* fBar;
-  GUIs::GUIImageButton* fDecrease;
-  GUIs::GUIImageButton* fIncrease;
-  GUIs::GUIImageButton* fPin;
-  GUIs::GUIImageButton* fClose;
-  GUIs::GUIImageButton* fRight;
+  GUIs::Button* fLeft;
+  GUIs::Button* fBar;
+  GUIs::Button* fClose;
+  GUIs::Button* fRight;
 };
 
 inline bool 

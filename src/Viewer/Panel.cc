@@ -54,12 +54,12 @@ Panel::PreInitialise( const ConfigurationTable* configTable )
       else if( objectConfig->GetName() == string( "label" ) ) // Then it is a Label(Text) object
         {
           sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
-          fLabels[objectConfig->GetI( "result" )] = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eResolution ) ) );
+          fLabels[objectConfig->GetI( "result" )] = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eLocal ) ) );
         }
       else if( objectConfig->GetName() == string( "text" ) ) // Should be Text then
         {
           sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
-          Text* tempText = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eResolution ) ) );
+          Text* tempText = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eLocal ) ) );
           tempText->SetString( objectConfig->GetS( "caption" ) );
           fTexts.push_back( tempText );
         }
@@ -79,7 +79,13 @@ Panel::Render( RWWrapper& renderApp )
 {
   fGUIManager.Render( renderApp );
   for( map< int, Text* >::iterator iTer = fLabels.begin(); iTer != fLabels.end(); iTer++ )
-    renderApp.Draw( *(iTer->second) );
+    {
+      iTer->second->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
+      renderApp.Draw( *(iTer->second) );
+    }
   for( unsigned int uText = 0; uText < fTexts.size(); uText++ )
-    renderApp.Draw( *fTexts[uText] );
+    {
+      fTexts[uText]->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
+      renderApp.Draw( *fTexts[uText] );
+    }
 }

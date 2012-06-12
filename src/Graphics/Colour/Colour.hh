@@ -40,7 +40,8 @@ public:
   inline void SetOpenGL() const;
   inline void ClearOpenGL() const;
 
-  Colour AddColourFraction( const Colour& newColour, double fraction ) const;
+  void AddColourFraction( const Colour& newColour, 
+                          double fraction );
 
   void Load( const ConfigurationTable* configTable );
   void Save( ConfigurationTable* configTable ) const;

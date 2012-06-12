@@ -22,18 +22,14 @@ Colour::Colour( const ConfigurationTable* configTable )
     a = 255;
 }
 
-Colour
-Colour::AddColourFraction( const Colour& newColour, double fraction ) const
+void
+Colour::AddColourFraction( const Colour& newColour, double fraction )
 {
-  double nR = this->r + fraction * ( newColour.r - this->r );
-  double nG = this->g + fraction * ( newColour.g - this->g );
-  double nB = this->b + fraction * ( newColour.b - this->b );
-  double nA = this->a + fraction * ( newColour.a - this->a );
-
-  return Colour( static_cast<sf::Uint8>( nR ),
-                 static_cast<sf::Uint8>( nG ),
-                 static_cast<sf::Uint8>( nB ),
-                 static_cast<sf::Uint8>( nA ) );
+  this->r = this->r + fraction * ( newColour.r - this->r );
+  this->g = this->g + fraction * ( newColour.g - this->g );
+  this->b = this->b + fraction * ( newColour.b - this->b );
+  this->a = this->a + fraction * ( newColour.a - this->a );
+  return;
 }
 
 void Colour::Load( const ConfigurationTable* configTable )

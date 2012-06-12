@@ -22,7 +22,8 @@
 
 namespace Viewer
 {
-  class EventMasterUI;
+  class EventPanel;
+  class FramePanel;
   class FrameManager;
   class Event;
   class ConfigurationTable;
@@ -53,7 +54,8 @@ public:
 private:
   RectPtr fRect; /// < The desktop rect
   FrameManager* fFrameManager; /// < The frame maanager
-  EventMasterUI* fEMUI; /// < The UI which controls the render state (Charge, Time, UnCal etc...)
+  EventPanel* fEventPanel; /// < The GUI which controls the render state (Charge, Time, UnCal etc...)
+  FramePanel* fFramePanel; /// < GUI control of the frame existance
 };
 
 } //::Viewer

@@ -17,6 +17,7 @@
 #define __Viewer_GUIProperties__
 
 #include <Viewer/GUIColourPalette.hh>
+#include <Viewer/GUITextureManager.hh>
 #include <Viewer/ColourPalette.hh>
 
 namespace Viewer
@@ -44,16 +45,21 @@ public:
   inline void LoadGUIColourPalette( const std::string& filename );
   /// Load new colour scheme
   inline void LoadColourPalette( const std::string& filename );
+  /// Invert the gui colour scheme
+  inline void InvertGUI();
+  /// Get the gui texture manager
+  inline const GUITextureManager& GetGUITextures() const;
   /// Get the current gui colour scheme
   inline const GUIColourPalette& GetGUIColourPalette() const;
   /// Get the current colour scheme
   inline const ColourPalette& GetColourPalette() const;
 
   inline void Reset();
-  inline bool Changed() const;
+  inline bool HasChanged() const;
 private:
   GUIProperties();
 
+  GUITextureManager fGUITextures; /// < Manages the gui textures
   GUIColourPalette fGUIColourPalette; /// < The gui colour palette
   ColourPalette fColourPalette; /// < The general colour palette
   ConfigurationFile* fGUIConfiguration; /// < The stored gui configuration xml data
@@ -74,13 +80,28 @@ GUIProperties::GetInstance()
 inline void 
 GUIProperties::LoadGUIColourPalette( const std::string& filename )
 {
+  fChanged = true;
   fGUIColourPalette.Load( filename );
 }
 
 inline void 
 GUIProperties::LoadColourPalette( const std::string& filename )
 {
+  fChanged = true;
   fColourPalette.Load( filename );
+}
+
+inline void
+GUIProperties::InvertGUI()
+{
+  fChanged = true;
+  fGUIColourPalette.Invert();
+}
+
+inline const GUITextureManager&
+GUIProperties::GetGUITextures() const
+{
+  return fGUITextures;
 }
 
 inline const GUIColourPalette&
@@ -93,6 +114,18 @@ inline const ColourPalette&
 GUIProperties::GetColourPalette() const
 {
   return fColourPalette;
+}
+
+inline bool
+GUIProperties::HasChanged() const
+{
+  return fChanged;
+}
+
+inline void
+GUIProperties::Reset()
+{
+  fChanged = false;
 }
 
 } // ::Viewer

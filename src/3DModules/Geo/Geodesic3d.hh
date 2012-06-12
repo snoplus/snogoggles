@@ -24,7 +24,7 @@
 
 namespace Viewer {
     namespace GUIs {
-        class CheckBoxLabel;
+        class PersistLabel;
     };
 
 namespace Frames {
@@ -45,7 +45,7 @@ public:
     void RenderGeometry();
 
 private:
-    GUIs::CheckBoxLabel* fDisplayGUI;
+    GUIs::PersistLabel* fDisplayGUI;
 
 }; // class Geodesic3d
 

@@ -47,5 +47,7 @@ ColourPalette::GetColour( double value ) const
     if( fColourStops[uStop].first > value )
       break;
   const double regionFraction = ( value - fColourStops[uStop].first ) / ( fColourStops[uStop + 1].first - fColourStops[uStop].first );
-  return fColourStops[uStop].second.AddColourFraction( fColourStops[uStop + 1].second, regionFraction );
+  Colour result = fColourStops[uStop].second;
+  result.AddColourFraction( fColourStops[uStop + 1].second, regionFraction );
+  return result;
 }

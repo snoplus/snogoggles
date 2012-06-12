@@ -24,7 +24,7 @@ About::PreInitialise( const ConfigurationTable* configTable )
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );
-  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
 }
 
 void 
@@ -37,14 +37,15 @@ About::EventLoop()
 }
 void 
 About::Render2d( RWWrapper& renderApp,
-		 const RenderState& renderState )
+                 const RenderState& renderState )
 {
   stringstream eventInfo;
   eventInfo.precision( 0 );
   eventInfo << fixed;
   eventInfo << "SNOGoggles Air Fill" << "\nFrame Rate:";
   eventInfo << 1e6 / (double) renderApp.GetFrameTime().AsMicroseconds() << " Hz";
+  if( GUIProperties::GetInstance().HasChanged() )
+    fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   fInfoText->SetString( eventInfo.str() );
-  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
   renderApp.Draw( *fInfoText );  
 }

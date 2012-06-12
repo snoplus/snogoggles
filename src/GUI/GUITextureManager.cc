@@ -12,7 +12,7 @@ using namespace Viewer;
 
 GUITextureManager::GUITextureManager()
 {
-  Initialise();
+
 }
 
 GUITextureManager::~GUITextureManager()
@@ -23,21 +23,18 @@ GUITextureManager::~GUITextureManager()
 void
 GUITextureManager::ClearTextures()
 {
-  for( GUIRectMap::iterator iTer = fSubRects.begin(); iTer != fSubRects.end(); iTer++ )
+  for( unsigned int iTexture = 0; iTexture < fTextures[eBase].size(); iTexture++ )
     {
-      delete (fTextures[iTer->first])[eBase];
-      (fTextures[iTer->first])[eBase] = NULL;
-      delete (fTextures[iTer->first])[eHighlight];
-      (fTextures[iTer->first])[eHighlight] = NULL;
-      delete (fTextures[iTer->first])[eActive];
-      (fTextures[iTer->first])[eActive] = NULL;
+      delete fTextures[eBase][iTexture];
+      delete fTextures[eHighlight][iTexture];
+      delete fTextures[eActive][iTexture];
     }
   fTextures.clear();
-  fSubRects.clear();
-  if( fBasePixels )
+  if( fBasePixelsA )
     {
-      delete[] fBasePixels;
-      fBasePixels = NULL;
+      delete[] fBasePixelsA;
+      delete[] fBasePixelsB;
+      fBasePixelsA = NULL;
     }
   fBaseWidth = 0;
   fBaseHeight = 0;
@@ -46,81 +43,88 @@ GUITextureManager::ClearTextures()
 void
 GUITextureManager::Initialise()
 {
-  sf::Image baseImage;
-  stringstream fileLocation;
-  fileLocation << getenv( "VIEWERROOT" ) << "/textures/GUIA.png";
-  if( baseImage.LoadFromFile( fileLocation.str() ) )
+  {
+    sf::Image baseImage;
+    stringstream fileLocation;
+    fileLocation << getenv( "VIEWERROOT" ) << "/textures/GUIA.png";
+    baseImage.LoadFromFile( fileLocation.str() );
+    fBaseWidth = baseImage.GetWidth();
+    fBaseHeight = baseImage.GetHeight();
+    const int pixels = fBaseWidth * fBaseHeight * 4;
+    fBasePixelsA = new sf::Uint8[ pixels ];
+    memcpy( fBasePixelsA, baseImage.GetPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
+  }
+  {
+    sf::Image baseImage;
+    stringstream fileLocation;
+    fileLocation << getenv( "VIEWERROOT" ) << "/textures/GUIB.png";
+    baseImage.LoadFromFile( fileLocation.str() );
+    const int pixels = fBaseWidth * fBaseHeight * 4;
+    fBasePixelsB = new sf::Uint8[ pixels ];
+    memcpy( fBasePixelsB, baseImage.GetPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
+  }
+  const int numX = fBaseWidth / 20.0;
+  const int numY = fBaseHeight / 20.0;
+  for( int iX = 0; iX < numX; iX++ )
     {
-      fBaseWidth = baseImage.GetWidth();
-      fBaseHeight = baseImage.GetHeight();
-      const int pixels = fBaseWidth * fBaseHeight * 4;
-      fBasePixels = new sf::Uint8[ pixels ];
-      memcpy( fBasePixels, baseImage.GetPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
+      for( int iY = 0; iY < numY; iY++ )
+        {
+          sf::Texture* tempBase = new sf::Texture();
+          tempBase->Create( 20, 20 );
+          fTextures[eBase].push_back( tempBase );
+          sf::Texture* tempHighlight = new sf::Texture();
+          tempHighlight->Create( 20, 20 );
+          fTextures[eHighlight].push_back( tempHighlight );
+          sf::Texture* tempActive = new sf::Texture();
+          tempActive->Create( 20, 20 );
+          fTextures[eActive].push_back( tempActive );
+        }
     }
-  else
-    throw;
-  fSubRects[eBarLeft] = sf::Rect<int>( 0, 0, 20, 20 );
-  fSubRects[eBar] = sf::Rect<int>( 20, 0, 20, 20 );
-  fSubRects[eBarRight] = sf::Rect<int>( 120, 0, 20, 20 );
-  fSubRects[eDecrease] = sf::Rect<int>( 40, 0, 20, 20 );
-  fSubRects[eIncrease] = sf::Rect<int>( 60, 0, 20, 20 );
-  fSubRects[ePlus] = sf::Rect<int>( 80, 0, 20, 20 );
-  fSubRects[eCross] = sf::Rect<int>( 100, 0, 20, 20 );
-  fSubRects[eOpenBox] = sf::Rect<int>( 140, 0, 20, 20 );
-  fSubRects[eCrossBox] = sf::Rect<int>( 160, 0, 20, 20 );
-  fSubRects[eNewFrameLeft] = sf::Rect<int>( 0, 20, 20, 20 );
-  fSubRects[eNewFrame] = sf::Rect<int>( 20, 20, 20, 20 );
-  fSubRects[eNewFrameRight] = sf::Rect<int>( 40, 20, 20, 20 );
-  // NULL init
-  for( GUIRectMap::iterator iTer = fSubRects.begin(); iTer != fSubRects.end(); iTer++ )
-    {
-      (fTextures[iTer->first])[eBase] = NULL;
-      (fTextures[iTer->first])[eHighlight] = NULL;
-      (fTextures[iTer->first])[eActive] = NULL;
-    }
-  ChangeColourScheme();
+  Update();
 }
 
 sf::Texture* 
-GUITextureManager::GetTexture( EGUITexture image,
-                               EGUIState state )
+GUITextureManager::GetTexture( unsigned int textureNumber,
+                               EGUIState state ) const
 {
-  return (fTextures[image])[state];
+  return fTextures.find(state)->second[textureNumber];
 }
 
 void
-GUITextureManager::ChangeColourScheme()
+GUITextureManager::Update()
 {
-  for( GUIRectMap::iterator iTer = fSubRects.begin(); iTer != fSubRects.end(); iTer++ )
+  const int numX = fBaseWidth / 20.0;
+  const int numY = fBaseHeight / 20.0;
+  for( int iX = 0; iX < numX; iX++ )
     {
-      Colourise( iTer->first, eBase );
-      Colourise( iTer->first, eHighlight );
-      Colourise( iTer->first, eActive );
+      for( int iY = 0; iY < numY; iY++ )
+        {
+          const int textureNumber = iX + iY * numX;
+          sf::Rect<int> sourceRect( iX * 20, iY * 20, 20, 20 );
+          sf::Uint8 pixels[ 20 * 20 * 4 ];
+          FillPixels( pixels, sourceRect, eBase );
+          fTextures[eBase][textureNumber]->Update( pixels );
+          FillPixels( pixels, sourceRect, eHighlight );
+          fTextures[eHighlight][textureNumber]->Update( pixels );
+          FillPixels( pixels, sourceRect, eActive );
+          fTextures[eActive][textureNumber]->Update( pixels );
+        }
     }
 }
 
 void 
-GUITextureManager::Colourise( EGUITexture image,
-                              EGUIState state )
+GUITextureManager::FillPixels( sf::Uint8* pixels,
+                               sf::Rect<int> sourceRect,
+                               EGUIState state )
 {
-  sf::Rect<int> sourceRect = fSubRects[image];
-  sf::Uint8* pixels = new sf::Uint8[ sourceRect.Width * sourceRect.Height * 4 ];
   for( int xPixel = 0; xPixel < sourceRect.Width; xPixel++ )
     {
       for( int yPixel = 0; yPixel < sourceRect.Height; yPixel++ )
-	{
+        {
           const int basePixel = ( xPixel + sourceRect.Left + ( yPixel + sourceRect.Top ) * fBaseWidth ) * 4;
-          Colour currentColour( fBasePixels[basePixel],
-                                fBasePixels[basePixel + 1],
-                                fBasePixels[basePixel + 2],
-                                fBasePixels[basePixel + 3] );
-
-          Colour pixelColour;
-          pixelColour = GUIProperties::GetInstance().GetGUIColourPalette().GetA( state );
-          pixelColour = pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetB( state ),
-                                                       static_cast<double>( currentColour.g ) / 255.0 );
-          pixelColour = pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetC( state ),
-                                                       static_cast<double>( currentColour.r ) / 255.0 );
+          Colour shapeColourA( fBasePixelsA[basePixel], fBasePixelsA[basePixel + 1], fBasePixelsA[basePixel + 2], fBasePixelsA[basePixel + 3] );
+          Colour shapeColourB( fBasePixelsB[basePixel], fBasePixelsB[basePixel + 1], fBasePixelsB[basePixel + 2], fBasePixelsB[basePixel + 3] );
+          Colour pixelColour = Colourise( shapeColourA, shapeColourB, state );
           const int pixel = ( xPixel + yPixel * sourceRect.Width ) * 4;
           pixels[ pixel ] = pixelColour.r;
           pixels[ pixel + 1 ] = pixelColour.g;
@@ -128,11 +132,27 @@ GUITextureManager::Colourise( EGUITexture image,
           pixels[ pixel + 3 ] = pixelColour.a;
         }
     }
-  // Now produce the texture
-  if( (fTextures[image])[state] == NULL )
-    {
-      (fTextures[image])[state] = new sf::Texture();
-      (fTextures[image])[state]->Create( sourceRect.Width, sourceRect.Height );
-    }
-  (fTextures[image])[state]->Update( pixels );
+}
+
+
+Colour
+GUITextureManager::Colourise( Colour shapeColourA,
+                              Colour shapeColourB,
+                              EGUIState state )
+{
+  Colour pixelColour;
+  pixelColour = GUIProperties::GetInstance().GetGUIColourPalette().GetBackground();
+  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetA( state ), static_cast<double>( shapeColourA.r ) / 255.0 );
+  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetB( state ), static_cast<double>( shapeColourA.g ) / 255.0 );
+  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetC( state ), static_cast<double>( shapeColourA.b ) / 255.0 );
+  
+  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetD( state ), 
+                                 static_cast<double>( shapeColourB.r ) / 255.0 * static_cast<double>( shapeColourB.a ) / 255.0 );
+  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetE( state ), 
+                                 static_cast<double>( shapeColourB.g ) / 255.0 * static_cast<double>( shapeColourB.a ) / 255.0 );
+  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetF( state ), 
+                                 static_cast<double>( shapeColourB.b ) / 255.0 * static_cast<double>( shapeColourB.a ) / 255.0 );
+  
+  pixelColour.a = shapeColourA.a;
+  return pixelColour;
 }

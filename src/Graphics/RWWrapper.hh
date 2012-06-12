@@ -46,7 +46,8 @@ public:
   void Draw( PixelImage& object );
   /// Return the time elapsed since the last frame
   sf::Time GetFrameTime();
-
+  /// Called on new frame
+  inline void NewFrame();
 protected:
   /// Draw a sfml Drawable (everything that can be drawn is drawable)
   void DrawObject( sf::Drawable& object );
@@ -55,6 +56,12 @@ protected:
   sf::RenderWindow& fRenderWindow; /// < Reference to the RenderWindow
   sf::Font fFont;
 };
+
+inline void
+RWWrapper::NewFrame()
+{
+  fClock.Restart();
+}
 
 } // ::Viewer
 

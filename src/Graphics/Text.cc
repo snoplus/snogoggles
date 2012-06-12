@@ -10,6 +10,8 @@ void
 Text::SetString( const string& text )
 {
   Clear();
+  if( text.empty() )
+    return;
   fTextLines = split( text );
   for( vector<string>::iterator iTer = fTextLines.begin(); iTer != fTextLines.end(); iTer++ )
     if( iTer->length() > fMaxLineLength )

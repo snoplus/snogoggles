@@ -122,10 +122,7 @@ PreInitialise()
 void 
 PostInitialise()
 {
-  // Forces it to load, should be initialised, PHIL
-  // Needs to be initialized AFTER a window is opened, causes segfaults, OLIVIA
-  GeodesicSphere::GetInstance();
-
+  GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
   DataStore::GetInstance().Initialise();
 }
 

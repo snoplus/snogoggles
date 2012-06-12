@@ -43,7 +43,7 @@ public:
 
   virtual ~GUI();
   /// Get the unique GUI ID within the frame (not globally unique)
-  inline unsigned int GetGuiID();
+  inline unsigned int GetGUIID();
   /// Get the globally unique GUI ID
   inline unsigned int GetGlobalID();
   /// Get the Rect
@@ -79,7 +79,7 @@ GUI::GUI( RectPtr rect,
 }
 
 inline unsigned int 
-GUI::GetGuiID()
+GUI::GetGUIID()
 {
   return fID;
 }
