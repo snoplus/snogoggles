@@ -24,6 +24,7 @@ namespace Viewer
 {
   class DesktopPanel;
   class GUIPanel;
+  class ScriptPanel;
   class Desktop;
   class RWWrapper;
   class ConfigurationTable;
@@ -55,6 +56,7 @@ private:
   RectPtr fGlobalMother; /// < The gloabl mother rect, this class does not need it's own
   DesktopPanel* fDesktopPanel; /// < The panel which controls which desktop is visible
   GUIPanel* fGUIPanel; /// < The panel which controls the gui settings
+  ScriptPanel* fScriptPanel; /// < The panel which controls the scripts
 };
 
 } //::Viewer

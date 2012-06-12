@@ -10,17 +10,34 @@ using namespace Viewer;
 
 const int kNumChannels = 10000;
 
-void
-ScriptData::Initialise()
+ScriptData::ScriptData()
 {
   Py_Initialize();
+  fpScript = NULL;
+}
+
+ScriptData::~ScriptData()
+{
+  Py_XDECREF( fpScript ); // Delete old script if exists
+  Py_XDECREF( fpFunction );
+  Py_XDECREF( fpData ); // Delete old data if exists
+  Py_Finalize();
+}
+
+void
+ScriptData::Load( const string& scriptName )
+{
+  Py_XDECREF( fpScript ); // Delete old script if exists
+  Py_XDECREF( fpFunction );
+  Py_XDECREF( fpData ); // Delete old data if exists
+  // Load new script
   stringstream pythonScriptPath;
   pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/sum";
   PySys_SetPath( const_cast<char*>( pythonScriptPath.str().c_str() ) ); // Annoying python api
-  PyObject* pScriptName = PyString_FromString( "Example" );
+  PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
   fpScript = PyImport_Import( pScriptName ); // Load script
   Py_DECREF( pScriptName );
-  fpFunction = PyObject_GetAttrString( fpScript, "Hello" );
+  fpFunction = PyObject_GetAttrString( fpScript, "Event" );
   if( !fpFunction || !PyCallable_Check( fpFunction ) )
     throw;
 

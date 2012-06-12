@@ -21,7 +21,8 @@
 namespace Viewer
 {
 
-std::vector<std::string> GetFilesInDirectory( const std::string& folderPath );
+  std::vector<std::string> GetFilesInDirectory( const std::string& folderPath,
+                                                const std::string& extension = std::string("") );
 
 } // ::Viewer
 

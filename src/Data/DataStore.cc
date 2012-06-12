@@ -22,7 +22,7 @@ DataStore::Initialise()
 {
   Lock lock( fLock );
   fEvent = new RIDS::Event( *fEvents[0] );
-  fScriptData.Initialise();
+  fScriptData.Load( "Default" );
 }
 
 DataStore::~DataStore()

@@ -4,7 +4,6 @@ using namespace std;
 
 #include <Viewer/GUIPanel.hh>
 #include <Viewer/Event.hh>
-#include <Viewer/DataStore.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/Selector.hh>
 #include <Viewer/GUIProperties.hh>
@@ -27,7 +26,6 @@ void
 GUIPanel::EventLoop()
 {
   GUIProperties::GetInstance().Reset();
-  DataStore& events = DataStore::GetInstance();
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
@@ -74,7 +72,7 @@ GUIPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
                 stringstream guiColourDir;
                 guiColourDir << getenv( "VIEWERROOT" ) << "/gui/gui-colour";
-                dynamic_cast<GUIs::Selector*>( fGUIs[0] )->Initialise( GetFilesInDirectory( guiColourDir.str() ) );
+                dynamic_cast<GUIs::Selector*>( fGUIs[0] )->Initialise( GetFilesInDirectory( guiColourDir.str(), string("xml") ) );
               }
               break;
             case 1:
@@ -82,7 +80,7 @@ GUIPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
                 stringstream guiColourDir;
                 guiColourDir << getenv( "VIEWERROOT" ) << "/gui/colour";
-                dynamic_cast<GUIs::Selector*>( fGUIs[1] )->Initialise( GetFilesInDirectory( guiColourDir.str() ) );
+                dynamic_cast<GUIs::Selector*>( fGUIs[1] )->Initialise( GetFilesInDirectory( guiColourDir.str(), string("xml") ) );
               }
               break;
             case 2:

@@ -2,9 +2,11 @@
 using namespace std;
 
 #include <Viewer/Directory.hh>
+#include <Viewer/StringUtils.hh>
 
 vector<string> 
-Viewer::GetFilesInDirectory( const string& folderPath )
+Viewer::GetFilesInDirectory( const string& folderPath,
+                             const string& extension )
 {
   vector<string> files;
   DIR *dp = opendir( folderPath.c_str() );
@@ -14,8 +16,15 @@ Viewer::GetFilesInDirectory( const string& folderPath )
       dirp = readdir( dp );
       while( dirp != NULL )
         {
-          if( string( dirp->d_name ) != string(".") && string( dirp->d_name ) !=string("..") )
-            files.push_back( string( dirp->d_name ) );
+          string fileName = string( dirp->d_name );
+          if( fileName != string(".") && fileName !=string("..") )
+            {
+              // Now check extension
+              vector<string> parts;
+              Viewer::StringUtils::SplitString( fileName, string("."), parts, false );
+              if( extension == string("") || extension == parts[1] )
+                files.push_back( parts[0] );
+            }
           dirp = readdir( dp );
         }    
     }
