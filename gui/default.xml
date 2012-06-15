@@ -11,7 +11,8 @@
     <gui effect="2" x="0.1" y="0.8" width="0.8" height="0.2" font-ring="0" />
   </GUIPanel>
   <ScriptPanel x="0.7" y="0.9" width="0.2" height="0.1">
-    <gui effect="0" x="0.1" y="0.0" width="0.8" height="0.3" font-ring="0" />
+    <text caption="Sum Script:" x="0.0" y="0.0" width="0.4" height="0.3" />
+    <gui effect="0" x="0.4" y="0.0" width="0.6" height="0.3" font-ring="0" />
   </ScriptPanel>
   <DesktopPanel x="0.5" y="0.9" width="0.2" height="0.1">
     <text caption="Current Desktop:" x="0.1" y="0.0" width="0.6" height="0.3" />
@@ -29,8 +30,9 @@
     <frameButtonArea x="0.0" y="0.0" width="1.0" height="1.0" />
   </FramePanel>
   <EventPanel x="0.9" y="0.0" width="0.1" height="0.5">
-    <gui effect="0" x="0.1" y="0.1" width="0.1" height="0.1"/>
-    <gui effect="1" x="0.6" y="0.1" width="0.1" height="0.1"/>
+    <gui effect="0" x="0.0" y="0.1" width="0.1" height="0.1"/>
+    <label result="0" x="0.1" y="0.1" width="0.8" height="0.1"/>
+    <gui effect="1" x="0.9" y="0.1" width="0.1" height="0.1"/>
     <text caption="Data Source:" x="0.1" y="0.2" width="0.8" height="0.1" />
     <gui effect="2" x="0.1" y="0.3" width="0.8" height="0.4"/>
     <text caption="Data Type:" x="0.1" y="0.7" width="0.8" height="0.1" />

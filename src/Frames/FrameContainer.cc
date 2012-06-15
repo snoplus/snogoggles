@@ -74,6 +74,15 @@ FrameContainer::PreInitialise( const ConfigurationTable* configTable )
   fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
   fFrame->PreInitialise( configTable );
+  if( configTable != NULL )
+    {
+      sf::Rect<double> posRect;
+      posRect.Left = configTable->GetD( "x" );
+      posRect.Top = configTable->GetD( "y" );
+      posRect.Width = configTable->GetD( "width" );
+      posRect.Height = configTable->GetD( "height" );
+      SetRect( posRect, Rect::eResolution );
+    }
 }
 
 void 
@@ -87,6 +96,11 @@ void
 FrameContainer::SaveConfiguration( ConfigurationTable* configTable )
 {
   configTable->SetS( "type", fFrame->GetName() ); // Loaded in FrameManager!
+  sf::Rect<double> posRect = fRect->GetRect( Rect::eResolution );
+  configTable->SetD( "x", posRect.Left );
+  configTable->SetD( "y", posRect.Top );
+  configTable->SetD( "width", posRect.Width );
+  configTable->SetD( "height", posRect.Height );
   fTopBar->SaveConfiguration( configTable );
   fFrame->SaveConfiguration( configTable );
 }
