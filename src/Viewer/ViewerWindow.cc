@@ -45,6 +45,11 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
   sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
   fullScreen.Height -= 40.0; // Mac systems require this
+  if( configTable != NULL )
+    {
+      fullScreen.Width = configTable->GetI( "width" );
+      fullScreen.Height = configTable->GetI( "height" );
+    }
   fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, settings  ); 
   Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
   Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );  
@@ -90,6 +95,9 @@ ViewerWindow::Run()
 void
 ViewerWindow::SaveConfiguration( ConfigurationTable* configTable )
 {
+  sf::Vector2<double> size = Rect::GetWindowResolution();
+  configTable->SetI( "width", size.x );
+  configTable->SetI( "height", size.y );
   fDesktopManager->SaveConfiguration( configTable );
 }
 

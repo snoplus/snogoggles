@@ -244,20 +244,6 @@ FrameManager::NewFrame( unsigned int uFrame,
   newFrame->SetFrame( frame );
   newFrame->PreInitialise( configTable );
   fFrameContainers.push_back( newFrame );
-  int frameID = fFrameContainers.size() - 1;
-
-  for( double x = 0.1; x < fRect->GetRect( Rect::eResolution ).Width; x += 10.0 )
-    {
-      for( double y = 0.1; y < fRect->GetRect( Rect::eResolution ).Height; y += 10.0 )
-        {
-          rect.Left = x;
-          rect.Top = y;
-          if( UpdateFrameRect( frameID, rect ) )
-            return;
-        }
-    }
-  // If we get here, must delete frame
-  DeleteFrame( frameID );
 }
 
 void 
