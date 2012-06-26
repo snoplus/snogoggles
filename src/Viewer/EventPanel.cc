@@ -65,6 +65,13 @@ void
 EventPanel::PreInitialise( const ConfigurationTable* configTable )
 {
   Panel::PreInitialise( configTable );
+  if( configTable != NULL )
+    {
+      dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->SetState( configTable->GetI( "data_source" ) );
+      dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->SetState( configTable->GetI( "data_type" ) );
+    }
+  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
+                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
 }
 
 void
@@ -115,5 +122,6 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
 void
 EventPanel::SaveConfiguration( ConfigurationTable* configTable )
 {
-
+  configTable->SetI( "data_source", dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetState() );
+  configTable->SetI( "data_type", dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetState() );
 }

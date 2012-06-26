@@ -43,6 +43,8 @@ public:
 protected:
   /// Load the GUI configuration specific to the panel
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
+  /// Change the currently displayed desktop
+  void ChangeDesktop( const unsigned int newDesktop );
 
   unsigned int fCurrentDesktop;
 };
