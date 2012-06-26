@@ -16,6 +16,8 @@
 #ifndef __Viewer_EventPanel__
 #define __Viewer_EventPanel__
 
+#include <SFML/System/Clock.hpp>
+
 #include <Viewer/Panel.hh>
 #include <Viewer/RenderState.hh>
 
@@ -44,6 +46,8 @@ protected:
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
 
   RenderState fRenderState; /// < Current render state.
+  sf::Clock fClock; /// < Clock to manage continuous event switching
+  double fEventPeriod; /// < Time period in seconds per event, negative values indicate no continuous switching
 };
 
 const RenderState
