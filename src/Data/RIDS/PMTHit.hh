@@ -3,7 +3,7 @@
 ///
 /// \brief  PMTHit data structure
 ///          
-/// \author Phil Jones <p.g.jones@qmul.ac.uk>                                                                                                    
+/// \author Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     07/05/12 : P.Jones - First Revision, new file. \n
@@ -31,7 +31,7 @@ namespace DS
 {
   class PMTCal;
   class PMTUnCal;
-  class MCPMT;
+  class MCPhoton;
   class PMTTruth;
 }
 }
@@ -51,7 +51,8 @@ public:
   PMTHit( RAT::DS::PMTCal* rPMTCal );
   PMTHit( RAT::DS::PMTUnCal* rPMTUnCal );
   PMTHit( RAT::DS::PMTTruth* rPMTTruth );
-  PMTHit( RAT::DS::MCPMT* rMCPMT );
+  PMTHit( RAT::DS::MCPhoton* rMCPhoton,
+          unsigned int lcn );
   PMTHit( PyObject* pData, 
           int lcn );
   ~PMTHit();

@@ -21,6 +21,12 @@ RenderState::Initialise()
   fsSourceNames[RIDS::eCal] = string("Cal");
   fsSourceNames[RIDS::eScript] = string("Script");
 
+  fsDefaultScalingMin[RIDS::eMC][RIDS::eTAC] = 0.0;
+  fsDefaultScalingMin[RIDS::eMC][RIDS::eQHL] = 0.0;
+
+  fsDefaultScalingMax[RIDS::eMC][RIDS::eTAC] = 500.0;
+  fsDefaultScalingMax[RIDS::eMC][RIDS::eQHL] = 4500.0;
+
   fsDefaultScalingMin[RIDS::eUnCal][RIDS::eTAC] = 0.0;
   fsDefaultScalingMin[RIDS::eUnCal][RIDS::eQHL] = 0.0;
   fsDefaultScalingMin[RIDS::eUnCal][RIDS::eQHS] = 0.0;

@@ -3,7 +3,7 @@
 ///
 /// \brief  Event data structure
 ///          
-/// \author Phil Jones <p.g.jones@qmul.ac.uk>                                                                                                                         
+/// \author Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     07/05/12 : P.Jones - First Revision, new file. \n

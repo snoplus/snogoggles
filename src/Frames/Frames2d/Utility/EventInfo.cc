@@ -1,5 +1,3 @@
-#include <RAT/DS/EV.hh>
-
 #include <SFML/Graphics/Rect.hpp>
 
 #include <sstream>
@@ -10,6 +8,7 @@ using namespace std;
 #include <Viewer/DataStore.hh>
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/EV.hh>
+#include <Viewer/RIDS/MC.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
@@ -48,25 +47,25 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo.precision( 0 );
   eventInfo << fixed;
 
-  DataStore& events = DataStore::GetInstance();
-  const RIDS::Event& event = events.GetCurrentEvent();
-  eventInfo << "GTID: " << event.GetEV().GetGTID() << endl;
-  /*eventInfo << "Time: " << rEV->GetUTDays() << "d " << rEV->GetUTSecs() << "s" << endl;
-  eventInfo << "Trigger: " << ToHexString( rEV->GetTrigType() ) << endl;
-  eventInfo << "Esum int/peak/diff: " << rEV->GetESumInt() << "/" << rEV->GetESumPeak() << "/" << rEV->GetESumDiff() << endl;
-  eventInfo << "Data Clean: " << ToHexString( rEV->GetDataCleanFlags() ) << endl;
-  eventInfo << "Nhit: " << rEV->GetPMTAllCalCount() << endl;
-  eventInfo << "Nhit (Cal): " << rEV->GetPMTCalCount() << endl;
-  eventInfo << "Nhit (UnCal): " << rEV->GetPMTUnCalCount() << endl;
-  eventInfo << "Nhit (OWL): " << rEV->GetPMTOWLCalCount() << endl;
-  eventInfo << "Nhit (LG): " << rEV->GetPMTLGCalCount() << endl;
-  eventInfo << "Nhit (Neck): " << rEV->GetPMTNeckCalCount() << endl;
-  eventInfo << "Nhit (FECD): " << rEV->GetPMTFECDCalCount() << endl;
-  eventInfo << "Nhit (Spare): " << rEV->GetPMTSpareCalCount() << endl;
-  eventInfo << "Nhit (Inv): " << rEV->GetPMTInvCalCount() << endl;
-  */
+  const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
+  if( event.ExistEV() )
+    {
+      RIDS::EV& ev = event.GetEV();
+      eventInfo << "EV:" << endl;
+      eventInfo << "\tGTID: " << ev.GetGTID() << endl;
+      eventInfo << "\tTrigger Word: " << ToHexString( ev.GetTriggerWord() ) << endl;
+      eventInfo << "\tNhit (Cal):" << ev.GetCalNHits() << endl;
+      eventInfo << "\tNhit (UnCal):" << ev.GetUnCalNHits() << endl;
+      eventInfo << "\tNhit (Truth):" << ev.GetTruthNHits() << endl;
+    }
+  if( event.ExistMC() )
+    {
+      RIDS::MC& mc = event.GetMC();
+      eventInfo << "MC:" << endl;
+      eventInfo << "\tNhit:" << mc.GetNHits() << endl;
+    }
   fInfoText->SetString( eventInfo.str() );
-  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+  fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   renderApp.Draw( *fInfoText );  
 }
 

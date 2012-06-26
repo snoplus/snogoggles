@@ -41,10 +41,11 @@ public:
   MC( RAT::DS::MC& rMC );
   ~MC();
 
-  /// Return a vector of PMTHits (data) by source, e.g. eCal
-  std::vector<PMTHit> GetData( EDataSource source );
+  /// Return a vector of PMTHits
+  std::vector<PMTHit> GetHitData();
 
-  inline std::vector<Track>& GetTracks() { return fTracks; }
+  std::vector<Track>& GetTracks() { return fTracks; }
+  int GetNHits() { return fHits.size(); }
 
 private:
   MC();

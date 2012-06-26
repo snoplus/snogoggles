@@ -60,6 +60,8 @@ Event::GetHitData( EDataSource source ) const
   switch( source )
     {
     case eMC:
+      if( ExistMC() )
+        return fMC->GetHitData();
       break;
     case eTruth:
     case eUnCal:

@@ -3,7 +3,7 @@
 #include <RAT/DS/PMTCal.hh>
 #include <RAT/DS/PMTUnCal.hh>
 #include <RAT/DS/PMTTruth.hh>
-#include <RAT/DS/MCPMT.hh>
+#include <RAT/DS/MCPhoton.hh>
 
 #include <Viewer/RIDS/PMTHit.hh>
 using namespace Viewer::RIDS;
@@ -50,9 +50,14 @@ PMTHit::PMTHit( RAT::DS::PMTTruth* rPMTTruth )
   fQLX = rPMTTruth->GetsQLX();
 }
 
-PMTHit::PMTHit( RAT::DS::MCPMT* rMCPMT )
+PMTHit::PMTHit( RAT::DS::MCPhoton* rMCPhoton,
+                unsigned int lcn )
 {
-  
+  fLCN = lcn;
+  fTAC = rMCPhoton->GetHitTime();
+  fQHL = rMCPhoton->GetCharge();
+  fQHS = 0.0;
+  fQLX = 0.0;
 }
 
 PMTHit::PMTHit( PyObject* pData,
