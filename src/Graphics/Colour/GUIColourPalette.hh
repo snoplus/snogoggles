@@ -36,6 +36,8 @@ public:
   Colour GetBackground() const;
   /// Get the text colour, no states here
   Colour GetText() const;
+  /// Get the aspect (usually grey) gui colour
+  Colour GetAspect() const;
   /// Get the colour for state
   Colour GetA( EGUIState state ) const { return fA.find(state)->second; };
   Colour GetB( EGUIState state ) const { return fB.find(state)->second; };
@@ -51,6 +53,8 @@ private:
   Colour fInvBackground; /// < Inverted background colour
   Colour fText; /// < Text colour
   Colour fInvText; /// < Inverted text colour
+  Colour fAspect; /// < The aspect colour
+  Colour fInvAspect; /// < Inverted aspect colour
   bool fInverted; /// < Invert the background colour
   std::map< EGUIState, Colour > fA; /// < This is the effective fill colour
   std::map< EGUIState, Colour > fB; /// < This is the effective accent colour (text)

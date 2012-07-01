@@ -46,9 +46,10 @@ public:
   /// Return the texture
   inline sf::Texture& GetTexture();
   /// Return the local Rect
-  inline RectPtr GetRect();
+  inline RectPtr GetRect() const;
 
-  inline int GetWidth();
+  inline int GetWidth() const;
+  inline int GetHeight() const;
 protected:
   /// Construct the texture and pixels
   void Construct();
@@ -96,15 +97,21 @@ PixelImage::GetTexture()
 }
 
 inline RectPtr 
-PixelImage::GetRect()
+PixelImage::GetRect() const
 {
   return fLocalRect;
 }
 
 inline int
-PixelImage::GetWidth()
+PixelImage::GetWidth() const
 {
   return fWidth;
+}
+
+inline int
+PixelImage::GetHeight() const
+{
+  return fHeight;
 }
 
 } // ::Viewer

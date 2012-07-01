@@ -28,18 +28,18 @@ ProjectionImage::DrawSquare( const sf::Vector2<int>& position,
   int endY = startY + size.y;
   if( endY >= fHeight )
     endY = fHeight - 1;
-  if( startX >= fWidth || startY >= fHeight )
+  if( startX < 0 || startY < 0 || endX >= fWidth || endY >= fHeight )
     // Bad coordinates given
     return;
 
   for( int xPixel = startX; xPixel <= endX; xPixel++ )
     for( int yPixel = startY; yPixel <= endY; yPixel++ )
       {
-	int pixel = ( xPixel + yPixel * fWidth ) * 4;
-	fPixels[pixel] = colour.r;
-	fPixels[pixel + 1] = colour.g;
-	fPixels[pixel + 2] = colour.b;
-	fPixels[pixel + 3] = colour.a;
+        int pixel = ( xPixel + yPixel * fWidth ) * 4;
+        fPixels[pixel] = colour.r;
+        fPixels[pixel + 1] = colour.g;
+        fPixels[pixel + 2] = colour.b;
+        fPixels[pixel + 3] = colour.a;
       }
 }
 

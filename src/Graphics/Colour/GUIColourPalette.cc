@@ -35,6 +35,15 @@ GUIColourPalette::GetText() const
     return fText;
 }
 
+Colour
+GUIColourPalette::GetAspect() const
+{
+  if( fInverted )
+    return fInvAspect;
+  else
+    return fAspect;
+}
+
 void 
 GUIColourPalette::Load( const std::string& fileName )
 {
@@ -53,6 +62,11 @@ GUIColourPalette::Load( const std::string& fileName )
     const ConfigurationTable* config = rootTable->GetTable( "Text" );
     fText = Colour( config->GetTable( "normal" ) );
     fInvText = Colour( config->GetTable( "inverted" ) );
+  }
+  {
+    const ConfigurationTable* config = rootTable->GetTable( "Aspect" );
+    fAspect = Colour( config->GetTable( "normal" ) );
+    fInvAspect = Colour( config->GetTable( "inverted" ) );
   }
   {
     const ConfigurationTable* config = rootTable->GetTable( "ColourA" );

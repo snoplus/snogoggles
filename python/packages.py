@@ -38,7 +38,7 @@ def rat(env):
 
 # Appends Curl and Bzip (for RAT)
 def Curl(env):
-    env.Append( LIBS = [ "bz2", "curl" ] )
+    env.Append( LIBS = [ "bz2" ] )
     if "BZIPROOT" in os.environ:
         env['CPPPATH'].append( os.environ['BZIPROOT'] + "/include" )
         env['LIBPATH'].append( os.environ['BZIPROOT'] + "/lib" )
