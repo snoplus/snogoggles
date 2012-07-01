@@ -5,7 +5,6 @@
 #include <Viewer/IcosahedralProjection.hh>
 #include <Viewer/CrateView.hh>
 #include <Viewer/Histogram.hh>
-#include <Viewer/Histo.hh>
 #include <Viewer/HitFrame3d.hh>
 #include <Viewer/TrackFrame3d.hh>
 using namespace Viewer;
@@ -21,7 +20,6 @@ FrameFactory::FrameFactory( RectPtr rect )
   RegisterFrame( Frames::LambertProjection::Name(), new AllocRect<Frame, Frames::LambertProjection>( rect ), Frame::e2d );
   RegisterFrame( Frames::IcosahedralProjection::Name(),new AllocRect<Frame,Frames::IcosahedralProjection>( rect ), Frame::e2d );
   RegisterFrame( Frames::Histogram::Name(),new AllocRect<Frame,Frames::Histogram>( rect ), Frame::e2d );
-  RegisterFrame( Frames::Histo::Name(),new AllocRect<Frame,Frames::Histo>( rect ), Frame::e2d );
   RegisterFrame( Frames::CrateView::Name(),new AllocRect<Frame,Frames::CrateView>( rect ), Frame::e2d );
 
   RegisterFrame( Frames::HitFrame3d::Name(), new AllocRect<Frame, Frames::HitFrame3d>( rect ), Frame::e3d );

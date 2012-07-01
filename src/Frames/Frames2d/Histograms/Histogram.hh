@@ -1,58 +1,76 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::Histogram
 ///
-/// \brief   Extends the histogram base with a GUI and labels
+/// \brief   Histogram drawing frame
 ///
 /// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     28/02/12 : P.Jones - First Revision, new file. \n
+///     29/06/12 : P.Jones - First Revision, new file. \n
 ///
-/// \detail  Draws the axis and axis labels onto the histogram.
+/// \detail  Draws histograms onto the screen. 
 ///
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef __Viewer_Frames_Histogram__
 #define __Viewer_Frames_Histogram__
 
-#include <Viewer/HistogramBase.hh>
+#include <SFML/System/Vector2.hpp>
+
+#include <vector>
+
+#include <Viewer/Frame.hh>
+#include <Viewer/Text.hh>
 
 namespace Viewer
 {
-  class Text;
-  class renderApp;
-  class RenderState;
-namespace GUIs
-{
-  class PersistLabel;
-}
+  class ProjectionImage;
 
 namespace Frames
 {
 
-class Histogram : public HistogramBase
+class Histogram : public Frame
 {
 public:
-  Histogram( RectPtr rect ) : HistogramBase( rect ) { fLogY = false; }
+  Histogram( RectPtr rect ) : Frame( rect ), fLogY( false ) { }
   ~Histogram();
 
-  virtual std::string GetName() { return Histogram::Name(); }
-  static std::string Name() { return string("Histogram"); }
-
+  /// Initialise without using the DataStore
   virtual void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access
+  void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Save the configuration
+  void SaveConfiguration( ConfigurationTable* configTable ) { };
 
   virtual void EventLoop();
+  
+  virtual std::string GetName() { return Histogram::Name(); }
+  
+  static std::string Name() { return std::string( "Histogram" ); }
 
   virtual void Render2d( RWWrapper& renderApp, 
-			 const RenderState& renderState );
+                         const RenderState& renderState );
+
+  void Render3d( RWWrapper& renderApp, 
+                 const RenderState& renderState ) { }
 
 protected:
-  
-  GUIs::PersistLabel* fLogYBox;
-  Text* fMinX;
-  Text* fMaxX;
-  Text* fMinY;
-  Text* fMaxY;
+  void CalculateHistogram( const RenderState& renderState );
+  void DrawHistogram();
+  void DrawAxis();
+
+  void DrawTickLabel( double value,
+                      bool xAxis );
+  int CalculateBin( double value );
+  double ScaleY( double value );
+
+  std::vector<Text> fAxisText;
+  std::vector<double> fValues; /// < The histogram values, by bin (always binned by 1)
+  std::pair<double, double> fXDomain; /// < Domain in x, from low to high
+  std::pair<double, double> fYRange; /// < Range in y, from low to high
+  ProjectionImage* fImage; /// < The histogram image to display
+  double fBarWidth; /// < Amount of pixels per drawn bin
+  bool fLogY; /// < LogY?
 };
 
 } // ::Frames
