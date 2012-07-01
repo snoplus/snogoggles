@@ -47,7 +47,7 @@ CrateView::PreInitialise( const ConfigurationTable* configTable )
 
 void 
 CrateView::Render2d( RWWrapper& renderApp,
-		     const RenderState& renderState )
+                     const RenderState& renderState )
 {
   fImage->Clear();
   // Draw the crate outlines first

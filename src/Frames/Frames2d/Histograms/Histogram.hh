@@ -36,7 +36,7 @@ public:
   ~Histogram();
 
   /// Initialise without using the DataStore
-  virtual void PreInitialise( const ConfigurationTable* configTable );
+  void PreInitialise( const ConfigurationTable* configTable );
   /// Initilaise with DataStore access
   void PostInitialise( const ConfigurationTable* configTable ) { };
   /// Save the configuration
@@ -68,6 +68,8 @@ protected:
   std::vector<double> fValues; /// < The histogram values, by bin (always binned by 1)
   std::pair<double, double> fXDomain; /// < Domain in x, from low to high
   std::pair<double, double> fYRange; /// < Range in y, from low to high
+  sf::Vector2<double> fMousePos; /// < The mouse position (-1, -1) if not in frame
+  Text* fInfoText; /// < Displays info about the selected bin
   ProjectionImage* fImage; /// < The histogram image to display
   double fBarWidth; /// < Amount of pixels per drawn bin
   bool fLogY; /// < LogY?

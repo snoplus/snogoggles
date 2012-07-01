@@ -14,6 +14,7 @@ using namespace std;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/PersistLabel.hh>
+#include <Viewer/MapArea.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -32,6 +33,12 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
   sf::Rect<double> buttonSize( 0.8, 0.0, 0.2, 0.05 );
   GUIs::PersistLabel* logY = fGUIManager.NewGUI<GUIs::PersistLabel>( buttonSize, Rect::eLocal );
   logY->Initialise( 14, "Log_10 Y?" );
+  sf::Rect<double> infoSize( 0.0, 1.0 - kAxisMargin / 2.0, 1.0, kAxisMargin / 2.0 );
+  fInfoText = new Text( RectPtr( fRect->NewDaughter( infoSize, Rect::eLocal ) ) );
+  imageSize.Left = kAxisMargin;
+  imageSize.Width = 1.0 - kAxisMargin;
+  imageSize.Height = 1.0 - kAxisMargin;
+  fGUIManager.NewGUI<GUIs::MapArea>( imageSize );
 }
 
 
@@ -45,6 +52,9 @@ Histogram::EventLoop()
         case 0:
           fLogY = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( 0 ) )->GetState();
           break;
+        case 1:
+          fMousePos = dynamic_cast<GUIs::MapArea*>( fGUIManager.GetGUI( 1 ) )->GetPosition();
+          break;
         }
       fEvents.pop();
     }
@@ -52,7 +62,7 @@ Histogram::EventLoop()
 
 void
 Histogram::Render2d( RWWrapper& windowApp,
-                 const RenderState& renderState )
+                     const RenderState& renderState )
 {
   fImage->Clear();
   fAxisText.clear();
@@ -67,6 +77,16 @@ Histogram::Render2d( RWWrapper& windowApp,
     {
       iTer->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
       windowApp.Draw( *iTer );
+    }
+  if( fMousePos.x > 0.0 && fMousePos.x < 1.0 )
+    {
+      const int bin = static_cast<int>( fMousePos.x * fValues.size() );
+      stringstream info;
+      info << "(" << fMousePos.x * ( fXDomain.second - fXDomain.first ) + fXDomain.first;
+      info << ", " << fValues[bin] << ")";
+      fInfoText->SetString( info.str() );
+      fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
+      windowApp.Draw( *fInfoText );
     }
 }
 

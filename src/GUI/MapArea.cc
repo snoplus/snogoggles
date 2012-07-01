@@ -13,14 +13,15 @@ MapArea::NewEvent( const Event& event )
     {
     case sf::Event::MouseMoved:
       {
-	sf::Vector2<double> resPos = event.GetPos();
-	sf::Rect<double> resRect = fRect->GetRect( Rect::eResolution );
-	fCurrentPos = sf::Vector2<double>( ( resPos.x - resRect.Left ) / resRect.Width, ( resPos.y - resRect.Top ) / resRect.Height );
-	ret = GUIEvent( fID, fGlobalID );
-	break;
+        sf::Vector2<double> resPos = event.GetPos();
+        sf::Rect<double> resRect = fRect->GetRect( Rect::eResolution );
+        fCurrentPos = sf::Vector2<double>( ( resPos.x - resRect.Left ) / resRect.Width, ( resPos.y - resRect.Top ) / resRect.Height );
+        ret = GUIEvent( fID, fGlobalID );
+        break;
       }
     case sf::Event::LostFocus:
       fCurrentPos = sf::Vector2<double>( -1, -1 );
+      ret = GUIEvent( fID, fGlobalID );
       break;
     }
   return ret;
