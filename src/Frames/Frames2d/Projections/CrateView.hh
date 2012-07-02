@@ -58,6 +58,8 @@ public:
   
   void Render3d( RWWrapper& renderApp,
 		 const RenderState& renderState ) { }
+
+  double GetAspectRatio() const { return 0.5; }
 private:
   void DrawPMT( const int lcn,
 		const Colour& colour );

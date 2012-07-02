@@ -25,8 +25,8 @@ const double kXMargin     = 0.01;
 const double kYMargin     = 0.01;
 const double kCrateWidth  = 1.0 / 10.0 - kXMargin; // 10 Columns
 const double kCrateHeight = 1.0 / 2.0 - kYMargin; // 2 Rows
-const double kHitWidth    = kCrateWidth  / 16.0; // There are 16 cards
-const double kHitHeight   = kCrateHeight / 32.0; // There are 32 channels
+const double kHitWidth    = kCrateWidth  / 18.0; // There are 16 cards plus 2 margins
+const double kHitHeight   = kCrateHeight / 34.0; // There are 32 channels plus 2 margins
 
 CrateView::~CrateView()
 {
@@ -47,7 +47,7 @@ CrateView::PreInitialise( const ConfigurationTable* configTable )
 
 void 
 CrateView::Render2d( RWWrapper& renderApp,
-		     const RenderState& renderState )
+                     const RenderState& renderState )
 {
   fImage->Clear();
   // Draw the crate outlines first
@@ -82,15 +82,15 @@ CrateView::EventLoop()
 
 void
 CrateView::DrawPMT( const int lcn,
-		    const Colour& colour )
+                    const Colour& colour )
 {
   int crate = RAT::BitManip::GetBits(lcn, 9, 5);
   int card = RAT::BitManip::GetBits(lcn, 5, 4);
   int channel = RAT::BitManip::GetBits(lcn, 0, 5);
-  double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth;
-  double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight;
+  double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth + kHitWidth; // Margin of 1 hit width
+  double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight + kHitHeight; // Margin of 1 hit height
   fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
-                      sf::Vector2<double>( kHitWidth, kHitHeight ),
+                      sf::Vector2<double>( kHitWidth / 2.0, kHitHeight / 2.0 ),
                       colour );
   // Draw the PMT info as well?
   const double closeRadius = 0.005;

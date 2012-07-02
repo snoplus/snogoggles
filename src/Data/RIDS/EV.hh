@@ -3,7 +3,7 @@
 ///
 /// \brief  EV data structure
 ///          
-/// \author Phil Jones <p.g.jones@qmul.ac.uk>                                                                                                    
+/// \author Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     07/05/12 : P.Jones - First Revision, new file. \n
@@ -41,6 +41,10 @@ public:
   ~EV();
 
   int GetGTID() const { return fGTID; }
+  int GetCalNHits() const { return fCalHits.size(); }
+  int GetUnCalNHits() const { return fUnCalHits.size(); }
+  int GetTruthNHits() const { return fTruthHits.size(); }
+  int GetTriggerWord() const { return fTriggerWord; }
   /// Return a vector of PMTHits (data) by source, e.g. eCal
   std::vector<PMTHit> GetHitData( EDataSource source ) const;
 

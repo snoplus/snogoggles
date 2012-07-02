@@ -43,7 +43,7 @@ HitInfo::Render( RWWrapper& renderApp,
   if( hasData )
     {
       fInfoText.SetString( info.str() );
-      fInfoText.SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetB( eBase ) );
+      fInfoText.SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
       renderApp.Draw( fInfoText );
     }
 }

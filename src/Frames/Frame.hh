@@ -60,7 +60,7 @@ public:
   /// Return the frame name
   virtual std::string GetName() = 0;
   /// Return the frames preferred aspect ratio, default to 1.0
-  virtual double GetAspectRatio() { return 1.0; }
+  virtual double GetAspectRatio() const { return 1.0; }
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp, 
                   const RenderState& renderState );

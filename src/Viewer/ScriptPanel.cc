@@ -41,6 +41,10 @@ void
 ScriptPanel::PreInitialise( const ConfigurationTable* configTable )
 {
   Panel::PreInitialise( configTable );
+  if( configTable != NULL )
+    {
+      dynamic_cast<GUIs::Selector*>( fGUIs[0] )->SetState( configTable->GetI( "sum-script_state" ) );
+    }
 }
 
 void
@@ -84,5 +88,5 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
 void
 ScriptPanel::SaveConfiguration( ConfigurationTable* configTable )
 {
-
+  configTable->SetI( "sum-script_state", dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetState() );
 }

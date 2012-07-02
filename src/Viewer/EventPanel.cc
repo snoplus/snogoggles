@@ -1,5 +1,4 @@
 #include <SFML/Window/Event.hpp>
-
 using namespace std;
 
 #include <Viewer/EventPanel.hh>
@@ -9,12 +8,14 @@ using namespace std;
 #include <Viewer/DataStore.hh>
 #include <Viewer/Button.hh>
 #include <Viewer/RadioSelector.hh>
+#include <Viewer/SlideSelector.hh>
 using namespace Viewer;
 
 EventPanel::EventPanel( RectPtr rect )
   : Panel( rect, "EventPanel" )
 {
   fRenderState.ChangeState( RIDS::eCal, RIDS::eTAC ); /// TEMP
+  fEventPeriod = -1.0;
 }
 
 EventPanel::~EventPanel()
@@ -56,8 +57,29 @@ EventPanel::EventLoop()
           fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
                                     dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
           break;
+        case 4: // Change in event display rate
+          double slideScale = dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->GetState();
+          if( slideScale <= 0.1 )
+            fEventPeriod = -1.0;
+          else if( slideScale >= 0.95 )
+            {
+              fEventPeriod = 0.0;
+              fClock.Restart();
+            }
+          else
+            {
+              fEventPeriod = 1.0 / slideScale;
+              fClock.Restart();
+            }
+          break;
         }
       fEvents.pop();
+    }
+  // Manage the continuous event switching
+  if( fEventPeriod >= 0.0 && fClock.GetElapsedTime().AsSeconds() > fEventPeriod )
+    {
+      events.Next();
+      fClock.Restart();
     }
 }
 
@@ -65,6 +87,13 @@ void
 EventPanel::PreInitialise( const ConfigurationTable* configTable )
 {
   Panel::PreInitialise( configTable );
+  if( configTable != NULL )
+    {
+      dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->SetState( configTable->GetI( "data_source" ) );
+      dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->SetState( configTable->GetI( "data_type" ) );
+    }
+  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
+                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
 }
 
 void
@@ -106,6 +135,13 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetTypeStrings() );
               }
               break;
+            case 4:
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::SlideSelector >( posRect, effect );
+                vector<double> stops; stops.push_back( 0.0 ); stops.push_back( 0.5 ); stops.push_back( 0.8 ); stops.push_back( 0.95 );
+                dynamic_cast<GUIs::SlideSelector*>( fGUIs[effect] )->Initialise( stops );
+              }
+              break;
             }
           
         }
@@ -115,5 +151,6 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
 void
 EventPanel::SaveConfiguration( ConfigurationTable* configTable )
 {
-
+  configTable->SetI( "data_source", dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetState() );
+  configTable->SetI( "data_type", dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetState() );
 }

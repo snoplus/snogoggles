@@ -48,6 +48,16 @@ void
 GUIPanel::PreInitialise( const ConfigurationTable* configTable )
 {
   Panel::PreInitialise( configTable );
+  if( configTable != NULL )
+    {
+      dynamic_cast<GUIs::Selector*>( fGUIs[0] )->SetState( configTable->GetI( "gui-colour_state" ) );
+      dynamic_cast<GUIs::Selector*>( fGUIs[1] )->SetState( configTable->GetI( "colour_state" ) );
+      dynamic_cast<GUIs::PersistLabel*>( fGUIs[2] )->SetState( configTable->GetI( "inverted" ) );
+      GUIProperties::GetInstance().LoadGUIColourPalette( dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetStringState() );
+      GUIProperties::GetInstance().LoadColourPalette( dynamic_cast<GUIs::Selector*>( fGUIs[1] )->GetStringState() );
+      if( configTable->GetI( "inverted" ) )
+        GUIProperties::GetInstance().InvertGUI();
+    }
 }
 
 void
@@ -95,5 +105,7 @@ GUIPanel::LoadGUIConfiguration( const ConfigurationTable* config )
 void
 GUIPanel::SaveConfiguration( ConfigurationTable* configTable )
 {
-
+  configTable->SetI( "gui-colour_state", dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetState() );
+  configTable->SetI( "colour_state", dynamic_cast<GUIs::Selector*>( fGUIs[1] )->GetState() );
+  configTable->SetI( "inverted", dynamic_cast<GUIs::PersistLabel*>( fGUIs[2] )->GetState() );
 }

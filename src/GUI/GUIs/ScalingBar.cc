@@ -34,15 +34,15 @@ ScalingBar::NewEvent( const Event& event )
     {
     case sf::Event::MouseButtonPressed: // Change the state to scaling
       if( fabs( pos.x - fMinValue ) < fabs( pos.x - fMaxValue ) )
-	fState = eScalingMin;
+        fState = eScalingMin;
       else
-	fState = eScalingMax;
+        fState = eScalingMax;
       break;
     case sf::Event::MouseMoved: // Change the scaling value
       if( fState == eScalingMin )
-	fMinValue = pos.x;
+        fMinValue = pos.x;
       else if( fState == eScalingMax )
-	fMaxValue = pos.x;
+        fMaxValue = pos.x;
       retEvent = GUIEvent( fID, fGlobalID );
       break;
     case sf::Event::MouseButtonReleased: // Change the state back to normal

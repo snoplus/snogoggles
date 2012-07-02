@@ -10,8 +10,8 @@ def xercesc(env):
 def geant4(env):
     env.Append( CPPPATH = [ os.environ["G4INCLUDE"], os.environ["CLHEP_INCLUDE_DIR"] ] )
     env.Append( LIBPATH = [ os.path.join( os.environ["G4LIB"], os.environ["G4SYSTEM"] ), os.environ["CLHEP_LIB_DIR"] ] )
-    env.Append( LIBS = ['CLHEP'] )
     env.ParseConfig('%s/liblist -m %s < %s/libname.map'.replace('%s', os.path.join(os.environ["G4LIB"], os.environ["G4SYSTEM"])))
+    env.Append( LIBS = ['CLHEP', 'Xm'] )
 
 # Appends ROOT
 def root(env):
@@ -28,6 +28,7 @@ def sfml(env):
     # Need to put an "If APPLE" wrapper around this
     if "Darwin" in os.environ["G4SYSTEM"]:
         env.Append(LINKFLAGS=['-framework', 'OpenGL'])
+
 # Appends RAT
 def rat(env):
     env.Append( CPPPATH = [ os.environ["RATROOT"] + "/include" ] )
@@ -37,7 +38,7 @@ def rat(env):
 
 # Appends Curl and Bzip (for RAT)
 def Curl(env):
-    env.Append( LIBS = [ "bz2", "curl" ] )
+    env.Append( LIBS = [ "bz2" ] )
     if "BZIPROOT" in os.environ:
         env['CPPPATH'].append( os.environ['BZIPROOT'] + "/include" )
         env['LIBPATH'].append( os.environ['BZIPROOT'] + "/lib" )
@@ -75,13 +76,14 @@ def Python(env):
     
 # Adds all packages
 def addpackages(env):
+    rat(env)
+    glut(env)    
+    geant4(env)
+    root(env)
+    sfml(env)
     Python(env)
     xercesc(env)
-    geant4(env)
-    sfml(env)
-    rat(env)
-    root(env)
     PThread(env)
     Avalanche(env)
-    glut(env)    
+
 
