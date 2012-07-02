@@ -1,8 +1,9 @@
 #include <Viewer/Arcball3d.hh>
 #include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/SpriteTimer.hh>
 #include <Viewer/Arcball.hh>
 #include <Viewer/GUIManager.hh>
+#include <Viewer/ButtonLabel.hh>
+#include <Viewer/PersistLabel.hh>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
@@ -22,6 +23,12 @@ const std::string Arcball3d::ZOOM_TAG = "Zoom";
 
 Arcball3d::Arcball3d()
 {
+    ResetRotation();
+    fPreviousPersistRotation = false;
+}
+
+void Arcball3d::ResetRotation()
+{
     fRadius = 8500.0;
     fCameraDist = 3.5;
     fCamera.SetXYZ(fCameraDist*fRadius, 0, 0);
@@ -40,7 +47,16 @@ Arcball3d::Arcball3d()
 
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
+    double buttonLength = 0.99;
+    double width = optionsArea.Width / 2;
+    double height = optionsArea.Height;
 
+    fResetButton = g.NewGUI<GUIs::ButtonLabel>( sf::Rect<double>( optionsArea.Left + (1-buttonLength)*width, optionsArea.Top + (1-buttonLength)*height, buttonLength*width, buttonLength*height ) ); 
+    fResetButton->Initialise( 2, "Reset" );
+
+    fPersistRotation = g.NewGUI<GUIs::PersistLabel>( sf::Rect<double>( optionsArea.Left + width, optionsArea.Top, width, height ) );
+    fPersistRotation->SetLabel( "Persist Rotation" );
+    fPersistRotation->SetState( fPreviousPersistRotation );
 }
 
 void Arcball3d::CreateDragArea( GUIManager& g, const sf::Rect<double>& draggableArea )
@@ -55,6 +71,7 @@ void Arcball3d::LoadConfiguration( const ConfigurationTable* configTable )
     ConfigTableUtils::GetDSafe( configTable, RADIUS_TAG, fRadius );
     ConfigTableUtils::GetDSafe( configTable, CAMERA_DIST_TAG, fCameraDist );
     ConfigTableUtils::GetDSafe( configTable, ZOOM_TAG, fZoom );
+    ConfigTableUtils::GetBooleanSafe( configTable, "PersistRotate", fPreviousPersistRotation );
     fCamera.SetXYZ(fCameraDist*fRadius, 0, 0);
 }
 
@@ -63,11 +80,35 @@ void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
     configTable->SetD( RADIUS_TAG, fRadius );
     configTable->SetD( CAMERA_DIST_TAG, fCameraDist );
     configTable->SetD( ZOOM_TAG, fZoom );
+    ConfigTableUtils::SetBoolean( configTable, "PersistRotate", fPersistRotation->GetState() );
 }
 
 void Arcball3d::EventLoop( )
 {
+    if( fResetButton->GetState() == true )
+        ResetRotation();
 
+    if( fPersistRotation->GetState() == true )
+    {
+        if( fPreviousPersistRotation == false )
+        {
+            fPreviousPersistRotation = true;
+            ResetRotation();
+        }
+    
+        RotateAll( Rotation( TVector3(0,0,1), fClock.GetElapsedTime().AsSeconds() ) );
+        fClock.Restart();
+    }
+    else
+        fPreviousPersistRotation = false;
+}
+
+void Arcball3d::RotateAll( const Rotation& r )
+{
+    r.Rotate( fCamera );
+    r.Rotate( fUp );
+    for( int i = 0; i < 4; i++ )
+        r.Rotate( fPlane[i] );
 }
 
 void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )
@@ -103,12 +144,7 @@ void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )
     r.GLRotate();
 
     if( fArcball->GetState() == false )
-    {
-        r.Rotate( fCamera );
-        r.Rotate( fUp );
-        for( int i = 0; i < 4; i++ )
-            r.Rotate( fPlane[i] );
-    }
+        RotateAll( r );
 }
 
 void Arcball3d::RenderScreen()

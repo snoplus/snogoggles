@@ -25,8 +25,8 @@ class Rotation
 public:
     Rotation() {}
     Rotation( TVector3 axis, double angle );
-    void Rotate( TVector3& v );
-    void GLRotate();
+    void Rotate( TVector3& v ) const;
+    void GLRotate() const;
 
 private:
     TVector3 fAxis;
