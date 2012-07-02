@@ -22,10 +22,9 @@ const std::string DefaultTracks3d::VIS_MAP = "particleTypes";
 DefaultTracks3d::DefaultTracks3d()
 {
     fAllParticles = true;
-    fPrimaryTracksOnly = false;
-    fRenderFullTrack = false;
+    fRenderFullTrack = true;
+    fInitialised = false;
 	fFullTrackGUI = NULL;
-    fPreviousPalette = NULL;
 
     AddParticleType( "opticalphoton", 0 );
     AddParticleType( "gamma", 1.f/6 );
@@ -56,7 +55,6 @@ void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& o
 void DefaultTracks3d::LoadConfiguration( const ConfigurationTable* configTable )
 {
     ConfigTableUtils::GetBooleanSafe( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
-    ConfigTableUtils::GetBooleanSafe( configTable, PRIMARY_TRACKS_ONLY, fPrimaryTracksOnly );
     try{ fTrackBuffer.LoadVisibility( configTable ); }
     catch( ConfigurationTable::NoAttributeError& e ) { }
 }
@@ -64,7 +62,6 @@ void DefaultTracks3d::LoadConfiguration( const ConfigurationTable* configTable )
 void DefaultTracks3d::SaveConfiguration( ConfigurationTable* configTable )
 {
     ConfigTableUtils::SetBoolean( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
-    ConfigTableUtils::SetBoolean( configTable, PRIMARY_TRACKS_ONLY, fPrimaryTracksOnly );
     fTrackBuffer.SaveVisibility( configTable );
 }
 
@@ -82,14 +79,11 @@ void DefaultTracks3d::EventLoop( )
     }
 }
 
-void DefaultTracks3d::RenderTracks( RIDS::MC& mc )
+void DefaultTracks3d::RenderTracks( RIDS::MC& mc, const RenderState& renderState )
 {
-  if( fSize != mc.GetTracks().size() )
-    {
+    if( StateChanged( renderState ) || fInitialised == false )
         fTrackBuffer.SetAll( mc );
-        fSize = mc.GetTracks().size();
-        fPreviousPalette = &GUIProperties::GetInstance().GetColourPalette();
-    }
+    fInitialised = true;
 
     fTrackBuffer.Render( fRenderFullTrack );
 }

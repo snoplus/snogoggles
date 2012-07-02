@@ -11,6 +11,8 @@
 ///                hopefully more stable. \n
 ///     22/04/12 : P.Jones - Add scripting ability. \n
 ///     07/05/12 : P.Jones - Renamed, refactored to use RIDS.
+///     02/07/12 : O.Wasalski - Added method for frames to check whether
+///                the current event being displayed has changed. \n
 ///
 /// \detail  Holds RIDS::Event events and the RAT::DS::Run data. 
 ///          Also has an index to the current DS event and then the 
@@ -64,6 +66,8 @@ public:
 
   inline const RIDS::Event& GetCurrentEvent() const;
   inline RAT::DS::Run& GetRun() const;
+  inline bool HasChanged() const;
+  inline void Reset();
 
   /// Convienience method
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
@@ -79,6 +83,7 @@ private:
   RAT::DS::Run* fRun; /// < Run tree
   // END: End locked vars
   ScriptData fScriptData; /// < The data as calculated by a python script
+  bool fChanged;
 
   /// Prevent usage of
   DataStore();
@@ -103,6 +108,18 @@ inline const RIDS::Event&
 DataStore::GetCurrentEvent() const
 {
   return *fEvent;
+}
+
+inline bool
+DataStore::HasChanged() const
+{
+  return fChanged;
+}
+
+inline void
+DataStore::Reset()
+{
+  fChanged = false;
 }
 
 } //::Viewer

@@ -97,11 +97,11 @@ void TrackBuffer::BindAll()
 
 void TrackBuffer::AddLine( VBO& vbo, const TVector3& startPos, const TVector3& endPos, const Colour& colour )
 {
-        unsigned short i = vbo.fVertices.size();
-        vbo.AddVertex( Vertex( startPos, colour ) );
-        vbo.AddVertex( Vertex( endPos, colour ) );
-        vbo.AddIndex(i);
-        vbo.AddIndex(i+1);
+    unsigned short i = vbo.fVertices.size();
+    vbo.AddVertex( Vertex( startPos, colour ) );
+    vbo.AddVertex( Vertex( endPos, colour ) );
+    vbo.AddIndex(i);
+    vbo.AddIndex(i+1);
 }
 
 }; // namespace Viewer 

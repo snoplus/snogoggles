@@ -32,6 +32,7 @@
 #include <Viewer/HitManager3d.hh>
 #include <Viewer/HitBuffer.hh>
 #include <Viewer/RenderState.hh>
+#include <Viewer/Colour.hh>
 #include <TVector3.h>
 
 #include <string>
@@ -75,15 +76,10 @@ public:
 
 private:
 
-    bool NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderState );
     void SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState );
-    bool Equals( const RenderState& a, const RenderState& b );
 
     RAT::DS::PMTProperties* fCurrentPMTList;
     RIDS::EV* fCurrentEV;
-    int fSize;
-  RenderState fCurrentRenderState;
-  const ColourPalette* fCurrentPalette;
 
     HitBuffer fPMTListBuffer;
     HitBuffer fFullBuffer;
@@ -95,6 +91,7 @@ private:
 
     bool fDisplayAllPMTs;
     bool fDisplayFrontPMTsOnly;
+    bool fInitialised;
 
     GUIs::PersistLabel* fAllPMTsGUI;
     GUIs::PersistLabel* fFrontGUI;

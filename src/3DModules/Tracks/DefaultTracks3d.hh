@@ -51,14 +51,13 @@ public:
     virtual void LoadConfiguration( const ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
     virtual void EventLoop( );
-    virtual void RenderTracks( RIDS::MC& mc );
+    virtual void RenderTracks( RIDS::MC& mc, const RenderState& renderState );
 
 private:
 
     void AddParticleType( const std::string& name, float eColour );
 
     bool fAllParticles;
-    bool fPrimaryTracksOnly;
     bool fRenderFullTrack;
 
     static const std::string ALL_PARTICLES;
@@ -71,8 +70,7 @@ private:
     GUIs::PersistLabel* fFullTrackGUI;
 
     TrackBuffer fTrackBuffer;
-    int fSize;
-  const ColourPalette* fPreviousPalette;
+    bool fInitialised;
 
 }; // class DefaultTracks3d
 

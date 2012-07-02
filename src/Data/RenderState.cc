@@ -66,6 +66,7 @@ RenderState::ChangeState( RIDS::EDataSource source,
   fCurrentDataType = type;
   fCurrentScalingMin = fsDefaultScalingMin[source][type];
   fCurrentScalingMax = fsDefaultScalingMax[source][type];
+  fChanged = true;
 }
 
 void 
