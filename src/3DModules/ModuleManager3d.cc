@@ -114,7 +114,7 @@ void ModuleManager3d::Render3d( RectPtr viewport, const RenderState& renderState
   
   fCameraManager->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
   HitManager3d::RenderHitsSafe( fHitManager, &ev, pmtList, renderState );
-  TrackManager3d::RenderTracksSafe( fTrackManager, mc );
+  TrackManager3d::RenderTracksSafe( fTrackManager, mc, renderState );
   GeoManager3d::RenderGeometrySafe( fGeoManager );
   FitterManager3d::RenderFitVertexSafe( fFitterManager );
   Axes3d::RenderAxesSafe( fAxes );

@@ -68,7 +68,6 @@ private:
 inline 
 RenderState::RenderState()
 {
-  fChanged = true;
   ChangeState( RIDS::eCal, RIDS::eTAC );
 }
 

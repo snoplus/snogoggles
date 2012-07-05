@@ -32,11 +32,12 @@ namespace Viewer {
 
     class ConfigurationTable;
     class GUIManager;
+    class Rotation;
 
     namespace GUIs {
-        class SpriteTimer;
-        class Timer;
         class Arcball;
+        class ButtonLabel;
+        class PersistLabel;
     }; // namepsace GUIs
 
 namespace Frames {
@@ -75,6 +76,8 @@ public:
 private:
 
     void RenderScreen();
+    void ResetRotation();
+    void RotateAll( const Rotation& r );
 
     // All tags for saving data to config table.
     static const std::string CAMERA_TAG;        ///< Name used to save fCamera.
@@ -95,6 +98,9 @@ private:
 
     // All GUI objects.
     GUIs::Arcball* fArcball;
+    GUIs::ButtonLabel* fResetButton;
+    GUIs::PersistLabel* fPersistRotation;
+    bool fPreviousPersistRotation;
 
     // All others.
     static const double MAX_ZOOM = 1.5; ///< Upper limit on fZoom.
@@ -102,6 +108,8 @@ private:
 
     double fSpinSpeed;                  ///< Speed of rotations.
     double fZoomSpeed;                  ///< Speed of zooming.
+
+    sf::Clock fClock;
 
 }; // class Arcball3d
 

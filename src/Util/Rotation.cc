@@ -10,13 +10,13 @@ Rotation::Rotation( TVector3 axis, double angle )
     fAngle = angle;
 }
 
-void Rotation::Rotate( TVector3& v )
+void Rotation::Rotate( TVector3& v ) const
 {
     if( fAxis != TVector3() )
         v.Rotate( fAngle, fAxis );
 }
 
-void Rotation::GLRotate()
+void Rotation::GLRotate() const
 {
     glRotatef( -180*fAngle/3.14159, fAxis.X(), fAxis.Y(), fAxis.Z() );
 }

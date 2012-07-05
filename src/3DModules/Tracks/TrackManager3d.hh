@@ -47,12 +47,12 @@ public:
     std::string GetTableName() { return TableName(); }
 
     /// Renders tracks.
-    virtual void RenderTracks( RIDS::MC& mc ) = 0;
+    virtual void RenderTracks( RIDS::MC& mc, const RenderState& renderState ) = 0;
 
-    static inline void RenderTracksSafe( TrackManager3d* t, RIDS::MC& mc )
+    static inline void RenderTracksSafe( TrackManager3d* t, RIDS::MC& mc, const RenderState& renderState )
     {
         if( t != NULL )
-            t->RenderTracks( mc );
+            t->RenderTracks( mc, renderState );
     }
 
 

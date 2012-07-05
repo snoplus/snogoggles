@@ -27,6 +27,7 @@
 namespace Viewer {
 
     class GUIManager;
+    class RenderState;
 
 namespace Frames {
 
@@ -59,6 +60,9 @@ public:
     virtual void EventLoop( ) = 0;
 
     static const std::string MODULE_TAG;
+
+protected:
+    bool StateChanged( const RenderState& renderState );
 
 }; // class Module3d
 
