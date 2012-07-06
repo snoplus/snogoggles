@@ -1,2 +1,16 @@
-### Ignore backup files.
+### Ignore backup files & python compiled
 *~
+*.pyc
+
+### Files to ignore
+snogoggles.xml
+env.sh
+env.csh
+.sconsign.dblite
+SNOGoggles.o
+
+### Folders to ignore
+bin/
+build/
+include/
+lib/
