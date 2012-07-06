@@ -117,7 +117,6 @@ bool
 ViewerWindow::EventLoop()
 {
   sf::Event event;
-  DataStore::GetInstance().Reset();
   while( fWindowApp->PollEvent( event ) )
     {
       switch( event.Type )

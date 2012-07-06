@@ -56,17 +56,10 @@ ProjectionBase::Initialise( const sf::Rect<double>& size )
   for( int ipmt = 0; ipmt < rPMTList->GetPMTCount(); ipmt++ )
     fProjectedPMTs.push_back( Project( Vector3( rPMTList->GetPos( ipmt ) ) ) );
   // Secondly make the vector of geodesic dots
-  const VBO& geodesicVBO = GeodesicSphere::GetInstance()->FullVBO();
-  for( unsigned short i = 0; i < geodesicVBO.fIndices.size(); i+=3 )
-    {
-      Vector3 v1( geodesicVBO.fVertices[ geodesicVBO.fIndices[i] ] );
-      Vector3 v2( geodesicVBO.fVertices[ geodesicVBO.fIndices[i+1] ] );
-      Vector3 v3( geodesicVBO.fVertices[ geodesicVBO.fIndices[i+2] ] );
-
-      ProjectGeodesicLine( v1, v2 );
-      ProjectGeodesicLine( v2, v3 );
-      ProjectGeodesicLine( v3, v1 );
-    }
+  const VBO& geodesicVBO = GeodesicSphere::GetInstance()->OutlineVBO();
+  for( unsigned short i = 0; i < geodesicVBO.fIndices.size(); i+=2 )
+      ProjectGeodesicLine( Vector3( geodesicVBO.fVertices[ geodesicVBO.fIndices[i] ] ), 
+                           Vector3( geodesicVBO.fVertices[ geodesicVBO.fIndices[i+1] ] ) );
 }
 
 void 

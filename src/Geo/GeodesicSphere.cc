@@ -52,4 +52,9 @@ const Colour GeodesicSphere::GetColour()
   return GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey );
 }
 
+const VBO& GeodesicSphere::OutlineVBO() const 
+{
+    return fOutlineVBO;
+}
+
 }; // namespace Viewer

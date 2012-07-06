@@ -32,6 +32,7 @@ private:
 public:
 	const Polyhedron& GetPolyhedron();
     void Render() const;
+    const VBO& OutlineVBO() const;
 private:
 	Polyhedron* fPolyhedron;
     VBO fOutlineVBO;
