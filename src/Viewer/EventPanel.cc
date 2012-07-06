@@ -33,6 +33,16 @@ EventPanel::NewEvent( const Event& event )
         events.Next();
       else if( event.Key.Code == sf::Keyboard::Left )
         events.Prev();
+      else if( event.Key.Code == sf::Keyboard::P )
+        {
+          fEventPeriod = -1.0;
+          dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( 0.0 );
+        }
+      else if( event.Key.Code == sf::Keyboard::I )
+        {
+          fEventPeriod = 0.0;
+          dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( 0.95 );
+        }
     }
   Panel::NewEvent( event );
 }
@@ -63,13 +73,10 @@ EventPanel::EventLoop()
           if( slideScale <= 0.1 )
             fEventPeriod = -1.0;
           else if( slideScale >= 0.95 )
-            {
-              fEventPeriod = 0.0;
-              fClock.Restart();
-            }
+            fEventPeriod = 0.0;
           else
             {
-              fEventPeriod = 1.0 / slideScale;
+              fEventPeriod = 0.5 / slideScale;
               fClock.Restart();
             }
           break;
@@ -77,7 +84,9 @@ EventPanel::EventLoop()
       fEvents.pop();
     }
   // Manage the continuous event switching
-  if( fEventPeriod >= 0.0 && fClock.GetElapsedTime().AsSeconds() > fEventPeriod )
+  if( fEventPeriod == 0.0 )
+    events.Latest();
+  if( fEventPeriod > 0.0 && fClock.GetElapsedTime().AsSeconds() > fEventPeriod )
     {
       events.Next();
       fClock.Restart();
@@ -139,7 +148,7 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case 4:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::SlideSelector >( posRect, effect );
-                vector<double> stops; stops.push_back( 0.0 ); stops.push_back( 0.5 ); stops.push_back( 0.8 ); stops.push_back( 0.95 );
+                vector<double> stops; stops.push_back( 0.0 ); stops.push_back( 0.25 ); stops.push_back( 0.6 ); stops.push_back( 0.95 );
                 dynamic_cast<GUIs::SlideSelector*>( fGUIs[effect] )->Initialise( stops );
               }
               break;
