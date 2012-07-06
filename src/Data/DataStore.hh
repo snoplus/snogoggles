@@ -65,6 +65,11 @@ public:
   inline const RIDS::Event& GetCurrentEvent() const;
   inline RAT::DS::Run& GetRun() const;
 
+  const int GetBufferSize();
+  const int GetBufferRead();
+  const int GetBufferWrite();
+
+
   /// Convienience method
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
 

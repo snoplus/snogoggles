@@ -51,8 +51,13 @@ EventInfo::Render2d( RWWrapper& renderApp,
   if( event.ExistEV() )
     {
       RIDS::EV& ev = event.GetEV();
+      eventInfo << "Buffer:" << endl;
+      eventInfo << "\tSize:" << DataStore::GetInstance().GetBufferSize() << endl;
+      eventInfo << "\tRead:" << DataStore::GetInstance().GetBufferRead() << endl;
+      eventInfo << "\tWrite:" << DataStore::GetInstance().GetBufferWrite() << endl;
+
       eventInfo << "EV:" << endl;
-      eventInfo << "\tGTID: " << ev.GetGTID() << endl;
+      eventInfo << "\tGTID: " << ToHexString(ev.GetGTID()) << endl;
       eventInfo << "\tTrigger Word: " << ToHexString( ev.GetTriggerWord() ) << endl;
       eventInfo << "\tNhit (Cal):" << ev.GetCalNHits() << endl;
       eventInfo << "\tNhit (UnCal):" << ev.GetUnCalNHits() << endl;
