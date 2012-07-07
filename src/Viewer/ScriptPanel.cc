@@ -30,7 +30,7 @@ ScriptPanel::EventLoop()
       switch( fEvents.front().fguiID )
         {
         case 0: // Change the sum script
-
+          DataStore::GetInstance().GetScriptData().Load( dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetStringState() );
           break;
         }
       fEvents.pop();
