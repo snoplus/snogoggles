@@ -119,6 +119,8 @@ ProjectionBase::DrawHits( const RenderState& renderState )
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const double data = iTer->GetData( renderState.GetDataType() );
+      if( data == 0.0 )
+        continue;
       const sf::Vector2<double> projPos = fProjectedPMTs[iTer->GetLCN()];
       fImage->DrawSquare( projPos, GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - renderState.GetScalingMin() ) / 
                                                                        ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );

@@ -105,6 +105,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const double data = iTer->GetData( renderState.GetDataType() );
+      if( data == 0.0 )
+        continue;
       DrawPMT( iTer->GetLCN(), GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - renderState.GetScalingMin() ) /
                                                                    ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }
