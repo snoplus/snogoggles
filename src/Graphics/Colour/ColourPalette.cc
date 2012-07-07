@@ -43,7 +43,7 @@ Colour
 ColourPalette::GetColour( double value ) const
 {
   unsigned int uStop = 0;
-  for( uStop = 0; uStop < fColourStops.size() - 1; uStop++ )
+  for( uStop = 1; uStop < fColourStops.size() - 1; uStop++ )
     if( fColourStops[uStop].first > value )
       break;
   const double regionFraction = ( value - fColourStops[uStop - 1].first ) / ( fColourStops[uStop].first - fColourStops[uStop - 1].first );
