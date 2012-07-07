@@ -56,18 +56,10 @@ ProjectionBase::Initialise( const sf::Rect<double>& size )
   for( int ipmt = 0; ipmt < rPMTList->GetPMTCount(); ipmt++ )
     fProjectedPMTs.push_back( Project( Vector3( rPMTList->GetPos( ipmt ) ) ) );
   // Secondly make the vector of geodesic dots
-  GeodesicSphere* geodesic = GeodesicSphere::GetInstance();
-  const Polyhedron& polyhedron = geodesic->GetPolyhedron();
-  for( int iPolygon = 0; iPolygon < polyhedron.GetNoPolygons(); iPolygon++ )
-    {
-      const Polygon& polygon = polyhedron.GetPolygon( iPolygon );
-      Vector3 v1 = polygon.GetVertex(0);
-      Vector3 v2 = polygon.GetVertex(1);
-      Vector3 v3 = polygon.GetVertex(2);
-      ProjectGeodesicLine( v1, v2 );
-      ProjectGeodesicLine( v2, v3 );
-      ProjectGeodesicLine( v3, v1 );
-    }
+  const VBO& geodesicVBO = GeodesicSphere::GetInstance()->OutlineVBO();
+  for( unsigned short i = 0; i < geodesicVBO.fIndices.size(); i+=2 )
+      ProjectGeodesicLine( Vector3( geodesicVBO.fVertices[ geodesicVBO.fIndices[i] ] ), 
+                           Vector3( geodesicVBO.fVertices[ geodesicVBO.fIndices[i+1] ] ) );
 }
 
 void 

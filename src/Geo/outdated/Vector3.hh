@@ -18,6 +18,7 @@
 #define __Viewer_Vector3__
 
 #include <Viewer/Serializable.hh>
+#include <Viewer/Vertex.hh>
 class TVector3;
 
 namespace Viewer
@@ -30,6 +31,7 @@ public:
 
     Vector3( double x = 0.0, double y = 0.0, double z = 0.0 );
     Vector3( const TVector3& v );
+    Vector3( const Vertex::Data& data );
     void SetXYZ( double x = 0.0, double y = 0.0, double z = 0.0 );
     void Render() const;
     void Load( const ConfigurationTable* configTable );

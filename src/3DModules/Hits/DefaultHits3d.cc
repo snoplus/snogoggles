@@ -24,6 +24,7 @@ DefaultHits3d::DefaultHits3d()
 {
     fDisplayAllPMTs = false;
     fDisplayFrontPMTsOnly = false;
+    fInitialised = false;
     fCurrentEV = NULL;
     fAllPMTsGUI = NULL;
     fFrontGUI = NULL;
@@ -63,8 +64,9 @@ void DefaultHits3d::EventLoop( )
 
 void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
 {
-    if( NeedToRecreateVBOs( ev, renderState ) ) 
+    if( StateChanged( renderState ) || fInitialised == false ) 
         SaveHitsToBuffer( ev, pmtList, renderState );
+    fInitialised = true;
 
     if( fCurrentPMTList != pmtList )
     {
@@ -112,56 +114,6 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
 
     fFullBuffer.Bind();
     fOutlineBuffer.Bind();
-}
-
-bool DefaultHits3d::NeedToRecreateVBOs( RIDS::EV* ev, const RenderState& renderState )
-{        
-    if( ev == NULL )
-    {
-        if( fCurrentEV == NULL )
-            return false;
-
-        fCurrentEV = ev;
-        fSize = 0;
-        return true;
-    }
-
-    if( fCurrentEV == NULL )
-    {
-        fCurrentEV = ev;
-        fSize = ev->GetHitData( RIDS::eCal ).size();
-        return true;
-    }
-
-    if( fSize != ev->GetHitData( RIDS::eCal ).size() )
-    {
-        fSize = ev->GetHitData( RIDS::eCal ).size();
-        return true;
-    }
-
-    //if( fCurrentPalette != ColourPalette::gPalette )
-    {
-      fCurrentPalette = &GUIProperties::GetInstance().GetColourPalette();
-        return true;
-    }
-
-    if( !Equals( fCurrentRenderState, renderState ) )
-    {
-      fCurrentRenderState = renderState;
-        return true;
-    }
-
-    return false;
-}
-
-bool DefaultHits3d::Equals( const RenderState& a, const RenderState& b )
-{
-    if( a.GetDataSource() == b.GetDataSource() &&
-        a.GetDataType() == b.GetDataType() &&
-        a.GetScalingMax() == b.GetScalingMax() &&
-        a.GetScalingMin() == b.GetScalingMin()
-    ) return true; 
-    return false;
 }
 
 

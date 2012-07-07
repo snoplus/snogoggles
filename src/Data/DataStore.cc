@@ -15,6 +15,7 @@ DataStore::DataStore()
   fEvent = NULL;
   fRun = NULL;
   fEvents.resize( 5000, NULL );
+  fChanged = true;
 }
 
 void
@@ -70,6 +71,7 @@ DataStore::Latest()
     fReadIndex = ( fWriteIndex - 1 ) % fEvents.size();
   delete fEvent;
   fEvent = new RIDS::Event( *fEvents[fReadIndex] );
+  fChanged = true;
 }
 
 void 
@@ -85,6 +87,7 @@ DataStore::Next()
   delete fEvent;
   fEvent = new RIDS::Event( *fEvents[fReadIndex] );
   fScriptData.ProcessEvent( *fEvent );
+  fChanged = true;
 }
 
 void 
@@ -99,6 +102,7 @@ DataStore::Prev()
     fReadIndex = fWriteIndex - 1;
   delete fEvent;
   fEvent = new RIDS::Event( *fEvents[fReadIndex] );
+  fChanged = true;
 }
 
 const int 

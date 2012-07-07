@@ -17,6 +17,7 @@ using namespace std;
 #include <Viewer/DesktopManager.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/GUIProperties.hh>
+#include <Viewer/DataStore.hh>
 using namespace Viewer;
 
 const int kConfigVersion = 1;

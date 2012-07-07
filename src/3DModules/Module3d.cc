@@ -1,5 +1,8 @@
 #include <Viewer/Module3d.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/RenderState.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/DataStore.hh>
 
 #include <SFML/Graphics.hpp>
 
@@ -44,6 +47,14 @@ void Module3d::EventLoopSafe( Module3d* module )
 {
     if( module != NULL ) 
         module->EventLoop( );
+}
+
+bool Module3d::StateChanged( const RenderState& renderState )
+{
+    if( renderState.HasChanged() ) return true;
+    if( GUIProperties::GetInstance().HasChanged() ) return true;
+    if( DataStore::GetInstance().HasChanged() ) return true;
+    return false;
 }
 
 }; // namespace Frames
