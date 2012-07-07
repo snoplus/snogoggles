@@ -31,7 +31,7 @@ public:
   enum EState { eNormal, eScalingMin, eScalingMax };
 
   ScalingBar( RectPtr rect, 
-	      unsigned int guiID );
+              unsigned int guiID );
   virtual ~ScalingBar();
  
   void Render( RWWrapper& renderApp );

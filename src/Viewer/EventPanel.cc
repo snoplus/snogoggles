@@ -9,6 +9,7 @@ using namespace std;
 #include <Viewer/Button.hh>
 #include <Viewer/RadioSelector.hh>
 #include <Viewer/SlideSelector.hh>
+#include <Viewer/ScalingBar.hh>
 using namespace Viewer;
 
 EventPanel::EventPanel( RectPtr rect )
@@ -66,18 +67,25 @@ EventPanel::EventLoop()
         case 3: // Type change
           fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
                                     dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
+          dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->Reset();
           break;
         case 4: // Change in event display rate
-          double slideScale = dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->GetState();
-          if( slideScale <= 0.1 )
-            fEventPeriod = -1.0;
-          else if( slideScale >= 0.95 )
-            fEventPeriod = 0.0;
-          else
-            {
-              fEventPeriod = 0.5 / slideScale;
-              fClock.Restart();
-            }
+          {
+            double slideScale = dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->GetState();
+            if( slideScale <= 0.1 )
+              fEventPeriod = -1.0;
+            else if( slideScale >= 0.95 )
+              fEventPeriod = 0.0;
+            else
+              {
+                fEventPeriod = 0.5 / slideScale;
+                fClock.Restart();
+              }
+          }
+          break;
+        case 5: // Change in scaling
+          fRenderState.ChangeScaling( dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMin(),
+                                      dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMax() );
           break;
         }
       fEvents.pop();
@@ -149,6 +157,12 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::SlideSelector >( posRect, effect );
                 vector<double> stops; stops.push_back( 0.0 ); stops.push_back( 0.25 ); stops.push_back( 0.6 ); stops.push_back( 0.95 );
                 dynamic_cast<GUIs::SlideSelector*>( fGUIs[effect] )->Initialise( stops );
+              }
+              break;
+            case 5:
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::ScalingBar >( posRect, effect );
+                //dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetTypeStrings() );
               }
               break;
             }
