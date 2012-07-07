@@ -65,13 +65,10 @@ public:
                   const RenderState& renderState );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
-  /// Create a new frame, from FrameMasterUI
-  void NewFrame( Frame* frame );
+  /// Create a new frame
+  void NewFrame( const std::string& frameName,
+                 const ConfigurationTable* configTable = NULL );
 private:
-  /// Create a new frame, locally called
-  void NewFrame( unsigned int uFrame,
-                 Frame* frame,
-                 const ConfigurationTable* configTable );
   /// Send an event to a frame container
   FrameEvent SendEvent( const int targetFrame,
                         const Event& event );

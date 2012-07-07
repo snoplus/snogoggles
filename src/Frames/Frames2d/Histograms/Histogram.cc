@@ -38,7 +38,7 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
   imageSize.Left = kAxisMargin;
   imageSize.Width = 1.0 - kAxisMargin;
   imageSize.Height = 1.0 - kAxisMargin;
-  fGUIManager.NewGUI<GUIs::MapArea>( imageSize );
+  fGUIManager.NewGUI<GUIs::MapArea>( imageSize, Rect::eLocal );
 }
 
 

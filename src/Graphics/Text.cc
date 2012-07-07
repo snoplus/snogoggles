@@ -30,7 +30,12 @@ string
 Text::GetString()
 {
   stringstream fullString;
-  for( vector<string>::iterator iTer = fTextLines.begin(); iTer != fTextLines.end(); iTer++ )
-    fullString << *iTer << endl;
+  for( unsigned int iLine = 0; iLine < fTextLines.size(); iLine++ )
+    {
+      if( iLine == 0 )
+        fullString << fTextLines[iLine];
+      else
+        fullString << endl << fTextLines[iLine];
+    }
   return fullString.str();
 }

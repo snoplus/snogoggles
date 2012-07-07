@@ -9,12 +9,13 @@ using namespace std;
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/FrameManager.hh>
+#include <Viewer/FrameFactory.hh>
 using namespace Viewer;
 
 FramePanel::FramePanel( RectPtr rect,
                         RectPtr frameRect,
                         FrameManager& frameManager )
-  : Panel( rect, "FramePanel" ), fFrameManager( frameManager ), fFrameFactory( frameRect )
+  : Panel( rect, "FramePanel" ), fFrameManager( frameManager )
 {
  
 }
@@ -27,14 +28,11 @@ FramePanel::~FramePanel()
 void
 FramePanel::EventLoop()
 {
-  vector<string> frameNames = fFrameFactory.GetNames();
-
   while( !fEvents.empty() )
     {
       if( fEvents.front().fguiID >= 10 )
         { 
-          Frame* newFrame = fFrameFactory.New( frameNames[fEvents.front().fguiID - 10] );
-          fFrameManager.NewFrame( newFrame );
+          fFrameManager.NewFrame( dynamic_cast<GUIs::ButtonLabel*>( fGUIs[fEvents.front().fguiID] )->GetLabel() );
         }
       fEvents.pop();
     }
@@ -80,14 +78,15 @@ FramePanel::LoadGUIConfiguration( const ConfigurationTable* config )
   sf::Rect<double> size;
   size.Width = colWidth;
   size.Height = rowHeight;
-  vector<string> frameNames = fFrameFactory.GetNames();
+  FrameFactory frameFactory;
+  vector<string> frameNames = frameFactory.GetNames();
   for( int iFrame = 0; iFrame < frameNames.size(); iFrame++ )
     {
 
       size.Left = ( colWidth + colSpacing ) * ( iFrame / numRows ) + buttonArea.Left;
       size.Top = ( rowHeight + rowSpacing ) * ( iFrame % numRows ) + buttonArea.Top;
-      GUIs::ButtonLabel* temp = fGUIManager.NewGUI<GUIs::ButtonLabel>( size, iFrame + 10, Rect::eResolution );
-      temp->Initialise( 2, frameNames[iFrame] );
+      fGUIs[iFrame + 10] = fGUIManager.NewGUI<GUIs::ButtonLabel>( size, iFrame + 10, Rect::eResolution );
+      dynamic_cast<GUIs::ButtonLabel*>( fGUIs[iFrame + 10] )->Initialise( 2, frameNames[iFrame] );
     }
 
 }

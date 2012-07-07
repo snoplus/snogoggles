@@ -37,6 +37,8 @@ public:
   std::string GetName() { return IcosahedralProjection::Name(); }
   
   static std::string Name() { return std::string( "Icosahedral" ); }
+  /// Icosahedron is rectangular
+  double GetAspectRatio() const { return 0.5; };
   
 private:
   sf::Vector2<double> Project( Vector3 pmtPos );

@@ -14,7 +14,7 @@ using namespace std;
 using namespace Viewer;
 
 FrameManager::FrameManager( RectPtr rect )
-  : fRect( rect ), fFrameFactory( rect )
+  : fRect( rect )
 {
   const ConfigurationTable* guiConfig = GUIProperties::GetInstance().GetConfiguration( "FrameManager" );
   sf::Rect<double> frameRect( guiConfig->GetD( "x" ), guiConfig->GetD( "y" ), guiConfig->GetD( "width" ), guiConfig->GetD( "height" ) );
@@ -141,7 +141,7 @@ FrameManager::PreInitialise( const ConfigurationTable* configTable )
           stringstream tableName;
           tableName << "Frame" << uFrame;
           const ConfigurationTable* frameConfig = configTable->GetTable( tableName.str() );
-          NewFrame( uFrame, fFrameFactory.New( frameConfig->GetS( "type" ) ), frameConfig );
+          NewFrame( frameConfig->GetS( "type" ), frameConfig );
         }
     }
 }
@@ -208,42 +208,38 @@ FrameManager::FindFrame( const sf::Vector2<double>& coord )
   return targetFrame;
 }
 
-void 
-FrameManager::NewFrame( Frame* frame )
-{
-  sf::Rect<double> rect( 0.0, 1.0, 121.0, 121.0 );
-  RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eResolution ) );
-  FrameContainer* newFrame = new FrameContainer( rectPtr );
-  newFrame->SetFrame( frame );
-  newFrame->PreInitialise( NULL );
-  newFrame->PostInitialise( NULL );
-  fFrameContainers.push_back( newFrame );
-  int frameID = fFrameContainers.size() - 1;
-  for( double x = 0.1; x < fRect->GetRect( Rect::eResolution ).Width; x += 10.0 )
-    {
-      for( double y = 0.1; y < fRect->GetRect( Rect::eResolution ).Height; y += 10.0 )
-        {
-          rect.Left = x;
-          rect.Top = y;
-          if( UpdateFrameRect( frameID, rect ) )
-            return;
-        }
-    }
-  // If we get here, must delete frame
-  DeleteFrame( frameID );
-}
-
 void
-FrameManager::NewFrame( unsigned int uFrame,
-                        Frame* frame,
+FrameManager::NewFrame( const string& frameName,
                         const ConfigurationTable* configTable )
 {
-  sf::Rect<double> rect;
-  RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eLocal ) );
+  sf::Rect<double> rect( 0.0, 1.0, 121.0, 121.0 ); // Standard start 'guess' position
+  RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eResolution ) );
   FrameContainer* newFrame = new FrameContainer( rectPtr );
-  newFrame->SetFrame( frame );
-  newFrame->PreInitialise( configTable );
+  newFrame->SetFrame( fFrameFactory.New( frameName, rectPtr ) );  
   fFrameContainers.push_back( newFrame );
+  if( configTable != NULL ) // Frame knowledge known
+    {
+      newFrame->PreInitialise( configTable );
+      // Post initialise will be called from the post initialise function
+    }
+  else
+    {
+      newFrame->PreInitialise( NULL );
+      newFrame->PostInitialise( NULL );
+      const int frameID = fFrameContainers.size() - 1;
+      for( double x = 0.1; x < fRect->GetRect( Rect::eResolution ).Width; x += 10.0 )
+        {
+          for( double y = 0.1; y < fRect->GetRect( Rect::eResolution ).Height; y += 10.0 )
+            {
+              rect.Left = x;
+              rect.Top = y;
+              if( UpdateFrameRect( frameID, rect ) )
+                return;
+            }
+        }
+      // If we get here, must delete frame
+      DeleteFrame( frameID );
+    }
 }
 
 void 
