@@ -71,13 +71,13 @@ Desktop::PostInitialise( const ConfigurationTable* configTable )
   if( configTable != NULL )
     {
       fEventPanel->PostInitialise( configTable->GetTable( "eventPanel" ) );
-      fFramePanel->PreInitialise( configTable->GetTable( "framePanel" ) );
+      fFramePanel->PostInitialise( configTable->GetTable( "framePanel" ) );
       fFrameManager->PostInitialise( configTable->GetTable( "frameManager" ) );
     }
   else
     {
       fEventPanel->PostInitialise( NULL );
-      fFramePanel->PreInitialise( NULL );
+      fFramePanel->PostInitialise( NULL );
       fFrameManager->PostInitialise( NULL );
     }
 }

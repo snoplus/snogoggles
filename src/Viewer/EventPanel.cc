@@ -51,7 +51,6 @@ void
 EventPanel::EventLoop()
 {
   fRenderState.Reset(); // Reset the changed information
-  DataStore::GetInstance().Reset();
   DataStore& events = DataStore::GetInstance();
   while( !fEvents.empty() )
     {

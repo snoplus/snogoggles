@@ -116,6 +116,7 @@ ViewerWindow::Destruct()
 bool
 ViewerWindow::EventLoop()
 {
+  DataStore::GetInstance().Reset();
   sf::Event event;
   while( fWindowApp->PollEvent( event ) )
     {
