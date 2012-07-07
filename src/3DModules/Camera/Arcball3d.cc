@@ -35,7 +35,7 @@ void Arcball3d::ResetRotation()
     fEye.SetXYZ(0,0,0);
     fUp.SetXYZ(0,0,1);
     fZoom = (MAX_ZOOM + MIN_ZOOM) / 2;
-    fSpinSpeed = 0.001;
+    fSpinSpeed = 0.5;
     fZoomSpeed = 0.0001;
 
     double size = 10000;
@@ -72,6 +72,7 @@ void Arcball3d::LoadConfiguration( const ConfigurationTable* configTable )
     ConfigTableUtils::GetDSafe( configTable, CAMERA_DIST_TAG, fCameraDist );
     ConfigTableUtils::GetDSafe( configTable, ZOOM_TAG, fZoom );
     ConfigTableUtils::GetBooleanSafe( configTable, "PersistRotate", fPreviousPersistRotation );
+    ConfigTableUtils::GetDSafe( configTable, "SpinSpeed", fSpinSpeed );
     fCamera.SetXYZ(fCameraDist*fRadius, 0, 0);
 }
 
@@ -80,6 +81,7 @@ void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
     configTable->SetD( RADIUS_TAG, fRadius );
     configTable->SetD( CAMERA_DIST_TAG, fCameraDist );
     configTable->SetD( ZOOM_TAG, fZoom );
+    configTable->SetD( "SpinSpeed", fSpinSpeed );
     ConfigTableUtils::SetBoolean( configTable, "PersistRotate", fPersistRotation->GetState() );
 }
 
@@ -96,7 +98,7 @@ void Arcball3d::EventLoop( )
             ResetRotation();
         }
     
-        RotateAll( Rotation( TVector3(0,0,1), fClock.GetElapsedTime().AsSeconds() ) );
+        RotateAll( Rotation( TVector3(0,0,1), fSpinSpeed*fClock.GetElapsedTime().AsSeconds() ) );
         fClock.Restart();
     }
     else

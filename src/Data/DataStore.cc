@@ -105,6 +105,26 @@ DataStore::Prev()
   fChanged = true;
 }
 
+const int 
+DataStore::GetBufferSize() 
+{
+  return  fEvents.size();
+}
+
+const int 
+DataStore::GetBufferRead() 
+{
+  return  fReadIndex;
+}
+
+const int 
+DataStore::GetBufferWrite() 
+{
+  return  fWriteIndex;
+}
+
+
+
 vector<RIDS::PMTHit> 
 DataStore::GetHitData( RIDS::EDataSource source ) const
 {

@@ -69,6 +69,11 @@ public:
   inline bool HasChanged() const;
   inline void Reset();
 
+  const int GetBufferSize();
+  const int GetBufferRead();
+  const int GetBufferWrite();
+
+
   /// Convienience method
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
 

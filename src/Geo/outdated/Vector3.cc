@@ -20,6 +20,11 @@ Vector3::Vector3( const TVector3& v )
     SetXYZ( v.x(), v.y(), v.z() );
 }
 
+Vector3::Vector3( const Vertex::Data& data )
+{
+    SetXYZ( data.x, data.y, data.z );
+}
+
 void Vector3::SetXYZ( double x, double y, double z )
 {
     this->x = x;
