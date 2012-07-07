@@ -95,8 +95,7 @@ CrateView::DrawPMT( const int lcn,
   // Draw the PMT info as well?
   const double closeRadius = 0.005;
   if( fabs( xPos - fMousePos.x ) < closeRadius && fabs( yPos - fMousePos.y ) < closeRadius )
-    fPMTofInterest = lcn;
-  
+    fPMTofInterest = lcn;  
 }
 
 void 

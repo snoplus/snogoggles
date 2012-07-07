@@ -91,7 +91,7 @@ IcosahedralProjection::Project( Vector3 pmtIn )
   //this needs some serious additional work for the Icosahedron
   //determine to which face centre this point is closest
   TVector3 pmtPos( pmtIn.x, pmtIn.y, pmtIn.z );
-  pmtPos.RotateY(3.72);
+  pmtPos.RotateY( 10.0 );//3.72);
   std::map<double,int> dotProducts;
   for (UInt_t centreFaces=0;centreFaces<fVertex_centres.size();centreFaces++){
     dotProducts.insert(std::pair<double,int>(fVertex_centres.at(centreFaces).Dot(pmtPos),centreFaces));
