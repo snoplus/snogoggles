@@ -108,6 +108,9 @@ EventPanel::PreInitialise( const ConfigurationTable* configTable )
     {
       dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->SetState( configTable->GetI( "data_source" ) );
       dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->SetState( configTable->GetI( "data_type" ) );
+      dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->SetState( configTable->GetD( "scale_min" ),
+                                                             configTable->GetD( "scale_max" ) );
+      dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( configTable->GetD( "event_rate_scale" ) );
     }
   fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
                             dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
@@ -176,4 +179,7 @@ EventPanel::SaveConfiguration( ConfigurationTable* configTable )
 {
   configTable->SetI( "data_source", dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetState() );
   configTable->SetI( "data_type", dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetState() );
+  configTable->SetD( "scale_min", dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMin() );
+  configTable->SetD( "scale_max", dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMax() );
+  configTable->SetD( "event_rate_scale", dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->GetState() );
 }

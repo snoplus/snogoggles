@@ -40,7 +40,7 @@ public:
   /// Initilaise with DataStore access
   void PostInitialise( const ConfigurationTable* configTable ) { };
   /// Save the configuration
-  void SaveConfiguration( ConfigurationTable* configTable ) { };
+  void SaveConfiguration( ConfigurationTable* configTable );
 
   virtual void EventLoop();
   

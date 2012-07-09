@@ -15,6 +15,7 @@ using namespace std;
 #include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/MapArea.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -39,8 +40,18 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
   imageSize.Width = 1.0 - kAxisMargin;
   imageSize.Height = 1.0 - kAxisMargin;
   fGUIManager.NewGUI<GUIs::MapArea>( imageSize, Rect::eLocal );
+  if( configTable != NULL )
+    {
+      fLogY = configTable->GetI( "logY" );
+      logY->SetState( fLogY );
+    }
 }
 
+void 
+Histogram::SaveConfiguration( ConfigurationTable* configTable )
+{
+  configTable->SetI( "logY", fLogY );
+}
 
 void
 Histogram::EventLoop()

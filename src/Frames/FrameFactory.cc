@@ -2,7 +2,7 @@
 #include <Viewer/About.hh>
 #include <Viewer/EventInfo.hh>
 #include <Viewer/LambertProjection.hh>
-#include <Viewer/IcosahedralProjection.hh>
+#include <Viewer/IcoProjection.hh>
 #include <Viewer/CrateView.hh>
 #include <Viewer/Histogram.hh>
 #include <Viewer/HitFrame3d.hh>
@@ -18,7 +18,7 @@ FrameFactory::FrameFactory()
   Register( Frames::EventInfo::Name(), new FrameAlloc<Frames::EventInfo>() );
 
   Register( Frames::LambertProjection::Name(), new FrameAlloc<Frames::LambertProjection>() );
-  Register( Frames::IcosahedralProjection::Name(),new FrameAlloc<Frames::IcosahedralProjection>() );
+  Register( Frames::IcoProjection::Name(),new FrameAlloc<Frames::IcoProjection>() );
   Register( Frames::Histogram::Name(),new FrameAlloc<Frames::Histogram>() );
   Register( Frames::CrateView::Name(),new FrameAlloc<Frames::CrateView>() );
 

@@ -24,6 +24,7 @@ void
 SlideSelector::Initialise( vector<double> stops )
 {
   fStops = stops;
+  fCurrentPos = 0.0;
 }
 
 GUIEvent

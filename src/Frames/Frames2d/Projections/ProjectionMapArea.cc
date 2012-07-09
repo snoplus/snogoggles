@@ -32,19 +32,14 @@ ProjectionMapArea::EventLoop()
   while( !fEvents.empty() )
     {
       // Only one event type is likely
-      sf::Vector2<double> mousePos = fMapArea->GetPosition();
-      if( mousePos.x < 0.0 )
-        {
-          fEvents.pop();
-          continue;
-        }
-      // Now know it is a true move event
+      fMousePos = fMapArea->GetPosition();
+      // Draw the PMT info as well?
       fPMTofInterest = -1;
-      for( unsigned int ipmt = 0; ipmt < fProjectedPMTs.size(); ipmt++ )
+      for( unsigned int lcn = 0; lcn < fProjectedPMTs.size(); lcn++ )
         {
           const double closeRadius = 0.005;
-          if( fabs( fProjectedPMTs[ipmt].x - mousePos.x ) < closeRadius && fabs( fProjectedPMTs[ipmt].y - mousePos.y ) < closeRadius )
-            fPMTofInterest = ipmt;
+          if( fabs( fProjectedPMTs[lcn].x - fMousePos.x ) < closeRadius && fabs( fProjectedPMTs[lcn].y - fMousePos.y ) < closeRadius )
+            fPMTofInterest = lcn;
         }
       fEvents.pop();
     }
