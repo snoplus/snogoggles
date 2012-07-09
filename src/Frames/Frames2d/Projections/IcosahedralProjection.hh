@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::IcoProjection
+/// \class Viewer::Frames::IcosahedralProjection
 ///
-/// \brief   Displays PMT hits in the Ico azimuthal equal area projection
+/// \brief   Displays PMT hits in the Icosahedral azimuthal equal area projection
 ///
 /// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
@@ -14,8 +14,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames_IcoProjection__
-#define __Viewer_Frames_IcoProjection__
+#ifndef __Viewer_Frames_IcosahedralProjection__
+#define __Viewer_Frames_IcosahedralProjection__
 
 #include <SFML/System/Vector2.hpp>
 
@@ -27,14 +27,14 @@ namespace Viewer
 namespace Frames
 {
 
-class IcoProjection : public ProjectionMapArea
+class IcosahedralProjection : public ProjectionMapArea
 {
 public:
-  IcoProjection( RectPtr rect ) : ProjectionMapArea( rect ) { }
+  IcosahedralProjection( RectPtr rect ) : ProjectionMapArea( rect ) { }
 
-  std::string GetName() { return IcoProjection::Name(); }
+  std::string GetName() { return IcosahedralProjection::Name(); }
 
-  static std::string Name() { return std::string( "Ico" ); }
+  static std::string Name() { return std::string( "Icosahedral" ); }
 
   double GetAspectRatio() const { return 0.5; }
 

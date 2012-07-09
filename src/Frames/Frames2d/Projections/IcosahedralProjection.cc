@@ -4,7 +4,7 @@
 #include <cmath>
 using namespace std;
 
-#include <Viewer/IcoProjection.hh>
+#include <Viewer/IcosahedralProjection.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -49,12 +49,12 @@ ToSpherical(
 }
 
 sf::Vector2<double>
-IcoProjection::Project( Vector3 pmtPos )
+IcosahedralProjection::Project( Vector3 pmtPos )
 {
   pmtPos = pmtPos.Unit();
   TVector3 pointOnSphere( pmtPos.x, pmtPos.y, pmtPos.z );
   pointOnSphere.RotateX( -45.0 );
-  // From http://www.rwgrayprojects.com/rbfnotes/polyhed/PolyhedraData/Icosahedron/Icosahedron.pdf
+  // From http://www.rwgrayprojects.com/rbfnotes/polyhed/PolyhedraData/Icosahedralsahedron/Icosahedralsahedron.pdf
   const double t = ( 1.0 + sqrt( 5.0 ) ) / 2.0;
 
   const TVector3 V2 = TVector3( t * t, 0.0, t * t * t ).Unit();
@@ -73,35 +73,35 @@ IcoProjection::Project( Vector3 pmtPos )
   // {27, 54, 46}, {27, 46, 12}, {12, 46, 31}, {12, 31, 6}, { 6, 31, 33}, { 6, 33, 17},
   // {17, 33, 51}, {17, 51, 37}, {37, 51, 54}, {58, 54, 51}, {58, 46, 54}, {58, 31, 46},
   // {58, 33, 31}, {58, 51, 33}}
-  vector<TVector3> IcosahedronCentres;
-  IcosahedronCentres.push_back( ( V2 + V6 + V17 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V2 + V12 + V6 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V2 + V17 + V37 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V2 + V37 + V27 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V2 + V27 + V12 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V37 + V54 + V27 ) * ( 1.0 / 3.0 ) );
+  vector<TVector3> IcosahedralCentres;
+  IcosahedralCentres.push_back( ( V2 + V6 + V17 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V12 + V6 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V17 + V37 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V37 + V27 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V27 + V12 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V37 + V54 + V27 ) * ( 1.0 / 3.0 ) );
 
-  IcosahedronCentres.push_back( ( V27 + V54 + V46 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V27 + V46 + V12 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V12 + V46 + V31 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V12 + V31 + V6 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V6 + V31 + V33 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V6 + V33 + V17 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V27 + V54 + V46 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V27 + V46 + V12 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V12 + V46 + V31 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V12 + V31 + V6 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V6 + V31 + V33 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V6 + V33 + V17 ) * ( 1.0 / 3.0 ) );
 
-  IcosahedronCentres.push_back( ( V17 + V33 + V51 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V17 + V51 + V37 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V37 + V51 + V54 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V58 + V54 + V51 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V58 + V46 + V54 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V58 + V31 + V46 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V17 + V33 + V51 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V17 + V51 + V37 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V37 + V51 + V54 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V54 + V51 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V46 + V54 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V31 + V46 ) * ( 1.0 / 3.0 ) );
 
-  IcosahedronCentres.push_back( ( V58 + V33 + V31 ) * ( 1.0 / 3.0 ) );
-  IcosahedronCentres.push_back( ( V58 + V51 + V33 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V33 + V31 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V51 + V33 ) * ( 1.0 / 3.0 ) );
 
   vector<double> distFromCentre;
   unsigned int uLoop;
-  for( uLoop = 0; uLoop < IcosahedronCentres.size(); uLoop++ )
-    distFromCentre.push_back( ( IcosahedronCentres[uLoop] - pointOnSphere ).Mag() );
+  for( uLoop = 0; uLoop < IcosahedralCentres.size(); uLoop++ )
+    distFromCentre.push_back( ( IcosahedralCentres[uLoop] - pointOnSphere ).Mag() );
   const int face = min_element( distFromCentre.begin(), distFromCentre.end() ) - distFromCentre.begin() + 1;
 
   const double a = 1.0 / 5.5;
