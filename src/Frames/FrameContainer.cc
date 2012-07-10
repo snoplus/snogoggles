@@ -71,7 +71,6 @@ FrameContainer::PreInitialise( const ConfigurationTable* configTable )
   fTopBar->PreInitialise( configTable );
   fResizeButton = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 0 );
   fResizeButton->Initialise( 4 );
-  fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
   fFrame->PreInitialise( configTable );
   if( configTable != NULL )
@@ -160,4 +159,11 @@ double
 FrameContainer::GetAspectRatio() const
 {
   return fFrame->GetAspectRatio();
+}
+
+void
+FrameContainer::SetFrame( Frame* frame )
+{
+  fFrame = frame;
+  fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
 }

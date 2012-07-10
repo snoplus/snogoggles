@@ -16,6 +16,8 @@
 #ifndef __Viewer_Frames_About__
 #define __Viewer_Frames_About__
 
+#include <deque>
+
 #include <Viewer/Frame.hh>
 
 namespace Viewer
@@ -51,6 +53,7 @@ public:
 		 const RenderState& renderState ) { }
 
 private:
+  std::deque<double> fFrameRates;
   Text* fInfoText;
 };
 

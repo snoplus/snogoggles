@@ -66,13 +66,13 @@ public:
 
   inline const RIDS::Event& GetCurrentEvent() const;
   inline RAT::DS::Run& GetRun() const;
+  inline ScriptData& GetScriptData();
   inline bool HasChanged() const;
   inline void Reset();
 
   const int GetBufferSize();
   const int GetBufferRead();
   const int GetBufferWrite();
-
 
   /// Convienience method
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
@@ -107,6 +107,12 @@ inline RAT::DS::Run&
 DataStore::GetRun() const
 {
   return *fRun;
+}
+
+inline ScriptData&
+DataStore::GetScriptData()
+{
+  return fScriptData;
 }
 
 inline const RIDS::Event&

@@ -31,14 +31,16 @@ public:
   enum EState { eNormal, eScalingMin, eScalingMax };
 
   ScalingBar( RectPtr rect, 
-	      unsigned int guiID );
+              unsigned int guiID );
   virtual ~ScalingBar();
  
   void Render( RWWrapper& renderApp );
   GUIEvent NewEvent( const Event& event );
 
-  inline double GetMin();
-  inline double GetMax();
+  inline void SetState( const double min, 
+                        const double max );
+  inline double GetMin() const;
+  inline double GetMax() const;
   inline void Reset();
 protected:
   double fMinValue;
@@ -47,14 +49,22 @@ protected:
   ProjectionImage* fImage;
 };
 
+inline void
+ScalingBar::SetState( const double min,
+                      const double max )
+{
+  fMinValue = min;
+  fMaxValue = max;
+}
+
 inline double
-ScalingBar::GetMin()
+ScalingBar::GetMin() const
 {
   return fMinValue;
 }
 
 inline double
-ScalingBar::GetMax()
+ScalingBar::GetMax() const
 {
   return fMaxValue;
 }

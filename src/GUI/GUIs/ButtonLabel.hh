@@ -35,6 +35,7 @@ public:
                    const std::string& label );
   
   void Render( RWWrapper& renderApp );
+  inline const std::string GetLabel();
 protected:
   Text fText;
 };
@@ -43,6 +44,12 @@ ButtonLabel::ButtonLabel( RectPtr rect, unsigned int guiID )
   : Button( rect, guiID ), fText( rect )
 { 
 
+}
+
+inline const std::string
+ButtonLabel::GetLabel()
+{
+  return fText.GetString();
 }
 
 } // ::GUIs

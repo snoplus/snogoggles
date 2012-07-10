@@ -46,6 +46,10 @@ ScalingBar::NewEvent( const Event& event )
       retEvent = GUIEvent( fID, fGlobalID );
       break;
     case sf::Event::MouseButtonReleased: // Change the state back to normal
+      if( fState == eScalingMin )
+        fMinValue = pos.x;
+      else if( fState == eScalingMax )
+        fMaxValue = pos.x;
     case sf::Event::LostFocus:
       fState = eNormal;
       retEvent = GUIEvent( fID, fGlobalID );
@@ -57,15 +61,16 @@ ScalingBar::NewEvent( const Event& event )
 void 
 ScalingBar::Render( RWWrapper& renderApp )
 {
+  const double kBarHeight = 0.1;
   fImage->Clear();
-  sf::Vector2<double> pos( fMinValue, 0.25 );
-  sf::Vector2<double> size( 0.05, 0.5 );
+  sf::Vector2<double> pos = sf::Vector2<double>( 0.0, 0.5 - kBarHeight / 2.0 );
+  sf::Vector2<double> size = sf::Vector2<double>( 1.0, kBarHeight );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
+  pos = sf::Vector2<double>( fMinValue, 0.1 );
+  size = sf::Vector2<double>( 0.05, 0.8 );
   fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetColour( fMinValue ) );
   pos.x = fMaxValue - size.x;
   fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetColour( fMaxValue ) );
-  pos = sf::Vector2<double>( 0.0, 0.5 - size.x / 2.0 );
-  size = sf::Vector2<double>( 1.0, size.x );
-  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
   fImage->Update();
   renderApp.Draw( *fImage );
 }

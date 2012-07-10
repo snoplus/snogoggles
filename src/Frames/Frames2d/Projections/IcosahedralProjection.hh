@@ -1,63 +1,49 @@
 ////////////////////////////////////////////////////////////////////////
 /// \class Viewer::Frames::IcosahedralProjection
 ///
-/// \brief   Event display using the "flattened" icosahedral projection
+/// \brief   Displays PMT hits in the Icosahedral azimuthal equal area projection
 ///
-/// \author  Ken Clark <k.clark1@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     13.07.11 - Start
-///     25/02/12 - P.Jones, Refactor to use ProjectionMapArea class, still
-///                requires a further refactor for comments.
+///     10/07/11 : P.Jones - First Revision, new file. \n
+///     21/02/12 : P.Jones - Second Revision, refactor to common 
+///                          projection base class. \n
 ///
-/// \detail  Not much more detail to go into here.
+/// \detail  As brief.
 ///
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef __Viewer_Frames_IcosahedralProjection__
 #define __Viewer_Frames_IcosahedralProjection__
 
-#include <TVector2.h>
-#include <TVector3.h>
+#include <SFML/System/Vector2.hpp>
 
-#include <Viewer/Frame.hh>
 #include <Viewer/ProjectionMapArea.hh>
+#include <Viewer/Vector3.hh>
 
 namespace Viewer
 {
-
 namespace Frames
 {
 
 class IcosahedralProjection : public ProjectionMapArea
 {
 public:
-  IcosahedralProjection( RectPtr rect );
+  IcosahedralProjection( RectPtr rect ) : ProjectionMapArea( rect ) { }
 
   std::string GetName() { return IcosahedralProjection::Name(); }
-  
+
   static std::string Name() { return std::string( "Icosahedral" ); }
-  
+
+  double GetAspectRatio() const { return 0.5; }
+
 private:
   sf::Vector2<double> Project( Vector3 pmtPos );
-  sf::Vector2<double> Transform(
-				int vertex3d_1, 
-				int vertex3d_2, 
-				int vertex3d_3, 
-				int vertex2d_1, 
-				int vertex2d_2, 
-				int vertex2d_3, 
-				TVector3 pmtPos);
-  
-  std::vector<TVector3> fVertex_centres;
-  std::vector<TVector2> fVertex_edges;
-  std::vector<TVector3> fVertices_3d;
-  std::vector<TVector2> fVertices_2d;
-  std::vector<TVector2> ficosPMTpos;
 };
 
-} // namespace Frames
+} // ::Frames
 
-} // namespace Viewer
+} // ::Viewer
 
 #endif

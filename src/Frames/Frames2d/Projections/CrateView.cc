@@ -94,9 +94,8 @@ CrateView::DrawPMT( const int lcn,
                       colour );
   // Draw the PMT info as well?
   const double closeRadius = 0.005;
-  if( fabs( xPos - fMousePos.x ) < closeRadius && fabs( yPos - fMousePos.y ) < closeRadius )
-    fPMTofInterest = lcn;
-  
+  if( fabs( xPos + kHitWidth / 4.0 - fMousePos.x ) < closeRadius && fabs( yPos + kHitHeight / 4.0 - fMousePos.y ) < closeRadius )
+    fPMTofInterest = lcn;  
 }
 
 void 
@@ -106,6 +105,8 @@ CrateView::DrawPMTs( const RenderState& renderState )
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const double data = iTer->GetData( renderState.GetDataType() );
+      if( data == 0.0 )
+        continue;
       DrawPMT( iTer->GetLCN(), GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - renderState.GetScalingMin() ) /
                                                                    ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
     }

@@ -12,23 +12,16 @@ using namespace Viewer;
 #include <string>
 using namespace std;
 
-FrameFactory::FrameFactory( RectPtr rect )
+FrameFactory::FrameFactory()
 {
-  RegisterFrame( Frames::About::Name(), new AllocRect<Frame, Frames::About>( rect ), Frame::eUtil );
-  RegisterFrame( Frames::EventInfo::Name(), new AllocRect<Frame, Frames::EventInfo>( rect ), Frame::eUtil );
+  Register( Frames::About::Name(), new FrameAlloc<Frames::About>() );
+  Register( Frames::EventInfo::Name(), new FrameAlloc<Frames::EventInfo>() );
 
-  RegisterFrame( Frames::LambertProjection::Name(), new AllocRect<Frame, Frames::LambertProjection>( rect ), Frame::e2d );
-  RegisterFrame( Frames::IcosahedralProjection::Name(),new AllocRect<Frame,Frames::IcosahedralProjection>( rect ), Frame::e2d );
-  RegisterFrame( Frames::Histogram::Name(),new AllocRect<Frame,Frames::Histogram>( rect ), Frame::e2d );
-  RegisterFrame( Frames::CrateView::Name(),new AllocRect<Frame,Frames::CrateView>( rect ), Frame::e2d );
+  Register( Frames::LambertProjection::Name(), new FrameAlloc<Frames::LambertProjection>() );
+  Register( Frames::IcosahedralProjection::Name(),new FrameAlloc<Frames::IcosahedralProjection>() );
+  Register( Frames::Histogram::Name(),new FrameAlloc<Frames::Histogram>() );
+  Register( Frames::CrateView::Name(),new FrameAlloc<Frames::CrateView>() );
 
-  RegisterFrame( Frames::HitFrame3d::Name(), new AllocRect<Frame, Frames::HitFrame3d>( rect ), Frame::e3d );
-  RegisterFrame( Frames::TrackFrame3d::Name(), new AllocRect<Frame, Frames::TrackFrame3d>( rect ), Frame::e3d );
-}
-
-void
-FrameFactory::RegisterFrame( const std::string& name, AllocBase<Frame> *allocator, Frame::EFrameType frameType )
-{
-  Register( name, allocator );
-  fTypeMap[name] = frameType;
+  Register( Frames::HitFrame3d::Name(), new FrameAlloc<Frames::HitFrame3d>() );
+  Register( Frames::TrackFrame3d::Name(), new FrameAlloc<Frames::TrackFrame3d>() );
 }

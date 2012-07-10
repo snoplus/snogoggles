@@ -57,7 +57,7 @@ public:
   //EFrameType GetFrameType() { return eUtil; }
 protected:
   void ProjectGeodesicLine( Vector3 v1, 
-			    Vector3 v2 );
+                            Vector3 v2 );
   void DrawHits( const RenderState& renderState );
   void DrawGeodesic();
   void DrawAllPMTs();

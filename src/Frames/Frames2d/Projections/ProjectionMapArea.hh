@@ -45,6 +45,7 @@ protected:
   
   GUIs::MapArea* fMapArea; /// < The map area gui
   HitInfo* fHitInfo; /// < The hit info widget
+  sf::Vector2<double> fMousePos; /// < The mouse position (-1, -1) if not in frame
   int fPMTofInterest; /// < The id of the current PMT of interest, default -1 (no interest)
 };
 

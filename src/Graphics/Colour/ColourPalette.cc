@@ -43,11 +43,11 @@ Colour
 ColourPalette::GetColour( double value ) const
 {
   unsigned int uStop = 0;
-  for( uStop = 0; uStop < fColourStops.size() - 2; uStop++ )
+  for( uStop = 1; uStop < fColourStops.size() - 1; uStop++ )
     if( fColourStops[uStop].first > value )
       break;
-  const double regionFraction = ( value - fColourStops[uStop].first ) / ( fColourStops[uStop + 1].first - fColourStops[uStop].first );
-  Colour result = fColourStops[uStop].second;
-  result.AddColourFraction( fColourStops[uStop + 1].second, regionFraction );
+  const double regionFraction = ( value - fColourStops[uStop - 1].first ) / ( fColourStops[uStop].first - fColourStops[uStop - 1].first );
+  Colour result = fColourStops[uStop - 1].second;
+  result.AddColourFraction( fColourStops[uStop].second, regionFraction );
   return result;
 }

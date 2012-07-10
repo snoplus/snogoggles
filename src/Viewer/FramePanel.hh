@@ -19,7 +19,6 @@
 #include <string>
 
 #include <Viewer/Panel.hh>
-#include <Viewer/FrameFactory.hh>
 
 namespace Viewer
 {
@@ -44,7 +43,6 @@ protected:
   /// Load the GUI configuration specific to the panel
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
 
-  FrameFactory fFrameFactory; /// < Frame factory, contains frame types 
   FrameManager& fFrameManager; /// < Object that controls frames in this desktop
 };
 
