@@ -24,6 +24,7 @@ void
 SlideSelector::Initialise( vector<double> stops )
 {
   fStops = stops;
+  fCurrentPos = 0.0;
 }
 
 GUIEvent
@@ -65,7 +66,7 @@ SlideSelector::Render( RWWrapper& renderApp )
   // First draw the horizontal bar
   sf::Vector2<double> pos( 0.0, 0.5 - kBarHeight / 2.0 );
   sf::Vector2<double> size( 1.0, kBarHeight );
-  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
   // Now draw the stop points
   pos.y = 0.1;
   size.x = kStopWidth;
@@ -73,7 +74,7 @@ SlideSelector::Render( RWWrapper& renderApp )
   for( vector<double>::const_iterator iTer = fStops.begin(); iTer != fStops.end(); iTer++ )
     {
       pos.x = *iTer;
-      fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
+      fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
     }
   // Now draw the current position
   pos.x = fCurrentPos;

@@ -1,174 +1,198 @@
+#include <TVector3.h>
+#include <TVector2.h>
+
 #include <cmath>
-#include <map>
 using namespace std;
 
 #include <Viewer/IcosahedralProjection.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
-//const double kLocalSize = 1.0;
-const double kPSUPRadius = 8500.0;
-const double kLocalSize = 137.0*0.3/kPSUPRadius;
-
-IcosahedralProjection::IcosahedralProjection( RectPtr rect ) 
-  : ProjectionMapArea( rect )
+TVector2
+TransformCoord(
+               const TVector3& V1,
+               const TVector3& V2,
+               const TVector3& V3,
+               const TVector2& A1,
+               const TVector2& A2,
+               const TVector2& A3,
+               const TVector3& P )
 {
-  //set up the geometry for the transformation
-  //need to know the vertices
-  double phi = (1.0+sqrt(5.0))/2.0;
-  fVertices_3d.push_back(TVector3(pow(phi,2), 0.0,pow(phi,3)).Unit());//Vertex 2->0
-  fVertices_3d.push_back(TVector3(-1.0*pow(phi,2), 0.0,pow(phi,3)).Unit());//Vertex 6->1
-  fVertices_3d.push_back(TVector3(0.0,pow(phi,3),pow(phi,2)).Unit());//Vertex 12->2
-  fVertices_3d.push_back(TVector3(0.0,-1.0*pow(phi,3),pow(phi,2)).Unit());//Vertex 17->3
-  fVertices_3d.push_back(TVector3(pow(phi,3),pow(phi,2),0.0).Unit());//Vertex 27->4
-  fVertices_3d.push_back(TVector3(-1.0*pow(phi,3),pow(phi,2),0.0).Unit());//Vertex 31->5
-  fVertices_3d.push_back(TVector3(-1.0*pow(phi,3),-1.0*pow(phi,2),0.0).Unit());//Vertex 33->6
-  fVertices_3d.push_back(TVector3(pow(phi,3),-1.0*pow(phi,2),0.0).Unit());//Vertex 37->7
-  fVertices_3d.push_back(TVector3(0.0,pow(phi,3),-1.0*pow(phi,2)).Unit());//Vertex 46->8
-  fVertices_3d.push_back(TVector3(0.0,-1.0*pow(phi,3),-1.0*pow(phi,2)).Unit());//Vertex 51->9
-  fVertices_3d.push_back(TVector3(pow(phi,2),0.0,-1.0*pow(phi,3)).Unit());//Vertex 54->10
-  fVertices_3d.push_back(TVector3(-1.0*pow(phi,2),0.0,-1.0*pow(phi,3)).Unit());//Vertex 58->11
-  //Faces are made up of vertices as follows
-  //{{2, 6,17},{2,12, 6},{2,17,37},{2,37,27},{2,27,12},{37,54,27}, {27, 54, 46}, {27, 46, 12}, {12, 46, 31}, {12, 31, 6}, { 6, 31, 33}, { 6, 33, 17}, {17, 33, 51}, {17, 51, 37}, {37, 51, 54}, {58, 54, 51}, {58, 46, 54}, {58, 31, 46}, {58, 33, 31}, {58, 51, 33}}
-  //Need to know the centres of these faces
-  fVertex_centres.push_back((fVertices_3d.at(0)+fVertices_3d.at(1)+fVertices_3d.at(3))*(1.0/3.0));//{2, 6,17}
-  fVertex_centres.push_back((fVertices_3d.at(0)+fVertices_3d.at(2)+fVertices_3d.at(1))*(1.0/3.0));//{2,12, 6}
-  fVertex_centres.push_back((fVertices_3d.at(0)+fVertices_3d.at(3)+fVertices_3d.at(7))*(1.0/3.0));//{2,17,37}
-  fVertex_centres.push_back((fVertices_3d.at(0)+fVertices_3d.at(7)+fVertices_3d.at(4))*(1.0/3.0));//{2,37,27}
-  fVertex_centres.push_back((fVertices_3d.at(0)+fVertices_3d.at(4)+fVertices_3d.at(2))*(1.0/3.0));//{2,27,12}
-  fVertex_centres.push_back((fVertices_3d.at(7)+fVertices_3d.at(10)+fVertices_3d.at(4))*(1.0/3.0));//{37,54,27}
-  fVertex_centres.push_back((fVertices_3d.at(4)+fVertices_3d.at(10)+fVertices_3d.at(8))*(1.0/3.0));//{27, 54, 46}
-  fVertex_centres.push_back((fVertices_3d.at(4)+fVertices_3d.at(8)+fVertices_3d.at(2))*(1.0/3.0));//{27, 46, 12}
-  fVertex_centres.push_back((fVertices_3d.at(2)+fVertices_3d.at(8)+fVertices_3d.at(5))*(1.0/3.0));//{12, 46, 31}
-  fVertex_centres.push_back((fVertices_3d.at(2)+fVertices_3d.at(5)+fVertices_3d.at(1))*(1.0/3.0));//{12, 31, 6}
-  fVertex_centres.push_back((fVertices_3d.at(1)+fVertices_3d.at(5)+fVertices_3d.at(6))*(1.0/3.0));//{6, 31, 33}
-  fVertex_centres.push_back((fVertices_3d.at(1)+fVertices_3d.at(6)+fVertices_3d.at(3))*(1.0/3.0));//{6, 33, 17}
-  fVertex_centres.push_back((fVertices_3d.at(3)+fVertices_3d.at(6)+fVertices_3d.at(9))*(1.0/3.0));//{17, 33, 51}
-  fVertex_centres.push_back((fVertices_3d.at(3)+fVertices_3d.at(9)+fVertices_3d.at(7))*(1.0/3.0));//{17, 51, 37}
-  fVertex_centres.push_back((fVertices_3d.at(7)+fVertices_3d.at(9)+fVertices_3d.at(10))*(1.0/3.0));//{37, 51, 54}
-  fVertex_centres.push_back((fVertices_3d.at(11)+fVertices_3d.at(10)+fVertices_3d.at(9))*(1.0/3.0));//{58, 54, 51}
-  fVertex_centres.push_back((fVertices_3d.at(11)+fVertices_3d.at(8)+fVertices_3d.at(10))*(1.0/3.0));//{58, 46, 54}
-  fVertex_centres.push_back((fVertices_3d.at(11)+fVertices_3d.at(5)+fVertices_3d.at(8))*(1.0/3.0));//{58, 31, 46}
-  fVertex_centres.push_back((fVertices_3d.at(11)+fVertices_3d.at(6)+fVertices_3d.at(5))*(1.0/3.0));//{58, 33, 31}
-  fVertex_centres.push_back((fVertices_3d.at(11)+fVertices_3d.at(9)+fVertices_3d.at(6))*(1.0/3.0));//{58, 51, 33}
-  //now need to know the 2d coordinates of the vertices
-  //BEWARE!!! Because of "wrapping", there are more 2d vertices than 3d vertices
-  //ALSO BEWARE!! These are in SFML coordinates in which (0,0) is the top left corner
-  //x increases to the right, y increases *DOWN*.
-  //There are 5.5 edge lengths across the x dimension (edge length = 2(phi^2))
-  //There are 3 heights across the y dimension (height = sqrt(3)*phi^2)
-  double edge_length = 2.0*pow(phi,2);
-  double edge_height = sqrt(3)*pow(phi,2);
-  double total_length = 5.5*edge_length;
-  double total_height = 3.0*edge_height;
-  fVertices_2d.push_back(TVector2(edge_length/total_length,0.0));//2a
-  fVertices_2d.push_back(TVector2(2.0*edge_length/total_length,0.0));//2b
-  fVertices_2d.push_back(TVector2(3.0*edge_length/total_length,0.0));//2c
-  fVertices_2d.push_back(TVector2(4.0*edge_length/total_length,0.0));//2d
-  fVertices_2d.push_back(TVector2(5.0*edge_length/total_length,0.0));//2e
-  fVertices_2d.push_back(TVector2(0.5*edge_length/total_length,edge_height/total_height));//6a
-  fVertices_2d.push_back(TVector2(1.5*edge_length/total_length,edge_height/total_height));//17
-  fVertices_2d.push_back(TVector2(2.5*edge_length/total_length,edge_height/total_height));//37 
-  fVertices_2d.push_back(TVector2(3.5*edge_length/total_length,edge_height/total_height));//27
-  fVertices_2d.push_back(TVector2(4.5*edge_length/total_length,edge_height/total_height));//12
-  fVertices_2d.push_back(TVector2(5.5*edge_length/total_length,edge_height/total_height));//6b
-  fVertices_2d.push_back(TVector2(0.0,2.0*edge_height/total_height));//31a
-  fVertices_2d.push_back(TVector2(edge_length/total_length,2.0*edge_height/total_height));//33
-  fVertices_2d.push_back(TVector2(2.0*edge_length/total_length,2.0*edge_height/total_height));//51
-  fVertices_2d.push_back(TVector2(3.0*edge_length/total_length,2.0*edge_height/total_height));//54
-  fVertices_2d.push_back(TVector2(4.0*edge_length/total_length,2.0*edge_height/total_height));//46
-  fVertices_2d.push_back(TVector2(5.0*edge_length/total_length,2.0*edge_height/total_height));//31b
-  fVertices_2d.push_back(TVector2(0.5*edge_length/total_length,3.0*edge_height/total_height));//58a
-  fVertices_2d.push_back(TVector2(1.5*edge_length/total_length,3.0*edge_height/total_height));//58b
-  fVertices_2d.push_back(TVector2(2.5*edge_length/total_length,3.0*edge_height/total_height));//58c
-  fVertices_2d.push_back(TVector2(3.5*edge_length/total_length,3.0*edge_height/total_height));//58d
-  fVertices_2d.push_back(TVector2(4.5*edge_length/total_length,3.0*edge_height/total_height));//58e
+  TVector3 xV = V2 - V1;
+  TVector3 yV = ( ( V3 - V1 ) + ( V3 - V2 ) ) * 0.5;
+  TVector3 zV = xV.Cross( yV ).Unit();
+
+  double planeD = V1.Dot( zV );
+
+  double t = planeD / P.Dot( zV );
+
+  TVector3 localP = t*P - V1;
+
+  TVector2 xA = A2 - A1;
+  TVector2 yA = ( ( A3 - A1 ) +( A3 - A2 ) )  * 0.5;
+
+  double convUnits = xA.Mod() / xV.Mag();
+
+  TVector2 result;
+  result = localP.Dot( xV.Unit() ) * xA.Unit() * convUnits;
+  result += localP.Dot( yV.Unit() ) * yA.Unit() * convUnits + A1;
+  return result;
 }
 
-sf::Vector2<double> 
-IcosahedralProjection::Project( Vector3 pmtIn )
+TVector2
+ToSpherical(
+            const TVector3& P )
 {
-  //this needs some serious additional work for the Icosahedron
-  //determine to which face centre this point is closest
-  TVector3 pmtPos( pmtIn.x, pmtIn.y, pmtIn.z );
-  pmtPos.RotateY(3.72);
-  std::map<double,int> dotProducts;
-  for (UInt_t centreFaces=0;centreFaces<fVertex_centres.size();centreFaces++){
-    dotProducts.insert(std::pair<double,int>(fVertex_centres.at(centreFaces).Dot(pmtPos),centreFaces));
-  }
-  int intersectFace = dotProducts.begin()->second;
-  sf::Vector2<double> newPos;
-  switch(intersectFace){
-  case 0: newPos = Transform(0,1,3,0,5,6,pmtPos);break;
-  case 1: newPos = Transform(0,2,1,4,9,10,pmtPos);break;
-  case 2: newPos = Transform(0,3,7,1,6,7,pmtPos);break;
-  case 3: newPos = Transform(0,7,4,2,7,8,pmtPos);break;
-  case 4: newPos = Transform(0,4,2,3,8,9,pmtPos);break;
-  case 5: newPos = Transform(7,10,4,7,14,8,pmtPos);break;
-  case 6: newPos = Transform(4,10,8,8,14,15,pmtPos);break;
-  case 7: newPos = Transform(4,8,2,8,15,9,pmtPos);break;
-  case 8: newPos = Transform(2,8,5,9,15,16,pmtPos);break;
-  case 9: newPos = Transform(2,5,1,9,16,10,pmtPos);break;
-  case 10: newPos = Transform(1,5,6,5,11,12,pmtPos);break;
-  case 11: newPos = Transform(1,6,3,5,12,6,pmtPos);break;
-  case 12: newPos = Transform(3,6,9,6,12,13,pmtPos);break;
-  case 13: newPos = Transform(3,9,7,6,13,7,pmtPos);break;
-  case 14: newPos = Transform(7,9,10,7,13,14,pmtPos);break;
-  case 15: newPos = Transform(11,10,9,19,14,13,pmtPos);break;
-  case 16: newPos = Transform(11,8,10,20,15,14,pmtPos);break;
-  case 17: newPos = Transform(11,5,8,21,16,15,pmtPos);break;
-  case 18: newPos = Transform(11,6,5,17,12,11,pmtPos);break;
-  case 19: newPos = Transform(11,9,6,18,13,12,pmtPos);break;
-  }
-  return newPos;
+  double theta = acos( P.z() / P.Mag() );
+  double phi = atan2( P.y(), P.x() );
+  return TVector2( theta, phi );
 }
 
-sf::Vector2<double> 
-IcosahedralProjection::Transform( int vertex3d_1, 
-				  int vertex3d_2, 
-				  int vertex3d_3, 
-				  int vertex2d_1, 
-				  int vertex2d_2, 
-				  int vertex2d_3, 
-				  TVector3 pmtPos )
+sf::Vector2<double>
+IcosahedralProjection::Project( Vector3 pmtPos )
 {
-  //now need to multiply the PMT position vector by the matrix made up of
-  //the vertices to get the barycentric coordinates of the point
-  Double_t origMatrix[3][3], invMatrix[3][3];
-  Double_t detOrigMatrix;
-  //set up the original matrix
-  origMatrix[0][0]=-1.0*pmtPos.X();
-  origMatrix[1][0]=-1.0*pmtPos.Y();
-  origMatrix[2][0]=-1.0*pmtPos.Z();
-  origMatrix[0][1]=fVertices_3d.at(vertex3d_2).X()-fVertices_3d.at(vertex3d_1).X();
-  origMatrix[1][1]=fVertices_3d.at(vertex3d_2).Y()-fVertices_3d.at(vertex3d_1).Y();
-  origMatrix[2][1]=fVertices_3d.at(vertex3d_2).Z()-fVertices_3d.at(vertex3d_1).Z();
-  origMatrix[0][2]=fVertices_3d.at(vertex3d_3).X()-fVertices_3d.at(vertex3d_1).X();
-  origMatrix[1][2]=fVertices_3d.at(vertex3d_3).Y()-fVertices_3d.at(vertex3d_1).Y();
-  origMatrix[2][2]=fVertices_3d.at(vertex3d_3).Z()-fVertices_3d.at(vertex3d_1).Z();
-  //find the determinant
-  detOrigMatrix = origMatrix[0][0]*(origMatrix[1][1]*origMatrix[2][2]-origMatrix[1][2]*origMatrix[2][1]) - origMatrix[0][1]*(origMatrix[1][0]*origMatrix[2][2]-origMatrix[1][2]*origMatrix[2][0]) + origMatrix[0][2]*(origMatrix[1][0]*origMatrix[2][1]-origMatrix[1][1]*origMatrix[2][0]);
-  //invert the matrix
-  invMatrix[0][0] = 1.0/detOrigMatrix*((origMatrix[1][1]*origMatrix[2][2])-(origMatrix[2][1]*origMatrix[1][2]));
- invMatrix[1][0] = 1.0/detOrigMatrix*((origMatrix[1][2]*origMatrix[2][0])-(origMatrix[2][2]*origMatrix[1][0]));
- invMatrix[2][0] = 1.0/detOrigMatrix*((origMatrix[1][0]*origMatrix[2][1])-(origMatrix[2][0]*origMatrix[1][1]));
-  invMatrix[0][1] = 1.0/detOrigMatrix*((origMatrix[0][2]*origMatrix[2][1])-(origMatrix[2][2]*origMatrix[0][1]));
- invMatrix[1][1] = 1.0/detOrigMatrix*((origMatrix[0][0]*origMatrix[2][2])-(origMatrix[2][0]*origMatrix[0][2]));
- invMatrix[2][1] = 1.0/detOrigMatrix*((origMatrix[0][1]*origMatrix[2][0])-(origMatrix[2][1]*origMatrix[0][0]));
-  invMatrix[0][2] = 1.0/detOrigMatrix*((origMatrix[0][1]*origMatrix[1][2])-(origMatrix[1][1]*origMatrix[0][2]));
- invMatrix[1][2] = 1.0/detOrigMatrix*((origMatrix[0][2]*origMatrix[1][0])-(origMatrix[1][2]*origMatrix[0][0]));
- invMatrix[2][2] = 1.0/detOrigMatrix*((origMatrix[0][0]*origMatrix[1][1])-(origMatrix[1][0]*origMatrix[0][1]));
- //using this we can get out the length of the PMT location vector to the intercept (l)
- //and the relative coordinates of the intercept using the lines:
- double t = (invMatrix[0][0]*(fVertices_3d.at(vertex3d_1).X()) + invMatrix[0][1]*(fVertices_3d.at(vertex3d_1).Y()) + invMatrix[0][2]*(fVertices_3d.at(vertex3d_1).Z()));
- double u = -1.0*(invMatrix[1][0]*(fVertices_3d.at(vertex3d_1).X()) + invMatrix[1][1]*(fVertices_3d.at(vertex3d_1).Y()) + invMatrix[1][2]*(fVertices_3d.at(vertex3d_1).Z()));
- double v = -1.0*(invMatrix[2][0]*(fVertices_3d.at(vertex3d_1).X()) + invMatrix[2][1]*(fVertices_3d.at(vertex3d_1).Y()) + invMatrix[2][2]*(fVertices_3d.at(vertex3d_1).Z()));
- // if (u<0 || v<0) printf("********* Calculated t: %0.2f u: %0.2f, v:%0.2f\n",t,u,v);
- //Use these to find the 2d coordinates
- TVector2 new2d = fVertices_2d.at(vertex2d_1)+u*(fVertices_2d.at(vertex2d_2)-fVertices_2d.at(vertex2d_1))+v*(fVertices_2d.at(vertex2d_3)-fVertices_2d.at(vertex2d_1));
- double newX = new2d.X();
- double newY = new2d.Y();
- //finally make the transformed vector
- sf::Vector2<double> transformPos(newX,newY);
- return transformPos;
+  pmtPos = pmtPos.Unit();
+  TVector3 pointOnSphere( pmtPos.x, pmtPos.y, pmtPos.z );
+  pointOnSphere.RotateX( -45.0 );
+  // From http://www.rwgrayprojects.com/rbfnotes/polyhed/PolyhedraData/Icosahedralsahedron/Icosahedralsahedron.pdf
+  const double t = ( 1.0 + sqrt( 5.0 ) ) / 2.0;
+
+  const TVector3 V2 = TVector3( t * t, 0.0, t * t * t ).Unit();
+  const TVector3 V6 = TVector3( -t * t, 0.0, t * t * t ).Unit();
+  const TVector3 V12 = TVector3( 0.0, t * t * t, t * t ).Unit();
+  const TVector3 V17 = TVector3( 0.0, -t * t * t, t * t ).Unit();
+  const TVector3 V27 = TVector3( t * t * t, t * t, 0.0 ).Unit();
+  const TVector3 V31 = TVector3( -t * t * t, t * t, 0.0 ).Unit();
+  const TVector3 V33 = TVector3( -t * t * t, -t * t, 0.0 ).Unit();
+  const TVector3 V37 = TVector3( t * t * t, -t * t, 0.0 ).Unit();
+  const TVector3 V46 = TVector3( 0.0, t * t * t, -t * t ).Unit();
+  const TVector3 V51 = TVector3( 0.0, -t * t * t, -t * t ).Unit();
+  const TVector3 V54 = TVector3( t * t, 0.0, -t * t * t ).Unit();
+  const TVector3 V58 = TVector3( -t * t, 0.0, -t * t * t ).Unit();
+  // Faces {{ 2, 6, 17}, { 2, 12, 6}, { 2, 17, 37}, { 2, 37, 27}, { 2, 27, 12}, {37, 54, 27},
+  // {27, 54, 46}, {27, 46, 12}, {12, 46, 31}, {12, 31, 6}, { 6, 31, 33}, { 6, 33, 17},
+  // {17, 33, 51}, {17, 51, 37}, {37, 51, 54}, {58, 54, 51}, {58, 46, 54}, {58, 31, 46},
+  // {58, 33, 31}, {58, 51, 33}}
+  vector<TVector3> IcosahedralCentres;
+  IcosahedralCentres.push_back( ( V2 + V6 + V17 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V12 + V6 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V17 + V37 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V37 + V27 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V2 + V27 + V12 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V37 + V54 + V27 ) * ( 1.0 / 3.0 ) );
+
+  IcosahedralCentres.push_back( ( V27 + V54 + V46 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V27 + V46 + V12 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V12 + V46 + V31 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V12 + V31 + V6 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V6 + V31 + V33 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V6 + V33 + V17 ) * ( 1.0 / 3.0 ) );
+
+  IcosahedralCentres.push_back( ( V17 + V33 + V51 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V17 + V51 + V37 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V37 + V51 + V54 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V54 + V51 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V46 + V54 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V31 + V46 ) * ( 1.0 / 3.0 ) );
+
+  IcosahedralCentres.push_back( ( V58 + V33 + V31 ) * ( 1.0 / 3.0 ) );
+  IcosahedralCentres.push_back( ( V58 + V51 + V33 ) * ( 1.0 / 3.0 ) );
+
+  vector<double> distFromCentre;
+  unsigned int uLoop;
+  for( uLoop = 0; uLoop < IcosahedralCentres.size(); uLoop++ )
+    distFromCentre.push_back( ( IcosahedralCentres[uLoop] - pointOnSphere ).Mag() );
+  const int face = min_element( distFromCentre.begin(), distFromCentre.end() ) - distFromCentre.begin() + 1;
+
+  const double a = 1.0 / 5.5;
+  const double b = a * sqrt( 3.0 ) / 2.0;
+
+  const TVector2 A12a = TVector2( a / 2.0, 0.0 );
+  const TVector2 A12b = TVector2( 3.0 * a / 2.0, 0.0 );
+  const TVector2 A12c = TVector2( 5.0 * a / 2.0, 0.0 );
+  const TVector2 A12d = TVector2( 7.0 *a / 2.0, 0.0 );
+  const TVector2 A12e = TVector2( 9.0 * a / 2.0, 0.0 );
+  const TVector2 A2a = TVector2( 0.0, b );
+  const TVector2 A2b = TVector2( 5.0 * a, b );
+  const TVector2 A17a = TVector2( a / 2.0 , 2.0 * b );
+  const TVector2 A17b = TVector2( 11.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A51a = TVector2( a, 3.0 * b );
+  const TVector2 A51b = TVector2( 2.0 * a, 3.0 * b );
+  const TVector2 A51c = TVector2( 3.0 * a, 3.0 * b );
+  const TVector2 A51d = TVector2( 4.0 * a, 3.0 * b );
+  const TVector2 A51e = TVector2( 5.0 * a, 3.0 * b );
+  const TVector2 A27 = TVector2( 4.0 * a, b );
+  const TVector2 A46 = TVector2( 3.0 * a, b );
+  const TVector2 A31 = TVector2( 2.0 * a, b );
+  const TVector2 A6 = TVector2( a, b );
+  const TVector2 A37 = TVector2( 9.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A33 = TVector2( 3.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A58 = TVector2( 5.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A54 = TVector2( 7.0 * a / 2.0 , 2.0 * b );
+
+  TVector2 resultPosition;
+  switch(face)
+    {
+    case 1://{ 2, 6, 17}
+      resultPosition = TransformCoord( V2, V6, V17, A2a, A6, A17a, pointOnSphere );
+      break;
+    case 2://{ 2, 12, 6}
+      resultPosition = TransformCoord( V2, V12, V6, A2a, A12a, A6, pointOnSphere );
+      break;
+    case 3://{ 2, 17, 37}
+      resultPosition = TransformCoord( V2, V17, V37, A2b, A17b, A37, pointOnSphere );
+      break;
+    case 4://{ 2, 37, 27}
+      resultPosition = TransformCoord( V2, V37, V27, A2b, A37, A27, pointOnSphere );
+      break;
+    case 5://{ 2, 27, 12}
+      resultPosition = TransformCoord( V2, V27, V12, A2b, A27, A12e, pointOnSphere );
+      break;
+    case 6://{37, 54, 27}
+      resultPosition = TransformCoord( V37, V54, V27, A37, A54, A27, pointOnSphere );
+      break;
+    case 7://{27, 54, 46}
+      resultPosition = TransformCoord( V27, V54, V46, A27, A54, A46, pointOnSphere );
+      break;
+    case 8://{27, 46, 12}
+      resultPosition = TransformCoord( V27, V46, V12, A27, A46, A12d, pointOnSphere );
+      break;
+    case 9://{12, 46, 31}
+      resultPosition = TransformCoord( V12, V46, V31, A12c, A46, A31, pointOnSphere );
+      break;
+    case 10://{12, 31, 6}
+      resultPosition = TransformCoord( V12, V31, V6, A12b, A31, A6, pointOnSphere );
+      break;
+    case 11://{ 6, 31, 33}
+      resultPosition = TransformCoord( V6, V31, V33, A6, A31, A33, pointOnSphere );
+      break;
+    case 12://{ 6, 33, 17}
+      resultPosition = TransformCoord( V6, V33, V17, A6, A33, A17a, pointOnSphere );
+      break;
+    case 13://{17, 33, 51}
+      resultPosition = TransformCoord( V17, V33, V51, A17a, A33, A51a, pointOnSphere );
+      break;
+    case 14://{17, 51, 37}
+      resultPosition = TransformCoord( V17, V51, V37, A17b, A51e, A37, pointOnSphere );
+      break;
+    case 15://{37, 51, 54}
+      resultPosition = TransformCoord( V37, V51, V54, A37, A51d, A54, pointOnSphere );
+      break;
+    case 16://{58, 54, 51}
+      resultPosition = TransformCoord( V58, V54, V51, A58, A54, A51c, pointOnSphere );
+      break;
+    case 17://{58, 46, 54}
+      resultPosition = TransformCoord( V58, V46, V54, A58, A46, A54, pointOnSphere );
+      break;
+    case 18://{58, 31, 46}
+      resultPosition = TransformCoord( V58, V31, V46, A58, A31, A46, pointOnSphere );
+      break;
+    case 19://{58, 33, 31}
+      resultPosition = TransformCoord( V58, V33, V31, A58, A33, A31, pointOnSphere );
+      break;
+    case 20://{58, 51, 33}
+      resultPosition = TransformCoord( V58, V51, V33, A58, A51b, A33, pointOnSphere );
+      break;
+    }
+  return sf::Vector2<double>( resultPosition.X(), 2.0 * resultPosition.Y() );
 }

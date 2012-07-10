@@ -29,18 +29,18 @@ GUIManager::NewEvent( const Event& event )
     case sf::Event::KeyPressed:
     case sf::Event::KeyReleased:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-	retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvent = fGUIObjects[fFocus]->NewEvent( event );
       break;
 
 // Now events that go straight through to Focus and change the focus   
     case sf::Event::MouseButtonReleased:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-	retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvent = fGUIObjects[fFocus]->NewEvent( event );
       fFocus = FindGUI( event.GetPos() );
       break;
     case sf::Event::LostFocus:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-	retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvent = fGUIObjects[fFocus]->NewEvent( event );
       fFocus = -1;
       break;
 
@@ -49,7 +49,7 @@ GUIManager::NewEvent( const Event& event )
     case sf::Event::MouseButtonPressed:
       fFocus = FindGUI( event.GetPos() );
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-	retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvent = fGUIObjects[fFocus]->NewEvent( event );
       break;
     }
 // Focus change

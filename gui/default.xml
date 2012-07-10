@@ -10,6 +10,13 @@
     <gui effect="1" x="0.1" y="0.4" width="0.8" height="0.3" font-ring="0" />
     <gui effect="2" x="0.1" y="0.8" width="0.8" height="0.2" font-ring="0" />
   </GUIPanel>
+  <RenderState>
+    <MC TAC="500.0" QHL="20.0" QHS="20.0" QLX="20.0" />
+    <Truth TAC="500.0" QHL="4000.0" QHS="4000.0" QLX="1000.0" />
+    <UnCal TAC="4000.0" QHL="4500.0" QHS="4500.0" QLX="1400.0" />
+    <Cal TAC="500.0" QHL="4000.0" QHS="4000.0" QLX="1000.0" />
+    <Script TAC="500.0" QHL="500.0" QHS="500.0" QLX="500.0" />
+  </RenderState>
   <ScriptPanel x="0.7" y="0.9" width="0.2" height="0.1">
     <text caption="Sum Script:" x="0.0" y="0.0" width="0.4" height="0.3" />
     <gui effect="0" x="0.4" y="0.0" width="0.6" height="0.3" font-ring="0" />
@@ -29,19 +36,23 @@
   <FramePanel x="0.0" y="0.9" width="0.5" height="0.1">
     <frameButtonArea x="0.0" y="0.0" width="1.0" height="1.0" />
   </FramePanel>
-  <EventPanel x="0.9" y="0.0" width="0.1" height="0.5">
-    <gui effect="0" x="0.0" y="0.0" width="0.1" height="0.1"/>
-    <label result="0" x="0.1" y="0.0" width="0.8" height="0.1"/>
-    <gui effect="1" x="0.9" y="0.0" width="0.1" height="0.1"/>
+  <EventPanel x="0.9" y="0.0" width="0.1" height="0.75">
+    <gui effect="0" x="0.0" y="0.0" width="0.1" height="0.05"/>
+    <text caption="Prev" x="0.1" y="0.0" width="0.3" height="0.05" />
+    <gui effect="1" x="0.9" y="0.0" width="0.1" height="0.05"/>
+    <text caption="Next" x="0.55" y="0.0" width="0.3" height="0.05" />
 
-    <text caption="Event Rate:" x="0.0" y="0.1" width="0.8" height="0.1" />
+    <text caption="Event Rate:" x="0.0" y="0.1" width="0.9" height="0.05" />
     <gui effect="4" x="0.1" y="0.15" width="0.8" height="0.05"/>
 
-    <text caption="Data Source:" x="0.0" y="0.2" width="0.8" height="0.1" />
-    <gui effect="2" x="0.1" y="0.3" width="0.8" height="0.4"/>
+    <text caption="Data Source:" x="0.0" y="0.2" width="0.9" height="0.05" />
+    <gui effect="2" x="0.1" y="0.25" width="0.8" height="0.2"/>
 
-    <text caption="Data Type:" x="0.0" y="0.7" width="0.8" height="0.1" />
-    <gui effect="3" x="0.1" y="0.8" width="0.8" height="0.3"/>
+    <text caption="Data Type:" x="0.0" y="0.5" width="0.9" height="0.1" />
+    <gui effect="3" x="0.1" y="0.55" width="0.8" height="0.15"/>
+
+    <text caption="Scaling Bar:" x="0.0" y="0.7" width="0.9" height="0.1" />
+    <gui effect="5" x="0.1" y="0.75" width="0.8" height="0.05"/>
   </EventPanel>
   <FrameManager x="0.0" y="0.0" width="0.9" height="1.0"/>
 

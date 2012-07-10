@@ -59,6 +59,7 @@ int main( int argc, char *argv[] )
   if( loadConfig != NULL )
     loadConfigTable = loadConfig->GetTable();
   GUIProperties::GetInstance().PreInitialise( loadConfigTable );
+  RenderState::Initialise(); // Must be after GUIProperties
   ViewerWindow& viewer = ViewerWindow::GetInstance();
   viewer.PreInitialise( loadConfigTable );
   Thread* loadData;
@@ -116,7 +117,6 @@ PreInitialise()
 {
   XMLPlatformUtils::Initialize();
   DataStore::GetInstance();
-  RenderState::Initialise();
 }
 
 void 

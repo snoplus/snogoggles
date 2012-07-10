@@ -33,7 +33,11 @@ ScriptData::Load( const string& scriptName )
   // Load new script
   stringstream pythonScriptPath;
   pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/sum";
-  PySys_SetPath( const_cast<char*>( pythonScriptPath.str().c_str() ) ); // Annoying python api
+  PyObject* pSysPath = PySys_GetObject( "path" );
+  PyObject* pPath = PyString_FromString( pythonScriptPath.str().c_str() );
+  PyList_Append( pSysPath, pPath );
+  //Py_DECREF( pSysPath );
+  Py_DECREF( pPath );
   PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
   fpScript = PyImport_Import( pScriptName ); // Load script
   Py_DECREF( pScriptName );

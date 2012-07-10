@@ -1,12 +1,14 @@
 using namespace std;
 
 #include <Viewer/RenderState.hh>
+#include <Viewer/ConfigurationTable.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 
-std::map< RIDS::EDataSource, std::string > RenderState::fsSourceNames;
-std::map< RIDS::EDataType, std::string > RenderState::fsTypeNames;
-std::map< RIDS::EDataSource, std::map< RIDS::EDataType, double > > RenderState::fsDefaultScalingMin;
-std::map< RIDS::EDataSource, std::map< RIDS::EDataType, double > > RenderState::fsDefaultScalingMax;
+map< RIDS::EDataSource, string > RenderState::fsSourceNames;
+map< RIDS::EDataType, string > RenderState::fsTypeNames;
+map< RIDS::EDataSource, map< RIDS::EDataType, double > > RenderState::fsDefaultScalingMin;
+map< RIDS::EDataSource, map< RIDS::EDataType, double > > RenderState::fsDefaultScalingMax;
 
 void
 RenderState::Initialise()
@@ -21,41 +23,17 @@ RenderState::Initialise()
   fsSourceNames[RIDS::eCal] = string("Cal");
   fsSourceNames[RIDS::eScript] = string("Script");
 
-  fsDefaultScalingMin[RIDS::eMC][RIDS::eTAC] = 0.0;
-  fsDefaultScalingMin[RIDS::eMC][RIDS::eQHL] = 0.0;
+  const ConfigurationTable* renderConfig = GUIProperties::GetInstance().GetConfiguration( "RenderState" );
 
-  fsDefaultScalingMax[RIDS::eMC][RIDS::eTAC] = 500.0;
-  fsDefaultScalingMax[RIDS::eMC][RIDS::eQHL] = 4500.0;
-
-  fsDefaultScalingMin[RIDS::eUnCal][RIDS::eTAC] = 0.0;
-  fsDefaultScalingMin[RIDS::eUnCal][RIDS::eQHL] = 0.0;
-  fsDefaultScalingMin[RIDS::eUnCal][RIDS::eQHS] = 0.0;
-  fsDefaultScalingMin[RIDS::eUnCal][RIDS::eQLX] = 0.0;
-
-  fsDefaultScalingMax[RIDS::eUnCal][RIDS::eTAC] = 4000.0;
-  fsDefaultScalingMax[RIDS::eUnCal][RIDS::eQHL] = 4500.0;
-  fsDefaultScalingMax[RIDS::eUnCal][RIDS::eQHS] = 4500.0;
-  fsDefaultScalingMax[RIDS::eUnCal][RIDS::eQLX] = 1400.0;
-
-  fsDefaultScalingMin[RIDS::eCal][RIDS::eTAC] = 0.0;
-  fsDefaultScalingMin[RIDS::eCal][RIDS::eQHL] = 0.0;
-  fsDefaultScalingMin[RIDS::eCal][RIDS::eQHS] = 0.0;
-  fsDefaultScalingMin[RIDS::eCal][RIDS::eQLX] = 0.0;
-
-  fsDefaultScalingMax[RIDS::eCal][RIDS::eTAC] = 500.0;
-  fsDefaultScalingMax[RIDS::eCal][RIDS::eQHL] = 4000.0;
-  fsDefaultScalingMax[RIDS::eCal][RIDS::eQHS] = 4000.0;
-  fsDefaultScalingMax[RIDS::eCal][RIDS::eQLX] = 1000.0;
-
-  fsDefaultScalingMin[RIDS::eScript][RIDS::eTAC] = 0.0;
-  fsDefaultScalingMin[RIDS::eScript][RIDS::eQHL] = 0.0;
-  fsDefaultScalingMin[RIDS::eScript][RIDS::eQHS] = 0.0;
-  fsDefaultScalingMin[RIDS::eScript][RIDS::eQLX] = 0.0;
-
-  fsDefaultScalingMax[RIDS::eScript][RIDS::eTAC] = 500.0;
-  fsDefaultScalingMax[RIDS::eScript][RIDS::eQHL] = 500.0;
-  fsDefaultScalingMax[RIDS::eScript][RIDS::eQHS] = 500.0;
-  fsDefaultScalingMax[RIDS::eScript][RIDS::eQLX] = 500.0;
+  for( map< RIDS::EDataSource, string >::const_iterator sourceTer = fsSourceNames.begin(); sourceTer != fsSourceNames.end(); sourceTer++ )
+    {
+      const ConfigurationTable* configTable = renderConfig->GetTable( sourceTer->second );
+      for( map< RIDS::EDataType, string >::const_iterator typeTer = fsTypeNames.begin(); typeTer != fsTypeNames.end(); typeTer++ )
+        {
+          fsDefaultScalingMin[sourceTer->first][typeTer->first] = 0.0;
+          fsDefaultScalingMax[sourceTer->first][typeTer->first] = configTable->GetD( typeTer->second );
+        }
+    }
 }
 
 void
@@ -75,6 +53,7 @@ RenderState::ChangeScaling( double fractionalMin,
 {
   fCurrentScalingMin = fractionalMin * ( fsDefaultScalingMax[fCurrentDataSource][fCurrentDataType] - fsDefaultScalingMin[fCurrentDataSource][fCurrentDataType] );
   fCurrentScalingMax = fractionalMax * ( fsDefaultScalingMax[fCurrentDataSource][fCurrentDataType] - fsDefaultScalingMin[fCurrentDataSource][fCurrentDataType] );
+  fChanged = true;
 }
 
 vector<string>

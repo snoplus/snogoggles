@@ -13,6 +13,7 @@
 ///     07/08/11 : P.Jones - Added get names method to Factory. \n
 ///     25/02/12 : P.Jones - Added AllocRect, this creates the derived class and
 ///                passes the derived class a daughter rect on construction.\n
+///     07/06/12 : P.Jones - Removed the AllocRect, specialised the FrameFactory.\n
 ///
 /// \detail  This extends the RAT version, so it is required separately
 ///          in the viewer.
@@ -24,8 +25,6 @@
 #include <string>
 #include <map>
 #include <vector>
-
-#include <Viewer/RectPtr.hh>
 
 namespace Viewer 
 {
@@ -42,16 +41,6 @@ public:
   virtual T* New( ) {
     return new TDerived;
   };
-};
-
-template <class T, class TDerived>
-class AllocRect : public AllocBase<T> {
-public:
-  AllocRect( RectPtr rect ) : fRect( rect ) { }
-  virtual T* New() {
-    return new TDerived( RectPtr( fRect->NewDaughter() ) );
-  };
-  RectPtr fRect;
 };
 
 template <class T>

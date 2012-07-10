@@ -81,9 +81,9 @@ DesktopManager::PostInitialise( const ConfigurationTable* configTable )
       stringstream tableName;
       tableName << "Desktop" << iDesktop;
       if( configTable != NULL )
-        fDesktops[iDesktop]->PreInitialise( configTable->GetTable( tableName.str() ) );
+        fDesktops[iDesktop]->PostInitialise( configTable->GetTable( tableName.str() ) );
       else
-        fDesktops[iDesktop]->PreInitialise( NULL );
+        fDesktops[iDesktop]->PostInitialise( NULL );
     }
 }
 
