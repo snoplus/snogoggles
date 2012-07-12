@@ -46,16 +46,6 @@ public:
             g->LoadFile();
     }
 
-    /// Renders the geometry.
-    virtual void RenderGeometry( ) = 0;
-
-    static inline void RenderGeometrySafe( GeoManager3d* g )
-    {
-        if( g != NULL )
-            g->RenderGeometry();
-    }
-
-
 }; // class GeoManager3d
 
 }; // namespace Frames 

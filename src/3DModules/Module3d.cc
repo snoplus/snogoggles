@@ -49,12 +49,16 @@ void Module3d::EventLoopSafe( Module3d* module )
         module->EventLoop( );
 }
 
-bool Module3d::StateChanged( const RenderState& renderState )
+void Module3d::ProcessDataSafe( Module3d* module, const RenderState& renderState )
 {
-    if( renderState.HasChanged() ) return true;
-    if( GUIProperties::GetInstance().HasChanged() ) return true;
-    if( DataStore::GetInstance().HasChanged() ) return true;
-    return false;
+    if( module != NULL )
+        module->ProcessData( renderState );
+}
+
+void Module3d::RenderSafe( Module3d* module, const RenderState& renderState )
+{
+    if( module != NULL )
+        module->Render( renderState );
 }
 
 }; // namespace Frames

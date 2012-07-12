@@ -72,7 +72,8 @@ public:
     void LoadConfiguration( const ConfigurationTable* configTable );
     void SaveConfiguration( ConfigurationTable* configTable );
     void EventLoop( );
-    void RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState );
+    void ProcessData( const RenderState& renderState );
+    void Render( const RenderState& renderState );
 
 private:
 

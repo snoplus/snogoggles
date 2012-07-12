@@ -40,6 +40,7 @@ public:
   /// Save the configuration
   virtual void SaveConfiguration( ConfigurationTable* configTable );
 	virtual void EventLoop();
+    virtual void ProcessData( const RenderState& renderState );
     virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
 	virtual void Render3d( RWWrapper& renderApp, const RenderState& renderState );
 

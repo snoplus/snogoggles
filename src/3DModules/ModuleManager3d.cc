@@ -44,61 +44,58 @@ void ModuleManager3d::SetAllModules(
     FitterManager3d* fitter
 )
 {
-	fCameraManager = camera;
-	fHitManager = hits;
-	fTrackManager = tracks;
-	fGeoManager = geo;
-	fFitterManager = fitter;
-	if( fCameraManager != NULL )
-		fAxes = new Axes3d( fCameraManager->SuggestedAxisLength() );
+    DeleteAllModules();
+    fModules.push_back( camera );
+    fModules.push_back( hits );
+    fModules.push_back( tracks );
+    fModules.push_back( geo );
+    fModules.push_back( fitter );
+	if( fModules[CAMERA] != NULL )
+		fModules.push_back( new Axes3d( ((CameraManager3d*)fModules[CAMERA])->SuggestedAxisLength() ) );
+    else
+        fModules.push_back( NULL );
 }
 
 void ModuleManager3d::DeleteAllModules()
 {
-	delete fCameraManager;		fCameraManager = NULL;
-	delete fHitManager;			fHitManager = NULL;
-	delete fTrackManager;		fTrackManager = NULL;
-	delete fGeoManager;			fGeoManager = NULL;
-	delete fFitterManager;		fFitterManager = NULL;
-	delete fAxes;				fAxes = NULL;
+    for( int i = 0; i < fModules.size(); i++ )
+    {
+        delete fModules[i];
+        fModules[i] = NULL;
+    }
+    fModules.clear();
 }
 
 void ModuleManager3d::LateInitialise()
 {
-	if( fCameraManager == NULL )
+	if( fModules[CAMERA] == NULL )
 		throw NoCameraError();
 
-	GeoManager3d::LoadFileSafe( fGeoManager );
+	GeoManager3d::LoadFileSafe( (GeoManager3d*)fModules[GEO] );
 }
 
 void ModuleManager3d::LoadModuleConfigurations( const ConfigurationTable* configTable )
 {
-	Module3d::LoadConfigurationSafe( fCameraManager, configTable );
-	Module3d::LoadConfigurationSafe( fHitManager, configTable );
-	Module3d::LoadConfigurationSafe( fTrackManager, configTable );
-	Module3d::LoadConfigurationSafe( fGeoManager, configTable );
-	Module3d::LoadConfigurationSafe( fFitterManager, configTable );
-	Module3d::LoadConfigurationSafe( fAxes, configTable );
+    for( int i = 0; i < fModules.size(); i++ )
+        Module3d::LoadConfigurationSafe( fModules[i], configTable );
 }
 
 void ModuleManager3d::SaveModuleConfigurations( ConfigurationTable* configTable )
 {
-	Module3d::SaveConfigurationSafe( fCameraManager, configTable );
-	Module3d::SaveConfigurationSafe( fHitManager, configTable );
-	Module3d::SaveConfigurationSafe( fTrackManager, configTable );
-	Module3d::SaveConfigurationSafe( fGeoManager, configTable );
-	Module3d::SaveConfigurationSafe( fFitterManager, configTable );
-	Module3d::SaveConfigurationSafe( fAxes, configTable );
+    for( int i = 0; i < fModules.size(); i++ )
+        Module3d::SaveConfigurationSafe( fModules[i], configTable );
 }
 
 void ModuleManager3d::EventLoop()
 {
-	Module3d::EventLoopSafe( fCameraManager );
-	Module3d::EventLoopSafe( fHitManager );
-	Module3d::EventLoopSafe( fTrackManager );
-	Module3d::EventLoopSafe( fGeoManager );
-	Module3d::EventLoopSafe( fFitterManager );
-	Module3d::EventLoopSafe( fAxes );
+    for( int i = 0; i < fModules.size(); i++ )
+        Module3d::EventLoopSafe( fModules[i] );
+}
+
+void ModuleManager3d::ProcessData( const RenderState& renderState )
+{
+    for( int i = 0; i < fModules.size(); i++ )
+        Module3d::ProcessDataSafe( fModules[i], renderState );
 }
 
 void ModuleManager3d::Render2d( RWWrapper& windowApp, const RenderState& renderState )
@@ -107,17 +104,10 @@ void ModuleManager3d::Render2d( RWWrapper& windowApp, const RenderState& renderS
 }
 
 void ModuleManager3d::Render3d( RectPtr viewport, const RenderState& renderState )
-{
-  RIDS::EV& ev = DataStore::GetInstance().GetCurrentEvent().GetEV();
-  RIDS::MC& mc = DataStore::GetInstance().GetCurrentEvent().GetMC();
-  RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
-  
-  fCameraManager->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
-  HitManager3d::RenderHitsSafe( fHitManager, &ev, pmtList, renderState );
-  TrackManager3d::RenderTracksSafe( fTrackManager, mc, renderState );
-  GeoManager3d::RenderGeometrySafe( fGeoManager );
-  FitterManager3d::RenderFitVertexSafe( fFitterManager );
-  Axes3d::RenderAxesSafe( fAxes );
+{ 
+    ((CameraManager3d*)(fModules[CAMERA]))->SetUpCameraSystem( viewport->GetRect( Rect::eGL ) ); 
+    for( int i = 1; i < fModules.size(); i++ )
+        Module3d::RenderSafe( fModules[i], renderState );
 }
 
 }; // namespace Frames

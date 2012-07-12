@@ -102,6 +102,12 @@ DesktopManager::SaveConfiguration( ConfigurationTable* configTable )
 }
 
 void 
+DesktopManager::ProcessData( )
+{
+  fDesktops[fDesktopPanel->GetCurrentDesktop()]->ProcessData();
+}
+
+void 
 DesktopManager::Render2d( RWWrapper& renderApp )
 {
   fDesktops[fDesktopPanel->GetCurrentDesktop()]->Render2d( renderApp );

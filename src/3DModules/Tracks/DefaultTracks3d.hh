@@ -51,7 +51,8 @@ public:
     virtual void LoadConfiguration( const ConfigurationTable* configTable );
     virtual void SaveConfiguration( ConfigurationTable* configTable );
     virtual void EventLoop( );
-    virtual void RenderTracks( RIDS::MC& mc, const RenderState& renderState );
+    virtual void ProcessData( const RenderState& renderState );
+    virtual void Render( const RenderState& renderState );
 
 private:
 

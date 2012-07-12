@@ -162,6 +162,7 @@ ViewerWindow::RenderLoop()
   // This SFML call is unnecessary.
   //fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
 
+  fDesktopManager->ProcessData();
   fDesktopManager->Render3d( *fRWWrapper );
   fWindowApp->PushGLStates(); // This call seems to be necessary.
   fDesktopManager->Render2d( *fRWWrapper );

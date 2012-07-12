@@ -42,7 +42,7 @@ public:
     virtual void LoadConfiguration( const ConfigurationTable* configTable ) { }
     virtual void SaveConfiguration( ConfigurationTable* configTable ) { }
     virtual void EventLoop() { }
-    void RenderGeometry();
+    void Render( const RenderState& renderState );
 
 private:
     GUIs::PersistLabel* fDisplayGUI;
