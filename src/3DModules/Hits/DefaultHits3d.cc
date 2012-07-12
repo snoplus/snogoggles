@@ -113,12 +113,6 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
             continue;
 
         TVector3 p = pmtList->GetPos( hits[i].GetLCN() );
-
-        double max = renderState.GetScalingMax();
-        double min = renderState.GetScalingMin();
-        double data = hits[i].GetData( renderState.GetDataType() );
-        double c_frac = data / ( max - min );
-
         Colour c = renderState.GetHitColour( hits[i] );
 
         fFullBuffer.AddHitFull( p, c );
