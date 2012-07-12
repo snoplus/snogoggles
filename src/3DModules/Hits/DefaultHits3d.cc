@@ -7,8 +7,10 @@
 #include <Viewer/RenderState.hh>
 #include <Viewer/RIDS/EV.hh>
 #include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/DataStore.hh>
 
 #include <RAT/DS/PMTProperties.hh>
+#include <RAT/DS/Run.hh>
 #include <SFML/OpenGL.hpp>
 
 #include <iostream>
@@ -62,12 +64,20 @@ void DefaultHits3d::EventLoop( )
     fDisplayFrontPMTsOnly = fFrontGUI->GetState();
 }
 
-void DefaultHits3d::RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
+void DefaultHits3d::ProcessData( const RenderState& renderState )
 {
-    if( StateChanged( renderState ) || fInitialised == false ) 
-        SaveHitsToBuffer( ev, pmtList, renderState );
+    RIDS::EV& ev = DataStore::GetInstance().GetCurrentEvent().GetEV();
+    RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
+    SaveHitsToBuffer( &ev, pmtList, renderState );
+}
+
+void DefaultHits3d::Render( const RenderState& renderState )
+{
+    if( fInitialised == false ) 
+        ProcessData( renderState );
     fInitialised = true;
 
+    RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
     if( fCurrentPMTList != pmtList )
     {
         for( int i=0; i < pmtList->GetPMTCount(); i++ )
@@ -97,6 +107,7 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
     if( ev == NULL ) return;
 
     std::vector<RIDS::PMTHit> hits = ev->GetHitData( renderState.GetDataSource() );
+    //std::vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
     for( int i = 0; i < hits.size(); i++ )
     {
         TVector3 p = pmtList->GetPos( hits[i].GetLCN() );

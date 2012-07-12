@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <Viewer/ModuleManager3d.hh>
 #include <Viewer/BaseFrame3d.hh>
 
@@ -41,6 +43,11 @@ void BaseFrame3d::EventLoop()
 
 	LateInitialise(); // This is very prone to cause segfaults, must it work this way?
 	fModuleManager->EventLoop();
+}
+
+void BaseFrame3d::ProcessData( const RenderState& renderState )
+{
+    fModuleManager->ProcessData( renderState );
 }
 
 void BaseFrame3d::Render2d( RWWrapper& renderApp, const RenderState& renderState )

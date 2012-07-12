@@ -174,6 +174,13 @@ FrameManager::SaveConfiguration( ConfigurationTable* configTable )
     }
 }
 
+void
+FrameManager::ProcessData( const RenderState& renderState )
+{
+  for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
+    (*iTer)->ProcessData( renderState );
+}
+
 void 
 FrameManager::Render2d( RWWrapper& renderApp, 
 			const RenderState& renderState )

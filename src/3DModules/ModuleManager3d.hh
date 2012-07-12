@@ -33,6 +33,7 @@
 #define __Viewer_Frames_ModuleManager3d__
 
 #include <string>
+#include <vector>
 #include <SFML/Graphics/Rect.hpp>
 
 #include <Viewer/RectPtr.hh>
@@ -46,15 +47,18 @@ namespace Viewer {
 
 namespace Frames {
 
+    class Module3d;
     class CameraManager3d;
     class HitManager3d;
     class TrackManager3d;
     class GeoManager3d;
     class FitterManager3d;
     class Axes3d;
+    enum ModuleTypes { CAMERA=0, HIT=1, TRACK=2, GEO=3, FITTER=4, AXES=5 };
 
 class ModuleManager3d {
 public:
+
     class NoCameraError {
     public:
         NoCameraError( ) { }
@@ -76,15 +80,11 @@ public:
     void LoadModuleConfigurations( const ConfigurationTable* configTable );
     void SaveModuleConfigurations( ConfigurationTable* configTable );
     void EventLoop();
+    void ProcessData( const RenderState& renderState );
     void Render2d( RWWrapper& windowApp, const RenderState& renderState );
     void Render3d( RectPtr viewport, const RenderState& renderState );
 
-    CameraManager3d*    fCameraManager;     ///< The camera manager	
-    HitManager3d*       fHitManager;        ///< The hit manager.
-    TrackManager3d*     fTrackManager;      ///< The track manager.
-    GeoManager3d*       fGeoManager;        ///< The geometry manager.
-    FitterManager3d*    fFitterManager;	    ///< The fitter manager.
-	Axes3d*				fAxes;				///< 3d Axes
+    std::vector<Module3d*> fModules;
 
 
 }; // class ModuleManager3d

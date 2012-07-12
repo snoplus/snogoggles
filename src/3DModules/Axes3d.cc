@@ -48,7 +48,7 @@ void Axes3d::EventLoop()
 		fDisplay = fDisplayGUI->GetState();
 }
 
-void Axes3d::RenderAxes( )
+void Axes3d::Render( const RenderState& renderState )
 {
 	if( fDisplay == true )
 	{

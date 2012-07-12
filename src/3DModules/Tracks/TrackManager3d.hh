@@ -46,14 +46,6 @@ public:
     static std::string TableName() { return "TrackManager3d"; }
     std::string GetTableName() { return TableName(); }
 
-    /// Renders tracks.
-    virtual void RenderTracks( RIDS::MC& mc, const RenderState& renderState ) = 0;
-
-    static inline void RenderTracksSafe( TrackManager3d* t, RIDS::MC& mc, const RenderState& renderState )
-    {
-        if( t != NULL )
-            t->RenderTracks( mc, renderState );
-    }
 
 
 }; // class TrackManager3d

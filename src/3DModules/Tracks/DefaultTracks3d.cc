@@ -4,6 +4,7 @@
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/RIDS/MC.hh>
+#include <Viewer/DataStore.hh>
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/OpenGL.hpp>
@@ -79,10 +80,16 @@ void DefaultTracks3d::EventLoop( )
     }
 }
 
-void DefaultTracks3d::RenderTracks( RIDS::MC& mc, const RenderState& renderState )
+void DefaultTracks3d::ProcessData( const RenderState& renderState )
 {
-    if( StateChanged( renderState ) || fInitialised == false )
-        fTrackBuffer.SetAll( mc );
+    RIDS::MC& mc = DataStore::GetInstance().GetCurrentEvent().GetMC();
+    fTrackBuffer.SetAll( mc );
+}
+
+void DefaultTracks3d::Render( const RenderState& renderState )
+{
+    if( fInitialised == false )
+        ProcessData( renderState );
     fInitialised = true;
 
     fTrackBuffer.Render( fRenderFullTrack );

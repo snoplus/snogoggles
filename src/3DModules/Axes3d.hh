@@ -40,10 +40,7 @@ public:
 	void LoadConfiguration( const ConfigurationTable* configTable );
 	void SaveConfiguration( ConfigurationTable* configTable );
 	void EventLoop();
-    void RenderAxes();
-
-    static inline void RenderAxesSafe( Axes3d* axes )
-    { if( axes != NULL ) axes->RenderAxes(); }
+    void Render( const RenderState& renderState );
 
 private:
     void RenderAxis( const TVector3& farPoint, Colour& colour );

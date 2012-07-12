@@ -59,10 +59,13 @@ public:
     static void EventLoopSafe( Module3d* module );
     virtual void EventLoop( ) = 0;
 
-    static const std::string MODULE_TAG;
+    static void ProcessDataSafe( Module3d* module, const RenderState& renderState );
+    virtual void ProcessData( const RenderState& renderState ) { }
 
-protected:
-    bool StateChanged( const RenderState& renderState );
+    static void RenderSafe( Module3d* module, const RenderState& renderState );
+    virtual void Render( const RenderState& renderState ) = 0;
+
+    static const std::string MODULE_TAG;
 
 }; // class Module3d
 

@@ -54,13 +54,6 @@ public:
     static std::string TableName() { return "HitManager3d"; }
     std::string GetTableName() { return TableName(); }
 
-    /// Renders hits.
-    virtual void RenderHits( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState ) = 0;
-    static inline void RenderHitsSafe( HitManager3d* h, RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
-    {
-        if( h != NULL )
-            h->RenderHits( ev, pmtList, renderState );
-    }
 
 
 }; // class HitManager3d

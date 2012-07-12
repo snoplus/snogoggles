@@ -10,6 +10,8 @@ using namespace std;
 #include <Viewer/FramePanel.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/DataStore.hh>
 using namespace Viewer;
 
 Desktop::Desktop( RectPtr desktopRect )
@@ -91,6 +93,16 @@ Desktop::SaveConfiguration( ConfigurationTable* configTable )
   fFramePanel->SaveConfiguration( fpTable );
   ConfigurationTable* fmTable = configTable->NewTable( "frameManager" );
   fFrameManager->SaveConfiguration( fmTable );
+}
+
+void
+Desktop::ProcessData( )
+{
+  const RenderState renderState = fEventPanel->GetRenderState();
+  if( renderState.HasChanged() || GUIProperties::GetInstance().HasChanged() || DataStore::GetInstance().HasChanged() ) 
+  {
+    fFrameManager->ProcessData( renderState );
+  }
 }
 
 void 

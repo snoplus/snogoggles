@@ -23,11 +23,11 @@ ModuleManager3d* HitFrame3d::CreateModuleManager()
 
 void HitFrame3d::CreateGUIObjects()
 {
-    fModuleManager->fCameraManager->CreateDragArea( fGUIManager, sf::Rect<double>( 0, 0, 1, 0.92 ) );
-    fModuleManager->fCameraManager->CreateGUIObjects( fGUIManager, sf::Rect<double>( 0, 0.92, 0.5, 0.04 ) );
-	fModuleManager->fAxes->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0, 0.96, 0.23, 0.04 ) );
-    fModuleManager->fGeoManager->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.25, 0.96, 0.23, 0.04 ) );
-    fModuleManager->fHitManager->CreateGUIObjects( fGUIManager, sf::Rect<double>( 0.5 , 0.96 , 0.5 , 0.04 ) );
+    ((CameraManager3d*)(fModuleManager->fModules[CAMERA]))->CreateDragArea( fGUIManager, sf::Rect<double>( 0, 0, 1, 0.92 ) );
+    fModuleManager->fModules[CAMERA]->CreateGUIObjects( fGUIManager, sf::Rect<double>( 0, 0.92, 0.5, 0.04 ) );
+	fModuleManager->fModules[AXES]->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0, 0.96, 0.23, 0.04 ) );
+    fModuleManager->fModules[GEO]->CreateGUIObjects( fGUIManager, sf::Rect< double >( 0.25, 0.96, 0.23, 0.04 ) );
+    fModuleManager->fModules[HIT]->CreateGUIObjects( fGUIManager, sf::Rect<double>( 0.5 , 0.96 , 0.5 , 0.04 ) );
 }
 
 }; // namespace Frames

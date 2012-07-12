@@ -53,6 +53,8 @@ public:
   
   static std::string Name() { return std::string( "Crate View" ); }
 
+  virtual void ProcessData( const RenderState& renderState ) { }
+
   virtual void Render2d( RWWrapper& renderApp,
 			 const RenderState& renderState );
   

@@ -104,6 +104,12 @@ FrameContainer::SaveConfiguration( ConfigurationTable* configTable )
   fFrame->SaveConfiguration( configTable );
 }
 
+void
+FrameContainer::ProcessData( const RenderState& renderState )
+{
+  fFrame->ProcessData( renderState );
+}
+
 void 
 FrameContainer::Render2d( RWWrapper& renderApp, 
                           const RenderState& renderState )

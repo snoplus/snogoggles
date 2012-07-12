@@ -24,7 +24,7 @@ void Geodesic3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& option
     fDisplayGUI->SetState( true );
 }
 
-void Geodesic3d::RenderGeometry()
+void Geodesic3d::Render( const RenderState& renderState )
 {
     if( fDisplayGUI->GetState() )
         GeodesicSphere::GetInstance()->Render();
