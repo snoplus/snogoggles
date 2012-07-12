@@ -3,6 +3,7 @@ using namespace std;
 #include <Viewer/RenderState.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIProperties.hh>
+#include <Viewer/RIDS/PMTHit.hh>
 using namespace Viewer;
 
 map< RIDS::EDataSource, string > RenderState::fsSourceNames;
@@ -72,4 +73,16 @@ RenderState::GetTypeStrings()
   for( map< RIDS::EDataType, string>::iterator iTer = fsTypeNames.begin(); iTer != fsTypeNames.end(); iTer++ )
     strings.push_back( iTer->second );
   return strings;
+}
+
+Colour
+RenderState::GetDataColour( double data ) const
+{
+  return GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - fCurrentScalingMin ) / ( fCurrentScalingMax - fCurrentScalingMin ) );
+}
+
+Colour
+RenderState::GetHitColour( const RIDS::PMTHit& pmtHit ) const
+{
+  return GetDataColour( pmtHit.GetData( fCurrentDataType ) );
 }

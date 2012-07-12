@@ -122,8 +122,7 @@ ProjectionBase::DrawHits( const RenderState& renderState )
       const double data = iTer->GetData( renderState.GetDataType() );
       if( data == 0.0 )
         continue;
-      fImage->DrawSquare( projPos, GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - renderState.GetScalingMin() ) / 
-                                                                       ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
+      fImage->DrawSquare( projPos, renderState.GetDataColour( data ) );
     }
 }
 
