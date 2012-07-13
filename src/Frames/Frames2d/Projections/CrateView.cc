@@ -107,7 +107,6 @@ CrateView::DrawPMTs( const RenderState& renderState )
       const double data = iTer->GetData( renderState.GetDataType() );
       if( data == 0.0 )
         continue;
-      DrawPMT( iTer->GetLCN(), GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - renderState.GetScalingMin() ) /
-                                                                   ( renderState.GetScalingMax() - renderState.GetScalingMin() ) ) );
+      DrawPMT( iTer->GetLCN(), renderState.GetDataColour( data ) );
     }
 }

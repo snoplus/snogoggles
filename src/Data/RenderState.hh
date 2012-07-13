@@ -24,6 +24,10 @@
 
 namespace Viewer
 {
+class Colour;
+namespace RIDS {
+    class PMTHit;
+}
 
 class RenderState
 {
@@ -47,6 +51,8 @@ public:
   inline RIDS::EDataType GetDataType() const;
   inline double GetScalingMin() const;
   inline double GetScalingMax() const;
+  Colour GetDataColour( double data ) const;
+  Colour GetHitColour( const RIDS::PMTHit& pmtHit ) const;
 
   inline bool HasChanged() const;
   inline void Reset();

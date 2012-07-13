@@ -106,18 +106,14 @@ void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtL
 
     if( ev == NULL ) return;
 
-    std::vector<RIDS::PMTHit> hits = ev->GetHitData( renderState.GetDataSource() );
-    //std::vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
+    const std::vector<RIDS::PMTHit>& hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
     for( int i = 0; i < hits.size(); i++ )
     {
+        if( hits[i].GetData( renderState.GetDataType() ) == 0 || i >= pmtList->GetPMTCount() )
+            continue;
+
         TVector3 p = pmtList->GetPos( hits[i].GetLCN() );
-
-        double max = renderState.GetScalingMax();
-        double min = renderState.GetScalingMin();
-        double data = hits[i].GetData( renderState.GetDataType() );
-        double c_frac = data / ( max - min );
-
-        Colour c = GUIProperties::GetInstance().GetColourPalette().GetColour( c_frac );
+        Colour c = renderState.GetHitColour( hits[i] );
 
         fFullBuffer.AddHitFull( p, c );
         fOutlineBuffer.AddHitOutline( p, c );
