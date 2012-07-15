@@ -1,5 +1,3 @@
-#include <RAT/BitManip.hh>
-
 #include <vector>
 using namespace std;
 
@@ -16,6 +14,7 @@ using namespace std;
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/HitInfo.hh>
 #include <Viewer/MapArea.hh>
+#include <Viewer/BitManip.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -84,9 +83,9 @@ void
 CrateView::DrawPMT( const int lcn,
                     const Colour& colour )
 {
-  int crate = RAT::BitManip::GetBits(lcn, 9, 5);
-  int card = RAT::BitManip::GetBits(lcn, 5, 4);
-  int channel = RAT::BitManip::GetBits(lcn, 0, 5);
+  int crate = BitManip::GetBits(lcn, 9, 5);
+  int card = BitManip::GetBits(lcn, 5, 4);
+  int channel = BitManip::GetBits(lcn, 0, 5);
   double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth + kHitWidth; // Margin of 1 hit width
   double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight + kHitHeight; // Margin of 1 hit height
   fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),

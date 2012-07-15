@@ -72,7 +72,7 @@ int main( int argc, char *argv[] )
           viewer.Destruct();
           return 1;
         }
-      loadData = new ReceiverThread( argv[2], sema, true );
+      loadData = new ReceiverThread( argv[2], sema );
       // Wait for first event to be loaded
       sema.Wait();
     }

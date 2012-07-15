@@ -27,6 +27,7 @@ namespace RAT
 namespace DS
 {
   class Root;
+  class PackedEvent;
 }
 }
 
@@ -42,6 +43,7 @@ class Event
 public:
   Event( RAT::DS::Root& rDS,
          unsigned int iEV );
+  Event( RAT::DS::PackedEvent& rPacked );
   Event( const Event& rhs );
   Event& operator=( const Event& rhs );
   ~Event();

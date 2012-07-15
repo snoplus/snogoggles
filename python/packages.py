@@ -33,7 +33,7 @@ def sfml(env):
 def rat(env):
     env.Append( CPPPATH = [ os.environ["RATROOT"] + "/include" ] )
     env.Append( LIBPATH = [ os.environ["RATROOT"] + "/lib" ] )
-    env.Append( LIBS = [ 'rat_' + os.environ["G4SYSTEM"] ] )
+    env.Append( LIBS = [ 'RATEvent_' + os.environ["G4SYSTEM"] ] )
     Curl(env)
 
 # Appends Curl and Bzip (for RAT)
