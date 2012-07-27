@@ -39,14 +39,14 @@ void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& o
 {
     std::vector< std::string > names = fTrackBuffer.GetNames();
     int numGUIs = names.size() + 1;
-    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width, optionsArea.Width / 5);
+    sf::Rect<double> rect( optionsArea.left, optionsArea.top, optionsArea.width, optionsArea.width / 5);
 
     fFullTrackGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fFullTrackGUI->SetLabel( "Render All Track Steps" );
 
     for( int i = 0; i < names.size(); i++ )
     {
-        rect.Top += optionsArea.Height / numGUIs;
+        rect.top += optionsArea.height / numGUIs;
         fGUIs[ names.at(i) ] = g.NewGUI< GUIs::PersistLabel >( rect );
         fGUIs[ names.at(i) ]->SetLabel( names.at(i) );
         fGUIs[ names.at(i) ]->SetState( fTrackBuffer.fParticleTypes[ names.at(i) ].fVisible );

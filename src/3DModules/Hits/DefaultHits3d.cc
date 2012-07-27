@@ -34,12 +34,12 @@ DefaultHits3d::DefaultHits3d()
 
 void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
-    sf::Rect<double> rect( optionsArea.Left, optionsArea.Top, optionsArea.Width / 2.2, optionsArea.Height); 
+    sf::Rect<double> rect( optionsArea.left, optionsArea.top, optionsArea.width / 2.2, optionsArea.height); 
     fAllPMTsGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fAllPMTsGUI->SetLabel( "Display All PMTs" );
     fAllPMTsGUI->SetState( fDisplayAllPMTs );
 
-    rect.Left += optionsArea.Width/2;
+    rect.left += optionsArea.width/2;
     fFrontGUI = g.NewGUI<GUIs::PersistLabel>( rect );
     fFrontGUI->SetLabel( "Show Front PMTs Only" );
     fFrontGUI->SetState( fDisplayFrontPMTsOnly );

@@ -31,7 +31,7 @@ TextureManager::GetTexture( const string& fileName )
       // Initialise texture and check success
       stringstream fileLocation;
       fileLocation << getenv( "VIEWERROOT" ) << "/textures/" << fileName;
-      if( !texture->LoadFromFile( fileLocation.str().c_str() ) ) // No file with that name & extension
+      if( !texture->loadFromFile( fileLocation.str().c_str() ) ) // No file with that name & extension
         throw TextureNotFoundError( fileName );
       fTextures[fileName] = texture;
     }

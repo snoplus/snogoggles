@@ -27,7 +27,7 @@ ViewerWindow::ViewerWindow()
   fMotherRect = &Rect::NewMother();
   sf::Rect<double> rect;
   // Mother Rect is the whole screen
-  rect.Left = 0.0; rect.Width = 1.0; rect.Top = 0.0; rect.Height = 1.0;
+  rect.left = 0.0; rect.width = 1.0; rect.top = 0.0; rect.height = 1.0;
   fMotherRect->SetRect( rect, Rect::eLocal );
 }
 
@@ -42,35 +42,35 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   // Attempt to initialize the size of the depth and stencil buffers.
   // Fails on Linux, not sure about Mac.
   sf::ContextSettings settings;
-  settings.DepthBits         = 24; // Request a 24 bits depth buffer
-  settings.StencilBits       = 8;  // Request a 8 bits stencil buffer
-  sf::VideoMode fullScreen = sf::VideoMode::GetDesktopMode();
-  fullScreen.Height -= 40.0; // Mac systems require this
+  settings.depthBits         = 24; // Request a 24 bits depth buffer
+  settings.stencilBits       = 8;  // Request a 8 bits stencil buffer
+  sf::VideoMode fullScreen = sf::VideoMode::getDesktopMode();
+  fullScreen.height -= 40.0; // Mac systems require this
   if( configTable != NULL )
     {
-      fullScreen.Width = configTable->GetI( "width" );
-      fullScreen.Height = configTable->GetI( "height" );
+      fullScreen.width = configTable->GetI( "width" );
+      fullScreen.height = configTable->GetI( "height" );
     }
   fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, settings  ); 
-  Rect::SetWindowSize( fWindowApp->GetWidth(), fWindowApp->GetHeight() );
-  Rect::SetWindowResolution( fWindowApp->GetWidth(), fWindowApp->GetHeight() );  
+  Rect::SetWindowSize( fWindowApp->getSize().x, fWindowApp->getSize().y );
+  Rect::SetWindowResolution( fWindowApp->getSize().x, fWindowApp->getSize().y );  
 
   // This usage of width and height should not occur elsewhere in the viewer code, make use of Rects and Viewer::Sprite instead
   TextureManager& textures = TextureManager::GetInstance();
   sf::Texture* snoSplash = textures.GetTexture( "Logo.png" );
   sf::Texture* sfmlSplash = textures.GetTexture( "sfml.png" );
-  const int windowWidth = fWindowApp->GetWidth();
-  const int windowHeight = fWindowApp->GetHeight();
+  const int windowWidth = fWindowApp->getSize().x;
+  const int windowHeight = fWindowApp->getSize().y;
   // Can't draw textures directly, must wrap in a sprite and set the position.
   sf::Sprite snoSprite( *snoSplash );
-  snoSprite.SetPosition( windowWidth / 2 - snoSplash->GetWidth() / 2, windowHeight / 2 - snoSplash->GetHeight() / 2 );
+  snoSprite.setPosition( windowWidth / 2 - snoSplash->getSize().x / 2, windowHeight / 2 - snoSplash->getSize().y / 2 );
   sf::Sprite sfmlSprite( *sfmlSplash );
-  sfmlSprite.SetPosition( windowWidth - sfmlSplash->GetWidth(), windowHeight - sfmlSplash->GetHeight() );
+  sfmlSprite.setPosition( windowWidth - sfmlSplash->getSize().x, windowHeight - sfmlSplash->getSize().y );
   // Now draw these logos
-  fWindowApp->Clear( sf::Color( 255, 255, 255, 255 ) ); 
-  fWindowApp->Draw( snoSprite );
-  fWindowApp->Draw( sfmlSprite );
-  fWindowApp->Display();
+  fWindowApp->clear( sf::Color( 255, 255, 255, 255 ) ); 
+  fWindowApp->draw( snoSprite );
+  fWindowApp->draw( sfmlSprite );
+  fWindowApp->display();
   // Now start building the desktop and frames
   fDesktopManager = new DesktopManager( RectPtr( fMotherRect ) );
   fDesktopManager->PreInitialise( configTable );
@@ -86,7 +86,7 @@ ViewerWindow::PostInitialise( const ConfigurationTable* configTable )
 void
 ViewerWindow::Run()
 {
-  while( fWindowApp->IsOpen() )
+  while( fWindowApp->isOpen() )
     {
       if( !EventLoop() ) // Returns false on user controlled close
         break;
@@ -109,7 +109,7 @@ ViewerWindow::Destruct()
   TextureManager::GetInstance().ClearTextures();
   delete fDesktopManager;
   delete fRWWrapper;
-  fWindowApp->Close();
+  fWindowApp->close();
   delete fWindowApp;
 }
 
@@ -118,16 +118,16 @@ ViewerWindow::EventLoop()
 {
   DataStore::GetInstance().Reset();
   sf::Event event;
-  while( fWindowApp->PollEvent( event ) )
+  while( fWindowApp->pollEvent( event ) )
     {
-      switch( event.Type )
+      switch( event.type )
         {
           // First ViewerWindow Specific Events
         case sf::Event::Closed:
-          fWindowApp->Close();
+          fWindowApp->close();
           break;
         case sf::Event::Resized:
-          Rect::SetWindowSize( event.Size.Width, event.Size.Height );
+          Rect::SetWindowSize( event.size.width, event.size.height );
           break;
         case sf::Event::LostFocus:
         case sf::Event::GainedFocus:
@@ -135,7 +135,7 @@ ViewerWindow::EventLoop()
           
           // Now events to use and then pass to frames
         case sf::Event::KeyPressed:
-          if( event.Key.Code == sf::Keyboard::Escape )
+          if( event.key.code == sf::Keyboard::Escape )
             {
               // Start closing the viewer
               return false;
@@ -155,7 +155,7 @@ void
 ViewerWindow::RenderLoop()
 {
   fRWWrapper->NewFrame();
-  fWindowApp->SetActive();
+  fWindowApp->setActive();
   SetGlobalGLStates();
 
   // SetGlobalGLStates clears the background colour to white.
@@ -164,12 +164,12 @@ ViewerWindow::RenderLoop()
 
   fDesktopManager->ProcessData();
   fDesktopManager->Render3d( *fRWWrapper );
-  fWindowApp->PushGLStates(); // This call seems to be necessary.
+  fWindowApp->pushGLStates(); // This call seems to be necessary.
   fDesktopManager->Render2d( *fRWWrapper );
   fDesktopManager->RenderGUI( *fRWWrapper );
-  fWindowApp->PopGLStates(); // Matches the save call above.
+  fWindowApp->popGLStates(); // Matches the save call above.
 
-  fWindowApp->Display();
+  fWindowApp->display();
 }
 
 void 

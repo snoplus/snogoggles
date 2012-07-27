@@ -28,15 +28,15 @@ DesktopPanel::NewEvent( const Event& event )
 {
   Panel::NewEvent( event );
   const unsigned int numDesktops = GUIProperties::GetInstance().GetNumDesktops();
-  if( event.Type == sf::Event::KeyPressed )
+  if( event.type == sf::Event::KeyPressed )
     {
-      if( event.Key.Code == sf::Keyboard::Up && event.Key.Control == true )
+      if( event.key.code == sf::Keyboard::Up && event.key.control == true )
         ChangeDesktop( ( fCurrentDesktop + 1 ) % numDesktops );
-      else if( event.Key.Code == sf::Keyboard::Down && event.Key.Control == true )
+      else if( event.key.code == sf::Keyboard::Down && event.key.control == true )
         ChangeDesktop( ( fCurrentDesktop - 1 ) % numDesktops );
-      if( event.Key.Code == sf::Keyboard::Right && event.Key.Control == true )
+      if( event.key.code == sf::Keyboard::Right && event.key.control == true )
         ChangeDesktop( ( fCurrentDesktop + 2 ) % numDesktops );
-      else if( event.Key.Code == sf::Keyboard::Left && event.Key.Control == true )
+      else if( event.key.code == sf::Keyboard::Left && event.key.control == true )
         ChangeDesktop( ( fCurrentDesktop - 2 ) % numDesktops );
     }
 }

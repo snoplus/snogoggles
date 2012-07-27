@@ -48,13 +48,13 @@ void Arcball3d::ResetRotation()
 void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
 {
     double buttonLength = 0.99;
-    double width = optionsArea.Width / 2;
-    double height = optionsArea.Height;
+    double width = optionsArea.width / 2;
+    double height = optionsArea.height;
 
-    fResetButton = g.NewGUI<GUIs::ButtonLabel>( sf::Rect<double>( optionsArea.Left + (1-buttonLength)*width, optionsArea.Top + (1-buttonLength)*height, buttonLength*width, buttonLength*height ) ); 
+    fResetButton = g.NewGUI<GUIs::ButtonLabel>( sf::Rect<double>( optionsArea.left + (1-buttonLength)*width, optionsArea.top + (1-buttonLength)*height, buttonLength*width, buttonLength*height ) ); 
     fResetButton->Initialise( 2, "Reset" );
 
-    fPersistRotation = g.NewGUI<GUIs::PersistLabel>( sf::Rect<double>( optionsArea.Left + width, optionsArea.Top, width, height ) );
+    fPersistRotation = g.NewGUI<GUIs::PersistLabel>( sf::Rect<double>( optionsArea.left + width, optionsArea.top, width, height ) );
     fPersistRotation->SetLabel( "Persist Rotation" );
     fPersistRotation->SetState( fPreviousPersistRotation );
 }
@@ -98,8 +98,8 @@ void Arcball3d::EventLoop( )
             ResetRotation();
         }
     
-        RotateAll( Rotation( TVector3(0,0,1), fSpinSpeed*fClock.GetElapsedTime().AsSeconds() ) );
-        fClock.Restart();
+        RotateAll( Rotation( TVector3(0,0,1), fSpinSpeed*fClock.getElapsedTime().asSeconds() ) );
+        fClock.restart();
     }
     else
         fPreviousPersistRotation = false;
@@ -118,9 +118,9 @@ void Arcball3d::SetUpCameraSystem( const sf::Rect<double>& viewportRect )
     sf::Rect<double> rect = fArcball->GetRect()->GetRect( Rect::eGL );
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.f * fZoom, rect.Width/rect.Height, 
+    gluPerspective(45.f * fZoom, rect.width/rect.height, 
         (fCameraDist - 1.1)*fRadius, (fCameraDist + 1.1)*fRadius);
-    glViewport( (GLint)rect.Left, (GLint)rect.Top, (GLsizei)rect.Width, (GLsizei)rect.Height);
+    glViewport( (GLint)rect.left, (GLint)rect.top, (GLsizei)rect.width, (GLsizei)rect.height);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

@@ -28,7 +28,7 @@ GUIEvent
 Button::NewEvent( const Event& event )
 {
   GUIEvent retEvent;
-  switch( event.Type )
+  switch( event.type )
     {
     case sf::Event::MouseButtonPressed:
       fPressed = true;

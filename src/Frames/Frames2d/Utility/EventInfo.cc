@@ -24,7 +24,7 @@ void
 EventInfo::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> textSize;
-  textSize.Left = 0.0; textSize.Top = 0.0; textSize.Width = 1.0; textSize.Height = 1.0;
+  textSize.left = 0.0; textSize.top = 0.0; textSize.width = 1.0; textSize.height = 1.0;
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );

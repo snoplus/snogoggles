@@ -12,7 +12,7 @@ using namespace Viewer;
 RWWrapper::RWWrapper( sf::RenderWindow& renderWindow )
   : fRenderWindow( renderWindow )
 {
-  fFont = sf::Font::GetDefaultFont(); // Bug fix line, SFML issue #59
+  fFont = sf::Font::getDefaultFont(); // Bug fix line, SFML issue #59
 }
 
 void 
@@ -20,8 +20,8 @@ RWWrapper::Draw( Sprite& object )
 {
   sf::Sprite sfmlSprite( object.GetTexture() );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
-  sfmlSprite.SetPosition( resPos.Left, resPos.Top );
-  sfmlSprite.SetScale( resPos.Width / object.GetTexture().GetWidth(), resPos.Height / object.GetTexture().GetHeight() );
+  sfmlSprite.setPosition( resPos.left, resPos.top );
+  sfmlSprite.setScale( resPos.width / object.GetTexture().getSize().x, resPos.height / object.GetTexture().getSize().y );
   DrawObject( sfmlSprite );
 }
 
@@ -30,16 +30,16 @@ RWWrapper::Draw( Text& object )
 {
   sf::Text sfmlText( object.GetString(), fFont );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
-  sfmlText.SetPosition( resPos.Left, resPos.Top );
+  sfmlText.setPosition( resPos.left, resPos.top );
   // Now the character size, start with the height divided by number of lines
-  double characterSize = resPos.Height / object.GetNumLines();
-  if( characterSize * object.GetMaxLineLength() / 2.0 > resPos.Width )
+  double characterSize = resPos.height / object.GetNumLines();
+  if( characterSize * object.GetMaxLineLength() / 2.0 > resPos.width )
     // Too large go for safer smaller
-    characterSize = resPos.Width * 2.0 / object.GetMaxLineLength();
+    characterSize = resPos.width * 2.0 / object.GetMaxLineLength();
   if( characterSize < 1.0 )
     characterSize = 1.0;
-  sfmlText.SetCharacterSize( characterSize ); // Must use this and not scale to avoid bounding box bug.
-  sfmlText.SetColor( object.GetColour() );
+  sfmlText.setCharacterSize( characterSize ); // Must use this and not scale to avoid bounding box bug.
+  sfmlText.setColor( object.GetColour() );
   DrawObject( sfmlText );
 }
 
@@ -48,19 +48,19 @@ RWWrapper::Draw( PixelImage& object )
 {
   sf::Sprite sfmlSprite( object.GetTexture() );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
-  sfmlSprite.SetPosition( resPos.Left, resPos.Top );
-  sfmlSprite.SetScale( resPos.Width / object.GetTexture().GetWidth(), resPos.Height / object.GetTexture().GetHeight() );
+  sfmlSprite.setPosition( resPos.left, resPos.top );
+  sfmlSprite.setScale( resPos.width / object.GetTexture().getSize().x, resPos.height / object.GetTexture().getSize().y );
   DrawObject( sfmlSprite );
 }
 
 void 
 RWWrapper::DrawObject( sf::Drawable& object )
 {
-  fRenderWindow.Draw( object );
+  fRenderWindow.draw( object );
 }
 
 sf::Time
 RWWrapper::GetFrameTime()
 {
-  return fClock.GetElapsedTime();
+  return fClock.getElapsedTime();
 }

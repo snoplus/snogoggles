@@ -60,7 +60,7 @@ protected:
 inline void
 RWWrapper::NewFrame()
 {
-  fClock.Restart();
+  fClock.restart();
 }
 
 } // ::Viewer

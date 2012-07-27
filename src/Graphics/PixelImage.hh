@@ -87,7 +87,7 @@ PixelImage::PixelImage( RectPtr rect,
 inline void
 PixelImage::Update()
 {
-  fTexture.Update( fPixels );
+  fTexture.update( fPixels );
 }
 
 inline sf::Texture& 

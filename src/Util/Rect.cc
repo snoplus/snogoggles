@@ -65,18 +65,18 @@ Rect::SetRect( const sf::Rect<double>& rect,
 {
   if( system == eLocal )
     {
-      fLeft = rect.Left;
-      fTop = rect.Top;
-      fWidth = rect.Width;
-      fHeight = rect.Height;
+      fLeft = rect.left;
+      fTop = rect.top;
+      fWidth = rect.width;
+      fHeight = rect.height;
     }
   else
     {
       sf::Rect<double> motherRect = fMother->GetRect( system );
-      fLeft = ( rect.Left - motherRect.Left ) / motherRect.Width;
-      fWidth = rect.Width / motherRect.Width;
-      fTop = ( rect.Top - motherRect.Top ) / motherRect.Height;
-      fHeight = rect.Height / motherRect.Height;
+      fLeft = ( rect.left - motherRect.left ) / motherRect.width;
+      fWidth = rect.width / motherRect.width;
+      fTop = ( rect.top - motherRect.top ) / motherRect.height;
+      fHeight = rect.height / motherRect.height;
     }
 }
 
@@ -86,18 +86,18 @@ Rect::GetRect( int level )
   sf::Rect<double> result;
   if( fMother == NULL || level == 0 )
     {
-      result.Left = fLeft;
-      result.Top = fTop;
-      result.Width = fWidth;
-      result.Height = fHeight;
+      result.left = fLeft;
+      result.top = fTop;
+      result.width = fWidth;
+      result.height = fHeight;
     }
   else
     {
       sf::Rect<double> motherRect = fMother->GetRect( level - 1 );
-      result.Left = fLeft * motherRect.Width + motherRect.Left;
-      result.Top = fTop * motherRect.Height + motherRect.Top;
-      result.Width = fWidth * motherRect.Width;
-      result.Height = fHeight* motherRect.Height;
+      result.left = fLeft * motherRect.width + motherRect.left;
+      result.top = fTop * motherRect.height + motherRect.top;
+      result.width = fWidth * motherRect.width;
+      result.height = fHeight* motherRect.height;
     }
   return result;
 }
@@ -111,26 +111,26 @@ Rect::GetRect( const ECoordSystem& system )
     {
       const sf::Rect<double> localToMother = GetRect( -1 );
       sf::Rect<double> result;
-      result.Left   = localToMother.Left   * fsWindowWidth;
-      result.Top    = localToMother.Top    * fsWindowHeight;
-      result.Width  = localToMother.Width  * fsWindowWidth;
-      result.Height = localToMother.Height * fsWindowHeight;
+      result.left   = localToMother.left   * fsWindowWidth;
+      result.top    = localToMother.top    * fsWindowHeight;
+      result.width  = localToMother.width  * fsWindowWidth;
+      result.height = localToMother.height * fsWindowHeight;
       return result;
     }
   else if( system == eGL )
     {
       sf::Rect<double> result = GetRect( eWindow );
-      result.Top = fsWindowHeight - ( result.Top + result.Height );
+      result.top = fsWindowHeight - ( result.top + result.height );
       return result;
     }
   else // eResolution
     {
       const sf::Rect<double> localToMother = GetRect( -1 );
       sf::Rect<double> result;
-      result.Left   = localToMother.Left   * fsResolutionWidth;
-      result.Top    = localToMother.Top    * fsResolutionHeight;
-      result.Width  = localToMother.Width  * fsResolutionWidth;
-      result.Height = localToMother.Height * fsResolutionHeight;
+      result.left   = localToMother.left   * fsResolutionWidth;
+      result.top    = localToMother.top    * fsResolutionHeight;
+      result.width  = localToMother.width  * fsResolutionWidth;
+      result.height = localToMother.height * fsResolutionHeight;
       return result;
     }
 }
@@ -138,16 +138,16 @@ Rect::GetRect( const ECoordSystem& system )
 bool
 Rect::OverlapsRect( const sf::Rect<double>& testRect )
 {
-  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left, testRect.Top ), eResolution ) ) return true;
-  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left + testRect.Width, testRect.Top ), eResolution ) ) return true;
-  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left, testRect.Top + testRect.Height ), eResolution ) ) return true;
-  if( this->ContainsPoint( sf::Vector2<double>( testRect.Left + testRect.Width, testRect.Top + testRect.Height), eResolution ) ) return true;
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.left, testRect.top ), eResolution ) ) return true;
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.left + testRect.width, testRect.top ), eResolution ) ) return true;
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.left, testRect.top + testRect.height ), eResolution ) ) return true;
+  if( this->ContainsPoint( sf::Vector2<double>( testRect.left + testRect.width, testRect.top + testRect.height), eResolution ) ) return true;
   sf::Rect<double> thisRect = this->GetRect( eResolution );
   RectPtr testTemp( fMother->NewDaughter( testRect, eResolution ) ); // Will be deleted on loss of scope
-  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left, thisRect.Top ), eResolution ) ) return true;
-  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left + thisRect.Width, thisRect.Top ), eResolution ) ) return true;
-  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left, thisRect.Top + thisRect.Height ), eResolution ) ) return true;
-  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.Left + thisRect.Width, thisRect.Top + thisRect.Height), eResolution ) ) return true;
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.left, thisRect.top ), eResolution ) ) return true;
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.left + thisRect.width, thisRect.top ), eResolution ) ) return true;
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.left, thisRect.top + thisRect.height ), eResolution ) ) return true;
+  if( testTemp->ContainsPoint( sf::Vector2<double>( thisRect.left + thisRect.width, thisRect.top + thisRect.height), eResolution ) ) return true;
   return false;
 }
 
@@ -156,11 +156,11 @@ Rect::ContainsRect( const sf::Rect<double>& testRect,
                     const ECoordSystem system )
 {
   sf::Rect<double> thisRes = GetRect( system );
-  const double thisRight = thisRes.Left + thisRes.Width;
-  const double testRight = testRect.Left + testRect.Width;
-  const double thisBottom = thisRes.Top + thisRes.Height;
-  const double testBottom = testRect.Top + testRect.Height;
-  if( thisRes.Left <= testRect.Left && thisRight >= testRight && thisRes.Top <= testRect.Top && thisBottom >= testBottom )
+  const double thisRight = thisRes.left + thisRes.width;
+  const double testRight = testRect.left + testRect.width;
+  const double thisBottom = thisRes.top + thisRes.height;
+  const double testBottom = testRect.top + testRect.height;
+  if( thisRes.left <= testRect.left && thisRight >= testRight && thisRes.top <= testRect.top && thisBottom >= testBottom )
     return true;
   else
     return false;      
@@ -171,10 +171,10 @@ Rect::ContainsPoint( const sf::Vector2<double>& testPoint,
                      const ECoordSystem system )
 {
   sf::Rect<double> testRect;
-  testRect.Left = testPoint.x;
-  testRect.Top = testPoint.y;
-  testRect.Width = 0.0;
-  testRect.Height = 0.0;
+  testRect.left = testPoint.x;
+  testRect.top = testPoint.y;
+  testRect.width = 0.0;
+  testRect.height = 0.0;
   return ContainsRect( testRect, system );
 }
 
@@ -182,7 +182,7 @@ void
 Rect::SetAsGLViewport()
 {
   sf::Rect<double> thisWin = GetRect( eGL );
-  glViewport( thisWin.Left, thisWin.Top, thisWin.Width, thisWin.Height );
+  glViewport( thisWin.left, thisWin.top, thisWin.width, thisWin.height );
 }
 
 sf::Vector2<double>

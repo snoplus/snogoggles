@@ -36,10 +36,10 @@ void
 CrateView::PreInitialise( const ConfigurationTable* configTable ) 
 {
   sf::Rect<double> size;
-  size.Left = 0.0; size.Top = 0.0; size.Width = 1.0; size.Height = 0.95;
+  size.left = 0.0; size.top = 0.0; size.width = 1.0; size.height = 0.95;
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( size );
-  size.Left = 0.0; size.Top = 0.95; size.Width = 0.9; size.Height = 0.05;
+  size.left = 0.0; size.top = 0.95; size.width = 0.9; size.height = 0.05;
   fHitInfo = new HitInfo( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), true );
   fPMTofInterest = -1;
 }
