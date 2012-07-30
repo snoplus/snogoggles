@@ -12,7 +12,7 @@ const int kNumChannels = 10000;
 
 ScriptData::ScriptData()
 {
-  Py_Initialize();
+  Py_InitializeEx(0); // Initialise without signal handlers
   fpScript = NULL;
 }
 
