@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # Define all functions
 
 # Sets the variable to the one specified by the user.
@@ -60,33 +60,42 @@ GLEWROOT=/usr
 
 if [ "$SET_NOT_SNOCAVE" = "Yes" ]; then
 
-	set_param GEANT4ROOT "" "The home directory of Geant4."
-	GEANT4ROOT=$return_value
+   set_param GEANT4ROOT "" "The home directory of Geant4."
+   GEANT4ROOT=$return_value
 
-	set_param ROOTSYS "" "The home directory of ROOT."
-	ROOTSYS=$return_value
+   set_param ROOTSYS "" "The home directory of ROOT."
+   ROOTSYS=$return_value
 
-	set_param SCONSROOT "" "The home directory of SCons."
-	SCONSROOT=$return_value
+   set_param SCONSROOT "" "The home directory of SCons."
+   SCONSROOT=$return_value
 
-	set_param RATROOT "" "The home directory of RAT."
-	RATROOT=$return_value
+   set_param RATROOT "" "The home directory of RAT."
+   RATROOT=$return_value
 
-    set_param SFMLROOT "" "Path to the SFML directory."
-    SFMLROOT=$return_value
+   set_param AVALANCHEROOT "" "The home directory of avalanche."
+   AVALANCHEROOT=$return_value
 
-    set_param XERCESCROOT "" "Path to the Xerces-C++ home directory."
-    XERCESCROOT=$return_value
+   set_param ZEROMQROOT "" "The home director of ZeroMQ."
+   ZEROMQROOT=$return_value
+
+   set_param SFMLROOT "" "Path to the SFML directory."
+   SFMLROOT=$return_value
+
+   set_param XERCESCROOT "" "Path to the Xerces-C++ home directory."
+   XERCESCROOT=$return_value
 
 else
 
-	set_param SNOCAVE_DIR "" "Path to the snocave directory."
-	SNOCAVE_DIR=$return_value
+    set_param SNOCAVE_DIR "" "Path to the snocave directory."
+    SNOCAVE_DIR=$return_value
 
-	RATROOT=$SNOCAVE_DIR/rat
-	GEANT4ROOT=$SNOCAVE_DIR/libraries/geant4.9.4.p01
-	ROOTSYS=$SNOCAVE_DIR/libraries/root-5.32.00
-	SCONSROOT=$SNOCAVE_DIR/libraries/scons-2.1.0
+    RATROOT=$SNOCAVE_DIR/rat
+    GEANT4ROOT=$SNOCAVE_DIR/libraries/geant4.9.4.p01
+    ROOTSYS=$SNOCAVE_DIR/libraries/root-5.32.00
+    SCONSROOT=$SNOCAVE_DIR/libraries/scons-2.1.0
+    AVALANCHEROOT=$SNOCAVE_DIR/libraries/avalanche
+    ZEROMQROOT=$SNOCAVE_DIR/libraries/zeromq-2.1.11
+	
     SFMLROOT=$SNOCAVE_DIR/libraries/sfml-2.0
     XERCESCROOT=$SNOCAVE_DIR/libraries/xerces-c-3.1.1
 
@@ -110,6 +119,8 @@ check_package_terminate SCons $SCONSROOT scons.1
 check_package_terminate SFML $SFMLROOT include/SFML/OpenGL.hpp
 check_package_terminate Xerces-C++ $XERCESCROOT include/xercesc/dom/DOM.hpp
 check_package_terminate GLEW $GLEWROOT include/GL/glew.h
+check_package_terminate avalanche $AVALANCHEROOT lib/cpp/libavalanche.so
+check_package_terminate ZeroMQ $ZEROMQROOT include/zmq.h
 
 echo ""
 
@@ -127,11 +138,13 @@ echo 'export RATROOT='$RATROOT >> env.sh
 echo 'export ROOTSYS='$ROOTSYS >> env.sh
 echo 'export SFMLROOT='$SFMLROOT >> env.sh
 echo 'export XERCESCROOT='$XERCESCROOT >> env.sh
+echo 'export AVALANCHEROOT='$AVALANCHEROOT >> env.sh
+echo 'export ZEROMQROOT='$ZEROMQROOT >> env.sh
 echo 'export GLEWROOT='$GLEWROOT >> env.sh
 echo ' ' >> env.sh
 echo 'export PATH=$PATH:'$SCONSROOT'/script:$VIEWERROOT/bin' >> env.sh
 echo 'export PYTHONPATH='$SCONSROOT'/engine:$VIEWERROOT/python' >> env.sh
-echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib:$SFMLROOT/lib:$XERCESCROOT/lib:$GLEWROOT/lib' >> env.sh
+echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib:$SFMLROOT/lib:$XERCESCROOT/lib:$GLEWROOT/lib:$AVALANCHEROOT/lib/cpp:$ZEROMQROOT/lib' >> env.sh
 echo ' ' >> env.sh
 
 echo "Done."
@@ -158,11 +171,13 @@ echo 'setenv RATROOT '$RATROOT >> env.csh
 echo 'setenv ROOTSYS '$ROOTSYS >> env.csh
 echo 'setenv SFMLROOT '$SFMLROOT >> env.csh
 echo 'setenv XERCESCROOT '$XERCESCROOT >> env.csh
+echo 'setenv AVALANCHEROOT '$AVALANCHEROOT >> env.csh
+echo 'setenv ZEROMQROOT '$ZEROMQROOT >> env.csh
 echo 'setenv GLEWROOT '$GLEWROOT >> env.csh
 echo ' ' >> env.csh
 echo 'setenv PATH {$PATH}:'$SCONSROOT'/script:{$VIEWERROOT}/bin' >> env.csh
 echo 'setenv PYTHONPATH '$SCONSROOT'/engine:{$VIEWERROOT}/python' >> env.csh
-echo 'setenv LD_LIBRARY_PATH {$LD_LIBRARY_PATH}:{$ROOTSYS}/lib:{$SFMLROOT}/lib:{$XERCESCROOT}/lib:{$GLEWROOT}/lib' >> env.csh
+echo 'setenv LD_LIBRARY_PATH {$LD_LIBRARY_PATH}:{$ROOTSYS}/lib:{$SFMLROOT}/lib:{$XERCESCROOT}/lib:{$GLEWROOT}/lib:{$AVALANCHEROOT}/lib/cpp:{$ZEROMQROOT}/lib' >> env.csh
 echo ' ' >> env.csh
 
 echo "Done."
