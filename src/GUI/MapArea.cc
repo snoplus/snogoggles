@@ -9,13 +9,13 @@ GUIEvent
 MapArea::NewEvent( const Event& event )
 {
   GUIEvent ret; // NULL event
-  switch( event.Type )
+  switch( event.type )
     {
     case sf::Event::MouseMoved:
       {
         sf::Vector2<double> resPos = event.GetPos();
         sf::Rect<double> resRect = fRect->GetRect( Rect::eResolution );
-        fCurrentPos = sf::Vector2<double>( ( resPos.x - resRect.Left ) / resRect.Width, ( resPos.y - resRect.Top ) / resRect.Height );
+        fCurrentPos = sf::Vector2<double>( ( resPos.x - resRect.left ) / resRect.width, ( resPos.y - resRect.top ) / resRect.height );
         ret = GUIEvent( fID, fGlobalID );
         break;
       }

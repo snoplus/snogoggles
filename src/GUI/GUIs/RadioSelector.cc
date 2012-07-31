@@ -23,16 +23,16 @@ void
 RadioSelector::Initialise( const vector<string>& options )
 {
   sf::Rect<double> fullSize = fRect->GetRect( Rect::eResolution );
-  const double rowHeight = fullSize.Height / static_cast<double>( options.size() ); 
+  const double rowHeight = fullSize.height / static_cast<double>( options.size() ); 
   const double rowSpacing = 2.0;
 
   sf::Rect<double> size;
-  size.Left = fullSize.Left;
-  size.Width = fullSize.Width;
-  size.Height = rowHeight - rowSpacing;
+  size.left = fullSize.left;
+  size.width = fullSize.width;
+  size.height = rowHeight - rowSpacing;
   for( int iLabel = 0; iLabel < options.size(); iLabel++ )
     {
-      size.Top = rowHeight * iLabel + fullSize.Top;
+      size.top = rowHeight * iLabel + fullSize.top;
       fPersistLabels.push_back( fGUIManager.NewGUI<GUIs::PersistLabel>( size, Rect::eResolution ) );
       dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( iLabel ) )->Initialise( 12, options[iLabel] );
     }

@@ -41,7 +41,7 @@ void
 ProjectionBase::PostInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> imageSize;
-  imageSize.Left = 0.0; imageSize.Top = 0.0; imageSize.Width = 1.0; imageSize.Height = 1.0;
+  imageSize.left = 0.0; imageSize.top = 0.0; imageSize.width = 1.0; imageSize.height = 1.0;
   Initialise( imageSize );
 }
 

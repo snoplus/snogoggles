@@ -42,7 +42,7 @@ DataStore::SetRun( RAT::DS::Run* rRun )
 }
 
 bool
-DataStore::AddDS( RAT::DS::Root* rDS )
+DataStore::Add( RAT::DS::Root* rDS )
 {
   if( fLock.TryLock() == true )
     {
@@ -59,6 +59,12 @@ DataStore::AddDS( RAT::DS::Root* rDS )
       return true;
     }
   return false;  
+}
+
+bool
+DataStore::Add( RAT::DS::PackedEvent* rPacked )
+{
+
 }
 
 void 

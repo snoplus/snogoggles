@@ -11,7 +11,7 @@ namespace GUIs {
 GUIEvent Arcball::NewEvent( const Event& event )
 {
     GUIEvent ret; // NULL event
-    switch( event.Type )
+    switch( event.type )
     {
         case sf::Event::MouseMoved:
         {

@@ -35,6 +35,7 @@ namespace DS
 {
   class Root;
   class Run;
+  class PackedEvent;
 }
 }
 
@@ -55,8 +56,10 @@ public:
   virtual ~DataStore();
   /// Set the run 
   void SetRun( RAT::DS::Run* rRun );
-  /// Add a ds to the structure
-  bool AddDS( RAT::DS::Root* rDS );
+  /// Add a DS event to the structure
+  bool Add( RAT::DS::Root* rDS );
+  /// Add a packed event to the structure
+  bool Add( RAT::DS::PackedEvent* rPackedEvent );
   /// Move to the latest event
   void Latest();
   /// Move to the next event, rolls over

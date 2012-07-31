@@ -21,7 +21,7 @@ TopBar::NewEvent( const Event& event )
 {
   // MUST MAKE OWN LOST FOCUS EVENTS, PHIL
   FrameEvent retEvent; // Returned event
-  switch( event.Type )
+  switch( event.type )
     {
     case sf::Event::LostFocus:
       {
@@ -113,15 +113,15 @@ TopBar::SetRect( const sf::Rect<double>& rect )
   sf::Rect<double> size = rect;
   fRect->SetRect( size, Rect::eResolution );
   // Left portion is 20.0 wide
-  size.Width = 20.0;
+  size.width = 20.0;
   fLeft->GetRect()->SetRect( size, Rect::eResolution );
-  size.Width = rect.Width - 60.0;
-  size.Left = rect.Left + 20.0;
+  size.width = rect.width - 60.0;
+  size.left = rect.left + 20.0;
   fBar->GetRect()->SetRect( size, Rect::eResolution );
-  size.Width = 20.0;
-  size.Left = rect.Left + rect.Width - 40.0;
+  size.width = 20.0;
+  size.left = rect.left + rect.width - 40.0;
   fClose->GetRect()->SetRect( size, Rect::eResolution );
-  size.Left = rect.Left + rect.Width - 20.0;
+  size.left = rect.left + rect.width - 20.0;
   fRight->GetRect()->SetRect( size, Rect::eResolution );
 }
 

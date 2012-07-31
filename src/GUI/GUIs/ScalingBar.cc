@@ -29,8 +29,8 @@ ScalingBar::NewEvent( const Event& event )
   GUIEvent retEvent;
   sf::Vector2<double> resPos = event.GetPos();
   sf::Rect<double> resRect = fRect->GetRect( Rect::eResolution );
-  sf::Vector2<double> pos = sf::Vector2<double>( ( resPos.x - resRect.Left ) / resRect.Width, ( resPos.y - resRect.Top ) / resRect.Height );
-  switch( event.Type )
+  sf::Vector2<double> pos = sf::Vector2<double>( ( resPos.x - resRect.left ) / resRect.width, ( resPos.y - resRect.top ) / resRect.height );
+  switch( event.type )
     {
     case sf::Event::MouseButtonPressed: // Change the state to scaling
       if( fabs( pos.x - fMinValue ) < fabs( pos.x - fMaxValue ) )

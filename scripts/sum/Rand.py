@@ -6,10 +6,7 @@ import random
 def Event( inti, outi ):
     for lcn in range( 0, len( inti["cal"] ) ):
         outi[lcn][0] = random.random() * 500.0
-        if ( lcn / 512 ) % 2 == 0:
-            outi[lcn][1] = lcn / 512.0 * 10.0#random.random() * 4000.0
-        else:
-            outi[lcn][1] = 0.0
+        outi[lcn][1] = lcn / 512.0 * 10.0#random.random() * 4000.0
         outi[lcn][2] = lcn / 32.0 #random.random() * 4000.0
         outi[lcn][3] = 0.0#random.random() * 1000.0
     return None

@@ -26,7 +26,7 @@ class Event : public sf::Event
 {
 public:
 
-  Event( sf::Event::EventType eventType ) { Type = eventType; }
+  Event( sf::Event::EventType eventType ) { type = eventType; }
   /// Construct with the sf::Event and window space
   Event( sf::Event& event );
   /// Return the position, returns (0,0) if not a position event.

@@ -35,7 +35,7 @@ FrameManager::NewEvent( const Event& event )
   switch( fState )
     {
     case eNormal: // Normal state just dispatch events to the frames
-      switch( event.Type )
+      switch( event.type )
         {
         case sf::Event::KeyPressed:
         case sf::Event::KeyReleased:
@@ -57,7 +57,7 @@ FrameManager::NewEvent( const Event& event )
       break;
     case eMoving: // Move the frame
     case eResizing: // Resize the frame
-      switch( event.Type )
+      switch( event.type )
         {
         case sf::Event::LostFocus: // Nothing to do but send the event and change the state to normal
         case sf::Event::MouseButtonReleased:
@@ -103,14 +103,14 @@ FrameManager::EventHandler( const FrameEvent& eventReturned )
     case FrameEvent::eStartMove:
       fState = eMoving;
       fPressPosition = eventReturned.fPos;
-      fPressOffset.x = fPressPosition.x - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).Left;
-      fPressOffset.y = fPressPosition.y - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).Top;
+      fPressOffset.x = fPressPosition.x - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).left;
+      fPressOffset.y = fPressPosition.y - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).top;
       break;
     case FrameEvent::eStartResize:
       fState = eResizing;
       fPressPosition = eventReturned.fPos;
-      fPressOffset.x = fPressPosition.x - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).Left;
-      fPressOffset.y = fPressPosition.y - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).Top;
+      fPressOffset.x = fPressPosition.x - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).left;
+      fPressOffset.y = fPressPosition.y - fFrameContainers[eventReturned.fFrameID]->GetRect( Rect::eResolution ).top;
       break;
     case FrameEvent::eStopMove:
     case FrameEvent::eStopResize:
@@ -234,12 +234,12 @@ FrameManager::NewFrame( const string& frameName,
       newFrame->PreInitialise( NULL );
       newFrame->PostInitialise( NULL );
       const int frameID = fFrameContainers.size() - 1;
-      for( double x = 0.1; x < fRect->GetRect( Rect::eResolution ).Width; x += 10.0 )
+      for( double x = 0.1; x < fRect->GetRect( Rect::eResolution ).width; x += 10.0 )
         {
-          for( double y = 0.1; y < fRect->GetRect( Rect::eResolution ).Height; y += 10.0 )
+          for( double y = 0.1; y < fRect->GetRect( Rect::eResolution ).height; y += 10.0 )
             {
-              rect.Left = x;
-              rect.Top = y;
+              rect.left = x;
+              rect.top = y;
               if( UpdateFrameRect( frameID, rect ) )
                 return;
             }
@@ -266,7 +266,7 @@ FrameManager::UpdateFrameRect( const int targetFrame,
   if( !fRect->ContainsRect( newRect, Rect::eResolution ) ) 
     return false;
   // Now check it is above the minimum width, PHIL improve
-  if( newRect.Width < 120.0 )
+  if( newRect.width < 120.0 )
     return false;
   // Now check it doesn't overlap any other frame
   for( unsigned int iFrame = 0; iFrame < fFrameContainers.size(); iFrame++ )
@@ -290,13 +290,13 @@ FrameManager::UpdateFrameRect( const int targetFrame,
     {
     case eMoving:
       currentPosition -= fPressOffset;
-      currentRect.Left = currentPosition.x;
-      currentRect.Top = currentPosition.y;
+      currentRect.left = currentPosition.x;
+      currentRect.top = currentPosition.y;
       UpdateFrameRect( targetFrame, currentRect );
       break;
     case eResizing:
-      currentRect.Width = currentPosition.x - fPressPosition.x + fPressOffset.x;
-      currentRect.Height = currentRect.Width * fFrameContainers[targetFrame]->GetAspectRatio();
+      currentRect.width = currentPosition.x - fPressPosition.x + fPressOffset.x;
+      currentRect.height = currentRect.width * fFrameContainers[targetFrame]->GetAspectRatio();
       UpdateFrameRect( targetFrame, currentRect );
       break;
     }

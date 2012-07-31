@@ -10,11 +10,11 @@ GUIEvent
 Timer::NewEvent( const Event& event )
 {
   GUIEvent retEvent;
-  switch( event.Type )
+  switch( event.type )
     {
     case sf::Event::MouseButtonPressed:
       fPressed = true;
-      fClock.Restart();
+      fClock.restart();
       fPreviousTime = sf::Time();
       retEvent = GUIEvent( fID, fGlobalID );
       break;
@@ -33,7 +33,7 @@ Timer::GetElapsedTime()
   if( fPressed == false )
     return sf::Time();
   
-  return fClock.GetElapsedTime();
+  return fClock.getElapsedTime();
 }
 
 sf::Time
@@ -42,7 +42,7 @@ Timer::GetDeltaTime()
   if( fPressed == false )
     return sf::Time();
   
-  sf::Time currentTime = fClock.GetElapsedTime();
+  sf::Time currentTime = fClock.getElapsedTime();
   sf::Time deltaTime = currentTime - fPreviousTime;
   fPreviousTime = currentTime;
   return deltaTime;

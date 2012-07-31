@@ -1,5 +1,3 @@
-#include <RAT/BitManip.hh>
-
 #include <vector>
 using namespace std;
 
@@ -16,6 +14,7 @@ using namespace std;
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/HitInfo.hh>
 #include <Viewer/MapArea.hh>
+#include <Viewer/BitManip.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -37,10 +36,10 @@ void
 CrateView::PreInitialise( const ConfigurationTable* configTable ) 
 {
   sf::Rect<double> size;
-  size.Left = 0.0; size.Top = 0.0; size.Width = 1.0; size.Height = 0.95;
+  size.left = 0.0; size.top = 0.0; size.width = 1.0; size.height = 0.95;
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( size );
-  size.Left = 0.0; size.Top = 0.95; size.Width = 0.9; size.Height = 0.05;
+  size.left = 0.0; size.top = 0.95; size.width = 0.9; size.height = 0.05;
   fHitInfo = new HitInfo( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), true );
   fPMTofInterest = -1;
 }
@@ -84,9 +83,9 @@ void
 CrateView::DrawPMT( const int lcn,
                     const Colour& colour )
 {
-  int crate = RAT::BitManip::GetBits(lcn, 9, 5);
-  int card = RAT::BitManip::GetBits(lcn, 5, 4);
-  int channel = RAT::BitManip::GetBits(lcn, 0, 5);
+  int crate = BitManip::GetBits(lcn, 9, 5);
+  int card = BitManip::GetBits(lcn, 5, 4);
+  int channel = BitManip::GetBits(lcn, 0, 5);
   double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth + kHitWidth; // Margin of 1 hit width
   double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight + kHitHeight; // Margin of 1 hit height
   fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),

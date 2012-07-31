@@ -8,7 +8,7 @@ using namespace Viewer::GUIs;
 GUIEvent 
 DragArea::NewEvent( const Event& event )
 {
-  switch( event.Type )
+  switch( event.type )
     {
     case sf::Event::MouseButtonPressed:
       fStartPos = event.GetPos();

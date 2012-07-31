@@ -66,25 +66,25 @@ FramePanel::LoadGUIConfiguration( const ConfigurationTable* config )
   // Build the new frame buttons
   const ConfigurationTable* areaConfig = config->GetTable( "frameButtonArea" );
   sf::Rect<double> fullArea = fRect->GetRect( Rect::eResolution );
-  sf::Rect<double> buttonArea( areaConfig->GetD( "x" ) * fullArea.Width + fullArea.Left, 
-                               areaConfig->GetD( "y" ) * fullArea.Height + fullArea.Top, 
-                               areaConfig->GetD( "width" ) * fullArea.Width, 
-                               areaConfig->GetD( "height" ) * fullArea.Height );
+  sf::Rect<double> buttonArea( areaConfig->GetD( "x" ) * fullArea.width + fullArea.left, 
+                               areaConfig->GetD( "y" ) * fullArea.height + fullArea.top, 
+                               areaConfig->GetD( "width" ) * fullArea.width, 
+                               areaConfig->GetD( "height" ) * fullArea.height );
   const double rowHeight = 20.0; const double colWidth = 120.0;
   const double rowSpacing = 2.0; const double colSpacing = 2.0;
-  const int numRows = buttonArea.Height / ( rowHeight + rowSpacing );
-  const int numCols = buttonArea.Width / ( colWidth + colSpacing );
+  const int numRows = buttonArea.height / ( rowHeight + rowSpacing );
+  const int numCols = buttonArea.width / ( colWidth + colSpacing );
 
   sf::Rect<double> size;
-  size.Width = colWidth;
-  size.Height = rowHeight;
+  size.width = colWidth;
+  size.height = rowHeight;
   FrameFactory frameFactory;
   vector<string> frameNames = frameFactory.GetNames();
   for( int iFrame = 0; iFrame < frameNames.size(); iFrame++ )
     {
 
-      size.Left = ( colWidth + colSpacing ) * ( iFrame / numRows ) + buttonArea.Left;
-      size.Top = ( rowHeight + rowSpacing ) * ( iFrame % numRows ) + buttonArea.Top;
+      size.left = ( colWidth + colSpacing ) * ( iFrame / numRows ) + buttonArea.left;
+      size.top = ( rowHeight + rowSpacing ) * ( iFrame % numRows ) + buttonArea.top;
       fGUIs[iFrame + 10] = fGUIManager.NewGUI<GUIs::ButtonLabel>( size, iFrame + 10, Rect::eResolution );
       dynamic_cast<GUIs::ButtonLabel*>( fGUIs[iFrame + 10] )->Initialise( 2, frameNames[iFrame] );
     }

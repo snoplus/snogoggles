@@ -25,7 +25,7 @@ LoadRootFileThread::Run()
       LoadRootFile();
       events.SetRun( fRun );
       fTree->GetEntry( fMCEvent );
-      events.AddDS( fDS );
+      events.Add( fDS );
       fSemaphore.Signal();
       fMCEvent++;
       return;
@@ -42,7 +42,7 @@ LoadRootFileThread::Run()
   else
     {
       fTree->GetEntry( fMCEvent );
-      events.AddDS( fDS );
+      events.Add( fDS );
       fMCEvent++;
       cout << "Loaded " << fMCEvent << " events." << endl;
     }

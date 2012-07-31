@@ -47,21 +47,21 @@ GUITextureManager::Initialise()
     sf::Image baseImage;
     stringstream fileLocation;
     fileLocation << getenv( "VIEWERROOT" ) << "/textures/GUIA.png";
-    baseImage.LoadFromFile( fileLocation.str() );
-    fBaseWidth = baseImage.GetWidth();
-    fBaseHeight = baseImage.GetHeight();
+    baseImage.loadFromFile( fileLocation.str() );
+    fBaseWidth = baseImage.getSize().x;
+    fBaseHeight = baseImage.getSize().y;
     const int pixels = fBaseWidth * fBaseHeight * 4;
     fBasePixelsA = new sf::Uint8[ pixels ];
-    memcpy( fBasePixelsA, baseImage.GetPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
+    memcpy( fBasePixelsA, baseImage.getPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
   }
   {
     sf::Image baseImage;
     stringstream fileLocation;
     fileLocation << getenv( "VIEWERROOT" ) << "/textures/GUIB.png";
-    baseImage.LoadFromFile( fileLocation.str() );
+    baseImage.loadFromFile( fileLocation.str() );
     const int pixels = fBaseWidth * fBaseHeight * 4;
     fBasePixelsB = new sf::Uint8[ pixels ];
-    memcpy( fBasePixelsB, baseImage.GetPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
+    memcpy( fBasePixelsB, baseImage.getPixelsPtr(), sizeof( sf::Uint8 ) * pixels );
   }
   const int numX = fBaseWidth / 20.0;
   const int numY = fBaseHeight / 20.0;
@@ -70,13 +70,13 @@ GUITextureManager::Initialise()
       for( int iY = 0; iY < numY; iY++ )
         {
           sf::Texture* tempBase = new sf::Texture();
-          tempBase->Create( 20, 20 );
+          tempBase->create( 20, 20 );
           fTextures[eBase].push_back( tempBase );
           sf::Texture* tempHighlight = new sf::Texture();
-          tempHighlight->Create( 20, 20 );
+          tempHighlight->create( 20, 20 );
           fTextures[eHighlight].push_back( tempHighlight );
           sf::Texture* tempActive = new sf::Texture();
-          tempActive->Create( 20, 20 );
+          tempActive->create( 20, 20 );
           fTextures[eActive].push_back( tempActive );
         }
     }
@@ -103,11 +103,11 @@ GUITextureManager::Update()
           sf::Rect<int> sourceRect( iX * 20, iY * 20, 20, 20 );
           sf::Uint8 pixels[ 20 * 20 * 4 ];
           FillPixels( pixels, sourceRect, eBase );
-          fTextures[eBase][textureNumber]->Update( pixels );
+          fTextures[eBase][textureNumber]->update( pixels );
           FillPixels( pixels, sourceRect, eHighlight );
-          fTextures[eHighlight][textureNumber]->Update( pixels );
+          fTextures[eHighlight][textureNumber]->update( pixels );
           FillPixels( pixels, sourceRect, eActive );
-          fTextures[eActive][textureNumber]->Update( pixels );
+          fTextures[eActive][textureNumber]->update( pixels );
         }
     }
 }
@@ -117,15 +117,15 @@ GUITextureManager::FillPixels( sf::Uint8* pixels,
                                sf::Rect<int> sourceRect,
                                EGUIState state )
 {
-  for( int xPixel = 0; xPixel < sourceRect.Width; xPixel++ )
+  for( int xPixel = 0; xPixel < sourceRect.width; xPixel++ )
     {
-      for( int yPixel = 0; yPixel < sourceRect.Height; yPixel++ )
+      for( int yPixel = 0; yPixel < sourceRect.height; yPixel++ )
         {
-          const int basePixel = ( xPixel + sourceRect.Left + ( yPixel + sourceRect.Top ) * fBaseWidth ) * 4;
+          const int basePixel = ( xPixel + sourceRect.left + ( yPixel + sourceRect.top ) * fBaseWidth ) * 4;
           Colour shapeColourA( fBasePixelsA[basePixel], fBasePixelsA[basePixel + 1], fBasePixelsA[basePixel + 2], fBasePixelsA[basePixel + 3] );
           Colour shapeColourB( fBasePixelsB[basePixel], fBasePixelsB[basePixel + 1], fBasePixelsB[basePixel + 2], fBasePixelsB[basePixel + 3] );
           Colour pixelColour = Colourise( shapeColourA, shapeColourB, state );
-          const int pixel = ( xPixel + yPixel * sourceRect.Width ) * 4;
+          const int pixel = ( xPixel + yPixel * sourceRect.width ) * 4;
           pixels[ pixel ] = pixelColour.r;
           pixels[ pixel + 1 ] = pixelColour.g;
           pixels[ pixel + 2 ] = pixelColour.b;
