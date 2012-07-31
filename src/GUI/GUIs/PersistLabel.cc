@@ -16,10 +16,10 @@ PersistLabel::PersistLabel( RectPtr rect,
 {
   sf::Rect<double> size = rect->GetRect( Rect::eResolution );
   sf::Rect<double> buttonSize = size;
-  buttonSize.Width = size.Height;
+  buttonSize.width = size.height;
   sf::Rect<double> textSize = size;
-  textSize.Width = size.Width - buttonSize.Width;
-  textSize.Left = buttonSize.Width + size.Left;
+  textSize.width = size.width - buttonSize.width;
+  textSize.left = buttonSize.width + size.left;
   fPersist.GetRect()->SetRect( buttonSize, Rect::eResolution );
   fText.GetRect()->SetRect( textSize, Rect::eResolution );
   string temp( "Check Box" );

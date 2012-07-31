@@ -42,8 +42,7 @@ class ReceiverThread : public Thread
 public:
   /// Construct the Receiver thread, requires the port to use and a semaphore to signal data has arrived.
   ReceiverThread( const std::string& port, 
-		  Semaphore& semaphore,
-		  bool goodBuilder = false );
+                  Semaphore& semaphore );
   /// Destructor, closes the avalanche client etc...
   virtual ~ReceiverThread() {};
   /// Run function, called by the thread
@@ -62,7 +61,6 @@ private:
   int fNumReceivedEvents; /// < The current number of recieved events
   Semaphore& fSemaphore; /// < The semaphore to signal events have arrrived
   std::string fPort; /// < The avalanche port
-  bool fGoodBuilder; /// < Temp, false if the builder is outputting the wrong format events
 };
 
 } //::Viewer

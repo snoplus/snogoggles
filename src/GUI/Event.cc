@@ -12,14 +12,14 @@ sf::Vector2<double>
 Event::GetPos() const
 {
   sf::Vector2<double> pos;
-  switch( this->Type )
+  switch( this->type )
     {
     case MouseButtonPressed:
     case MouseButtonReleased:
-      pos = sf::Vector2<double>( this->MouseButton.X, this->MouseButton.Y );
+      pos = sf::Vector2<double>( this->mouseButton.x, this->mouseButton.y );
       break;
     case MouseMoved:
-      pos = sf::Vector2<double>( this->MouseMove.X, this->MouseMove.Y );
+      pos = sf::Vector2<double>( this->mouseMove.x, this->mouseMove.y );
       break;
     }
   sf::Vector2<double> windowSize = Rect::GetWindowSize();

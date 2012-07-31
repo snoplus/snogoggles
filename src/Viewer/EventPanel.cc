@@ -28,18 +28,18 @@ void
 EventPanel::NewEvent( const Event& event )
 {
   DataStore& events = DataStore::GetInstance();
-  if( event.Type == sf::Event::KeyPressed )
+  if( event.type == sf::Event::KeyPressed )
     {
-      if( event.Key.Code == sf::Keyboard::Right )
+      if( event.key.code == sf::Keyboard::Right )
         events.Next();
-      else if( event.Key.Code == sf::Keyboard::Left )
+      else if( event.key.code == sf::Keyboard::Left )
         events.Prev();
-      else if( event.Key.Code == sf::Keyboard::P )
+      else if( event.key.code == sf::Keyboard::P )
         {
           fEventPeriod = -1.0;
           dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( 0.0 );
         }
-      else if( event.Key.Code == sf::Keyboard::I )
+      else if( event.key.code == sf::Keyboard::I )
         {
           fEventPeriod = 0.0;
           dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( 0.95 );
@@ -79,7 +79,7 @@ EventPanel::EventLoop()
             else
               {
                 fEventPeriod = 0.5 / slideScale;
-                fClock.Restart();
+                fClock.restart();
               }
           }
           break;
@@ -93,10 +93,10 @@ EventPanel::EventLoop()
   // Manage the continuous event switching
   if( fEventPeriod == 0.0 )
     events.Latest();
-  if( fEventPeriod > 0.0 && fClock.GetElapsedTime().AsSeconds() > fEventPeriod )
+  if( fEventPeriod > 0.0 && fClock.getElapsedTime().asSeconds() > fEventPeriod )
     {
       events.Next();
-      fClock.Restart();
+      fClock.restart();
     }
 }
 

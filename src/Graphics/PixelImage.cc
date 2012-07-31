@@ -6,7 +6,7 @@ void
 PixelImage::Construct()
 {
   fPixels = new sf::Uint8[fWidth * fHeight * 4];
-  fTexture.Create( fWidth, fHeight );
+  fTexture.create( fWidth, fHeight );
 }
 
 void

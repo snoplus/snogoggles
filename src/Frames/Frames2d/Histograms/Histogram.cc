@@ -36,9 +36,9 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
   logY->Initialise( 14, "Log_10 Y?" );
   sf::Rect<double> infoSize( 0.0, 1.0 - kAxisMargin / 2.0, 1.0, kAxisMargin / 2.0 );
   fInfoText = new Text( RectPtr( fRect->NewDaughter( infoSize, Rect::eLocal ) ) );
-  imageSize.Left = kAxisMargin;
-  imageSize.Width = 1.0 - kAxisMargin;
-  imageSize.Height = 1.0 - kAxisMargin;
+  imageSize.left = kAxisMargin;
+  imageSize.width = 1.0 - kAxisMargin;
+  imageSize.height = 1.0 - kAxisMargin;
   fGUIManager.NewGUI<GUIs::MapArea>( imageSize, Rect::eLocal );
   if( configTable != NULL )
     {
@@ -149,7 +149,7 @@ Histogram::DrawAxis()
 
 void
 Histogram::DrawTickLabel( double value,
-                      bool xAxis )
+                          bool xAxis )
 {
   sf::Vector2<double> pos, size;
   sf::Rect<double> textSize;
@@ -159,7 +159,7 @@ Histogram::DrawTickLabel( double value,
       size = sf::Vector2<double>( 1.0 / fImage->GetWidth(), kAxisMargin / 6.0 );
       textSize = sf::Rect<double>( pos.x, pos.y, ( 1.0 - kAxisMargin ) / 10.0, kAxisMargin / 2.0 );
       if( pos.x > 0.9 )
-        textSize.Left = pos.x - ( 1.0 - kAxisMargin ) / 15.0;
+        textSize.left = pos.x - ( 1.0 - kAxisMargin ) / 15.0;
     }
   else
     {

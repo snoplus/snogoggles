@@ -14,20 +14,20 @@ Selector::Selector( RectPtr rect,
   fState = 0;
   /// Initialise the text, left button, right button and background in that order
   sf::Rect<double> size = rect->GetRect( Rect::eResolution );
-  const double buttonWidth = size.Height; // Button size is defined by height
+  const double buttonWidth = size.height; // Button size is defined by height
   sf::Rect<double> textSize = size;
-  textSize.Width = size.Width - 2.0 * buttonWidth;
-  textSize.Left = buttonWidth + size.Left;
+  textSize.width = size.width - 2.0 * buttonWidth;
+  textSize.left = buttonWidth + size.left;
   fText.GetRect()->SetRect( textSize, Rect::eResolution );
   sf::Rect<double> buttonSize = size;
-  buttonSize.Width = buttonWidth;
+  buttonSize.width = buttonWidth;
   GUIs::Button* temp = fGUIManager.NewGUI< GUIs::Button >( buttonSize, Rect::eResolution );
   temp->Initialise( 20 );
-  buttonSize.Left = size.Left + size.Width - buttonWidth;
+  buttonSize.left = size.left + size.width - buttonWidth;
   temp = fGUIManager.NewGUI< GUIs::Button >( buttonSize, Rect::eResolution );
   temp->Initialise( 21 );
-  size.Left = size.Left + buttonWidth;
-  size.Width = size.Width - 2.0 * buttonWidth;
+  size.left = size.left + buttonWidth;
+  size.width = size.width - 2.0 * buttonWidth;
   fBackground.GetRect()->SetRect( size, Rect::eResolution );
   const GUITextureManager& textureManager = GUIProperties::GetInstance().GetGUITextures();
   fBackground.SetTexture( textureManager.GetTexture( 22, eBase ) );

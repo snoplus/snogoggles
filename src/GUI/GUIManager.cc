@@ -23,7 +23,7 @@ GUIManager::NewEvent( const Event& event )
 {
   GUIEvent retEvent; // Returned event
   int oldFocus = fFocus;
-  switch( event.Type )
+  switch( event.type )
     {
 // First events that go straight through to Focus
     case sf::Event::KeyPressed:

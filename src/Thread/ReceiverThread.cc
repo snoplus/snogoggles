@@ -17,9 +17,8 @@ using namespace std;
 using namespace Viewer;
 
 ReceiverThread::ReceiverThread( const std::string& port, 
-                                Semaphore& semaphore,
-                                bool goodBuilder )
-  : fSemaphore( semaphore ), fPort( port ), fNumReceivedEvents(0), fGoodBuilder( goodBuilder )
+                                Semaphore& semaphore )
+  : fSemaphore( semaphore ), fPort( port ), fNumReceivedEvents(0)
 {
 
 }
@@ -37,28 +36,19 @@ void
 ReceiverThread::Run()
 {
   RAT::DS::PackedEvent* event = NULL;
-  if( fGoodBuilder ) // Events come as PackedRec types
-    {
-      RAT::DS::PackedRec* rec = (RAT::DS::PackedRec*) fClient.recv();
-      if( rec ) // avalanche is non-blocking
-        event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
-    }
-  else // Events come as PackedEvent types
-    {
-      event = (RAT::DS::PackedEvent*) fClient.recv();
-    }
+  RAT::DS::PackedRec* rec = (RAT::DS::PackedRec*) fClient.recv();
+  if( rec ) // avalanche is non-blocking
+    event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
   if( event != NULL ) // avalanche is non-blocking
     {
       cout << "Got an event " << event->NHits << endl;
-      RAT::DS::Root* rDS = RAT::Pack::UnpackEvent( event, NULL, NULL );
       DataStore& events = DataStore::GetInstance();
-      events.AddDS( rDS );
+      events.Add( event );
       fNumReceivedEvents++;
       if( fNumReceivedEvents == 1 )
         fSemaphore.Signal();
-      delete rDS;
-      delete event;
     }
+  delete rec;
 }
 
 void

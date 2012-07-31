@@ -20,7 +20,7 @@ void
 About::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> textSize;
-  textSize.Left = 0.0; textSize.Top = 0.0; textSize.Width = 1.0; textSize.Height = 1.0;
+  textSize.left = 0.0; textSize.top = 0.0; textSize.width = 1.0; textSize.height = 1.0;
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );
@@ -44,7 +44,7 @@ About::Render2d( RWWrapper& renderApp,
   eventInfo.precision( 0 );
   eventInfo << fixed;
   eventInfo << "SNOGoggles Air Fill" << "\nFrame Rate:";
-  fFrameRates.push_back( (double) renderApp.GetFrameTime().AsMicroseconds() );
+  fFrameRates.push_back( (double) renderApp.GetFrameTime().asMicroseconds() );
   fFrameRates.pop_front();
   double averageRate = 0.0;
   for( deque<double>::const_iterator iTer = fFrameRates.begin(); iTer != fFrameRates.end(); iTer++ )
