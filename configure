@@ -84,6 +84,12 @@ if [ "$SET_NOT_SNOCAVE" = "Yes" ]; then
    set_param XERCESCROOT "" "Path to the Xerces-C++ home directory."
    XERCESCROOT=$return_value
 
+   set_param BZIPROOT "/usr" "Path to the bzip2 install directory."
+   BZIPROOT=$return_value
+
+   set_param CURLROOT "/usr" "Path to the curl install directory."
+   CURLROOT=$return_value
+
 else
 
     set_param SNOCAVE_DIR "" "Path to the snocave directory."
@@ -98,6 +104,11 @@ else
 	
     SFMLROOT=$SNOCAVE_DIR/libraries/sfml-2.0
     XERCESCROOT=$SNOCAVE_DIR/libraries/xerces-c-3.1.1
+
+    # bzip2 and curl do not come in the snocave - assume they are installed
+    # globally on the machine
+    BZIPROOT=/usr
+    CURLROOT=/usr
 
 fi
 
@@ -121,6 +132,8 @@ check_package_terminate Xerces-C++ $XERCESCROOT include/xercesc/dom/DOM.hpp
 check_package_terminate GLEW $GLEWROOT include/GL/glew.h
 check_package_terminate avalanche $AVALANCHEROOT lib/cpp/libavalanche.so
 check_package_terminate ZeroMQ $ZEROMQROOT include/zmq.h
+check_package_terminate bzip2 $BZIPROOT include/bzlib.h
+check_package_terminate cURL $CURLROOT include/curl/curl.h
 
 echo ""
 
@@ -141,10 +154,12 @@ echo 'export XERCESCROOT='$XERCESCROOT >> env.sh
 echo 'export AVALANCHEROOT='$AVALANCHEROOT >> env.sh
 echo 'export ZEROMQROOT='$ZEROMQROOT >> env.sh
 echo 'export GLEWROOT='$GLEWROOT >> env.sh
+echo 'export BZIPROOT='$BZIPROOT >> env.sh
+echo 'export CURLROOT='$CURLROOT >> env.sh
 echo ' ' >> env.sh
 echo 'export PATH=$PATH:'$SCONSROOT'/script:$VIEWERROOT/bin' >> env.sh
 echo 'export PYTHONPATH='$SCONSROOT'/engine:$VIEWERROOT/python' >> env.sh
-echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib:$SFMLROOT/lib:$XERCESCROOT/lib:$GLEWROOT/lib:$AVALANCHEROOT/lib/cpp:$ZEROMQROOT/lib' >> env.sh
+echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib:$SFMLROOT/lib:$XERCESCROOT/lib:$GLEWROOT/lib:$AVALANCHEROOT/lib/cpp:$ZEROMQROOT/lib:$RATROOT/lib:$BZIPROOT/lib:$CURLROOT/lib' >> env.sh
 echo ' ' >> env.sh
 
 echo "Done."
@@ -177,7 +192,7 @@ echo 'setenv GLEWROOT '$GLEWROOT >> env.csh
 echo ' ' >> env.csh
 echo 'setenv PATH {$PATH}:'$SCONSROOT'/script:{$VIEWERROOT}/bin' >> env.csh
 echo 'setenv PYTHONPATH '$SCONSROOT'/engine:{$VIEWERROOT}/python' >> env.csh
-echo 'setenv LD_LIBRARY_PATH {$LD_LIBRARY_PATH}:{$ROOTSYS}/lib:{$SFMLROOT}/lib:{$XERCESCROOT}/lib:{$GLEWROOT}/lib:{$AVALANCHEROOT}/lib/cpp:{$ZEROMQROOT}/lib' >> env.csh
+echo 'setenv LD_LIBRARY_PATH {$LD_LIBRARY_PATH}:{$ROOTSYS}/lib:{$SFMLROOT}/lib:{$XERCESCROOT}/lib:{$GLEWROOT}/lib:{$AVALANCHEROOT}/lib/cpp:{$ZEROMQROOT}/lib:{$RATROOT}/lib:{$BZIPROOT}/lib:{$CURLROOT}/lib' >> env.csh
 echo ' ' >> env.csh
 
 echo "Done."
