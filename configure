@@ -189,6 +189,8 @@ echo 'setenv XERCESCROOT '$XERCESCROOT >> env.csh
 echo 'setenv AVALANCHEROOT '$AVALANCHEROOT >> env.csh
 echo 'setenv ZEROMQROOT '$ZEROMQROOT >> env.csh
 echo 'setenv GLEWROOT '$GLEWROOT >> env.csh
+echo 'setenv BZIPROOT '$BZIPROOT >> env.csh
+echo 'setenv CURLROOT '$CURLROOT >> env.csh
 echo ' ' >> env.csh
 echo 'setenv PATH {$PATH}:'$SCONSROOT'/script:{$VIEWERROOT}/bin' >> env.csh
 echo 'setenv PYTHONPATH '$SCONSROOT'/engine:{$VIEWERROOT}/python' >> env.csh
