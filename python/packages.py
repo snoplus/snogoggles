@@ -46,7 +46,7 @@ def Curl(env):
 def glut(env):
     env.Append( LIBPATH="/usr/X11/lib" )
     # Need to put an "If APPLE" wrapper around this
-    if "Darwin" in os.environ["G4SYSTEM"]:
+    if os.uname()[0] == 'Darwin':
         env.Append( LINKFLAGS=['-framework', 'glut'])
     env.Append( LIBS = ["glut", "GLU", "GL"])
 
