@@ -8,10 +8,9 @@ def xercesc(env):
 
 # Appends Geant4 and CLHEP
 def geant4(env):
-    env.Append( CPPPATH = [ os.environ["G4INCLUDE"], os.environ["CLHEP_INCLUDE_DIR"] ] )
-    env.Append( LIBPATH = [ os.path.join( os.environ["G4LIB"], os.environ["G4SYSTEM"] ), os.environ["CLHEP_LIB_DIR"] ] )
-    env.ParseConfig('%s/liblist -m %s < %s/libname.map'.replace('%s', os.path.join(os.environ["G4LIB"], os.environ["G4SYSTEM"])))
-    env.Append( LIBS = ['CLHEP', 'Xm'] )
+    env.ParseConfig( "geant4-config --cflags --libs")
+    env.Append( LIBPATH=[os.environ["CLHEP_LIB_DIR"]] )
+    env.Append( LIBS=['CLHEP','Xm'] )
 
 # Appends ROOT
 def root(env):
@@ -33,7 +32,7 @@ def sfml(env):
 def rat(env):
     env.Append( CPPPATH = [ os.environ["RATROOT"] + "/include" ] )
     env.Append( LIBPATH = [ os.environ["RATROOT"] + "/lib" ] )
-    env.Append( LIBS = [ 'RATEvent_' + os.environ["G4SYSTEM"] ] )
+    env.Append( LIBS = [ 'RATEvent_' + os.environ["RATSYSTEM"] ] )
     Curl(env)
 
 # Appends Curl and Bzip (for RAT)
