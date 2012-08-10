@@ -16,6 +16,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <getopt.h>
 using namespace std;
 
 #include <Viewer/ViewerWindow.hh>
@@ -36,14 +37,25 @@ using namespace xercesc;
 
 const int kConfigVersion = 1; /// The configuration version expected in the xml config files.
 
+class CmdOptions
+{
+public:
+  CmdOptions() : fStream( false ) { };
+
+  bool fStream; /// < Are the events dispatched via avalanche to snogoggles?
+  std::string fArgument; /// < The argument, url or fileName  
+};
+/// Parse the command options
+CmdOptions ParseArguments( int argc, char *argv[] );
+/// Print the help information to the terminal
+void PrintHelp();
+
 /// Load the singletons that can be loaded without the DataStore class.
 void PreInitialise();
 /// Load the singletons that require event data/the DataStore class.
 void PostInitialise();
 /// Load the configuration, if it exists and is the correct version
 ConfigurationFile* OpenConfiguration( bool output );
-/// Print the help information to the terminal
-void PrintHelp();
 
 int main( int argc, char *argv[] )
 {
@@ -63,35 +75,18 @@ int main( int argc, char *argv[] )
   ViewerWindow& viewer = ViewerWindow::GetInstance();
   viewer.PreInitialise( loadConfigTable );
   Thread* loadData;
-  if( string( argv[1] ) == string( "-s" ) ) // Temp horrible way...
+  CmdOptions options = ParseArguments( argc, argv );
+  if( options.fStream )
     {
       Semaphore sema;
-      if( argc < 3 )
-        {
-          PrintHelp();
-          viewer.Destruct();
-          return 1;
-        }
-      loadData = new ReceiverThread( argv[2], sema );
+      loadData = new ReceiverThread( options.fArgument, sema );
       // Wait for first event to be loaded
       sema.Wait();
     }
-  else if( string( argv[1] ) == string( "-p" ) )
-    cout << "Not yet implmented" << endl;
   else
     {
       Semaphore sema;
-      ifstream test( argv[1] );
-      // Check the file exists
-      if( test.good() == false )
-        {
-          PrintHelp();
-          test.close();
-          viewer.Destruct();
-          return 1;
-        }
-      test.close();
-      loadData = new LoadRootFileThread( argv[1], sema );
+      loadData = new LoadRootFileThread( options.fArgument, sema );
       // Wait for first event to be loaded
       sema.Wait();
     }
@@ -126,13 +121,38 @@ PostInitialise()
   DataStore::GetInstance().Initialise();
 }
 
+CmdOptions 
+ParseArguments( int argc, char** argv )
+{
+  static struct option opts[] = { {"help", 0, NULL, 'h'}, {"stream", 0, NULL, 's'} };
+  CmdOptions options;
+  int option_index = 0;
+  int c = getopt_long(argc, argv, "sh", opts, &option_index);
+  while (c != -1) 
+    {
+      switch (c) 
+        {
+        case 'h': PrintHelp(); exit(0); break;
+        case 's': options.fStream = true; break;
+        }
+      c = getopt_long(argc, argv, "sh", opts, &option_index);
+    }
+  if( option_index >= argc )
+    {
+      PrintHelp();
+      exit(1);
+    }
+  options.fArgument = argv[1];
+  return options;
+}
+
 void 
 PrintHelp()
 {
-  cout << "usage:snogoggles [options] [-p] FileName.root\n" << " or: snogoggles -s port\n";
+  cout << "usage:snogoggle FileName.root" << " or: snogoggles -s port\n";
   cout << "options:" << endl;
-  cout << " -h, --help        show this help message and exit" << endl;
-  cout << " -p                load packed format file" << endl;
+  cout << " -h        show this help message and exit" << endl;
+  cout << " -s        use a dispatch strem" << endl;
 }
 
 ConfigurationFile*
