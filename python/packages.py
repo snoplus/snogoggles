@@ -2,8 +2,9 @@ import os
 
 # Appends Xerces-C++
 def xercesc(env):
-    env.Append( CPPPATH = [ os.environ["XERCESCROOT"] + "/include" ] )
-    env.Append( LIBPATH = [ os.environ["XERCESCROOT"] + "/lib" ] )
+    if "XERCESCROOT" in os.environ:
+        env.Append( CPPPATH = [ os.environ["XERCESCROOT"] + "/include" ] )
+        env.Append( LIBPATH = [ os.environ["XERCESCROOT"] + "/lib" ] )
     env.Append( LIBS = ['xerces-c'] )
 
 # Appends Geant4 and CLHEP
