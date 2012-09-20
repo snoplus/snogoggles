@@ -68,7 +68,9 @@ def Avalanche(env):
 
 # Append Python libraries
 def Python(env):
-    ldflags = env.backtick( "python-config --includes --libs --ldflags").split() # Split on space, diff flags
+    ldflags = env.backtick( "python-config --includes").split() # Split on space, diff flags
+    ldflags.extend( env.backtick( "python-config --libs").split() )
+    ldflags.extend( env.backtick( "python-config --ldflags").split() )
     # Put all options after -u in LINKFLAGS, may not have a -u part though
     try: 
         idx = ldflags.index('-u') 
