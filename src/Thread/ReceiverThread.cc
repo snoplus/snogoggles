@@ -28,20 +28,21 @@ ReceiverThread::Initialise()
 {
   // Must load a DS run for the PMT Positions (replace this with db access when possible...)
   LoadRunTree();
-  fClient.addDispatcher( fPort.c_str() );
+  std::string subscribe = "w RAWDATA";
+  fClient.addDispatcher( fPort , subscribe );
   cout << "Listening on " << fPort << endl;
 }
 
 void
 ReceiverThread::Run()
 {
-  RAT::DS::PackedEvent* event = NULL;
-  RAT::DS::PackedRec* rec = (RAT::DS::PackedRec*) fClient.recv();
+  RAT::DS::Root* event = NULL;
+  RAT::DS::Root* rec = (RAT::DS::Root*) fClient.recv();
   if( rec ) // avalanche is non-blocking
-    event = dynamic_cast<RAT::DS::PackedEvent*> (rec->Rec);
+    event = dynamic_cast<RAT::DS::Root*> (rec);
   if( event != NULL ) // avalanche is non-blocking
     {
-      cout << "Got an event " << event->NHits << endl;
+      cout << "Got an event " <<endl;//<< event->NHits << endl;
       DataStore& events = DataStore::GetInstance();
       events.Add( event );
       fNumReceivedEvents++;
