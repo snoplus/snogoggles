@@ -36,6 +36,8 @@ public:
   inline static GUIProperties& GetInstance();
 
   void PreInitialise( const ConfigurationTable* config );
+  /// Must occur after the window is created
+  void TextureInitialise();
 
   /// Get the xml configuration information for object
   const ConfigurationTable* GetConfiguration( const std::string& object ) const;

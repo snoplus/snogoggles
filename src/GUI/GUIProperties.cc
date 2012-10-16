@@ -32,6 +32,11 @@ GUIProperties::PreInitialise( const ConfigurationTable* config )
   else
     configFileName << "default.xml";  
   fGUIConfiguration = new ConfigurationFile( configFileName.str(), false );
+}
+
+void
+GUIProperties::TextureInitialise()
+{
   fGUITextures.Initialise();
 }
 

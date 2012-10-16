@@ -56,6 +56,7 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   Rect::SetWindowResolution( fWindowApp->getSize().x, fWindowApp->getSize().y );  
 
   // This usage of width and height should not occur elsewhere in the viewer code, make use of Rects and Viewer::Sprite instead
+  GUIProperties::GetInstance().TextureInitialise();
   TextureManager& textures = TextureManager::GetInstance();
   sf::Texture* snoSplash = textures.GetTexture( "Logo.png" );
   sf::Texture* sfmlSplash = textures.GetTexture( "sfml.png" );
