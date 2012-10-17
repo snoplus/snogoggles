@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Colour.hh>
 using namespace Viewer;
@@ -25,10 +27,10 @@ Colour::Colour( const ConfigurationTable* configTable )
 void
 Colour::AddColourFraction( const Colour& newColour, double fraction )
 {
-  this->r = this->r + fraction * ( newColour.r - this->r );
-  this->g = this->g + fraction * ( newColour.g - this->g );
-  this->b = this->b + fraction * ( newColour.b - this->b );
-  this->a = this->a + fraction * ( newColour.a - this->a );
+  this->r = abs( this->r + fraction * ( newColour.r - this->r ) );
+  this->g = abs( this->g + fraction * ( newColour.g - this->g ) );
+  this->b = abs( this->b + fraction * ( newColour.b - this->b ) );
+  this->a = abs( this->a + fraction * ( newColour.a - this->a ) );
   return;
 }
 
