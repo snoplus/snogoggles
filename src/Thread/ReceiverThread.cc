@@ -9,6 +9,7 @@ using namespace RAT;
 using namespace ROOT;
 
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 #include <Viewer/ReceiverThread.hh>
@@ -55,7 +56,9 @@ ReceiverThread::Run()
 void
 ReceiverThread::LoadRunTree()
 {
-  TFile* file = new TFile( "Temp.root", "READ" );
+  stringstream fileLocation;
+  fileLocation << getenv( "VIEWERROOT" ) << "Temp.root";
+  TFile* file = new TFile( fileLocation.str().c_str(), "READ" );
   TTree* runTree = (TTree*)file->Get( "runT" );
   RAT::DS::Run* rRun = new RAT::DS::Run();
   runTree->SetBranchAddress( "run", &rRun );
