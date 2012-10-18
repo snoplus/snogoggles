@@ -59,12 +59,7 @@ ConfigurationFile* OpenConfiguration( bool output );
 
 int main( int argc, char *argv[] )
 {
-  // Instant help string checking
-  if( argc < 2 || string( argv[1] ) == string( "-h") || string( argv[1] ) == string( "--help" ) )
-    {
-      PrintHelp();
-      return 1;
-    }
+  CmdOptions options = ParseArguments( argc, argv );
   PreInitialise();
   ConfigurationFile* loadConfig = OpenConfiguration( false );
   const ConfigurationTable* loadConfigTable = NULL;
@@ -75,7 +70,6 @@ int main( int argc, char *argv[] )
   ViewerWindow& viewer = ViewerWindow::GetInstance();
   viewer.PreInitialise( loadConfigTable );
   Thread* loadData;
-  CmdOptions options = ParseArguments( argc, argv );
   if( options.fStream )
     {
       Semaphore sema;
@@ -83,11 +77,6 @@ int main( int argc, char *argv[] )
       // Wait for first event to be loaded
       sema.Wait();
     }
-//  else if ( options.fZdab )
-//    {
-//      Semaphore sema;
-//      loadData = new Load
-//    }
   else
     {
       Semaphore sema;
@@ -129,23 +118,28 @@ PostInitialise()
 CmdOptions 
 ParseArguments( int argc, char** argv )
 {
-  static struct option opts[] = { {"help", 0, NULL, 'h'}, {"stream", 1, NULL, 'z'}, {0,0,0,0} };
+  static struct option opts[] = { {"help", 0, NULL, 'h'}, {"stream", 2, NULL, 's'}, {0,0,0,0} };
   CmdOptions options;
   int option_index = 0;
-  int c = getopt_long(argc, argv, "z:h", opts, &option_index);
+  int c = getopt_long(argc, argv, "s::h", opts, &option_index);
   while (c != -1) 
     {
       switch (c) 
         {
         case 'h': PrintHelp(); exit(0); break;
-        case 'z': 
+        case 's': 
           {
             options.fStream = true; 
-            options.fArgument = optarg; 
-            break; 
+            if( optarg != NULL )
+              options.fArgument = optarg; 
+            else
+              {
+                cout << "Enter the stream location:" << endl;
+                cin >> options.fArgument;
+              }
           } 
         }
-      c = getopt_long(argc, argv, "z:h", opts, &option_index);
+      c = getopt_long(argc, argv, "s::h", opts, &option_index);
     }
   if( option_index >= argc )
     {
@@ -162,10 +156,10 @@ ParseArguments( int argc, char** argv )
 void 
 PrintHelp()
 {
-  cout << "usage:snogoggle FileName.root" << " or: snogoggles -z address\n";
+  cout << "usage:snogoggle FileName.root" << " or: snogoggles -s=address\n";
   cout << "options:" << endl;
   cout << " -h        show this help message and exit" << endl;
-  cout << " -z        connect to a zdab dispatcher" << endl;
+  cout << " -s        connect to a zdab dispatcher" << endl;
 }
 
 ConfigurationFile*
