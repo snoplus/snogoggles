@@ -30,7 +30,7 @@ FrameContainer::NewEvent( const Event& event )
     case sf::Event::LostFocus:
       returnEvent = fTopBar->NewEvent( event );
       if( !fResizeButton->NewEvent( event ).IsNULL() )
-        return FrameEvent( FrameEvent::eStopResize );
+        returnEvent = FrameEvent( FrameEvent::eStopResize );
       break;
     case sf::Event::MouseButtonReleased:
       // Mouse must be down to move
