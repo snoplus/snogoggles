@@ -55,16 +55,19 @@ def glut(env):
 def PThread(env):
     env.Append( LIBS = [ "pthread" ] )
 
+# Append the rattools zdab convertor
+def ratzdab(env):
+    ratzdab_path = os.path.join(os.environ['RATTOOLS'], "ratzdab")
+    env.Append(CPPPATH = [os.path.join(ratzdab_path, "src")])
+    env.Append(LIBPATH = [os.path.join(ratzdab_path, "lib")])
+    env.Append(LIBS = ["zdispatch", "zconvert"])
+
 # Append Avalanche and zmq
 def Avalanche(env):
     avalancheLibPath = os.environ['AVALANCHEROOT']
-    if "ZEROMQROOT" in os.environ:
-        env.Append( CPPPATH = [ [ os.environ['AVALANCHEROOT'] + "/src" ] , os.environ['ZEROMQROOT'] + "/include" ] )
-        env.Append( LIBPATH = [ [ os.environ['AVALANCHEROOT'] + "/lib" ], os.environ['ZEROMQROOT'] + "/lib" ] )
-    else:
-        env.Append( CPPPATH = [ os.environ['AVALANCHEROOT'] + "/src" ] )
-        env.Append( LIBPATH = [ os.environ['AVALANCHEROOT'] + "/lib" ] )
-    env.Append( LIBS = [ "avalanche", "zmq" ] )
+    env.Append( CPPPATH = [ os.environ['AVALANCHEROOT'] + "/src" ] )
+    env.Append( LIBPATH = [ os.environ['AVALANCHEROOT'] + "/lib" ] )
+    env.Append( LIBS = ["avalanche"] )
 
 # Append Python libraries
 def Python(env):
@@ -90,6 +93,7 @@ def addpackages(env):
     Python(env)
     xercesc(env)
     PThread(env)
+    ratzdab(env)
     Avalanche(env)
 
 
