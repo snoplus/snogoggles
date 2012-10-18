@@ -83,6 +83,11 @@ int main( int argc, char *argv[] )
       // Wait for first event to be loaded
       sema.Wait();
     }
+//  else if ( options.fZdab )
+//    {
+//      Semaphore sema;
+//      loadData = new Load
+//    }
   else
     {
       Semaphore sema;
@@ -124,35 +129,43 @@ PostInitialise()
 CmdOptions 
 ParseArguments( int argc, char** argv )
 {
-  static struct option opts[] = { {"help", 0, NULL, 'h'}, {"stream", 0, NULL, 's'} };
+  static struct option opts[] = { {"help", 0, NULL, 'h'}, {"stream", 1, NULL, 'z'}, {0,0,0,0} };
   CmdOptions options;
   int option_index = 0;
-  int c = getopt_long(argc, argv, "sh", opts, &option_index);
+  int c = getopt_long(argc, argv, "z:h", opts, &option_index);
   while (c != -1) 
     {
       switch (c) 
         {
         case 'h': PrintHelp(); exit(0); break;
-        case 's': options.fStream = true; break;
+        case 'z': 
+          {
+            options.fStream = true; 
+            options.fArgument = optarg; 
+            break; 
+          } 
         }
-      c = getopt_long(argc, argv, "sh", opts, &option_index);
+      c = getopt_long(argc, argv, "z:h", opts, &option_index);
     }
   if( option_index >= argc )
     {
       PrintHelp();
       exit(1);
     }
-  options.fArgument = argv[1];
+  if (options.fArgument == "") 
+    {
+      options.fArgument = argv[1];
+    }
   return options;
 }
 
 void 
 PrintHelp()
 {
-  cout << "usage:snogoggle FileName.root" << " or: snogoggles -s port\n";
+  cout << "usage:snogoggle FileName.root" << " or: snogoggles -z address\n";
   cout << "options:" << endl;
   cout << " -h        show this help message and exit" << endl;
-  cout << " -s        use a dispatch strem" << endl;
+  cout << " -z        connect to a zdab dispatcher" << endl;
 }
 
 ConfigurationFile*

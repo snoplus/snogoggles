@@ -130,7 +130,7 @@ check_package_terminate SCons $SCONSROOT scons.1
 check_package_terminate SFML $SFMLROOT include/SFML/OpenGL.hpp
 check_package_terminate Xerces-C++ $XERCESCROOT include/xercesc/dom/DOM.hpp
 check_package_terminate GLEW $GLEWROOT include/GL/glew.h
-check_package_terminate avalanche $AVALANCHEROOT lib/cpp/libavalanche.so
+check_package_terminate avalanche $AVALANCHEROOT lib/libavalanche.so
 check_package_terminate ZeroMQ $ZEROMQROOT include/zmq.h
 check_package_terminate bzip2 $BZIPROOT include/bzlib.h
 check_package_terminate cURL $CURLROOT include/curl/curl.h
