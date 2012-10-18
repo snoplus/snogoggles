@@ -44,12 +44,18 @@ public:
 
   std::vector<RIDS::PMTHit> GetHitData() const;
 private:
+  /// Un load the python scripts
+  void UnLoad();
+  /// Reset the data
+  void Reset();
+
   PyObject* NewEmptyPyList();
   PyObject* FillList( const RIDS::Event& event,
                       RIDS::EDataSource source );
 
   PyObject* fpScript;
-  PyObject* fpFunction;
+  PyObject* fpEventFunction;
+  PyObject* fpResetFunction;
   PyObject* fpData;
 };
 

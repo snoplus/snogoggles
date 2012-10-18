@@ -18,18 +18,23 @@ ScriptData::ScriptData()
 
 ScriptData::~ScriptData()
 {
-  Py_XDECREF( fpScript ); // Delete old script if exists
-  Py_XDECREF( fpFunction );
-  Py_XDECREF( fpData ); // Delete old data if exists
+  UnLoad();
   Py_Finalize();
+}
+
+void
+ScriptData::UnLoad()
+{
+  Py_XDECREF( fpScript ); // Delete old script if exists
+  Py_XDECREF( fpEventFunction );
+  Py_XDECREF( fpResetFunction );
+  Py_XDECREF( fpData ); // Delete old data if exists
 }
 
 void
 ScriptData::Load( const string& scriptName )
 {
-  Py_XDECREF( fpScript ); // Delete old script if exists
-  Py_XDECREF( fpFunction );
-  Py_XDECREF( fpData ); // Delete old data if exists
+  UnLoad();
   // Load new script
   stringstream pythonScriptPath;
   pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/sum";
@@ -41,11 +46,21 @@ ScriptData::Load( const string& scriptName )
   PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
   fpScript = PyImport_Import( pScriptName ); // Load script
   Py_DECREF( pScriptName );
-  fpFunction = PyObject_GetAttrString( fpScript, "Event" );
-  if( !fpFunction || !PyCallable_Check( fpFunction ) )
+  fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
+  if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
+    throw;
+  fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
+  if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
     throw;
 
   fpData = NewEmptyPyList();
+}
+
+void
+ScriptData::Reset()
+{
+  PyObject* pResult = PyObject_CallFunctionObjArgs( fpEventFunction, fpData, NULL );
+  Py_DECREF( pResult );
 }
 
 void
@@ -67,8 +82,8 @@ ScriptData::ProcessEvent( const RIDS::Event& event )
   PyDict_SetItemString( pDataDict, "cal", pCal );
   Py_DECREF( pCal );
   
-  PyObject* pResult = PyObject_CallFunctionObjArgs( fpFunction, pDataDict, fpData, NULL );
-  Py_DECREF( pResult );
+  PyObject* pResult = PyObject_CallFunctionObjArgs( fpEventFunction, pDataDict, fpData, NULL );
+  //Py_DECREF( pResult );
   Py_DECREF( pDataDict );
 }
 

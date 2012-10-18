@@ -131,7 +131,10 @@ ParseArguments( int argc, char** argv )
           {
             options.fStream = true; 
             if( optarg != NULL )
-              options.fArgument = optarg; 
+              {
+                options.fArgument = optarg;
+                options.fArgument.erase( 0, 1 ); 
+              }
             else
               {
                 cout << "Enter the stream location:" << endl;
