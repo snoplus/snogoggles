@@ -7,6 +7,7 @@ using namespace std;
 #include <Viewer/HitInfo.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/DataStore.hh>
+#include <Viewer/ProjectionImage.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -37,8 +38,7 @@ ProjectionMapArea::EventLoop()
       fPMTofInterest = -1;
       for( unsigned int lcn = 0; lcn < fProjectedPMTs.size(); lcn++ )
         {
-          const double closeRadius = 0.005;
-          if( fabs( fProjectedPMTs[lcn].x - fMousePos.x ) < closeRadius && fabs( fProjectedPMTs[lcn].y - fMousePos.y ) < closeRadius )
+          if( fabs( fMousePos.x - fProjectedPMTs[lcn].x ) < fImage->GetSquareSize().x && fabs( fProjectedPMTs[lcn].y - fMousePos.y ) < fImage->GetSquareSize().y )
             fPMTofInterest = lcn;
         }
       fEvents.pop();

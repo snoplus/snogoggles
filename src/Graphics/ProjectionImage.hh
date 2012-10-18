@@ -49,6 +49,8 @@ public:
 			 const Colour& colour );
   /// Set the standard square size
   void SetSquareSize( const sf::Vector2<double>& size ); /// < In local Coords
+  /// Get the standard square size
+  sf::Vector2<double> GetSquareSize(); /// < In local Coords
 private:
   /// Private draw square function
   void DrawSquare( const sf::Vector2<int>& position, /// < In pixels

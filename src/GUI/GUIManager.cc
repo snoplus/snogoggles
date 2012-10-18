@@ -25,25 +25,23 @@ GUIManager::NewEvent( const Event& event )
   int oldFocus = fFocus;
   switch( event.type )
     {
+    case sf::Event::LostFocus:
+      for( vector<GUI*>::iterator iTer = fGUIObjects.begin(); iTer != fGUIObjects.end(); iTer++ )
+        (*iTer)->NewEvent( event );
+      fFocus = -1;
+      break;
 // First events that go straight through to Focus
     case sf::Event::KeyPressed:
     case sf::Event::KeyReleased:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
         retEvent = fGUIObjects[fFocus]->NewEvent( event );
       break;
-
 // Now events that go straight through to Focus and change the focus   
     case sf::Event::MouseButtonReleased:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
         retEvent = fGUIObjects[fFocus]->NewEvent( event );
       fFocus = FindGUI( event.GetPos() );
       break;
-    case sf::Event::LostFocus:
-      if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-        retEvent = fGUIObjects[fFocus]->NewEvent( event );
-      fFocus = -1;
-      break;
-
 // Now events that change the focus   
     case sf::Event::MouseMoved:
     case sf::Event::MouseButtonPressed:

@@ -48,7 +48,7 @@ ProjectionImage::DrawSquare( const sf::Vector2<double>& position,
 			     const Colour& colour )
 {
   sf::Vector2<int> posPixel( static_cast<int>( position.x * fWidth ), 
-			     static_cast<int>( position.y * fHeight ) );
+                             static_cast<int>( position.y * fHeight ) );
   DrawSquare( posPixel, fSquareSize, colour );
 }
 
@@ -100,4 +100,11 @@ ProjectionImage::SetSquareSize( const sf::Vector2<double>& size )
     fSquareSize.x = 1;
   if( fSquareSize.y < 1 )
     fSquareSize.y = 1;
+}
+
+sf::Vector2<double>
+ProjectionImage::GetSquareSize()
+{
+  return sf::Vector2<double>( static_cast<double>( fSquareSize.x ) / static_cast<double>( fWidth ), 
+                              static_cast<double>( fSquareSize.y ) / static_cast<double>( fHeight ) );
 }

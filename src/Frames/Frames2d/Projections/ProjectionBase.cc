@@ -49,7 +49,7 @@ void
 ProjectionBase::Initialise( const sf::Rect<double>& size )
 {
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
-  fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize, 1.5 * kLocalSize ) );
+  fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize * GetAspectRatio(), 1.5 * kLocalSize ) );
   // Firstly make the vector of PMT positions
   DataStore& events = DataStore::GetInstance();
   RAT::DS::PMTProperties* rPMTList = events.GetRun().GetPMTProp();
@@ -100,7 +100,7 @@ ProjectionBase::DrawGeodesic()
 
 void
 ProjectionBase::ProjectGeodesicLine( Vector3 v1, 
-				     Vector3 v2 )
+                                     Vector3 v2 )
 {
   Vector3 line = v2 - v1;
   double dist = line.Mag();
