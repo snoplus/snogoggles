@@ -57,7 +57,7 @@ void
 ReceiverThread::LoadRunTree()
 {
   stringstream fileLocation;
-  fileLocation << getenv( "VIEWERROOT" ) << "Temp.root";
+  fileLocation << getenv( "VIEWERROOT" ) << "/Temp.root";
   TFile* file = new TFile( fileLocation.str().c_str(), "READ" );
   TTree* runTree = (TTree*)file->Get( "runT" );
   RAT::DS::Run* rRun = new RAT::DS::Run();
