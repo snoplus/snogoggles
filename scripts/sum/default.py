@@ -10,9 +10,9 @@ def event(in_data, out_data):
         if in_data["uncal"][lcn][1] > 0.0: 
             out_data[lcn][1] += 1.0
         if out_data[lcn][0] > 500.0:
-            out_data[lcn][0] = 500.0:
+            out_data[lcn][0] = 500.0
         if out_data[lcn][1] > 500.0:
-            out_data[lcn][1] = 500.0:
+            out_data[lcn][1] = 500.0
     return None
 
 def reset(out_data):
