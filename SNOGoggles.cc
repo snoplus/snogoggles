@@ -22,6 +22,7 @@ using namespace std;
 #include <Viewer/ViewerWindow.hh>
 #include <Viewer/Semaphore.hh>
 #include <Viewer/LoadRootFileThread.hh>
+#include <Viewer/LoadZdabFileThread.hh>
 #include <Viewer/ReceiverThread.hh>
 #include <Viewer/ConfigurationFile.hh>
 #include <Viewer/ConfigurationTable.hh>
@@ -80,7 +81,11 @@ int main( int argc, char *argv[] )
   else
     {
       Semaphore sema;
-      loadData = new LoadRootFileThread( options.fArgument, sema );
+      cout << options.fArgument.substr( options.fArgument.size() - 4 ) << endl;
+      if( options.fArgument.substr( options.fArgument.size() - 4 ) == string( "root" ) )
+        loadData = new LoadRootFileThread( options.fArgument, sema );
+      else
+        loadData = new LoadZdabFileThread( options.fArgument, sema );
       // Wait for first event to be loaded
       sema.Wait();
     }
@@ -141,6 +146,7 @@ ParseArguments( int argc, char** argv )
                 cin >> options.fArgument;
               }
           } 
+          break;
         }
       c = getopt_long(argc, argv, "s::h", opts, &option_index);
     }

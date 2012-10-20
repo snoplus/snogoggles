@@ -60,7 +60,7 @@ def ratzdab(env):
     ratzdab_path = os.path.join(os.environ['RATTOOLS'], "ratzdab")
     env.Append(CPPPATH = [os.path.join(ratzdab_path, "src")])
     env.Append(LIBPATH = [os.path.join(ratzdab_path, "lib")])
-    env.Append(LIBS = ["zdispatch", "zconvert"])
+    env.Append(LIBS = ["zdispatch", "zconvert", "zfile"])
 
 # Append Avalanche and zmq
 def Avalanche(env):
