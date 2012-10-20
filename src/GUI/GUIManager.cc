@@ -49,6 +49,12 @@ GUIManager::NewEvent( const Event& event )
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
         retEvent = fGUIObjects[fFocus]->NewEvent( event );
       break;
+
+// All other events, e.g. text
+    default:
+      if( fFocus >= 0 && fFocus < fGUIObjects.size() )
+        retEvent = fGUIObjects[fFocus]->NewEvent( event );
+      break;
     }
 // Focus change
   if( oldFocus != fFocus && oldFocus != -1 ) 

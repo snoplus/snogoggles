@@ -60,6 +60,8 @@ public:
   virtual void Render( RWWrapper& renderApp ) = 0;
   /// Event handler
   virtual GUIEvent NewEvent( const Event& event ) = 0;  
+
+  static int fsKeyboardFocus; /// < If greater than zero then key strokes go to one GUI
 protected:
   RectPtr fRect; /// < Position rect
   unsigned int fID;       /// < Local ID

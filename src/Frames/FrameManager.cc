@@ -53,6 +53,9 @@ FrameManager::NewEvent( const Event& event )
           fFocus = FindFrame( event.GetPos() );
           eventReturned = SendEvent( fFocus, event );
           break;
+        default: // Send all other events through e.g. text
+          eventReturned = SendEvent( fFocus, event );
+          break;
         }
       break;
     case eMoving: // Move the frame
