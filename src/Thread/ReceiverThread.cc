@@ -4,7 +4,9 @@
 #include <RAT/Pack.hh>
 using namespace RAT;
 
+#ifdef __ZDAB
 #include <zdab_dispatch.hpp>
+#endif
 
 #include <TTree.h>
 #include <TFile.h>
@@ -34,16 +36,19 @@ ReceiverThread::~ReceiverThread()
 void
 ReceiverThread::Initialise()
 {
+#ifdef __ZDAB
   // Must load a DS run for the PMT Positions (replace this with db access when possible...)
   LoadRunTree();
   std::string subscribe = "w RAWDATA";
   fReceiver = new ratzdab::dispatch( fPort, subscribe );
   cout << "Listening on " << fPort << " for " << subscribe << endl;
+#endif
 }
 
 void
 ReceiverThread::Run()
 {
+#ifdef __ZDAB
   RAT::DS::Root* event = NULL;
   RAT::DS::Root* rec = (RAT::DS::Root*) fReceiver->next();
   if( rec ) // avalanche is non-blocking
@@ -58,6 +63,9 @@ ReceiverThread::Run()
         fSemaphore.Signal();
     }
   delete rec;
+#else
+  Kill();
+#endif
 }
 
 void

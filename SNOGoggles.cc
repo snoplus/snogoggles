@@ -85,7 +85,13 @@ int main( int argc, char *argv[] )
       if( options.fArgument.substr( options.fArgument.size() - 4 ) == string( "root" ) )
         loadData = new LoadRootFileThread( options.fArgument, sema );
       else
-        loadData = new LoadZdabFileThread( options.fArgument, sema );
+        {
+          loadData = new LoadZdabFileThread( options.fArgument, sema );
+#ifndef __ZDAB
+          cout << "Cannot load ZDAB files, scons zdab=1 will solve this - unless on a Mac." << endl;
+          exit(1);
+#endif
+        }
       // Wait for first event to be loaded
       sema.Wait();
     }

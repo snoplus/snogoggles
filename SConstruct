@@ -28,7 +28,9 @@ ROOTSYS = os.path.join(os.environ["ROOTSYS"], 'bin')
 ROOTARCH = os.popen(os.path.join(ROOTSYS, 'root-config') + ' --arch').read().strip()
 
 # Adds all packages used by the viewer
-addpackages(env)
+# Add zdab by default unless zdab=0 is specified.                                                                                             
+zdab = int(ARGUMENTS.get('zdab', 1)) == 1
+addpackages(env, zdab)
 
 # Temp always in debug
 env.Append(CXXFLAGS=["-g"])

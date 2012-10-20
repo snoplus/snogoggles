@@ -61,6 +61,7 @@ def ratzdab(env):
     env.Append(CPPPATH = [os.path.join(ratzdab_path, "src")])
     env.Append(LIBPATH = [os.path.join(ratzdab_path, "lib")])
     env.Append(LIBS = ["zdispatch", "zconvert", "zfile"])
+    env.Append(CPPFLAGS='-D__ZDAB')
 
 # Append Avalanche and zmq
 def Avalanche(env):
@@ -84,7 +85,7 @@ def Python(env):
     env.MergeFlags( ' '.join( ldflags ) ) 
     
 # Adds all packages
-def addpackages(env):
+def addpackages(env, zdab):
     rat(env)
     glut(env)    
     geant4(env)
@@ -93,7 +94,8 @@ def addpackages(env):
     Python(env)
     xercesc(env)
     PThread(env)
-    ratzdab(env)
+    if zdab:
+        ratzdab(env)
     #Avalanche(env)
 
 

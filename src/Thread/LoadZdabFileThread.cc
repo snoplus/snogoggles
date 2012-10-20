@@ -2,7 +2,9 @@
 #include <RAT/DS/Run.hh>
 using namespace RAT;
 
+#ifdef __ZDAB
 #include <zdab_file.hpp>
+#endif
 
 #include <TTree.h>
 #include <TFile.h>
@@ -20,6 +22,7 @@ using namespace Viewer;
 void
 LoadZdabFileThread::Run()
 {
+#ifdef __ZDAB
   DataStore& events = DataStore::GetInstance();
 
   if( fFile == NULL )
@@ -43,11 +46,15 @@ LoadZdabFileThread::Run()
       delete fRun;
       Kill();
     }
+#else
+  Kill();
+#endif
 }
 
 bool
 LoadZdabFileThread::LoadNextEvent()
 {
+#ifdef __ZDAB
   try
     {
       TObject* record = fFile->next();
@@ -68,6 +75,7 @@ LoadZdabFileThread::LoadNextEvent()
     {
       return LoadNextEvent(); // Carry on and try again...
     }
+#endif
 }
 
 void
