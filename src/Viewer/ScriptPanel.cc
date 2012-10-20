@@ -6,6 +6,7 @@ using namespace std;
 #include <Viewer/Event.hh>
 #include <Viewer/DataStore.hh>
 #include <Viewer/Selector.hh>
+#include <Viewer/TextBox.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Directory.hh>
 using namespace Viewer;
@@ -78,6 +79,11 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 stringstream scriptDir;
                 scriptDir << getenv( "VIEWERROOT" ) << "/scripts/select";
                 dynamic_cast<GUIs::Selector*>( fGUIs[1] )->Initialise( GetFilesInDirectory( scriptDir.str() ) );
+              }
+              break;
+            case 2:
+              {
+                fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::TextBox >( posRect, objectConfig->GetI( "effect" ) );
               }
               break;
             }
