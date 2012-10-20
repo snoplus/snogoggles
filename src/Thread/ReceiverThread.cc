@@ -4,6 +4,8 @@
 #include <RAT/Pack.hh>
 using namespace RAT;
 
+#include <zdab_dispatch.hpp>
+
 #include <TTree.h>
 #include <TFile.h>
 using namespace ROOT;
@@ -24,21 +26,26 @@ ReceiverThread::ReceiverThread( const std::string& port,
 
 }
 
+ReceiverThread::~ReceiverThread()
+{
+  delete fReceiver;
+}
+
 void
 ReceiverThread::Initialise()
 {
   // Must load a DS run for the PMT Positions (replace this with db access when possible...)
   LoadRunTree();
   std::string subscribe = "w RAWDATA";
-  fClient.addDispatcher( fPort , subscribe );
-  cout << "Listening on " << fPort << endl;
+  fReceiver = new ratzdab::dispatch( fPort, subscribe );
+  cout << "Listening on " << fPort << " for " << subscribe << endl;
 }
 
 void
 ReceiverThread::Run()
 {
   RAT::DS::Root* event = NULL;
-  RAT::DS::Root* rec = (RAT::DS::Root*) fClient.recv();
+  RAT::DS::Root* rec = (RAT::DS::Root*) fReceiver->next();
   if( rec ) // avalanche is non-blocking
     event = dynamic_cast<RAT::DS::Root*> (rec);
   if( event != NULL ) // avalanche is non-blocking
