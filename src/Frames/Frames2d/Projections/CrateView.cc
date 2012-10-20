@@ -83,9 +83,9 @@ void
 CrateView::DrawPMT( const int lcn,
                     const Colour& colour )
 {
-  int crate = BitManip::GetBits(lcn, 9, 5);
+  int crate = BitManip::GetBits(lcn, 9, 5); 
   int card = BitManip::GetBits(lcn, 5, 4);
-  int channel = BitManip::GetBits(lcn, 0, 5);
+  int channel = 31 - BitManip::GetBits(lcn, 0, 5);// Inverse the vertical position of the channels
   double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth + kHitWidth; // Margin of 1 hit width
   double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight + kHitHeight; // Margin of 1 hit height
   fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
