@@ -156,12 +156,12 @@ ParseArguments( int argc, char** argv )
         }
       c = getopt_long(argc, argv, "s::h", opts, &option_index);
     }
-  if( option_index >= argc )
+  if( option_index >= argc || argc == 1 )
     {
       PrintHelp();
       exit(1);
     }
-  if (options.fArgument == "") 
+  if( options.fArgument == "" )
     {
       options.fArgument = argv[1];
     }
