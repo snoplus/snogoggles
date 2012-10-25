@@ -20,6 +20,7 @@
 #include <vector>
 
 #include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/RIDS/Time.hh>
 
 namespace RAT
 {
@@ -45,6 +46,7 @@ public:
   int GetUnCalNHits() const { return fUnCalHits.size(); }
   int GetTruthNHits() const { return fTruthHits.size(); }
   int GetTriggerWord() const { return fTriggerWord; }
+  Time GetTime() const { return fTime; }
   /// Return a vector of PMTHits (data) by source, e.g. eCal
   std::vector<PMTHit> GetHitData( EDataSource source ) const;
 
@@ -54,6 +56,8 @@ private:
   std::vector<PMTHit> fCalHits;
   std::vector<PMTHit> fUnCalHits;
   std::vector<PMTHit> fTruthHits;
+  
+  Time fTime; /// < The event time
 
   unsigned long long fClock50;
   unsigned long long fClock10;

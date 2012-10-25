@@ -1,5 +1,8 @@
 #include <RAT/DS/Root.hh>
 
+#include <ctime>
+using namespace std;
+
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/EV.hh>
 #include <Viewer/RIDS/MC.hh>
@@ -21,6 +24,10 @@ Event::Event( RAT::DS::Root& rDS,
 
   fRunID = rDS.GetRunID();
   fSubRunID = rDS.GetSubRunID();
+
+  time_t now = time(0);
+  struct tm* tm = localtime( &now );
+  fTime = Time( tm );
 }
 
 Event::Event( const Event& rhs )
@@ -45,6 +52,7 @@ Event::operator=( const Event& rhs )
     fEV = new EV( *rhs.fEV );
   fRunID = rhs.fRunID;
   fSubRunID = rhs.fSubRunID;
+  fTime = rhs.fTime;
   return *this;
 }
 

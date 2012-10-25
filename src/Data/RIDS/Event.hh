@@ -21,6 +21,7 @@
 
 #include <Viewer/RIDS/RIDS.hh>
 #include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/RIDS/Time.hh>
 
 namespace RAT
 {
@@ -43,7 +44,6 @@ class Event
 public:
   Event( RAT::DS::Root& rDS,
          unsigned int iEV );
-  Event( RAT::DS::PackedEvent& rPacked );
   Event( const Event& rhs );
   Event& operator=( const Event& rhs );
   ~Event();
@@ -54,11 +54,14 @@ public:
   EV& GetEV() const { return *fEV; }
   int GetRunID() const { return fRunID; }
   int GetSubRunID() const { return fSubRunID; }
+  Time GetTime() const { return fTime; }
   /// Return a vector of PMTHits (data) by source, e.g. eCal
   std::vector<PMTHit> GetHitData( EDataSource source ) const;
 
 private:
   Event();
+
+  Time fTime; /// < Time viewer created the event (useful for performance tracking)
 
   EV* fEV; /// < EV side event data
   MC* fMC; /// < Monte Carlo side event data, optional

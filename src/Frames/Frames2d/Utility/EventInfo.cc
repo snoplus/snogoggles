@@ -9,6 +9,7 @@ using namespace std;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/EV.hh>
 #include <Viewer/RIDS/MC.hh>
+#include <Viewer/RIDS/Time.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
@@ -52,12 +53,15 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << "\tWrite:" << DataStore::GetInstance().GetBufferWrite() << endl;
 
   const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
+  eventInfo << "Recieved Time: " << event.GetTime().GetTime() << endl;
   if( event.ExistEV() )
     {
       RIDS::EV& ev = event.GetEV();
       eventInfo << "EV:" << endl;
       eventInfo << "\tGTID: " << ToHexString(ev.GetGTID()) << endl;
       eventInfo << "\tTrigger Word: " << ToHexString( ev.GetTriggerWord() ) << endl;
+      eventInfo << "\tEvent Date: " << ev.GetTime().GetDate() << endl;
+      eventInfo << "\tEvent Time: " << ev.GetTime().GetTime() << endl;
       eventInfo << "\tNhit (Cal):" << ev.GetCalNHits() << endl;
       eventInfo << "\tNhit (UnCal):" << ev.GetUnCalNHits() << endl;
       eventInfo << "\tNhit (Truth):" << ev.GetTruthNHits() << endl;

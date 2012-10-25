@@ -13,6 +13,7 @@ using namespace RAT;
 using namespace ROOT;
 
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 using namespace std;
 
@@ -55,7 +56,10 @@ ReceiverThread::Run()
     event = dynamic_cast<RAT::DS::Root*> (rec);
   if( event != NULL ) // avalanche is non-blocking
     {
-      cout << "Got an event " <<endl;//<< event->NHits << endl;
+      cout << "Event of run: " << dec << rec->GetRunID() << " with [";
+      for( int iEV = 0; iEV < rec->GetEVCount(); iEV++ )
+        cout << "0x" << hex << uppercase << rec->GetEV(iEV)->GetEventID();
+      cout << "] events." << endl;
       DataStore& events = DataStore::GetInstance();
       events.Add( event );
       fNumReceivedEvents++;
