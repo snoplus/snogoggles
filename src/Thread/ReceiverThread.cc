@@ -15,6 +15,7 @@ using namespace ROOT;
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <ctime>
 using namespace std;
 
 #include <Viewer/ReceiverThread.hh>
@@ -59,7 +60,9 @@ ReceiverThread::Run()
       cout << "Event of run: " << dec << rec->GetRunID() << " with [";
       for( int iEV = 0; iEV < rec->GetEVCount(); iEV++ )
         cout << "0x" << hex << uppercase << rec->GetEV(iEV)->GetEventID();
-      cout << "] events." << endl;
+      time_t now = time(0);
+      struct tm* tm = localtime( &now );
+      cout << "] events at " << dec << tm->tm_hour << ":" << tm->tm_min << ":" << tm->tm_sec << endl;
       DataStore& events = DataStore::GetInstance();
       events.Add( event );
       fNumReceivedEvents++;
