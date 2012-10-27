@@ -6,6 +6,7 @@
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/RIDS/EV.hh>
+#include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/DataStore.hh>
 

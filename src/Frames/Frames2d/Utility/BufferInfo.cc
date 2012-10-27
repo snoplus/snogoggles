@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-#include <Viewer/EventInfo.hh>
+#include <Viewer/BufferInfo.hh>
 #include <Viewer/DataStore.hh>
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/EV.hh>
@@ -16,13 +16,13 @@ using namespace std;
 using namespace Viewer;
 using namespace Frames;
 
-EventInfo::~EventInfo()
+BufferInfo::~BufferInfo()
 {
 
 }
 
 void 
-EventInfo::PreInitialise( const ConfigurationTable* configTable )
+BufferInfo::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> textSize;
   textSize.left = 0.0; textSize.top = 0.0; textSize.width = 1.0; textSize.height = 1.0;
@@ -33,7 +33,7 @@ EventInfo::PreInitialise( const ConfigurationTable* configTable )
 }
 
 void 
-EventInfo::EventLoop()
+BufferInfo::EventLoop()
 {
   while( !fEvents.empty() )
     {
@@ -41,39 +41,26 @@ EventInfo::EventLoop()
     }
 }
 void 
-EventInfo::Render2d( RWWrapper& renderApp,
+BufferInfo::Render2d( RWWrapper& renderApp,
 		     const RenderState& renderState )
 {
   stringstream eventInfo;
   eventInfo.precision( 0 );
   eventInfo << fixed;
+  eventInfo << "Buffer:" << endl;
+  eventInfo << "\tSize:" << DataStore::GetInstance().GetBufferSize() << endl;
+  eventInfo << "\tWaiting elements:" << DataStore::GetInstance().GetBufferElements() << endl;
 
   const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
-  if( event.ExistEV() )
-    {
-      RIDS::EV& ev = event.GetEV();
-      eventInfo << "EV:" << endl;
-      eventInfo << "\tGTID: " << ToHexString(ev.GetGTID()) << endl;
-      eventInfo << "\tTrigger Word: " << ToHexString( ev.GetTriggerWord() ) << endl;
-      eventInfo << "\tEvent Date: " << ev.GetTime().GetDate() << endl;
-      eventInfo << "\tEvent Time: " << ev.GetTime().GetTime() << endl;
-      eventInfo << "\tNhit (Cal):" << ev.GetCalNHits() << endl;
-      eventInfo << "\tNhit (UnCal):" << ev.GetUnCalNHits() << endl;
-      eventInfo << "\tNhit (Truth):" << ev.GetTruthNHits() << endl;
-    }
-  if( event.ExistMC() )
-    {
-      RIDS::MC& mc = event.GetMC();
-      eventInfo << "MC:" << endl;
-      eventInfo << "\tNhit:" << mc.GetNHits() << endl;
-    }
+  eventInfo << "\tRecieved Time: " << event.GetTime().GetTime() << endl;
+
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   renderApp.Draw( *fInfoText );  
 }
 
 string
-EventInfo::ToByteString( int number )
+BufferInfo::ToByteString( int number )
 {
   stringstream byteStream;
   for( size_t iLoop = 1; iLoop <= sizeof(int) * 8; iLoop++ )
@@ -90,7 +77,7 @@ EventInfo::ToByteString( int number )
 }
 
 string
-EventInfo::ToHexString( int number )
+BufferInfo::ToHexString( int number )
 {
   stringstream hexStream;
   hexStream << hex << uppercase;

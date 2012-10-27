@@ -31,7 +31,7 @@ ScriptPanel::EventLoop()
       switch( fEvents.front().fguiID )
         {
         case 0: // Change the sum script
-          DataStore::GetInstance().GetScriptData().Load( dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetStringState() );
+          //DataStore::GetInstance().GetScriptData().Load( dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetStringState() );
           break;
         }
       fEvents.pop();
@@ -69,7 +69,7 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               {
                 fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
                 stringstream scriptDir;
-                scriptDir << getenv( "VIEWERROOT" ) << "/scripts/sum";
+                scriptDir << getenv( "VIEWERROOT" ) << "/scripts/analysis";
                 dynamic_cast<GUIs::Selector*>( fGUIs[0] )->Initialise( GetFilesInDirectory( scriptDir.str(), string("py") ) );
               }
               break;
@@ -77,7 +77,7 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               {
                 fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
                 stringstream scriptDir;
-                scriptDir << getenv( "VIEWERROOT" ) << "/scripts/select";
+                scriptDir << getenv( "VIEWERROOT" ) << "/scripts/eventselect";
                 dynamic_cast<GUIs::Selector*>( fGUIs[1] )->Initialise( GetFilesInDirectory( scriptDir.str() ) );
               }
               break;

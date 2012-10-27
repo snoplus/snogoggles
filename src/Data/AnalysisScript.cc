@@ -1,29 +1,29 @@
 #include <Python.h>
 
-#include <iostream>
 #include <sstream>
 using namespace std;
 
 #include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/ScriptData.hh>
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/AnalysisScript.hh>
 using namespace Viewer;
 
 const int kNumChannels = 10000;
 
-ScriptData::ScriptData()
+AnalysisScript::AnalysisScript()
 {
   Py_InitializeEx(0); // Initialise without signal handlers
   fpScript = NULL;
 }
 
-ScriptData::~ScriptData()
+AnalysisScript::~AnalysisScript()
 {
   UnLoad();
   Py_Finalize();
 }
 
 void
-ScriptData::UnLoad()
+AnalysisScript::UnLoad()
 {
   Py_XDECREF( fpScript ); // Delete old script if exists
   Py_XDECREF( fpEventFunction );
@@ -32,12 +32,12 @@ ScriptData::UnLoad()
 }
 
 void
-ScriptData::Load( const string& scriptName )
+AnalysisScript::Load( const string& scriptName )
 {
   UnLoad();
   // Load new script
   stringstream pythonScriptPath;
-  pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/sum";
+  pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/analysis";
   PyObject* pSysPath = PySys_GetObject( "path" );
   PyObject* pPath = PyString_FromString( pythonScriptPath.str().c_str() );
   PyList_Append( pSysPath, pPath );
@@ -57,14 +57,14 @@ ScriptData::Load( const string& scriptName )
 }
 
 void
-ScriptData::Reset()
+AnalysisScript::Reset()
 {
   PyObject* pResult = PyObject_CallFunctionObjArgs( fpEventFunction, fpData, NULL );
   Py_DECREF( pResult );
 }
 
 void
-ScriptData::ProcessEvent( const RIDS::Event& event )
+AnalysisScript::ProcessEvent( const RIDS::Event& event )
 {
   // First produce the (4) python lists of data (MC, PMTTruth, PMTUnCal, PMTCal)
   PyObject* pMC = FillList( event, RIDS::eMC );
@@ -88,7 +88,7 @@ ScriptData::ProcessEvent( const RIDS::Event& event )
 }
 
 vector<RIDS::PMTHit>
-ScriptData::GetHitData() const
+AnalysisScript::GetHitData() const
 {
   vector<RIDS::PMTHit> hitData;
   for( int lcn = 0; lcn < kNumChannels; lcn++ )
@@ -99,7 +99,7 @@ ScriptData::GetHitData() const
 }
 
 PyObject*
-ScriptData::NewEmptyPyList()
+AnalysisScript::NewEmptyPyList()
 {
   PyObject* pList = PyList_New( kNumChannels );
   RIDS::PMTHit nonHit( 0.0, 0.0, 0.0, 0.0 ); // Empty hit
@@ -113,7 +113,7 @@ ScriptData::NewEmptyPyList()
 }
 
 PyObject*
-ScriptData::FillList( const RIDS::Event& event,
+AnalysisScript::FillList( const RIDS::Event& event,
                       RIDS::EDataSource source )
 {
   PyObject* pList = NewEmptyPyList();

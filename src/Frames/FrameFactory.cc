@@ -1,6 +1,7 @@
 #include <Viewer/FrameFactory.hh>
 #include <Viewer/About.hh>
 #include <Viewer/EventInfo.hh>
+#include <Viewer/BufferInfo.hh>
 #include <Viewer/LambertProjection.hh>
 #include <Viewer/IcosahedralProjection.hh>
 #include <Viewer/CrateView.hh>
@@ -16,6 +17,7 @@ FrameFactory::FrameFactory()
 {
   Register( Frames::About::Name(), new FrameAlloc<Frames::About>() );
   Register( Frames::EventInfo::Name(), new FrameAlloc<Frames::EventInfo>() );
+  Register( Frames::BufferInfo::Name(), new FrameAlloc<Frames::BufferInfo>() );
 
   Register( Frames::LambertProjection::Name(), new FrameAlloc<Frames::LambertProjection>() );
   Register( Frames::IcosahedralProjection::Name(),new FrameAlloc<Frames::IcosahedralProjection>() );

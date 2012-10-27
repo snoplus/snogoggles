@@ -5,29 +5,37 @@
 using namespace std;
 
 #include <Viewer/DataStore.hh>
+#include <Viewer/PythonScripts.hh>
 #include <Viewer/RIDS/Event.hh>
 using namespace Viewer;
 
 DataStore::DataStore()
-{
-  fWriteIndex = 0;
-  fReadIndex = 0;
+  : fInputBuffer( 5000 ) 
+{ 
+  fEvents.resize( 5000, NULL ); 
+  fWrite = 0;
+  fRead = 0;
   fEvent = NULL;
   fRun = NULL;
-  fEvents.resize( 5000, NULL );
   fChanged = true;
+  fSelecting = true;
 }
 
 void
 DataStore::Initialise()
 {
-  Lock lock( fLock );
-  fEvent = new RIDS::Event( *fEvents[0] );
-  fScriptData.Load( "default" );
+  PythonScripts::GetInstance().Initialise();
+  RIDS::Event* currentEvent = NULL;
+  fInputBuffer.Pop( currentEvent ); // Guaranteed by semaphore to work
+  fEvents[fWrite] = currentEvent;
+  fWrite = ( fWrite + 1 ) % fEvents.size();
+  fEvent = new RIDS::Event( *currentEvent );
+  fChanged = true;
 }
 
 DataStore::~DataStore()
 {
+  Update();
   for( unsigned int uLoop = 0; uLoop < fEvents.size(); uLoop++ )
     delete fEvents[uLoop];
   fEvents.clear();
@@ -37,107 +45,107 @@ DataStore::~DataStore()
 void 
 DataStore::SetRun( RAT::DS::Run* rRun )
 {
-  Lock lock( fLock );
   fRun = new RAT::DS::Run( *rRun );
 }
 
 bool
 DataStore::Add( RAT::DS::Root* rDS )
 {
-  if( fLock.TryLock() == true )
+  RIDS::Event* event = new RIDS::Event( *rDS, 0 );  // Always add 0, (may only be a mc event)
+  bool added = fInputBuffer.Push( event );
+  if( !added )
+    return false;
+  for( int iEV = 1; iEV < rDS->GetEVCount(); iEV++ )
     {
-      delete fEvents[fWriteIndex];
-      fEvents[fWriteIndex] = new RIDS::Event( *rDS, 0 ); // Always add 0, (may only be a mc event)
-      fWriteIndex = (++fWriteIndex) % fEvents.size(); // Roll over
-      for( unsigned int iEV = 1; iEV < rDS->GetEVCount(); iEV++ )
-        {
-          delete fEvents[fWriteIndex];
-          fEvents[fWriteIndex] = new RIDS::Event( *rDS, iEV );
-          fWriteIndex = (++fWriteIndex) % fEvents.size(); // Roll over
-        }
-      fLock.Unlock();
-      return true;
+      event = new RIDS::Event( *rDS, iEV );
+      if( !fInputBuffer.Push( event ) )
+        return false;
     }
-  return false;  
+  return true;
 }
 
-bool
-DataStore::Add( RAT::DS::PackedEvent* rPacked )
+void
+DataStore::Update()
 {
-
+  // Called every frame, so inform of no changes
+  fChanged = false;
+  /// This will overwrite existing events
+  RIDS::Event* currentEvent = NULL;
+  while( fInputBuffer.Pop( currentEvent ) )
+    {
+      fEvents[fWrite] = currentEvent;
+      fWrite = ( fWrite + 1 ) % fEvents.size();
+    }
 }
 
 void 
 DataStore::Latest()
 {
-  Lock lock( fLock );
-  if( fWriteIndex == 0 )
-    fReadIndex = fEvents.size() - 1;
-  else
-    fReadIndex = ( fWriteIndex - 1 ) % fEvents.size();
-  delete fEvent;
-  fEvent = new RIDS::Event( *fEvents[fReadIndex] );
-  fScriptData.ProcessEvent( *fEvent );
+  int prev = ( fWrite - 1 ) % fEvents.size();
+  RIDS::Event* currentEvent = fEvents[prev];
+  // Check test event is valid and ensure code does not circularly loop
+  while( currentEvent != NULL && prev != fRead ) 
+    {
+      if( SelectEvent( *currentEvent ) )
+        break; // Found an acceptable event
+      prev = ( prev - 1 ) % fEvents.size();
+      currentEvent = fEvents[prev];
+    }
+  fRead = prev;
+  fEvent = new RIDS::Event( *fEvents[fRead] );
   fChanged = true;
 }
 
 void 
 DataStore::Next()
 {
-  Lock lock( fLock );
-  fReadIndex = ++fReadIndex % fEvents.size();
-  // Return to the previous event
-  if( fEvents[fReadIndex] == NULL )
+  int next = ( fRead + 1 ) % fEvents.size();
+  RIDS::Event* currentEvent = fEvents[next];
+  // Check test event is valid and ensure code does not circularly loop
+  while( currentEvent != NULL && next != fRead ) 
     {
-      fReadIndex = 0;
+      if( SelectEvent( *currentEvent ) )
+        break; // Found an acceptable event
+      next = ( next + 1 ) % fEvents.size();
+      currentEvent = fEvents[next];
     }
-  delete fEvent;
-  fEvent = new RIDS::Event( *fEvents[fReadIndex] );
-  fScriptData.ProcessEvent( *fEvent );
+  fRead = next;
+  fEvent = new RIDS::Event( *fEvents[fRead] );
   fChanged = true;
 }
 
 void 
 DataStore::Prev()
 {
-  Lock lock( fLock );
-  if( fReadIndex == 0 )
-    fReadIndex = fEvents.size() - 1;
-  else
-    fReadIndex = --fReadIndex % fEvents.size();
-  if( fEvents[fReadIndex] == NULL)
-    fReadIndex = fWriteIndex - 1;
-  delete fEvent;
-  fEvent = new RIDS::Event( *fEvents[fReadIndex] );
-  fScriptData.ProcessEvent( *fEvent );
+  int prev = ( fRead - 1 ) % fEvents.size();
+  RIDS::Event* currentEvent = fEvents[prev];
+  // Check test event is valid and ensure code does not circularly loop
+  while( currentEvent != NULL && prev != fRead ) 
+    {
+      if( SelectEvent( *currentEvent ) )
+        break; // Found an acceptable event
+      prev = ( prev - 1 ) % fEvents.size();
+      currentEvent = fEvents[prev];
+    }
+  fRead = prev;
+  fEvent = new RIDS::Event( *fEvents[fRead] );
   fChanged = true;
 }
 
-const int 
-DataStore::GetBufferSize() 
+bool
+DataStore::SelectEvent( RIDS::Event& event )
 {
-  return  fEvents.size();
+  if( fSelecting )
+    return PythonScripts::GetInstance().GetEventSelection().ProcessEvent( event );
+  else // Return true if event selection is off
+    return true;
 }
-
-const int 
-DataStore::GetBufferRead() 
-{
-  return  fReadIndex;
-}
-
-const int 
-DataStore::GetBufferWrite() 
-{
-  return  fWriteIndex;
-}
-
-
 
 vector<RIDS::PMTHit> 
 DataStore::GetHitData( RIDS::EDataSource source ) const
 {
   if( source == RIDS::eScript )
-    return fScriptData.GetHitData();
+    return PythonScripts::GetInstance().GetAnalysis().GetHitData();
   else
     return GetCurrentEvent().GetHitData( source );
 }

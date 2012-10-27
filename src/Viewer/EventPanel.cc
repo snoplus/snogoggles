@@ -37,12 +37,12 @@ EventPanel::NewEvent( const Event& event )
       else if( event.key.code == sf::Keyboard::P )
         {
           fEventPeriod = -1.0;
-          dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( 0.0 );
+          dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
         }
       else if( event.key.code == sf::Keyboard::I )
         {
           fEventPeriod = 0.0;
-          dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( 0.95 );
+          dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.95 );
         }
     }
   Panel::NewEvent( event );
@@ -57,21 +57,21 @@ EventPanel::EventLoop()
     {
       switch( fEvents.front().fguiID )
         {
-        case 0: // Previous
+        case ePrev: // Previous
           events.Prev();
           break;
-        case 1: // Next
+        case eNext: // Next
           events.Next();
           break;
-        case 2: // Source change
-        case 3: // Type change
-          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
-                                    dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
-          dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->Reset();
+        case eDataSource: // Source change
+        case eDataType: // Type change
+          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetEnumState<RIDS::EDataSource>(), 
+                                    dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetEnumState<RIDS::EDataType>() );
+          dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
           break;
-        case 4: // Change in event display rate
+        case eRate: // Change in event display rate
           {
-            double slideScale = dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->GetState();
+            double slideScale = dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->GetState();
             if( slideScale <= 0.1 )
               fEventPeriod = -1.0;
             else if( slideScale >= 0.95 )
@@ -83,9 +83,9 @@ EventPanel::EventLoop()
               }
           }
           break;
-        case 5: // Change in scaling
-          fRenderState.ChangeScaling( dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMin(),
-                                      dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMax() );
+        case eScaling: // Change in scaling
+          fRenderState.ChangeScaling( dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin(),
+                                      dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() );
           break;
         }
       fEvents.pop();
@@ -106,14 +106,14 @@ EventPanel::PreInitialise( const ConfigurationTable* configTable )
   Panel::PreInitialise( configTable );
   if( configTable != NULL )
     {
-      dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->SetState( configTable->GetI( "data_source" ) );
-      dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->SetState( configTable->GetI( "data_type" ) );
-      dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->SetState( configTable->GetD( "scale_min" ),
-                                                             configTable->GetD( "scale_max" ) );
-      dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->SetState( configTable->GetD( "event_rate_scale" ) );
+      dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->SetState( configTable->GetI( "data_source" ) );
+      dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetState( configTable->GetI( "data_type" ) );
+      dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->SetState( configTable->GetD( "scale_min" ),
+                                                                    configTable->GetD( "scale_max" ) );
+      dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( configTable->GetD( "event_rate_scale" ) );
     }
-  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetEnumState<RIDS::EDataSource>(), 
-                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetEnumState<RIDS::EDataType>() );
+  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetEnumState<RIDS::EDataSource>(), 
+                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetEnumState<RIDS::EDataType>() );
 }
 
 void
@@ -134,38 +134,44 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
           int effect = objectConfig->GetI( "effect" );
           switch( effect )
             {
-            case 0:
+            case eMultiPrev: 
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 31 );
+              break;
+            case ePrev: 
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
               dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 11 );
               break;
-            case 1:
+            case eNext:
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
               dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 10 );
               break;
-            case 2:
+            case eMultiNext:
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 30 );
+              break;
+            case eDataSource:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                vector<string> sourceOptions;
                 dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetSourceStrings() );
               }
               break;
-            case 3:
+            case eDataType:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
                 dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetTypeStrings() );
               }
               break;
-            case 4:
+            case eRate:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::SlideSelector >( posRect, effect );
                 vector<double> stops; stops.push_back( 0.0 ); stops.push_back( 0.25 ); stops.push_back( 0.6 ); stops.push_back( 0.95 );
                 dynamic_cast<GUIs::SlideSelector*>( fGUIs[effect] )->Initialise( stops );
               }
               break;
-            case 5:
+            case eScaling:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::ScalingBar >( posRect, effect );
-                //dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetTypeStrings() );
               }
               break;
             }
@@ -177,9 +183,9 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
 void
 EventPanel::SaveConfiguration( ConfigurationTable* configTable )
 {
-  configTable->SetI( "data_source", dynamic_cast<GUIs::RadioSelector*>( fGUIs[2] )->GetState() );
-  configTable->SetI( "data_type", dynamic_cast<GUIs::RadioSelector*>( fGUIs[3] )->GetState() );
-  configTable->SetD( "scale_min", dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMin() );
-  configTable->SetD( "scale_max", dynamic_cast<GUIs::ScalingBar*>( fGUIs[5] )->GetMax() );
-  configTable->SetD( "event_rate_scale", dynamic_cast<GUIs::SlideSelector*>( fGUIs[4] )->GetState() );
+  configTable->SetI( "data_source", dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState() );
+  configTable->SetI( "data_type", dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetState() );
+  configTable->SetD( "scale_min", dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() );
+  configTable->SetD( "scale_max", dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() );
+  configTable->SetD( "event_rate_scale", dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->GetState() );
 }

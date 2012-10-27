@@ -13,6 +13,7 @@
 ///     07/05/12 : P.Jones - Renamed, refactored to use RIDS.
 ///     02/07/12 : O.Wasalski - Added method for frames to check whether
 ///                the current event being displayed has changed. \n
+///     17/10/12 : P.Jones - New buffering system.\n
 ///
 /// \detail  Holds RIDS::Event events and the RAT::DS::Run data. 
 ///          Also has an index to the current DS event and then the 
@@ -24,8 +25,7 @@
 
 #include <vector>
 
-#include <Viewer/Mutex.hh>
-#include <Viewer/ScriptData.hh>
+#include <Viewer/InputBuffer.hh>
 #include <Viewer/RIDS/RIDS.hh>
 #include <Viewer/RIDS/PMTHit.hh>
 
@@ -35,7 +35,6 @@ namespace DS
 {
   class Root;
   class Run;
-  class PackedEvent;
 }
 }
 
@@ -56,10 +55,8 @@ public:
   virtual ~DataStore();
   /// Set the run 
   void SetRun( RAT::DS::Run* rRun );
-  /// Add a DS event to the structure
+  /// Add a DS event to the structure (data thread only)
   bool Add( RAT::DS::Root* rDS );
-  /// Add a packed event to the structure
-  bool Add( RAT::DS::PackedEvent* rPackedEvent );
   /// Move to the latest event
   void Latest();
   /// Move to the next event, rolls over
@@ -69,31 +66,31 @@ public:
 
   inline const RIDS::Event& GetCurrentEvent() const;
   inline RAT::DS::Run& GetRun() const;
-  inline ScriptData& GetScriptData();
   inline bool HasChanged() const;
-  inline void Reset();
+  /// Update the data structure, fetch events from input buffer
+  void Update();
 
-  const int GetBufferSize();
-  const int GetBufferRead();
-  const int GetBufferWrite();
+  int GetBufferSize() const { return fInputBuffer.GetSize(); }
+  int GetBufferElements() const { return fInputBuffer.GetNumElements(); }
 
   /// Convienience method
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
 
 private:
-  Mutex fLock; /// < The lock
-  // LOCK(r/w): These must be locked to read/write
-  std::vector<RIDS::Event*> fEvents; /// < Event data array, writing will roll over and overwrite events from 0
-  unsigned int fWriteIndex;  /// < Current write event position
-  unsigned int fReadIndex; /// < Current read event position
-  // LOCK(w): These must be locked to write
-  RIDS::Event* fEvent; /// < Copy of the currently viewed event (stops it being deleted)
-  RAT::DS::Run* fRun; /// < Run tree
-  // END: End locked vars
-  ScriptData fScriptData; /// < The data as calculated by a python script
+  /// Return true if event is selected
+  bool SelectEvent( RIDS::Event& event );
+
+  InputBuffer<RIDS::Event*> fInputBuffer; /// < The input buffer, events arrive here
+  std::vector<RIDS::Event*> fEvents; /// < The event buffer for rendering
+  RIDS::Event* fEvent; /// < The currently rendered event
+  int fRead; /// < The currently read position in fEvents
+  int fWrite; /// < The current write position in fEvents
+  RAT::DS::Run* fRun; /// < The current run information
+
+  bool fSelecting;
   bool fChanged;
 
-  /// Prevent usage of
+  /// Prevent usage of methods below
   DataStore();
   DataStore( DataStore& );
   void operator=( DataStore& );
@@ -112,12 +109,6 @@ DataStore::GetRun() const
   return *fRun;
 }
 
-inline ScriptData&
-DataStore::GetScriptData()
-{
-  return fScriptData;
-}
-
 inline const RIDS::Event&
 DataStore::GetCurrentEvent() const
 {
@@ -128,12 +119,6 @@ inline bool
 DataStore::HasChanged() const
 {
   return fChanged;
-}
-
-inline void
-DataStore::Reset()
-{
-  fChanged = false;
 }
 
 } //::Viewer

@@ -4,6 +4,7 @@
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/RIDS/MC.hh>
+#include <Viewer/RIDS/Event.hh>
 #include <Viewer/DataStore.hh>
 
 #include <SFML/Graphics/Rect.hpp>
