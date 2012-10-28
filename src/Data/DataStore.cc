@@ -19,8 +19,8 @@ DataStore::DataStore()
   fEvent = NULL;
   fRun = NULL;
   fChanged = true;
-  fSelecting = true;
-  fAnalysing = true;
+  fSelecting = false;
+  fAnalysing = false;
 }
 
 void
@@ -101,18 +101,23 @@ DataStore::Latest()
 }
 
 void 
-DataStore::Next()
+DataStore::Next( const size_t step )
 {
   const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
   size_t next = ( fRead + 1 ) % limit;
   RIDS::Event* currentEvent = fEvents[next];
   // Check test event is valid and ensure code does not circularly loop
+  size_t progressEvents = 0; // Number of good selected events progress through
   while( currentEvent != NULL && next != fRead ) 
     {
       if( SelectEvent( *currentEvent ) )
         {
-          ChangeEvent( next );
-          return;
+          progressEvents++;
+          if( progressEvents == step )
+            {
+              ChangeEvent( next );
+              return;
+            }
         }
       next = ( next + 1 ) % limit;
       currentEvent = fEvents[next];
@@ -120,20 +125,30 @@ DataStore::Next()
 }
 
 void 
-DataStore::Prev()
+DataStore::Prev( const size_t step )
 {
   const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
   size_t prev = ( fRead - 1 ) % limit;
+  if( fRead == 0 )
+    prev = ( limit - 1 ) % limit;
   RIDS::Event* currentEvent = fEvents[prev];
   // Check test event is valid and ensure code does not circularly loop
+  size_t progressEvents = 0; // Number of good selected events progress through
   while( currentEvent != NULL && prev != fRead ) 
     {
       if( SelectEvent( *currentEvent ) )
         {
-          ChangeEvent( prev );
-          return;
+          progressEvents++;
+          if( progressEvents == step )
+            {
+              ChangeEvent( prev );
+              return;
+            }
         }
-      prev = ( prev - 1 ) % limit;
+      if( prev == 0 )
+        prev = ( limit - 1 ) % limit;
+      else
+        prev = ( prev - 1 ) % limit;
       currentEvent = fEvents[prev];
     }
 }

@@ -45,6 +45,7 @@ public:
 private:
   void ResetData();
 
+  std::string fCurrentScript;
   PyObject* fpScript;
   PyObject* fpSelectFunction;
   PyObject* fpData;

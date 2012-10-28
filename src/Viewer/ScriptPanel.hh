@@ -36,6 +36,9 @@ public:
 protected:
   /// Load the GUI configuration specific to the panel
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
+private:
+  enum { eAnalSelect = 0, eAnalRefresh = 1, eAnalOn = 2, eEventSelect = 3, eEventRefresh = 4, eEventOn = 5, 
+         ePMTSelect = 6, ePMTRefresh = 7, ePMTOn = 8 };
 };
 
 } //::Viewer

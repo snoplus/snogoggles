@@ -12,14 +12,22 @@ const int kNumChannels = 10000;
 
 AnalysisScript::AnalysisScript()
 {
-  Py_InitializeEx(0); // Initialise without signal handlers
+  stringstream pythonScriptPath;
+  pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/analysis";
+  PyObject* pSysPath = PySys_GetObject( "path" );
+  PyObject* pPath = PyString_FromString( pythonScriptPath.str().c_str() );
+  PyList_Append( pSysPath, pPath );
+  //Py_DECREF( pSysPath );
+  Py_DECREF( pPath );
   fpScript = NULL;
+  fpEventFunction = NULL;
+  fpResetFunction = NULL;
+  fpData = NULL;
 }
 
 AnalysisScript::~AnalysisScript()
 {
   UnLoad();
-  Py_Finalize();
 }
 
 void
@@ -34,25 +42,33 @@ AnalysisScript::UnLoad()
 void
 AnalysisScript::Load( const string& scriptName )
 {
-  UnLoad();
-  // Load new script
-  stringstream pythonScriptPath;
-  pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/analysis";
-  PyObject* pSysPath = PySys_GetObject( "path" );
-  PyObject* pPath = PyString_FromString( pythonScriptPath.str().c_str() );
-  PyList_Append( pSysPath, pPath );
-  //Py_DECREF( pSysPath );
-  Py_DECREF( pPath );
-  PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
-  fpScript = PyImport_Import( pScriptName ); // Load script
-  Py_DECREF( pScriptName );
-  fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
-  if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
-    throw;
-  fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
-  if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
-    throw;
-
+  if( scriptName != fCurrentScript )
+    {
+      UnLoad();
+      // Load new script
+      PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
+      fpScript = PyImport_Import( pScriptName ); // Load script
+      Py_DECREF( pScriptName );
+      fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
+      if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
+        throw;
+      fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
+      if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
+        throw;
+    }
+  else
+    {
+      fpScript = PyImport_ReloadModule( fpScript );// ReLoad script
+      Py_DECREF( fpEventFunction );
+      fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
+      if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
+        throw;
+      Py_DECREF( fpResetFunction );
+      fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
+      if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
+        throw;
+    }
+  fCurrentScript = scriptName;
   fpData = NewEmptyPyList();
 }
 

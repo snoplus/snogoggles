@@ -42,6 +42,8 @@ public:
   /// Process the event
   bool ProcessEvent( const RIDS::Event& event );  
 private:
+  std::string fCurrentScript;
+
   PyObject* fpScript;
   PyObject* fpSelectFunction;
 };

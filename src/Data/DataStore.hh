@@ -60,9 +60,9 @@ public:
   /// Move to the latest event
   void Latest();
   /// Move to the next event, rolls over
-  void Next();
+  void Next( const size_t step = 1 );
   /// Move to the previous event, rolls over
-  void Prev();
+  void Prev( const size_t step = 1 );
 
   inline const RIDS::Event& GetCurrentEvent() const;
   inline RAT::DS::Run& GetRun() const;
@@ -77,6 +77,11 @@ public:
 
   /// Convienience method
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
+
+  /// Set the analysis state
+  void SetAnalysing( const bool state ) { fAnalysing = state; }
+  /// Set the selection state
+  void SetEventSelecting( const bool state ) { fSelecting = state; }
 
 private:
   /// Run the event over the script and return true if selected

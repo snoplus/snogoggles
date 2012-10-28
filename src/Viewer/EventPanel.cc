@@ -57,6 +57,12 @@ EventPanel::EventLoop()
     {
       switch( fEvents.front().fguiID )
         {
+        case eMultiPrev:
+          events.Prev( 10 );
+          break;
+        case eMultiNext:
+          events.Next( 10 );
+          break;
         case ePrev: // Previous
           events.Prev();
           break;

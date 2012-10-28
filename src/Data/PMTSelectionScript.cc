@@ -10,14 +10,21 @@ const int kNumChannels = 10000;
 
 PMTSelectionScript::PMTSelectionScript()
 {
-  Py_InitializeEx(0); // Initialise without signal handlers
+  stringstream pythonScriptPath;
+  pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/pmtselect";
+  PyObject* pSysPath = PySys_GetObject( "path" );
+  PyObject* pPath = PyString_FromString( pythonScriptPath.str().c_str() );
+  PyList_Append( pSysPath, pPath );
+  //Py_DECREF( pSysPath );
+  Py_DECREF( pPath );
   fpScript = NULL;
+  fpSelectFunction = NULL;
+  fpData = NULL;
 }
 
 PMTSelectionScript::~PMTSelectionScript()
 {
   UnLoad();
-  Py_Finalize();
 }
 
 void
@@ -31,22 +38,26 @@ PMTSelectionScript::UnLoad()
 void
 PMTSelectionScript::Load( const string& scriptName )
 {
-  UnLoad();
-  // Load new script
-  stringstream pythonScriptPath;
-  pythonScriptPath << getenv( "VIEWERROOT" ) << "/scripts/pmtselect";
-  PyObject* pSysPath = PySys_GetObject( "path" );
-  PyObject* pPath = PyString_FromString( pythonScriptPath.str().c_str() );
-  PyList_Append( pSysPath, pPath );
-  //Py_DECREF( pSysPath );
-  Py_DECREF( pPath );
-  PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
-  fpScript = PyImport_Import( pScriptName ); // Load script
-  Py_DECREF( pScriptName );
-  fpSelectFunction = PyObject_GetAttrString( fpScript, "select" );
-  if( !fpSelectFunction || !PyCallable_Check( fpSelectFunction ) )
-    throw;
-
+  if( scriptName != fCurrentScript )
+    {
+      UnLoad();
+      // Load new script
+      PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
+      fpScript = PyImport_Import( pScriptName ); // Load script
+      Py_DECREF( pScriptName );
+      fpSelectFunction = PyObject_GetAttrString( fpScript, "select" );
+      if( !fpSelectFunction || !PyCallable_Check( fpSelectFunction ) )
+        throw;
+    }
+  else
+    {
+      fpScript = PyImport_ReloadModule( fpScript ); // ReLoad script
+      Py_DECREF( fpSelectFunction );
+      fpSelectFunction = PyObject_GetAttrString( fpScript, "select" );
+      if( !fpSelectFunction || !PyCallable_Check( fpSelectFunction ) )
+        throw;
+    }
+  fCurrentScript = scriptName;
   fpData = PyList_New( kNumChannels );
   ResetData();
 }

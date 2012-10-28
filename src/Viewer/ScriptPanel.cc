@@ -2,6 +2,7 @@
 
 using namespace std;
 
+#include <Viewer/PythonScripts.hh>
 #include <Viewer/ScriptPanel.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/DataStore.hh>
@@ -9,6 +10,8 @@ using namespace std;
 #include <Viewer/TextBox.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Directory.hh>
+#include <Viewer/Button.hh>
+#include <Viewer/PersistLabel.hh>
 using namespace Viewer;
 
 ScriptPanel::ScriptPanel( RectPtr rect )
@@ -30,8 +33,19 @@ ScriptPanel::EventLoop()
     {
       switch( fEvents.front().fguiID )
         {
-        case 0: // Change the sum script
-          //DataStore::GetInstance().GetScriptData().Load( dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetStringState() );
+        case eAnalSelect: // Change the analysis script
+        case eAnalRefresh:
+          PythonScripts::GetInstance().GetAnalysis().Load( dynamic_cast<GUIs::Selector*>( fGUIs[eAnalSelect] )->GetStringState() );
+          break;
+        case eAnalOn:
+          events.SetAnalysing( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eAnalOn] )->GetState() );
+          break;
+        case eEventSelect: // Change the analysis script
+        case eEventRefresh:
+          PythonScripts::GetInstance().GetEventSelection().Load( dynamic_cast<GUIs::Selector*>( fGUIs[eEventSelect] )->GetStringState() );
+          break;
+        case eEventOn:
+          events.SetEventSelecting( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eEventOn] )->GetState() );
           break;
         }
       fEvents.pop();
@@ -44,7 +58,7 @@ ScriptPanel::PreInitialise( const ConfigurationTable* configTable )
   Panel::PreInitialise( configTable );
   if( configTable != NULL )
     {
-      dynamic_cast<GUIs::Selector*>( fGUIs[0] )->SetState( configTable->GetI( "sum-script_state" ) );
+      dynamic_cast<GUIs::Selector*>( fGUIs[eAnalSelect] )->SetState( configTable->GetI( "sum-script_state" ) );
     }
 }
 
@@ -63,27 +77,67 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
       if( objectConfig->GetName() == string( "gui" ) )
         {
           sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
-          switch( objectConfig->GetI( "effect" ) )
+          const int effect = objectConfig->GetI( "effect" );
+          switch( effect )
             {
-            case 0:
+            case eAnalSelect:
               {
-                fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
+                fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, effect );
                 stringstream scriptDir;
                 scriptDir << getenv( "VIEWERROOT" ) << "/scripts/analysis";
-                dynamic_cast<GUIs::Selector*>( fGUIs[0] )->Initialise( GetFilesInDirectory( scriptDir.str(), string("py") ) );
+                dynamic_cast<GUIs::Selector*>( fGUIs[effect] )->Initialise( GetFilesInDirectory( scriptDir.str(), string("py") ) );
               }
               break;
-            case 1:
+            case eEventSelect:
               {
-                fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, objectConfig->GetI( "effect" ) );
+                fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, effect );
                 stringstream scriptDir;
                 scriptDir << getenv( "VIEWERROOT" ) << "/scripts/eventselect";
-                dynamic_cast<GUIs::Selector*>( fGUIs[1] )->Initialise( GetFilesInDirectory( scriptDir.str() ) );
+                dynamic_cast<GUIs::Selector*>( fGUIs[effect] )->Initialise( GetFilesInDirectory( scriptDir.str() ) );
               }
               break;
-            case 2:
+            case ePMTSelect:
               {
-                fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::TextBox >( posRect, objectConfig->GetI( "effect" ) );
+                fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, effect );
+                stringstream scriptDir;
+                scriptDir << getenv( "VIEWERROOT" ) << "/scripts/pmtselect";
+                dynamic_cast<GUIs::Selector*>( fGUIs[effect] )->Initialise( GetFilesInDirectory( scriptDir.str() ) );
+              }
+              break;
+            case eAnalRefresh: 
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 23 );
+              }
+              break;
+            case eEventRefresh: 
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 23 );
+              }
+              break;
+            case ePMTRefresh: 
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 23 );
+              }
+              break;
+            case eAnalOn: 
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable?" );
+              }
+              break;
+            case eEventOn: 
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable?" );
+              }
+              break;
+            case ePMTOn: 
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable?" );
               }
               break;
             }
@@ -94,5 +148,5 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
 void
 ScriptPanel::SaveConfiguration( ConfigurationTable* configTable )
 {
-  configTable->SetI( "sum-script_state", dynamic_cast<GUIs::Selector*>( fGUIs[0] )->GetState() );
+  configTable->SetI( "sum-script_state", dynamic_cast<GUIs::Selector*>( fGUIs[eAnalSelect] )->GetState() );
 }

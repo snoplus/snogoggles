@@ -4,6 +4,8 @@
 
 def select(data):
     """ """
+    if data['nhit'] < 1:
+        return False
     if data['trigger'] != 0:
         return True
     else:

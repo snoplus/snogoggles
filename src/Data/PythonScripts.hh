@@ -28,15 +28,15 @@ public:
 
   void Initialise();
 
-  AnalysisScript& GetAnalysis() { return fAnalysis; }
-  EventSelectionScript& GetEventSelection() { return fEventSelection; }
-  PMTSelectionScript& GetPMTSelection() { return fPMTSelection; }
+  AnalysisScript& GetAnalysis() { return *fAnalysis; }
+  EventSelectionScript& GetEventSelection() { return *fEventSelection; }
+  PMTSelectionScript& GetPMTSelection() { return *fPMTSelection; }
 
   ~PythonScripts();
 private:
-  AnalysisScript fAnalysis;
-  EventSelectionScript fEventSelection;
-  PMTSelectionScript fPMTSelection;
+  AnalysisScript* fAnalysis;
+  EventSelectionScript* fEventSelection;
+  PMTSelectionScript* fPMTSelection;
 
   /// Prevent usage of methods below
   PythonScripts();

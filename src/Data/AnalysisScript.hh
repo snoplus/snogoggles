@@ -55,6 +55,8 @@ private:
   PyObject* FillList( const RIDS::Event& event,
                       RIDS::EDataSource source );
 
+  std::string fCurrentScript;
+
   PyObject* fpScript;
   PyObject* fpEventFunction;
   PyObject* fpResetFunction;
