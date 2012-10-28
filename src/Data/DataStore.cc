@@ -15,6 +15,7 @@ DataStore::DataStore()
   fEvents.resize( 5000, NULL ); 
   fWrite = 0;
   fRead = 0;
+  fEventsAdded = 1;
   fEvent = NULL;
   fRun = NULL;
   fChanged = true;
@@ -73,6 +74,7 @@ DataStore::Update()
   RIDS::Event* currentEvent = NULL;
   while( fInputBuffer.Pop( currentEvent ) )
     {
+      fEventsAdded++;
       fEvents[fWrite] = currentEvent;
       fWrite = ( fWrite + 1 ) % fEvents.size();
     }
@@ -81,55 +83,64 @@ DataStore::Update()
 void 
 DataStore::Latest()
 {
-  int prev = ( fWrite - 1 ) % fEvents.size();
+  const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
+  size_t prev = ( fWrite - 1 ) % limit;
   RIDS::Event* currentEvent = fEvents[prev];
   // Check test event is valid and ensure code does not circularly loop
-  while( currentEvent != NULL && prev != fRead ) 
+  while( currentEvent != NULL && prev != fWrite ) 
     {
       if( SelectEvent( *currentEvent ) )
-        break; // Found an acceptable event
-      prev = ( prev - 1 ) % fEvents.size();
+        {
+          fRead = prev;
+          fEvent = new RIDS::Event( *fEvents[fRead] );
+          fChanged = true;
+          return;
+        }
+      prev = ( prev - 1 ) % limit;
       currentEvent = fEvents[prev];
     }
-  fRead = prev;
-  fEvent = new RIDS::Event( *fEvents[fRead] );
-  fChanged = true;
 }
 
 void 
 DataStore::Next()
 {
-  int next = ( fRead + 1 ) % fEvents.size();
+  const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
+  size_t next = ( fRead + 1 ) % limit;
   RIDS::Event* currentEvent = fEvents[next];
   // Check test event is valid and ensure code does not circularly loop
   while( currentEvent != NULL && next != fRead ) 
     {
       if( SelectEvent( *currentEvent ) )
-        break; // Found an acceptable event
-      next = ( next + 1 ) % fEvents.size();
+        {
+          fRead = next;
+          fEvent = new RIDS::Event( *fEvents[fRead] );
+          fChanged = true;
+          return;
+        }
+      next = ( next + 1 ) % limit;
       currentEvent = fEvents[next];
     }
-  fRead = next;
-  fEvent = new RIDS::Event( *fEvents[fRead] );
-  fChanged = true;
 }
 
 void 
 DataStore::Prev()
 {
-  int prev = ( fRead - 1 ) % fEvents.size();
+  const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
+  size_t prev = ( fRead - 1 ) % limit;
   RIDS::Event* currentEvent = fEvents[prev];
   // Check test event is valid and ensure code does not circularly loop
   while( currentEvent != NULL && prev != fRead ) 
     {
       if( SelectEvent( *currentEvent ) )
-        break; // Found an acceptable event
-      prev = ( prev - 1 ) % fEvents.size();
+        {
+          fRead = prev;
+          fEvent = new RIDS::Event( *fEvents[fRead] );
+          fChanged = true;
+          return;
+        }
+      prev = ( prev - 1 ) % limit;
       currentEvent = fEvents[prev];
     }
-  fRead = prev;
-  fEvent = new RIDS::Event( *fEvents[fRead] );
-  fChanged = true;
 }
 
 bool

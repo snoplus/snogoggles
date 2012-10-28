@@ -47,12 +47,17 @@ BufferInfo::Render2d( RWWrapper& renderApp,
   stringstream eventInfo;
   eventInfo.precision( 0 );
   eventInfo << fixed;
-  eventInfo << "Buffer:" << endl;
-  eventInfo << "\tSize:" << DataStore::GetInstance().GetBufferSize() << endl;
+  eventInfo << "Input Buffer:" << endl;
+  eventInfo << "\tSize:" << DataStore::GetInstance().GetInputBufferSize() << endl;
   eventInfo << "\tWaiting elements:" << DataStore::GetInstance().GetBufferElements() << endl;
 
+  eventInfo << "Buffer:" << endl;
+  eventInfo << "\tSize:" << DataStore::GetInstance().GetBufferSize() << endl;
+  eventInfo << "\tEvents Added:" << DataStore::GetInstance().GetEventsAdded() << endl;
+
   const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
-  eventInfo << "\tRecieved Time: " << event.GetTime().GetTime() << endl;
+  eventInfo << "Current Event:" << endl;
+  eventInfo << "Recieved Time: " << event.GetTime().GetTime() << endl;
 
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );

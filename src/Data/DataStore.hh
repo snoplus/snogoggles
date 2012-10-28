@@ -70,8 +70,10 @@ public:
   /// Update the data structure, fetch events from input buffer
   void Update();
 
-  int GetBufferSize() const { return fInputBuffer.GetSize(); }
+  int GetInputBufferSize() const { return fInputBuffer.GetSize(); }
   int GetBufferElements() const { return fInputBuffer.GetNumElements(); }
+  int GetBufferSize() const { return fEvents.size(); }
+  int GetEventsAdded() const { return fEventsAdded; }
 
   /// Convienience method
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
@@ -83,9 +85,10 @@ private:
   InputBuffer<RIDS::Event*> fInputBuffer; /// < The input buffer, events arrive here
   std::vector<RIDS::Event*> fEvents; /// < The event buffer for rendering
   RIDS::Event* fEvent; /// < The currently rendered event
-  int fRead; /// < The currently read position in fEvents
-  int fWrite; /// < The current write position in fEvents
+  size_t fRead; /// < The currently read position in fEvents
+  size_t fWrite; /// < The current write position in fEvents
   RAT::DS::Run* fRun; /// < The current run information
+  int fEventsAdded; /// < Count of added events 
 
   bool fSelecting;
   bool fChanged;
