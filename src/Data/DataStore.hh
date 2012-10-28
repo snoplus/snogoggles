@@ -79,8 +79,10 @@ public:
   std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
 
 private:
-  /// Return true if event is selected
+  /// Run the event over the script and return true if selected
   bool SelectEvent( RIDS::Event& event );
+  /// Change the event and run analysis if required
+  void ChangeEvent( const size_t eventID );
 
   InputBuffer<RIDS::Event*> fInputBuffer; /// < The input buffer, events arrive here
   std::vector<RIDS::Event*> fEvents; /// < The event buffer for rendering
@@ -90,6 +92,7 @@ private:
   RAT::DS::Run* fRun; /// < The current run information
   int fEventsAdded; /// < Count of added events 
 
+  bool fAnalysing;
   bool fSelecting;
   bool fChanged;
 

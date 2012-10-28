@@ -20,6 +20,7 @@ DataStore::DataStore()
   fRun = NULL;
   fChanged = true;
   fSelecting = true;
+  fAnalysing = true;
 }
 
 void
@@ -91,9 +92,7 @@ DataStore::Latest()
     {
       if( SelectEvent( *currentEvent ) )
         {
-          fRead = prev;
-          fEvent = new RIDS::Event( *fEvents[fRead] );
-          fChanged = true;
+          ChangeEvent( prev );
           return;
         }
       prev = ( prev - 1 ) % limit;
@@ -112,9 +111,7 @@ DataStore::Next()
     {
       if( SelectEvent( *currentEvent ) )
         {
-          fRead = next;
-          fEvent = new RIDS::Event( *fEvents[fRead] );
-          fChanged = true;
+          ChangeEvent( next );
           return;
         }
       next = ( next + 1 ) % limit;
@@ -133,9 +130,7 @@ DataStore::Prev()
     {
       if( SelectEvent( *currentEvent ) )
         {
-          fRead = prev;
-          fEvent = new RIDS::Event( *fEvents[fRead] );
-          fChanged = true;
+          ChangeEvent( prev );
           return;
         }
       prev = ( prev - 1 ) % limit;
@@ -150,6 +145,16 @@ DataStore::SelectEvent( RIDS::Event& event )
     return PythonScripts::GetInstance().GetEventSelection().ProcessEvent( event );
   else // Return true if event selection is off
     return true;
+}
+
+void
+DataStore::ChangeEvent( const size_t eventID )
+{
+  fRead = eventID;
+  fEvent = new RIDS::Event( *fEvents[fRead] );
+  fChanged = true;
+  if( fAnalysing )
+    PythonScripts::GetInstance().GetAnalysis().ProcessEvent( *fEvent );
 }
 
 vector<RIDS::PMTHit> 
