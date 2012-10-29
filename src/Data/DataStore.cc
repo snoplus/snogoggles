@@ -76,6 +76,7 @@ DataStore::Update()
   while( fInputBuffer.Pop( currentEvent ) )
     {
       fEventsAdded++;
+      delete fEvents[fWrite];
       fEvents[fWrite] = currentEvent;
       fWrite = ( fWrite + 1 ) % fEvents.size();
     }
@@ -165,7 +166,10 @@ DataStore::SelectEvent( RIDS::Event& event )
 void
 DataStore::ChangeEvent( const size_t eventID )
 {
+  if( fRead == eventID ) 
+    return; // Nothing to change
   fRead = eventID;
+  delete fEvent;
   fEvent = new RIDS::Event( *fEvents[fRead] );
   fChanged = true;
   if( fAnalysing )
