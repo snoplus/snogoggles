@@ -18,14 +18,11 @@ using namespace std;
 using namespace Viewer;
 using namespace Viewer::Frames;
 
-
-const double kLocalSize = 1.0;
-const double kXMargin     = 0.01;
-const double kYMargin     = 0.01;
-const double kCrateWidth  = 1.0 / 10.0 - kXMargin; // 10 Columns
-const double kCrateHeight = 1.0 / 2.0 - kYMargin; // 2 Rows
-const double kHitWidth    = kCrateWidth  / 18.0; // There are 16 cards plus 2 margins
-const double kHitHeight   = kCrateHeight / 34.0; // There are 32 channels plus 2 margins
+const int kCrateWidth = 17; // 16 cards + 1 border
+const int kCrateHeight = 33; // 32 channels + 1 border
+const int kMargin = 2; // 2 Pixel margin
+const int kFullWidth = 10 * kCrateWidth + 9 * kMargin + 1;
+const int kFullHeight = 2 * kCrateHeight + kMargin + 1;
 
 CrateView::~CrateView()
 {
@@ -37,9 +34,10 @@ CrateView::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> size;
   size.left = 0.0; size.top = 0.0; size.width = 1.0; size.height = 0.95;
-  fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
+  fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ),
+                                kFullWidth, kFullHeight );
   fMapArea = fGUIManager.NewGUI<GUIs::MapArea>( size );
-  size.left = 0.0; size.top = 0.95; size.width = 0.9; size.height = 0.05;
+  size.left = 0.0; size.top = 0.95; size.width = 1.0; size.height = 0.05;
   fHitInfo = new HitInfo( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), true );
   fPMTofInterest = -1;
 }
@@ -52,11 +50,13 @@ CrateView::Render2d( RWWrapper& renderApp,
   // Draw the crate outlines first
   for( int iCrate = 0; iCrate < 20; iCrate++ ) // 20 Crates
     {
-      double xPos = ( iCrate % 10 ) * ( kCrateWidth + kXMargin );
-      double yPos = ( iCrate / 10 ) * ( kCrateHeight + kYMargin );
-      fImage->DrawHollowSquare( sf::Vector2<double>( xPos, yPos ),
-                                sf::Vector2<double>( kCrateWidth, kCrateHeight ),
-                                GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
+      int xPos = ( iCrate % 10 ) * ( kCrateWidth + kMargin );
+      int yPos = ( iCrate / 10 ) * ( kCrateHeight + kMargin );
+
+      fImage->DrawHollowSquare( sf::Vector2<int>( xPos, yPos ),
+                                sf::Vector2<int>( kCrateWidth, kCrateHeight ),
+                                GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ),
+                                1 );
     }
   // Now draw the hits
   fPMTofInterest = -1;
@@ -86,14 +86,18 @@ CrateView::DrawPMT( const int lcn,
   int crate = BitManip::GetBits(lcn, 9, 5); 
   int card = BitManip::GetBits(lcn, 5, 4);
   int channel = 31 - BitManip::GetBits(lcn, 0, 5);// Inverse the vertical position of the channels
-  double xPos = ( crate % 10 ) * ( kCrateWidth + kXMargin ) + card * kHitWidth + kHitWidth; // Margin of 1 hit width
-  double yPos = ( crate / 10 ) * ( kCrateHeight + kYMargin ) + channel * kHitHeight + kHitHeight; // Margin of 1 hit height
-  fImage->DrawSquare( sf::Vector2<double>( xPos, yPos ),
-                      sf::Vector2<double>( kHitWidth / 2.0, kHitHeight / 2.0 ),
+  int xPos = ( crate % 10 ) * ( kCrateWidth + kMargin ) + card + 1; 
+  int yPos = ( crate / 10 ) * ( kCrateHeight + kMargin ) + channel + 1;
+  fImage->DrawSquare( sf::Vector2<int>( xPos, yPos ),
+                      sf::Vector2<int>( 0, 0 ), // Size is just the pixel, no extra
                       colour );
-  // Draw the PMT info as well?
-  const double closeRadius = 0.005;
-  if( fabs( xPos + kHitWidth / 4.0 - fMousePos.x ) < kHitWidth / 2.0 && fabs( yPos + kHitHeight / 4.0 - fMousePos.y ) < kHitHeight / 2.0 )
+  // Draw the PMT info as well, first calculate the mouse equivalent position of the pixel
+  const double mouseXPos = static_cast<double>( xPos ) / static_cast<double>( kFullWidth );
+  const double mouseXWidth = 1.0 / static_cast<double>( kFullWidth );
+  const double mouseYPos = static_cast<double>( yPos ) / static_cast<double>( kFullHeight );
+  const double mouseYHeight = 1.0 / static_cast<double>( kFullHeight );
+  if( fMousePos.x > mouseXPos && ( fMousePos.x - mouseXPos ) < mouseXWidth && 
+      fMousePos.y > mouseYPos && ( fMousePos.y - mouseYPos ) < mouseYHeight )
     fPMTofInterest = lcn;  
 }
 

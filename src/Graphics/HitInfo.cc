@@ -27,7 +27,7 @@ HitInfo::Render( RWWrapper& renderApp,
   info << "LCN:" << lcn << end.str();
   int crate = BitManip::GetBits(lcn, 9, 5);
   int card = BitManip::GetBits(lcn, 5, 4);
-  int channel = 31 - BitManip::GetBits(lcn, 0, 5);
+  int channel = BitManip::GetBits(lcn, 0, 5);
   info << "Cr:Cd:Ch:" << crate << ":" << card << ":" << channel << end.str();
 
   bool hasData = false;

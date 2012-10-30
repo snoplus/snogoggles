@@ -80,7 +80,7 @@ PixelImage::PixelImage( RectPtr rect,
   : fLocalRect(rect)
 {
   fWidth = width;
-  fHeight = width;
+  fHeight = height;
   Construct();
 }
 

@@ -8,7 +8,7 @@ using namespace Viewer;
 
 void 
 ProjectionImage::DrawDot( const sf::Vector2<double>& position,
-			  const Colour& colour )
+                          const Colour& colour )
 {
   sf::Vector2<int> posPixel( static_cast<int>( position.x * fWidth ), 
 			     static_cast<int>( position.y * fHeight ) );
@@ -17,8 +17,8 @@ ProjectionImage::DrawDot( const sf::Vector2<double>& position,
 
 void
 ProjectionImage::DrawSquare( const sf::Vector2<int>& position,
-			     const sf::Vector2<int>& size,
-			     const Colour& colour )
+                             const sf::Vector2<int>& size,
+                             const Colour& colour )
 {
   const int startX = position.x;
   int endX = startX + size.x;
@@ -45,7 +45,7 @@ ProjectionImage::DrawSquare( const sf::Vector2<int>& position,
 
 void
 ProjectionImage::DrawSquare( const sf::Vector2<double>& position,
-			     const Colour& colour )
+                             const Colour& colour )
 {
   sf::Vector2<int> posPixel( static_cast<int>( position.x * fWidth ), 
                              static_cast<int>( position.y * fHeight ) );
@@ -54,22 +54,22 @@ ProjectionImage::DrawSquare( const sf::Vector2<double>& position,
 
 void 
 ProjectionImage::DrawSquare( const sf::Vector2<double>& position,
-			     const sf::Vector2<double>& size,
-			     const Colour& colour )
+                             const sf::Vector2<double>& size,
+                             const Colour& colour )
 {
   sf::Vector2<int> posPixel( static_cast<int>( position.x * fWidth ), 
-			     static_cast<int>( position.y * fHeight ) ); 
+                             static_cast<int>( position.y * fHeight ) ); 
   sf::Vector2<int> sizePixel( static_cast<int>( size.x * fWidth ), 
-			      static_cast<int>( size.y * fHeight ) ); 
+                              static_cast<int>( size.y * fHeight ) ); 
   DrawSquare( posPixel, sizePixel, colour );
 }
 
 void
 ProjectionImage::DrawHollowSquare( const sf::Vector2<double>& position,
-				   const Colour& colour )
+                                   const Colour& colour )
 {
   sf::Vector2<int> posPixel( static_cast<int>( position.x * fWidth ), 
-			     static_cast<int>( position.y * fHeight ) ); 
+                             static_cast<int>( position.y * fHeight ) ); 
   DrawSquare( posPixel, fSquareSize, colour );
   sf::Vector2<int> newPos( posPixel.x + 1, posPixel.y + 1 );
   sf::Vector2<int> newSize( fSquareSize.x - 2, fSquareSize.y - 2 );
@@ -78,16 +78,25 @@ ProjectionImage::DrawHollowSquare( const sf::Vector2<double>& position,
 
 void
 ProjectionImage::DrawHollowSquare( const sf::Vector2<double>& position,
-				   const sf::Vector2<double>& size,
-				   const Colour& colour )
+                                   const sf::Vector2<double>& size,
+                                   const Colour& colour )
 {
   sf::Vector2<int> posPixel( static_cast<int>( position.x * fWidth ), 
-			     static_cast<int>( position.y * fHeight ) ); 
+                             static_cast<int>( position.y * fHeight ) ); 
   sf::Vector2<int> sizePixel( static_cast<int>( size.x * fWidth ), 
-			      static_cast<int>( size.y * fHeight ) ); 
-  DrawSquare( posPixel, sizePixel, colour );
-  sf::Vector2<int> newPos( posPixel.x + 2, posPixel.y + 2 );
-  sf::Vector2<int> newSize( sizePixel.x - 4, sizePixel.y - 4 );
+                              static_cast<int>( size.y * fHeight ) ); 
+  DrawHollowSquare( posPixel, sizePixel, colour, 2 );
+}
+
+void
+ProjectionImage::DrawHollowSquare( const sf::Vector2<int>& position,
+                                   const sf::Vector2<int>& size,
+                                   const Colour& colour,
+                                   const int borderSize )
+{
+  DrawSquare( position, size, colour );
+  sf::Vector2<int> newPos( position.x + borderSize, position.y + borderSize );
+  sf::Vector2<int> newSize( size.x - 2 * borderSize, size.y - 2 * borderSize );
   DrawSquare( newPos, newSize, GUIProperties::GetInstance().GetGUIColourPalette().GetBackground() );
 }
 
@@ -95,7 +104,7 @@ void
 ProjectionImage::SetSquareSize( const sf::Vector2<double>& size )
 {
   fSquareSize = sf::Vector2<int>( static_cast<int>( size.x * fWidth ), 
-				  static_cast<int>( size.y * fHeight ) ); 
+                                  static_cast<int>( size.y * fHeight ) ); 
   if( fSquareSize.x < 1 )
     fSquareSize.x = 1;
   if( fSquareSize.y < 1 )
