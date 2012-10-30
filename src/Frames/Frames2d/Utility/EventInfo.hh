@@ -57,6 +57,7 @@ public:
 
   static std::string ToByteString( int number );
   static std::string ToHexString( int number );
+  static std::string TriggerToString( int trigger );
 private:
   Text* fInfoText;
 };

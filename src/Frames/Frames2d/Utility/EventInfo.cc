@@ -97,3 +97,9 @@ EventInfo::ToHexString( int number )
   hexStream << "0x" << number;
   return hexStream.str();
 }
+
+string
+EventInfo::TriggerToString( int trigger )
+{
+  
+}
