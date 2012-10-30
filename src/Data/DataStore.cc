@@ -89,7 +89,8 @@ DataStore::Latest()
   size_t prev = ( fWrite - 1 ) % limit;
   RIDS::Event* currentEvent = fEvents[prev];
   // Check test event is valid and ensure code does not circularly loop
-  while( currentEvent != NULL && prev != fWrite ) 
+  size_t eventsChecked = 0;
+  while( currentEvent != NULL && eventsChecked < limit )
     {
       if( SelectEvent( *currentEvent ) )
         {
@@ -98,6 +99,7 @@ DataStore::Latest()
         }
       prev = ( prev - 1 ) % limit;
       currentEvent = fEvents[prev];
+      eventsChecked++;
     }
 }
 
