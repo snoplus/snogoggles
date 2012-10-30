@@ -4,7 +4,7 @@
 
 def select(data):
     """ """
-    if data['nhit'] < 1:
+    if data['nhit'] < 30:
         return False
     if data['trigger'] != 0:
         return True

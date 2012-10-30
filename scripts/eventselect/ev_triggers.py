@@ -23,9 +23,14 @@ def select(data):
     """ """
     #for trigger, value in triggers.iteritems():
     #    print trigger, bool(data['trigger'] & value)
-    if data['trigger'] & triggers['nhit100Lo'] or \
+    if data['nhit'] >= 30 and (data['trigger'] & triggers['nhit100Lo']):
+        return True
+    else:
+        return False
+    if (data['trigger'] & triggers['nhit100Lo'] or \
             data['trigger'] & triggers['nhit100Med'] or \
-            data['trigger'] & triggers['nhit100High']:
+            data['trigger'] & triggers['nhit100High']) and \
+            data['nhit'] >= 30:
         return True
     else:
         return False

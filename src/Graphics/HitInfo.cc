@@ -9,27 +9,32 @@ using namespace std;
 #include <Viewer/RIDS/RIDS.hh>
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/BitManip.hh>
 using namespace Viewer;
 
 void
 HitInfo::Render( RWWrapper& renderApp,
                  const RenderState& renderState,
-                 const unsigned int pmtID )
+                 const unsigned int lcn )
 {
   stringstream end;
   if( fHorizontal )
-    end << " ";
+    end << "    ";
   else
     end << " " << endl;
  
   stringstream info;
-  info << "LCN:" << pmtID << end.str();
+  info << "LCN:" << lcn << end.str();
+  int crate = BitManip::GetBits(lcn, 9, 5);
+  int card = BitManip::GetBits(lcn, 5, 4);
+  int channel = 31 - BitManip::GetBits(lcn, 0, 5);
+  info << "Cr:Cd:Ch:" << crate << ":" << card << ":" << channel << end.str();
 
   bool hasData = false;
   vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-      if( pmtID == iTer->GetLCN() )
+      if( lcn == iTer->GetLCN() )
         {
           info << "TAC:" << iTer->GetTAC() << end.str();
           info << "QHL:" << iTer->GetQHL() << end.str();

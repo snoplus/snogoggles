@@ -49,6 +49,9 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << fixed;
 
   const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
+  eventInfo << "Run :" << event.GetRunID() << endl;
+  eventInfo << "Sub Run :" << event.GetSubRunID() << endl;
+  
   if( event.ExistEV() )
     {
       RIDS::EV& ev = event.GetEV();

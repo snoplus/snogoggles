@@ -85,7 +85,7 @@ DataStore::Update()
 void 
 DataStore::Latest()
 {
-  const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
+  const size_t limit = fEvents.size() > fWrite ? fEvents.size() : fWrite;
   size_t prev = ( fWrite - 1 ) % limit;
   RIDS::Event* currentEvent = fEvents[prev];
   // Check test event is valid and ensure code does not circularly loop
