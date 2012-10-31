@@ -18,7 +18,7 @@ EV::EV( RAT::DS::EV& rEV )
     fUnCalHits.push_back( PMTHit( rEV.GetPMTAllUnCal( ipmt ) ) );
   for( unsigned int ipmt = 0; ipmt < rEV.GetPMTAllCalCount(); ipmt++ )
     fCalHits.push_back( PMTHit( rEV.GetPMTAllCal( ipmt ) ) );
-  fTime = Time( rEV.GetUTDays(), rEV.GetUTSecs(), rEV.GetUTNSecs() );
+  fTime = Time( fClock10 );
 }
 
 EV::~EV()

@@ -28,7 +28,7 @@ class Time
 {
 public:
   Time() { }
-  Time( int UTDays, int UTSecs, int UTNsecs );
+  Time( unsigned long long count10MHz );
   Time( struct tm* tm );
   ~Time() { }
 
