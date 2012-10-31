@@ -32,12 +32,14 @@ def select(data, input_):
     if input_[-1] != ':':
         nhit_cut = split_input[1]
     good_event = False
+    if len(trigger_cuts) == 0:
+        good_event = True
     for t_cut in trigger_cuts:
         if not t_cut in triggers.keys():
             print t_cut, " is an unknown trigger, script failure."
             return True
         if data['trigger'] & triggers[t_cut]: # Has this trigger
             good_event = True
-    if nhit_cut and nhit_cut.isdigit() and data['nhit'] >= int(nhit_cut):
-        good_event = True
+    if nhit_cut and nhit_cut.isdigit() and data['nhit'] < int(nhit_cut):
+        good_event = False
     return good_event

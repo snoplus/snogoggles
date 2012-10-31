@@ -58,6 +58,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
       eventInfo << "EV:" << endl;
       eventInfo << "\tGTID: " << ToHexString(ev.GetGTID()) << endl;
       eventInfo << "\tTrigger Word: " << ToHexString( ev.GetTriggerWord() ) << endl;
+      eventInfo << "\tTriggers:" << TriggerToString( ev.GetTriggerWord() ) << endl;
       eventInfo << "\tEvent Date: " << ev.GetTime().GetDate() << endl;
       eventInfo << "\tEvent Time: " << ev.GetTime().GetTime() << endl;
       eventInfo << "\tNhit (Cal):" << ev.GetCalNHits() << endl;
@@ -104,5 +105,39 @@ EventInfo::ToHexString( int number )
 string
 EventInfo::TriggerToString( int trigger )
 {
-  
+  // This code needs improving and generalising for snogoggles! PGJ
+  stringstream triggerStream;
+  if( trigger & 0x01 )
+    triggerStream << "100L,";
+  if( trigger & 0x02 )
+    triggerStream << "100M,";
+  if( trigger & 0x04 )
+    triggerStream << "10HL,";
+  if( trigger & 0x08 )
+    triggerStream << "20,";
+  if( trigger & 0x10 )
+    triggerStream << "20L,";
+  if( trigger & 0x20 )
+    triggerStream << "ESUML,";
+  if( trigger & 0x40 )
+    triggerStream << "ESUMH,";
+  if( trigger & 0x80 )
+    triggerStream << "OWL,";
+  if( trigger & 0x100 )
+    triggerStream << "OWLL,";
+  if( trigger & 0x200 )
+    triggerStream << "OWLH,";
+  if( trigger & 0x400 )
+    triggerStream << "PUL,";
+  if( trigger & 0x800 )
+    triggerStream << "PRE,";
+  if( trigger & 0x1000 )
+    triggerStream << "PED,";
+  if( trigger & 0x2000 )
+    triggerStream << "PONG,";
+  if( trigger & 0x4000 )
+    triggerStream << "SYNC,";
+  if( trigger & 0x8000 )
+    triggerStream << "EXT,";
+  return triggerStream.str();
 }
