@@ -19,6 +19,29 @@ triggers = {"100L" : 0x01,
            "SYNC" : 0x4000,
            "EXT" : 0x8000 }
 
+
+def has_triggers(data, trigger_cuts):
+    """ Check if the event data has the triggers."""
+    event_passes = False # Assume false unless trigger present
+    for t_cut in trigger_cuts:
+        if not t_cut in triggers.keys():
+            print t_cut, " is an unknown trigger, script failure."        
+            return True # Safe get out
+        if data['trigger'] & triggers[t_cut]:
+            event_passes = True
+    return event_passes
+
+def omit_triggers(data, trigger_cuts):
+    """ Check if the vent data has not got the triggers."""
+    event_passes = True # Assume true unless trigger present
+    for t_cut in trigger_cuts:
+        if not t_cut[1:] in triggers.keys():
+            print t_cut, " is an unknown trigger, script failure."        
+            return True # Safe get out
+        if data['trigger'] & triggers[t_cut[1:]]:
+            event_passes = False
+    return event_passes
+
 def select(data, input_):
     """ """
     if len(input_) == 0 or not ':' in input_: # By default return true
@@ -31,15 +54,14 @@ def select(data, input_):
     nhit_cut = None
     if input_[-1] != ':':
         nhit_cut = split_input[1]
-    good_event = False
-    if len(trigger_cuts) == 0:
-        good_event = True
-    for t_cut in trigger_cuts:
-        if not t_cut in triggers.keys():
-            print t_cut, " is an unknown trigger, script failure."
-            return True
-        if data['trigger'] & triggers[t_cut]: # Has this trigger
-            good_event = True
-    if nhit_cut and nhit_cut.isdigit() and data['nhit'] < int(nhit_cut):
-        good_event = False
-    return good_event
+    # Check the nhit first
+    if nhit_cut is not None:
+        if data['nhit'] < int(nhit_cut):
+            return False
+    # Now check the triggers
+    event_passes = False
+    if len(trigger_cuts) != 0 and trigger_cuts[0][0] == '-': # Check for trigger absence
+        event_passes = omit_triggers(data, trigger_cuts)
+    elif len(trigger_cuts) != 0 and trigger_cuts[0][0] != '-': # Check for trigger inclusion
+        event_passes = has_triggers(data, trigger_cuts)
+    return event_passes
