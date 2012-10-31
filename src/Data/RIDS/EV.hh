@@ -60,7 +60,6 @@ private:
   Time fTime; /// < The event time
 
   unsigned long long fClock50;
-  unsigned long long fClock10;
   int fTriggerWord;
   int fGTID;
 };

@@ -110,19 +110,19 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eAnalRefresh: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 23 );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 24 );
               }
               break;
             case eEventRefresh: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 23 );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 24 );
               }
               break;
             case ePMTRefresh: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 23 );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 24 );
               }
               break;
             case eAnalOn: 

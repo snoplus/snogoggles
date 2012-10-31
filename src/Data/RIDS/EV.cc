@@ -9,7 +9,6 @@ using namespace Viewer::RIDS;
 EV::EV( RAT::DS::EV& rEV )
 {
   fClock50 = rEV.GetClockCount50();
-  fClock10 = rEV.GetClockCount10();
   fTriggerWord = rEV.GetTrigType();
   fGTID = rEV.GetEventID();
   for( unsigned int ipmt = 0; ipmt < rEV.GetPMTAllTruthCount(); ipmt++ )
@@ -18,7 +17,7 @@ EV::EV( RAT::DS::EV& rEV )
     fUnCalHits.push_back( PMTHit( rEV.GetPMTAllUnCal( ipmt ) ) );
   for( unsigned int ipmt = 0; ipmt < rEV.GetPMTAllCalCount(); ipmt++ )
     fCalHits.push_back( PMTHit( rEV.GetPMTAllCal( ipmt ) ) );
-  fTime = Time( fClock10 );
+  fTime = Time( rEV.GetClockCount10() );
 }
 
 EV::~EV()

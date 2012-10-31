@@ -1,4 +1,5 @@
 #include <SFML/Window/Event.hpp>
+
 using namespace std;
 
 #include <Viewer/EventPanel.hh>
@@ -28,7 +29,7 @@ void
 EventPanel::NewEvent( const Event& event )
 {
   DataStore& events = DataStore::GetInstance();
-  if( event.type == sf::Event::KeyPressed )
+  if( GUI::fsKeyboardFocus == -1 && event.type == sf::Event::KeyPressed )
     {
       if( event.key.code == sf::Keyboard::Right )
         events.Next();
@@ -142,7 +143,7 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             {
             case eMultiPrev: 
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 31 );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 30 );
               break;
             case ePrev: 
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
@@ -154,7 +155,7 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               break;
             case eMultiNext:
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 30 );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 31 );
               break;
             case eDataSource:
               {

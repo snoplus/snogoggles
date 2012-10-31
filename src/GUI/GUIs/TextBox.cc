@@ -44,10 +44,12 @@ TextBox::NewEvent( const Event& event )
       break;
     case sf::Event::MouseMoved:
       fHover = true;
+      fsKeyboardFocus = fGlobalID;
       break;
     case sf::Event::MouseButtonReleased:
       fActive = false;
       fHover = false;
+      fsKeyboardFocus = fGlobalID;
       break;
     case sf::Event::LostFocus:
       if( fActive )
