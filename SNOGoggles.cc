@@ -45,6 +45,7 @@ public:
 
   bool fStream; /// < Are the events dispatched via avalanche to snogoggles?
   std::string fArgument; /// < The argument, url or fileName  
+  std::string fConfigFile; /// The config file location
 };
 /// Parse the command options
 CmdOptions ParseArguments( int argc, char *argv[] );
@@ -56,13 +57,13 @@ void PreInitialise();
 /// Load the singletons that require event data/the DataStore class.
 void PostInitialise();
 /// Load the configuration, if it exists and is the correct version
-ConfigurationFile* OpenConfiguration( bool output );
+ConfigurationFile* OpenConfiguration( bool output, const CmdOptions& options );
 
 int main( int argc, char *argv[] )
 {
   CmdOptions options = ParseArguments( argc, argv );
   PreInitialise();
-  ConfigurationFile* loadConfig = OpenConfiguration( false );
+  ConfigurationFile* loadConfig = OpenConfiguration( false, options );
   const ConfigurationTable* loadConfigTable = NULL;
   if( loadConfig != NULL )
     loadConfigTable = loadConfig->GetTable();
@@ -81,7 +82,6 @@ int main( int argc, char *argv[] )
   else
     {
       Semaphore sema;
-      cout << options.fArgument.substr( options.fArgument.size() - 4 ) << endl;
       if( options.fArgument.substr( options.fArgument.size() - 4 ) == string( "root" ) )
         loadData = new LoadRootFileThread( options.fArgument, sema );
       else
@@ -99,7 +99,7 @@ int main( int argc, char *argv[] )
   viewer.PostInitialise( loadConfigTable );
   delete loadConfig; // No longer needed
   viewer.Run();
-  ConfigurationFile* saveConfig = OpenConfiguration( true );
+  ConfigurationFile* saveConfig = OpenConfiguration( true, options );
   viewer.SaveConfiguration( saveConfig->NewTable() );
   saveConfig->Save();
   delete saveConfig;
@@ -129,10 +129,10 @@ PostInitialise()
 CmdOptions 
 ParseArguments( int argc, char** argv )
 {
-  static struct option opts[] = { {"help", 0, NULL, 'h'}, {"stream", 2, NULL, 's'}, {0,0,0,0} };
+  static struct option opts[] = { {"help", 0, NULL, 'h'}, {"stream", 2, NULL, 's'}, {"config", 1, NULL, 'c'}, {0,0,0,0} };
   CmdOptions options;
   int option_index = 0;
-  int c = getopt_long(argc, argv, "s::h", opts, &option_index);
+  int c = getopt_long(argc, argv, "s::hc:", opts, &option_index);
   while (c != -1) 
     {
       switch (c) 
@@ -153,6 +153,7 @@ ParseArguments( int argc, char** argv )
               }
           } 
           break;
+        case 'c': options.fConfigFile = optarg; break;
         }
       c = getopt_long(argc, argv, "s::h", opts, &option_index);
     }
@@ -163,7 +164,7 @@ ParseArguments( int argc, char** argv )
     }
   if( options.fArgument == "" )
     {
-      options.fArgument = argv[1];
+      options.fArgument = argv[optind];
     }
   return options;
 }
@@ -174,14 +175,19 @@ PrintHelp()
   cout << "usage:snogoggle FileName.root" << " or: snogoggles -s=address\n";
   cout << "options:" << endl;
   cout << " -h        show this help message and exit" << endl;
-  cout << " -s        connect to a zdab dispatcher" << endl;
+  cout << " -s=addr   connect to a zdab dispatcher at addr" << endl;
+  cout << " -c path   use the configuration script at path" << endl;
 }
 
 ConfigurationFile*
-OpenConfiguration( bool output )
+OpenConfiguration( bool output, 
+                   const CmdOptions& options )
 {
   stringstream configFileName;
-  configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
+  if( options.fConfigFile.empty() )
+    configFileName << getenv( "VIEWERROOT" ) << "/snogoggles.xml";
+  else
+    configFileName << options.fConfigFile;
   if( output == true )
     {
       ConfigurationFile* saveConfig = new ConfigurationFile( configFileName.str(), true );
