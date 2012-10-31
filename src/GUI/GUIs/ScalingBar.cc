@@ -39,20 +39,24 @@ ScalingBar::NewEvent( const Event& event )
         fState = eScalingMax;
       break;
     case sf::Event::MouseMoved: // Change the scaling value
-      if( fState == eScalingMin )
+      if( fState == eScalingMin && pos.x < fMaxValue - 0.1 )
         fMinValue = pos.x;
-      else if( fState == eScalingMax )
+      else if( fState == eScalingMax && pos.x > fMinValue + 0.1 )
         fMaxValue = pos.x;
       retEvent = GUIEvent( fID, fGlobalID );
       break;
     case sf::Event::MouseButtonReleased: // Change the state back to normal
-      if( fState == eScalingMin )
+      if( fState == eScalingMin && pos.x < fMaxValue - 0.1 )
         fMinValue = pos.x;
-      else if( fState == eScalingMax )
+      else if( fState == eScalingMax && pos.x > fMinValue + 0.1 )
         fMaxValue = pos.x;
     case sf::Event::LostFocus:
       fState = eNormal;
       retEvent = GUIEvent( fID, fGlobalID );
+      if( fMinValue < 0.1 )
+        fMinValue = 0.0;
+      if( fMaxValue > 0.9 )
+        fMaxValue = 0.99;
       break;
     }
   return retEvent;
