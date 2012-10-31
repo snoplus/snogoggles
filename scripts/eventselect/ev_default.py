@@ -59,7 +59,7 @@ def select(data, input_):
         if data['nhit'] < int(nhit_cut):
             return False
     # Now check the triggers
-    event_passes = False
+    event_passes = True
     if len(trigger_cuts) != 0 and trigger_cuts[0][0] == '-': # Check for trigger absence
         event_passes = omit_triggers(data, trigger_cuts)
     elif len(trigger_cuts) != 0 and trigger_cuts[0][0] != '-': # Check for trigger inclusion
