@@ -46,7 +46,6 @@ TextBox::NewEvent( const Event& event )
       fHover = true;
       break;
     case sf::Event::MouseButtonReleased:
-      retEvent = GUIEvent( fID, fGlobalID );
       fActive = false;
       fHover = false;
       break;
@@ -60,6 +59,8 @@ TextBox::NewEvent( const Event& event )
       break;
       // Text part
     case sf::Event::TextEntered:
+      if( event.text.unicode == 13 ) // Return key
+        break;
       if( event.text.unicode == '\b' )
         {
           LeftCursor();
@@ -86,6 +87,9 @@ TextBox::NewEvent( const Event& event )
           break;
         case sf::Keyboard::Right:
           RightCursor();
+          break;
+        case sf::Keyboard::Return:
+          retEvent = GUIEvent( fID, fGlobalID );
           break;
         }
         break;

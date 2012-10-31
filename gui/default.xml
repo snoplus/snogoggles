@@ -26,10 +26,11 @@
     <gui effect="3" x="0.0" y="0.4" width="0.9" height="0.1" font-ring="0" />
     <gui effect="4" x="0.9" y="0.4" width="0.1" height="0.1" font-ring="0" />
     <gui effect="5" x="0.0" y="0.5" width="1.0" height="0.1" font-ring="0" />
-    <text caption="PMT Selection:" x="0.0" y="0.6" width="1.0" height="0.1" />
-    <gui effect="6" x="0.0" y="0.7" width="0.9" height="0.1" font-ring="0" />
-    <gui effect="7" x="0.9" y="0.7" width="0.1" height="0.1" font-ring="0" />
-    <gui effect="8" x="0.0" y="0.8" width="1.0" height="0.1" font-ring="0" />
+    <gui effect="9" x="0.0" y="0.6" width="1.0" height="0.1" font-ring="0" />
+    <text caption="PMT Selection:" x="0.0" y="0.7" width="1.0" height="0.1" />
+    <gui effect="6" x="0.0" y="0.8" width="0.9" height="0.1" font-ring="0" />
+    <gui effect="7" x="0.9" y="0.8" width="0.1" height="0.1" font-ring="0" />
+    <gui effect="8" x="0.0" y="0.9" width="1.0" height="0.1" font-ring="0" />
   </ScriptPanel>
   <DesktopPanel x="0.5" y="0.9" width="0.2" height="0.1">
     <text caption="Current Desktop:" x="0.1" y="0.0" width="0.6" height="0.3" />

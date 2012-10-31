@@ -41,8 +41,11 @@ public:
   void UnLoad();
   /// Process the event
   bool ProcessEvent( const RIDS::Event& event );  
+  /// Set the input string
+  void SetInput( const std::string& input ) { fInputString = input; }
 private:
   std::string fCurrentScript;
+  std::string fInputString; /// < User defined input to the function
 
   PyObject* fpScript;
   PyObject* fpSelectFunction;

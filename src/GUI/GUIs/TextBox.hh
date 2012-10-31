@@ -42,6 +42,8 @@ public:
   virtual void Render( RWWrapper& renderApp );
   GUIEvent NewEvent( const Event& event );
 
+  std::string GetString() const { return fText; }
+
 protected:
   void RightCursor();
   void LeftCursor();

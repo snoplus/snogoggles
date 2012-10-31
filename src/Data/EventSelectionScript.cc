@@ -82,11 +82,13 @@ EventSelectionScript::ProcessEvent( const RIDS::Event& event )
   Py_DECREF( pNhit );
 
   /// Call the script, check the result and return true/false
+  PyObject* fpInput = PyString_FromString( fInputString.c_str() );
   bool result = false;
-  PyObject* pResult = PyObject_CallFunctionObjArgs( fpSelectFunction, pDataDict, NULL );
+  PyObject* pResult = PyObject_CallFunctionObjArgs( fpSelectFunction, pDataDict, fpInput, NULL );
   if( pResult == Py_True )
     result = true;
   Py_XDECREF( pResult );
   Py_DECREF( pDataDict );
+  Py_DECREF( fpInput );
   return result;
 }

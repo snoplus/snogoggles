@@ -47,6 +47,9 @@ ScriptPanel::EventLoop()
         case eEventOn:
           events.SetEventSelecting( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eEventOn] )->GetState() );
           break;
+        case eEventInput:
+          PythonScripts::GetInstance().GetEventSelection().SetInput( dynamic_cast<GUIs::TextBox*>( fGUIs[eEventInput] )->GetString() );
+          break;
         }
       fEvents.pop();
     }
@@ -138,6 +141,11 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
                 dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable?" );
+              }
+              break;
+            case eEventInput:
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::TextBox >( posRect, effect );
               }
               break;
             }
