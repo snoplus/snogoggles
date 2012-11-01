@@ -49,6 +49,8 @@ public:
   unsigned int GetState() const;
   /// Return the state casted to the appropriate enum
   template < typename T > inline T GetEnumState() const;
+  /// Set the options
+  void SetOptions( const std::vector<std::string>& options );
 protected:
   GUIManager fGUIManager; /// < Manage the persist labels
   std::vector< PersistLabel* > fPersistLabels; /// < The persist label buttons

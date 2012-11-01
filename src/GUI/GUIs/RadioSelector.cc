@@ -75,3 +75,11 @@ RadioSelector::GetState() const
       return iLabel;
   return 0;
 }
+
+
+void
+RadioSelector::SetOptions( const vector<string>& options )
+{
+  for( unsigned int iLabel = 0; iLabel < fPersistLabels.size(); iLabel++ )
+    fPersistLabels[iLabel]->SetLabel( options[iLabel] );
+}

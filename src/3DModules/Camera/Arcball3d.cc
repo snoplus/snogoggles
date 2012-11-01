@@ -55,7 +55,7 @@ void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& options
     fResetButton->Initialise( 2, "Reset" );
 
     fPersistRotation = g.NewGUI<GUIs::PersistLabel>( sf::Rect<double>( optionsArea.left + width, optionsArea.top, width, height ) );
-    fPersistRotation->SetLabel( "Persist Rotation" );
+    fPersistRotation->Initialise( 14, "Persist Rotation" );
     fPersistRotation->SetState( fPreviousPersistRotation );
 }
 

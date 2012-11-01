@@ -23,3 +23,7 @@ def reset(out_data):
         out_data[lcn][2] = 0.0
         out_data[lcn][3] = 0.0
     return None
+
+def get_labels():
+    """ Reutrn the data labels."""
+    return ("Occupancy", "Sum Charge", "N/a", "N/a")

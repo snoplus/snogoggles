@@ -20,7 +20,7 @@ void Geodesic3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& option
 {
     sf::Rect< double > rect( optionsArea );
     fDisplayGUI = g.NewGUI< GUIs::PersistLabel >( rect );
-    fDisplayGUI->SetLabel( "Geodesic Geo" );
+    fDisplayGUI->Initialise( 14, "Geodesic Geo" );
     fDisplayGUI->SetState( true );
 }
 

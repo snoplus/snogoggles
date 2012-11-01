@@ -38,7 +38,7 @@ public:
 
   void Initialise( unsigned int textureNumber, 
                    const std::string& label );
-  void SetLabel( const std::string& label ); //REMOVE ME
+  void SetLabel( const std::string& label ); 
 
   GUIEvent NewEvent( const Event& event );
   void Render( RWWrapper& windowApp );

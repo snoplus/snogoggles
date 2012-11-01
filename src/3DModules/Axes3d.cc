@@ -29,7 +29,7 @@ void Axes3d::CreateGUIObjects( GUIManager& g, const sf::Rect< double >& optionsA
 	sf::Rect< double > rect = optionsArea;
 	fDisplayGUI = g.NewGUI< GUIs::PersistLabel >( rect );
 	fDisplayGUI->SetState( fDisplay );
-	fDisplayGUI->SetLabel( "Display Axes" );
+	fDisplayGUI->Initialise( 14, "Display Axes" );
 }
 
 void Axes3d::LoadConfiguration( const ConfigurationTable* configTable )

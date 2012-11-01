@@ -49,25 +49,30 @@ AnalysisScript::Load( const string& scriptName )
       PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
       fpScript = PyImport_Import( pScriptName ); // Load script
       Py_DECREF( pScriptName );
-      fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
-      if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
-        throw;
-      fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
-      if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
-        throw;
     }
   else
     {
       fpScript = PyImport_ReloadModule( fpScript );// ReLoad script
       Py_DECREF( fpEventFunction );
-      fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
-      if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
-        throw;
       Py_DECREF( fpResetFunction );
-      fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
-      if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
-        throw;
     }
+  fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
+  if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
+    throw;
+  fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
+  if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
+    throw;
+  PyObject* pLabelsFunction = PyObject_GetAttrString( fpScript, "get_labels" );
+  if( !pLabelsFunction || !PyCallable_Check( pLabelsFunction ) )
+    throw;
+  PyObject* pResult = PyObject_CallFunctionObjArgs( pLabelsFunction, NULL );
+  for( int label = 0; label < 4; label++ )
+    {
+      fDataLabels.push_back( string( PyString_AsString( PyTuple_GetItem( pResult, label ) ) ) );
+    }
+  Py_DECREF( pResult );
+
+  Py_DECREF( pLabelsFunction );
   fCurrentScript = scriptName;
   fpData = NewEmptyPyList();
 }

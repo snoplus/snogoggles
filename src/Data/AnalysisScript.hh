@@ -50,11 +50,14 @@ public:
   void Reset();
   /// Return a vector of RIDS PMTHits with data from the script
   std::vector<RIDS::PMTHit> GetHitData() const;
+  /// Return the vector of data labels
+  std::vector<std::string> GetDataLabels() const { return fDataLabels; }
 private:
   PyObject* NewEmptyPyList();
   PyObject* FillList( const RIDS::Event& event,
                       RIDS::EDataSource source );
 
+  std::vector<std::string> fDataLabels; /// < Script labels the data types
   std::string fCurrentScript;
 
   PyObject* fpScript;

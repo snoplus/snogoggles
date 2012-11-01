@@ -11,6 +11,7 @@ using namespace std;
 #include <Viewer/RadioSelector.hh>
 #include <Viewer/SlideSelector.hh>
 #include <Viewer/ScalingBar.hh>
+#include <Viewer/PythonScripts.hh>
 using namespace Viewer;
 
 EventPanel::EventPanel( RectPtr rect )
@@ -75,6 +76,10 @@ EventPanel::EventLoop()
           fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetEnumState<RIDS::EDataSource>(), 
                                     dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetEnumState<RIDS::EDataType>() );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
+          if( fRenderState.GetDataSource() == RIDS::eScript )
+            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( PythonScripts::GetInstance().GetAnalysis().GetDataLabels() );
+          else
+            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( RenderState::GetTypeStrings() );
           break;
         case eRate: // Change in event display rate
           {
