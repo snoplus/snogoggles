@@ -43,7 +43,7 @@ string
 Time::GetDate()
 {
   stringstream text;
-  text << fYear << "/" << fMonth << "/" << fDay;
+  text << fYear << "/" << fMonth  + 1 << "/" << fDay; // Month is stored as months since January, thus Jan is stored as 0 Thus need +1
   return text.str();
 }
 

@@ -10,6 +10,7 @@ using namespace std;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/BitManip.hh>
+#include <Viewer/PythonScripts.hh>
 using namespace Viewer;
 
 void
@@ -32,14 +33,19 @@ HitInfo::Render( RWWrapper& renderApp,
 
   bool hasData = false;
   vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
+  vector<string> dataTypes;
+  if( renderState.GetDataSource() == RIDS::eScript )
+    dataTypes = PythonScripts::GetInstance().GetAnalysis().GetDataLabels();
+  else
+    dataTypes = RenderState::GetTypeStrings();
   for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       if( lcn == iTer->GetLCN() )
         {
-          info << "TAC:" << iTer->GetTAC() << end.str();
-          info << "QHL:" << iTer->GetQHL() << end.str();
-          info << "QHS:" << iTer->GetQHS() << end.str();
-          info << "QLX:" << iTer->GetQLX() << end.str();
+          info << dataTypes[0] << ":" << iTer->GetTAC() << end.str();
+          info << dataTypes[1] << ":" << iTer->GetQHL() << end.str();
+          info << dataTypes[2] << ":" << iTer->GetQHS() << end.str();
+          info << dataTypes[3] << ":" << iTer->GetQLX() << end.str();
           hasData = true;
         }
     }

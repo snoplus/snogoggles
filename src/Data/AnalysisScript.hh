@@ -60,10 +60,10 @@ private:
   std::vector<std::string> fDataLabels; /// < Script labels the data types
   std::string fCurrentScript;
 
-  PyObject* fpScript;
-  PyObject* fpEventFunction;
-  PyObject* fpResetFunction;
-  PyObject* fpData;
+  PyObject* fpScript; /// < The actual script
+  PyObject* fpEventFunction; /// < Analyse event function
+  PyObject* fpResetFunction; /// < Reset the script data function
+  PyObject* fpData; /// < Data created by the script, this is displayed
 };
 
 } //::Viewer

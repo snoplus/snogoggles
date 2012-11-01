@@ -9,6 +9,20 @@ using namespace std;
 #include <Viewer/RIDS/Event.hh>
 using namespace Viewer;
 
+size_t AdjustIndex( const size_t currentIndex, const size_t limit, const int change )
+{
+  if( change > 0 )
+    return ( currentIndex + change ) % limit;
+  else
+    {
+      if( currentIndex <= -change )
+        return limit + change - currentIndex;
+      else
+        return currentIndex + change;
+    }
+}
+
+
 DataStore::DataStore()
   : fInputBuffer( 5000 ) 
 { 
@@ -85,20 +99,16 @@ DataStore::Update()
 void 
 DataStore::Latest()
 {
-  const size_t limit = fEvents.size() > fWrite ? fEvents.size() : fWrite;
-  size_t prev = ( fWrite - 1 ) % limit;
-  RIDS::Event* currentEvent = fEvents[prev];
-  // Check test event is valid and ensure code does not circularly loop
+  size_t prev = AdjustIndex( fWrite, fEvents.size(), -1 );
   size_t eventsChecked = 0;
-  while( currentEvent != NULL && eventsChecked < limit )
+  while( eventsChecked < fEvents.size() )
     {
-      if( SelectEvent( *currentEvent ) )
+      if( SelectEvent( fEvents[prev] ) )
         {
           ChangeEvent( prev );
           return;
         }
-      prev = ( prev - 1 ) % limit;
-      currentEvent = fEvents[prev];
+      prev = AdjustIndex( prev, fEvents.size(), -1 );
       eventsChecked++;
     }
 }
@@ -106,61 +116,52 @@ DataStore::Latest()
 void 
 DataStore::Next( const size_t step )
 {
-  const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
-  size_t next = ( fRead + 1 ) % limit;
-  RIDS::Event* currentEvent = fEvents[next];
-  // Check test event is valid and ensure code does not circularly loop
-  size_t progressEvents = 0; // Number of good selected events progress through
-  while( currentEvent != NULL && next != fRead ) 
+  size_t next = AdjustIndex( fRead, fEvents.size(), +1 );
+  size_t eventsChecked = 0;
+  size_t eventsStepped = 0; // Good events stepped over
+  while( eventsChecked < fEvents.size() )
     {
-      if( SelectEvent( *currentEvent ) )
+      if( SelectEvent( fEvents[next] ) )
         {
-          progressEvents++;
-          if( progressEvents == step )
+          eventsStepped++;
+          if( eventsStepped == step )
             {
               ChangeEvent( next );
               return;
             }
         }
-      next = ( next + 1 ) % limit;
-      currentEvent = fEvents[next];
+      next = AdjustIndex( next, fEvents.size(), +1 );
     }
 }
 
 void 
 DataStore::Prev( const size_t step )
 {
-  const size_t limit = fEvents.size() > fWrite ? fWrite : fEvents.size();
-  size_t prev = ( fRead - 1 ) % limit;
-  if( fRead == 0 )
-    prev = ( limit - 1 ) % limit;
-  RIDS::Event* currentEvent = fEvents[prev];
-  // Check test event is valid and ensure code does not circularly loop
-  size_t progressEvents = 0; // Number of good selected events progress through
-  while( currentEvent != NULL && prev != fRead ) 
+  size_t prev = AdjustIndex( fRead, fEvents.size(), -1 );
+  size_t eventsChecked = 0;
+  size_t eventsStepped = 0; // Good events stepped over
+  while( eventsChecked < fEvents.size() )
     {
-      if( SelectEvent( *currentEvent ) )
+      if( SelectEvent( fEvents[prev] ) )
         {
-          progressEvents++;
-          if( progressEvents == step )
+          eventsStepped++;
+          if( eventsStepped == step )
             {
               ChangeEvent( prev );
               return;
             }
         }
-      if( prev == 0 )
-        prev = ( limit - 1 ) % limit;
-      else
-        prev = ( prev - 1 ) % limit;
-      currentEvent = fEvents[prev];
+      prev = AdjustIndex( prev, fEvents.size(), -1 );
     }
 }
 
 bool
-DataStore::SelectEvent( RIDS::Event& event )
+DataStore::SelectEvent( RIDS::Event* event )
 {
+  if( event == NULL )
+    return false;
   if( fSelecting )
-    return PythonScripts::GetInstance().GetEventSelection().ProcessEvent( event );
+    return PythonScripts::GetInstance().GetEventSelection().ProcessEvent( *event );
   else // Return true if event selection is off
     return true;
 }

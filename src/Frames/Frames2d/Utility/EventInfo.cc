@@ -107,6 +107,8 @@ EventInfo::TriggerToString( int trigger )
 {
   // This code needs improving and generalising for snogoggles! PGJ
   stringstream triggerStream;
+  if( trigger == 0x0 )
+    triggerStream << "ORPH";
   if( trigger & 0x01 )
     triggerStream << "100L,";
   if( trigger & 0x02 )

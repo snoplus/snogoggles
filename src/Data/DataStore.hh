@@ -85,7 +85,7 @@ public:
 
 private:
   /// Run the event over the script and return true if selected
-  bool SelectEvent( RIDS::Event& event );
+  bool SelectEvent( RIDS::Event* event );
   /// Change the event and run analysis if required
   void ChangeEvent( const size_t eventID );
 
