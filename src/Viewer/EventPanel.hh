@@ -48,8 +48,9 @@ protected:
   RenderState fRenderState; /// < Current render state.
   sf::Clock fClock; /// < Clock to manage continuous event switching
   double fEventPeriod; /// < Time period in seconds per event, negative values indicate no continuous switching
+  bool fInstant; /// < Instant event switching
 private:
-  enum { eMultiPrev = 0, ePrev = 1, eNext = 2, eMultiNext = 3, eDataSource = 4, eDataType = 5, eRate = 6, eScaling = 7 };
+  enum { eMultiPrev = 0, ePrev = 1, eNext = 2, eMultiNext = 3, eDataSource = 4, eDataType = 5, eRate = 6, eScaling = 7, eInstant = 8 };
 };
 
 const RenderState

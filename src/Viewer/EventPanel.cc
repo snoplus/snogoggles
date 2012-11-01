@@ -11,6 +11,7 @@ using namespace std;
 #include <Viewer/RadioSelector.hh>
 #include <Viewer/SlideSelector.hh>
 #include <Viewer/ScalingBar.hh>
+#include <Viewer/PersistLabel.hh>
 #include <Viewer/PythonScripts.hh>
 using namespace Viewer;
 
@@ -19,6 +20,7 @@ EventPanel::EventPanel( RectPtr rect )
 {
   fRenderState.ChangeState( RIDS::eCal, RIDS::eTAC ); /// TEMP
   fEventPeriod = -1.0;
+  fInstant = false;
 }
 
 EventPanel::~EventPanel()
@@ -39,10 +41,18 @@ EventPanel::NewEvent( const Event& event )
       else if( event.key.code == sf::Keyboard::P )
         {
           fEventPeriod = -1.0;
+          fInstant = false;
           dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
         }
       else if( event.key.code == sf::Keyboard::I )
         {
+          fInstant = true;
+          fEventPeriod = -1.0;
+          dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
+        }
+      else if( event.key.code == sf::Keyboard::C )
+        {
+          fInstant = false;
           fEventPeriod = 0.0;
           dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.95 );
         }
@@ -83,6 +93,8 @@ EventPanel::EventLoop()
           break;
         case eRate: // Change in event display rate
           {
+            fInstant = false;
+            dynamic_cast<GUIs::PersistLabel*>( fGUIs[eInstant] )->SetState( false );
             double slideScale = dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->GetState();
             if( slideScale <= 0.1 )
               fEventPeriod = -1.0;
@@ -95,6 +107,18 @@ EventPanel::EventLoop()
               }
           }
           break;
+        case eInstant:
+          {
+            if( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eInstant] )->GetState() )
+              {
+                fEventPeriod = -1.0;
+                fInstant = true;
+                dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
+              }
+            else
+              fInstant = false;
+          }
+          break;
         case eScaling: // Change in scaling
           fRenderState.ChangeScaling( dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin(),
                                       dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() );
@@ -103,9 +127,11 @@ EventPanel::EventLoop()
       fEvents.pop();
     }
   // Manage the continuous event switching
-  if( fEventPeriod == 0.0 )
+  if( fInstant )
     events.Latest();
-  if( fEventPeriod > 0.0 && fClock.getElapsedTime().asSeconds() > fEventPeriod )
+  else if( !fInstant && fEventPeriod == 0.0 )
+    events.Next();
+  else if( !fInstant && fEventPeriod > 0.0 && fClock.getElapsedTime().asSeconds() > fEventPeriod )
     {
       events.Next();
       fClock.restart();
@@ -179,6 +205,12 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::SlideSelector >( posRect, effect );
                 vector<double> stops; stops.push_back( 0.0 ); stops.push_back( 0.25 ); stops.push_back( 0.6 ); stops.push_back( 0.95 );
                 dynamic_cast<GUIs::SlideSelector*>( fGUIs[effect] )->Initialise( stops );
+              }
+              break;
+            case eInstant:
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Instant Rate?" );
               }
               break;
             case eScaling:
