@@ -5,8 +5,85 @@
 using namespace std;
 
 #include <Viewer/IcosahedralProjection.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/ProjectionImage.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
+
+  const double a = 1.0 / 5.5;
+  const double b = a * sqrt( 3.0 ) / 2.0;
+
+  const TVector2 A12a = TVector2( a / 2.0, 0.0 );
+  const TVector2 A12b = TVector2( 3.0 * a / 2.0, 0.0 );
+  const TVector2 A12c = TVector2( 5.0 * a / 2.0, 0.0 );
+  const TVector2 A12d = TVector2( 7.0 *a / 2.0, 0.0 );
+  const TVector2 A12e = TVector2( 9.0 * a / 2.0, 0.0 );
+  const TVector2 A2a = TVector2( 0.0, b );
+  const TVector2 A2b = TVector2( 5.0 * a, b );
+  const TVector2 A17a = TVector2( a / 2.0 , 2.0 * b );
+  const TVector2 A17b = TVector2( 11.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A51a = TVector2( a, 3.0 * b );
+  const TVector2 A51b = TVector2( 2.0 * a, 3.0 * b );
+  const TVector2 A51c = TVector2( 3.0 * a, 3.0 * b );
+  const TVector2 A51d = TVector2( 4.0 * a, 3.0 * b );
+  const TVector2 A51e = TVector2( 5.0 * a, 3.0 * b );
+  const TVector2 A27 = TVector2( 4.0 * a, b );
+  const TVector2 A46 = TVector2( 3.0 * a, b );
+  const TVector2 A31 = TVector2( 2.0 * a, b );
+  const TVector2 A6 = TVector2( a, b );
+  const TVector2 A37 = TVector2( 9.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A33 = TVector2( 3.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A58 = TVector2( 5.0 * a / 2.0 , 2.0 * b );
+  const TVector2 A54 = TVector2( 7.0 * a / 2.0 , 2.0 * b );
+
+void
+IcosahedralProjection::PostInitialise( const ConfigurationTable* configTable )
+{
+  ProjectionMapArea::PostInitialise( configTable );
+  ProjectOutline( A2a, A12a );
+  ProjectOutline( A6, A12a );
+  ProjectOutline( A2b, A12e );
+  ProjectOutline( A27, A12e );
+  ProjectOutline( A27, A12d );
+  ProjectOutline( A46, A12d );
+  ProjectOutline( A46, A12c );
+  ProjectOutline( A31, A12c );
+  ProjectOutline( A31, A12b );
+  ProjectOutline( A6, A12b );
+  ProjectOutline( A51a, A17a );
+  ProjectOutline( A2a, A17a );
+  ProjectOutline( A2b, A17b );
+  ProjectOutline( A51e, A17b );
+  ProjectOutline( A51e, A37 );
+  ProjectOutline( A51d, A37 );
+  ProjectOutline( A51d, A54 );
+  ProjectOutline( A51c, A54 );
+  ProjectOutline( A51c, A58 );
+  ProjectOutline( A51b, A58 );
+  ProjectOutline( A51b, A33 );
+  ProjectOutline( A33, A51a );
+}
+
+void
+IcosahedralProjection::ProjectOutline( TVector2 v1,
+                                        TVector2 v2 )
+{
+  TVector2 line = v2 - v1;
+  double dist = line.Mod();
+  line = line.Unit();
+  for( double delta = 0.0; delta < dist; delta += dist / 60.0 )
+    {
+      TVector2 deltaPos = line * delta + v1;
+      fProjectedOutline.push_back( sf::Vector2<double>( deltaPos.X(), 2.0 * deltaPos.Y() ) );
+    }
+}
+
+void
+IcosahedralProjection::DrawOutline()
+{
+  for( vector< sf::Vector2<double> >::iterator iTer = fProjectedOutline.begin(); iTer != fProjectedOutline.end(); iTer++ )
+    fImage->DrawDot( *iTer, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
+}
 
 TVector2
 TransformCoord(
@@ -103,32 +180,6 @@ IcosahedralProjection::Project( Vector3 pmtPos )
   for( uLoop = 0; uLoop < IcosahedralCentres.size(); uLoop++ )
     distFromCentre.push_back( ( IcosahedralCentres[uLoop] - pointOnSphere ).Mag() );
   const int face = min_element( distFromCentre.begin(), distFromCentre.end() ) - distFromCentre.begin() + 1;
-
-  const double a = 1.0 / 5.5;
-  const double b = a * sqrt( 3.0 ) / 2.0;
-
-  const TVector2 A12a = TVector2( a / 2.0, 0.0 );
-  const TVector2 A12b = TVector2( 3.0 * a / 2.0, 0.0 );
-  const TVector2 A12c = TVector2( 5.0 * a / 2.0, 0.0 );
-  const TVector2 A12d = TVector2( 7.0 *a / 2.0, 0.0 );
-  const TVector2 A12e = TVector2( 9.0 * a / 2.0, 0.0 );
-  const TVector2 A2a = TVector2( 0.0, b );
-  const TVector2 A2b = TVector2( 5.0 * a, b );
-  const TVector2 A17a = TVector2( a / 2.0 , 2.0 * b );
-  const TVector2 A17b = TVector2( 11.0 * a / 2.0 , 2.0 * b );
-  const TVector2 A51a = TVector2( a, 3.0 * b );
-  const TVector2 A51b = TVector2( 2.0 * a, 3.0 * b );
-  const TVector2 A51c = TVector2( 3.0 * a, 3.0 * b );
-  const TVector2 A51d = TVector2( 4.0 * a, 3.0 * b );
-  const TVector2 A51e = TVector2( 5.0 * a, 3.0 * b );
-  const TVector2 A27 = TVector2( 4.0 * a, b );
-  const TVector2 A46 = TVector2( 3.0 * a, b );
-  const TVector2 A31 = TVector2( 2.0 * a, b );
-  const TVector2 A6 = TVector2( a, b );
-  const TVector2 A37 = TVector2( 9.0 * a / 2.0 , 2.0 * b );
-  const TVector2 A33 = TVector2( 3.0 * a / 2.0 , 2.0 * b );
-  const TVector2 A58 = TVector2( 5.0 * a / 2.0 , 2.0 * b );
-  const TVector2 A54 = TVector2( 7.0 * a / 2.0 , 2.0 * b );
 
   TVector2 resultPosition;
   switch(face)

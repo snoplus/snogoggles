@@ -79,6 +79,7 @@ ProjectionBase::Render2d( RWWrapper& windowApp,
 
   DrawGeodesic();
   DrawHits( renderState );
+  DrawOutline();
 
   fImage->Update();
   windowApp.Draw( *fImage );

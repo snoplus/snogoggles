@@ -57,7 +57,9 @@ public:
 		 const RenderState& renderState ) { }
 
   //EFrameType GetFrameType() { return eUtil; }
+  virtual void DrawOutline() { };
 protected:
+
   void ProjectGeodesicLine( Vector3 v1, 
                             Vector3 v2 );
   void DrawHits( const RenderState& renderState );

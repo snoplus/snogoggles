@@ -17,6 +17,8 @@
 #ifndef __Viewer_Frames_IcosahedralProjection__
 #define __Viewer_Frames_IcosahedralProjection__
 
+#include <TVector2.h>
+
 #include <SFML/System/Vector2.hpp>
 
 #include <Viewer/ProjectionMapArea.hh>
@@ -32,14 +34,22 @@ class IcosahedralProjection : public ProjectionMapArea
 public:
   IcosahedralProjection( RectPtr rect ) : ProjectionMapArea( rect ) { }
 
+  void PostInitialise( const ConfigurationTable* configTable );
+
   std::string GetName() { return IcosahedralProjection::Name(); }
 
   static std::string Name() { return std::string( "Icosahedral" ); }
 
   double GetAspectRatio() const { return 0.5; }
-
 private:
+  void DrawOutline();
+
   sf::Vector2<double> Project( Vector3 pmtPos );
+
+  void ProjectOutline( TVector2 v1,
+                       TVector2 v2 );
+  
+  std::vector< sf::Vector2<double> > fProjectedOutline; /// < The outline of the projection
 };
 
 } // ::Frames
