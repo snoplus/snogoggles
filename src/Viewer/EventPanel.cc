@@ -19,8 +19,8 @@ EventPanel::EventPanel( RectPtr rect )
   : Panel( rect, "EventPanel" )
 {
   fRenderState.ChangeState( RIDS::eCal, RIDS::eTAC ); /// TEMP
+  fLatest = false;
   fEventPeriod = -1.0;
-  fInstant = false;
 }
 
 EventPanel::~EventPanel()
@@ -40,21 +40,15 @@ EventPanel::NewEvent( const Event& event )
         events.Prev();
       else if( event.key.code == sf::Keyboard::P )
         {
-          fEventPeriod = -1.0;
-          fInstant = false;
-          dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
+          ChangeRateMode( -1.0, false );
         }
       else if( event.key.code == sf::Keyboard::I )
         {
-          fInstant = true;
-          fEventPeriod = -1.0;
-          dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
+          ChangeRateMode( -1.0, true );
         }
       else if( event.key.code == sf::Keyboard::C )
         {
-          fInstant = false;
-          fEventPeriod = 0.0;
-          dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.95 );
+          ChangeRateMode( 0.0, false );
         }
     }
   Panel::NewEvent( event );
@@ -93,30 +87,18 @@ EventPanel::EventLoop()
           break;
         case eRate: // Change in event display rate
           {
-            fInstant = false;
-            dynamic_cast<GUIs::PersistLabel*>( fGUIs[eInstant] )->SetState( false );
             double slideScale = dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->GetState();
+            double period = 0.5 / slideScale;
             if( slideScale <= 0.1 )
-              fEventPeriod = -1.0;
+              period = -1.0;
             else if( slideScale >= 0.95 )
-              fEventPeriod = 0.0;
-            else
-              {
-                fEventPeriod = 0.5 / slideScale;
-                fClock.restart();
-              }
+              period = 0.0;
+            ChangeRateMode( period, false );
           }
           break;
-        case eInstant:
+        case eLatest:
           {
-            if( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eInstant] )->GetState() )
-              {
-                fEventPeriod = -1.0;
-                fInstant = true;
-                dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
-              }
-            else
-              fInstant = false;
+            ChangeRateMode( -1.0, dynamic_cast<GUIs::PersistLabel*>( fGUIs[eLatest] )->GetState() );
           }
           break;
         case eScaling: // Change in scaling
@@ -127,11 +109,11 @@ EventPanel::EventLoop()
       fEvents.pop();
     }
   // Manage the continuous event switching
-  if( fInstant )
+  if( fLatest )
     events.Latest();
-  else if( !fInstant && fEventPeriod == 0.0 )
+  else if( !fLatest && fEventPeriod == 0.0 )
     events.Next();
-  else if( !fInstant && fEventPeriod > 0.0 && fClock.getElapsedTime().asSeconds() > fEventPeriod )
+  else if( !fLatest && fEventPeriod > 0.0 && fClock.getElapsedTime().asSeconds() > fEventPeriod )
     {
       events.Next();
       fClock.restart();
@@ -207,10 +189,10 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 dynamic_cast<GUIs::SlideSelector*>( fGUIs[effect] )->Initialise( stops );
               }
               break;
-            case eInstant:
+            case eLatest:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Instant Rate?" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Force Latest?" );
               }
               break;
             case eScaling:
@@ -232,4 +214,17 @@ EventPanel::SaveConfiguration( ConfigurationTable* configTable )
   configTable->SetD( "scale_min", dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() );
   configTable->SetD( "scale_max", dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() );
   configTable->SetD( "event_rate_scale", dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->GetState() );
+}
+
+void
+EventPanel::ChangeRateMode( double period, bool latest )
+{
+  fEventPeriod = period;
+  fLatest = latest;
+  dynamic_cast<GUIs::PersistLabel*>( fGUIs[eLatest] )->SetState( latest );
+  if( period < 0.0 )
+    dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.0 );
+  if( period == 0.0 )
+    dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.95 );
+  fClock.restart();
 }
