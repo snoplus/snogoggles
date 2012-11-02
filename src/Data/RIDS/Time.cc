@@ -1,3 +1,4 @@
+#include <cmath>
 #include <sstream>
 using namespace std;
 
@@ -40,7 +41,31 @@ Time::Time( struct tm* tm )
 }
 
 string 
-Time::GetDate()
+Time::DiffTime( const Time& rhs ) const
+{
+  // Should display largest difference!
+  stringstream text;
+  if( fYear != rhs.fYear )
+    text << abs( fYear - rhs.fYear ) << " years";
+  else if( fMonth != rhs.fMonth )
+    text << abs( fMonth - rhs.fMonth ) << " months";
+  else if( fDay != rhs.fDay )
+    text << abs( fDay - rhs.fDay ) << " days";
+  else if( fHour != rhs.fHour )
+    text << abs( fHour - rhs.fHour ) << " hours";
+  else if( fMin != rhs.fMin )
+    text << abs( fMin - rhs.fMin ) << " mins";
+  else if( fSec != rhs.fSec )
+    text << abs( fSec - rhs.fSec ) << " secs";
+  //else if( fNSec != rhs.fNSec )
+  //  text << scientific << abs( fNSec - rhs.fNSec ) << " ns";
+  else
+    text << "<1 second";
+  return text.str();
+}
+
+string 
+Time::GetDate() const 
 {
   stringstream text;
   text << fYear << "/" << fMonth  + 1 << "/" << fDay; // Month is stored as months since January, thus Jan is stored as 0 Thus need +1
@@ -48,7 +73,7 @@ Time::GetDate()
 }
 
 string 
-Time::GetTime()
+Time::GetTime() const
 {
   stringstream text;
   text << fHour << ":" << fMin << ":" << fSec;

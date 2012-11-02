@@ -18,6 +18,14 @@
 #include <Viewer/EventSelectionScript.hh>
 #include <Viewer/PMTSelectionScript.hh>
 
+namespace RAT
+{
+namespace DS
+{
+  class PMTProperties;
+}
+}
+
 namespace Viewer
 {
 
@@ -26,7 +34,7 @@ class PythonScripts
 public:
   static PythonScripts& GetInstance();
 
-  void Initialise();
+  void Initialise( RAT::DS::PMTProperties& pmtProp );
 
   AnalysisScript& GetAnalysis() { return *fAnalysis; }
   EventSelectionScript& GetEventSelection() { return *fEventSelection; }

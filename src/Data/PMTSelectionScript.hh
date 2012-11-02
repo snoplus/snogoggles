@@ -24,6 +24,14 @@ typedef _object PyObject;
 #include <vector>
 #include <string>
 
+namespace RAT
+{
+namespace DS
+{
+  class PMTProperties;
+}
+}
+
 namespace Viewer
 {
 
@@ -32,6 +40,9 @@ class PMTSelectionScript
 public:
   PMTSelectionScript();
   ~PMTSelectionScript();
+
+  /// Initialise with fixed PMT data
+  void Initialise( RAT::DS::PMTProperties& pmtProp );
 
   /// Load a script
   void Load( const std::string& scriptName );
@@ -49,6 +60,8 @@ private:
   PyObject* fpScript;
   PyObject* fpSelectFunction;
   PyObject* fpData;
+  PyObject* fpPMTData;
+  unsigned int fChannels;
 };
 
 } //::Viewer

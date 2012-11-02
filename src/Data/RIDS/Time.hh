@@ -32,8 +32,10 @@ public:
   Time( struct tm* tm );
   ~Time() { }
 
-  std::string GetDate();
-  std::string GetTime();
+  /// Return a string stating the difference in time to rhs
+  std::string DiffTime( const Time& rhs ) const;
+  std::string GetDate() const;
+  std::string GetTime() const;
 private:
   int fYear;
   int fMonth;

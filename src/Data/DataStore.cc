@@ -40,7 +40,7 @@ DataStore::DataStore()
 void
 DataStore::Initialise()
 {
-  PythonScripts::GetInstance().Initialise();
+  PythonScripts::GetInstance().Initialise( *fRun->GetPMTProp() );
   RIDS::Event* currentEvent = NULL;
   fInputBuffer.Pop( currentEvent ); // Guaranteed by semaphore to work
   fEvents[fWrite] = currentEvent;
@@ -177,6 +177,15 @@ DataStore::ChangeEvent( const size_t eventID )
   fChanged = true;
   if( fAnalysing )
     PythonScripts::GetInstance().GetAnalysis().ProcessEvent( *fEvent );
+}
+
+RIDS::Event* 
+DataStore::GetPreviousEvent( const size_t prev ) const
+{
+  size_t event = AdjustIndex( fWrite, fEvents.size(), -1 - static_cast<int>( prev ) );
+  if( event == fWrite )
+    return NULL;
+  return fEvents[event];
 }
 
 vector<RIDS::PMTHit> 

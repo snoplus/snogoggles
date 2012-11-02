@@ -65,6 +65,8 @@ public:
   void Prev( const size_t step = 1 );
 
   inline const RIDS::Event& GetCurrentEvent() const;
+  /// Get the prev previous event to the latest
+  RIDS::Event* GetPreviousEvent( const size_t prev ) const;
   inline RAT::DS::Run& GetRun() const;
   inline bool HasChanged() const;
   /// Update the data structure, fetch events from input buffer

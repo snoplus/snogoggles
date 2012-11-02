@@ -21,9 +21,10 @@ PythonScripts::~PythonScripts()
 }
 
 void
-PythonScripts::Initialise()
+PythonScripts::Initialise( RAT::DS::PMTProperties& pmtProp )
 {
   fAnalysis->Load( "default" );
   fEventSelection->Load( "ev_default" );
+  fPMTSelection->Initialise( pmtProp );
   fPMTSelection->Load( "pmt_default" );
 }
