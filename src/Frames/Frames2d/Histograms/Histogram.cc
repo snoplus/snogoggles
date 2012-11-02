@@ -34,6 +34,9 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
   sf::Rect<double> buttonSize( 0.8, 0.0, 0.2, 0.05 );
   GUIs::PersistLabel* logY = fGUIManager.NewGUI<GUIs::PersistLabel>( buttonSize, Rect::eLocal );
   logY->Initialise( 14, "Log_10 Y?" );
+  buttonSize = sf::Rect<double>( 0.8, 0.05, 0.2, 0.05 );
+  GUIs::PersistLabel* overflow = fGUIManager.NewGUI<GUIs::PersistLabel>( buttonSize, Rect::eLocal );
+  overflow->Initialise( 14, "Plot Overflow?" );
   sf::Rect<double> infoSize( 0.0, 1.0 - kAxisMargin / 2.0, 1.0, kAxisMargin / 2.0 );
   fInfoText = new Text( RectPtr( fRect->NewDaughter( infoSize, Rect::eLocal ) ) );
   imageSize.left = kAxisMargin;
@@ -44,6 +47,7 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
     {
       fLogY = configTable->GetI( "logY" );
       logY->SetState( fLogY );
+      fOverflow = false;
     }
 }
 
@@ -64,7 +68,10 @@ Histogram::EventLoop()
           fLogY = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( 0 ) )->GetState();
           break;
         case 1:
-          fMousePos = dynamic_cast<GUIs::MapArea*>( fGUIManager.GetGUI( 1 ) )->GetPosition();
+          fOverflow = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( 1 ) )->GetState();
+          break;
+        case 2:
+          fMousePos = dynamic_cast<GUIs::MapArea*>( fGUIManager.GetGUI( 2 ) )->GetPosition();
           break;
         }
       fEvents.pop();
@@ -110,6 +117,8 @@ Histogram::DrawHistogram()
   // Now the histogram can be drawn 
   for( unsigned int iBin = 0; iBin < fValues.size(); iBin++ )
     {
+      if( !fOverflow && ( iBin == 0 || iBin == fValues.size() - 1 ) )
+        continue;
       double binValue = fValues[iBin];
 
       const double binRatio = static_cast<double>( iBin ) / static_cast<double>( fValues.size() );
@@ -201,10 +210,14 @@ Histogram::CalculateHistogram( const RenderState& renderState )
       int bin = CalculateBin( data );
       fValues[ bin ] += 1.0;
     }
-  if( fLogY )
+  if( fLogY && fOverflow )
     fYRange = pair<double, double>( 0.1, *max_element( fValues.begin(), fValues.end() ) );
-  else
+  else if( fLogY && !fOverflow )
+    fYRange = pair<double, double>( 0.1, *max_element( ++fValues.begin(), --fValues.end() ) );
+  else if( !fLogY && fOverflow )
     fYRange = pair<double, double>( 0.0, *max_element( fValues.begin(), fValues.end() ) );
+  else if( !fLogY && !fOverflow )
+    fYRange = pair<double, double>( 0.0, *max_element( ++fValues.begin(), --fValues.end() ) );
 }
 
 int

@@ -26,7 +26,7 @@ size_t AdjustIndex( const size_t currentIndex, const size_t limit, const int cha
 DataStore::DataStore()
   : fInputBuffer( 5000 ) 
 { 
-  fEvents.resize( 5000, NULL ); 
+  fEvents.resize( 60000, NULL ); 
   fWrite = 0;
   fRead = 0;
   fEventsAdded = 1;
@@ -131,6 +131,7 @@ DataStore::Next( const size_t step )
             }
         }
       next = AdjustIndex( next, fEvents.size(), +1 );
+      eventsChecked++;
     }
 }
 
@@ -152,6 +153,7 @@ DataStore::Prev( const size_t step )
             }
         }
       prev = AdjustIndex( prev, fEvents.size(), -1 );
+      eventsChecked++;
     }
 }
 

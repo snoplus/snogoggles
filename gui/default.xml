@@ -15,7 +15,7 @@
     <Truth TAC="500.0" QHL="4000.0" QHS="4000.0" QLX="1000.0" />
     <UnCal TAC="4000.0" QHL="4500.0" QHS="4500.0" QLX="1400.0" />
     <Cal TAC="500.0" QHL="4000.0" QHS="4000.0" QLX="1000.0" />
-    <Script TAC="500.0" QHL="50000.0" QHS="500.0" QLX="500.0" />
+    <Script TAC="5000.0" QHL="5000.0" QHS="50000.0" QLX="50000.0" />
   </RenderState>
   <ScriptPanel x="0.9" y="0.75" width="0.1" height="0.25">
     <text caption="Analysis Script:" x="0.0" y="0.0" width="1.0" height="0.1" />

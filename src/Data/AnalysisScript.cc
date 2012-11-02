@@ -1,6 +1,7 @@
 #include <Python.h>
 
 #include <sstream>
+#include <iostream>
 using namespace std;
 
 #include <Viewer/RIDS/RIDS.hh>
@@ -66,6 +67,7 @@ AnalysisScript::Load( const string& scriptName )
   if( !pLabelsFunction || !PyCallable_Check( pLabelsFunction ) )
     throw;
   PyObject* pResult = PyObject_CallFunctionObjArgs( pLabelsFunction, NULL );
+  fDataLabels.clear();
   for( int label = 0; label < 4; label++ )
     {
       fDataLabels.push_back( string( PyString_AsString( PyTuple_GetItem( pResult, label ) ) ) );
@@ -87,6 +89,9 @@ AnalysisScript::Reset()
 void
 AnalysisScript::ProcessEvent( const RIDS::Event& event )
 {
+  static int count = 0;
+  count++;
+  cout << count << endl;
   // First produce the (4) python lists of data (MC, PMTTruth, PMTUnCal, PMTCal)
   PyObject* pMC = FillList( event, RIDS::eMC );
   PyObject* pTruth = FillList( event, RIDS::eTruth );

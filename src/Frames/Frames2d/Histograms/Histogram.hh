@@ -75,6 +75,7 @@ protected:
   ProjectionImage* fImage; /// < The histogram image to display
   double fBarWidth; /// < Amount of pixels per drawn bin
   bool fLogY; /// < LogY?
+  bool fOverflow; /// < Plot the overflow bins?
 };
 
 } // ::Frames
