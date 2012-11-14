@@ -87,10 +87,15 @@ ViewerWindow::PostInitialise( const ConfigurationTable* configTable )
 void
 ViewerWindow::Run()
 {
-  while( fWindowApp->isOpen() )
+  // PRECONDITION: SFML window is open.
+  while( true )
     {
-      if( !EventLoop() ) // Returns false on user controlled close
+      // Returns false on user controlled close
+      if( !EventLoop() ) 
+      {
+        // This break is the only exit case
         break;
+      }
       RenderLoop();
     }
 }
@@ -110,13 +115,16 @@ ViewerWindow::Destruct()
   TextureManager::GetInstance().ClearTextures();
   delete fDesktopManager;
   delete fRWWrapper;
-  fWindowApp->close();
+  fWindowApp->close(); 
   delete fWindowApp;
 }
 
 bool
 ViewerWindow::EventLoop()
 {
+  // DO NOT CLOSE fWindowApp HERE
+  // WILL CLOSE WINDOW IN ViewerWindow::Destruct()
+
   DataStore::GetInstance().Update();
   sf::Event event;
   while( fWindowApp->pollEvent( event ) )
@@ -125,8 +133,8 @@ ViewerWindow::EventLoop()
         {
           // First ViewerWindow Specific Events
         case sf::Event::Closed:
-          fWindowApp->close();
-          break;
+          // This is a user controlled exit
+          return false; 
         case sf::Event::Resized:
           Rect::SetWindowSize( event.size.width, event.size.height );
           break;
@@ -139,6 +147,7 @@ ViewerWindow::EventLoop()
           if( event.key.code == sf::Keyboard::Escape )
             {
               // Start closing the viewer
+              // This is a user controlled exit
               return false;
             }
           //Drop through

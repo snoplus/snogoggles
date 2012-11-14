@@ -47,6 +47,7 @@ public:
   /// Load the frames, Data access allowed (post semaphore)
   void PostInitialise( const ConfigurationTable* configTable );
   /// Run loop, polled by the thread
+  /// PRECONDITION: SFML window is open.
   void Run();
   /// Save settings
   void SaveConfiguration( ConfigurationTable* configTable );
