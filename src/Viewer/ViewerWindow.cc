@@ -87,10 +87,15 @@ ViewerWindow::PostInitialise( const ConfigurationTable* configTable )
 void
 ViewerWindow::Run()
 {
-  while( fWindowApp->isOpen() )
+  // PRECONDITION: SFML window is open.
+  while( true )
     {
-      if( !EventLoop() ) // Returns false on user controlled close
+      // Returns false on user controlled close
+      if( !EventLoop() ) 
+      {
+        // This break is the only exit case
         break;
+      }
       RenderLoop();
     }
 }
@@ -117,6 +122,9 @@ ViewerWindow::Destruct()
 bool
 ViewerWindow::EventLoop()
 {
+  // DO NOT CLOSE fWindowApp HERE
+  // WILL CLOSE WINDOW IN ViewerWindow::Destruct()
+
   DataStore::GetInstance().Update();
   sf::Event event;
   while( fWindowApp->pollEvent( event ) )
@@ -126,7 +134,6 @@ ViewerWindow::EventLoop()
           // First ViewerWindow Specific Events
         case sf::Event::Closed:
           // This is a user controlled exit
-          fWindowApp->close(); 
           return false; 
         case sf::Event::Resized:
           Rect::SetWindowSize( event.size.width, event.size.height );
