@@ -110,7 +110,7 @@ ViewerWindow::Destruct()
   TextureManager::GetInstance().ClearTextures();
   delete fDesktopManager;
   delete fRWWrapper;
-  fWindowApp->close();
+  fWindowApp->close(); 
   delete fWindowApp;
 }
 
@@ -125,8 +125,9 @@ ViewerWindow::EventLoop()
         {
           // First ViewerWindow Specific Events
         case sf::Event::Closed:
-          fWindowApp->close();
-          break;
+          // This is a user controlled exit
+          fWindowApp->close(); 
+          return false; 
         case sf::Event::Resized:
           Rect::SetWindowSize( event.size.width, event.size.height );
           break;
@@ -139,6 +140,7 @@ ViewerWindow::EventLoop()
           if( event.key.code == sf::Keyboard::Escape )
             {
               // Start closing the viewer
+              // This is a user controlled exit
               return false;
             }
           //Drop through
