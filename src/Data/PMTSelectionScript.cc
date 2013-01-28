@@ -38,7 +38,7 @@ PMTSelectionScript::Initialise( RAT::DS::PMTProperties& pmtProp )
     {
       PyObject* pData = PyList_New( 2 );
       PyList_SetItem( pData, 0, PyLong_FromLong( pmtProp.GetType( iEntry ) ) );
-      PyList_SetItem( pData, 1, PyLong_FromLong( pmtProp.GetSNOMANNumber( iEntry ) ) );
+      //PyList_SetItem( pData, 1, PyLong_FromLong( pmtProp.GetSNOMANNumber( iEntry ) ) );
       PyList_SetItem( fpPMTData, iEntry, pData ); // This steals the reference
     }
 }
