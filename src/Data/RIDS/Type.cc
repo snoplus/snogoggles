@@ -6,8 +6,8 @@ using namespace Viewer::RIDS;
 
 Type::Type()
 {
-  fMin = numeric_limits<double>::min();
-  fMax = numeric_limits<double>::max();
+  fMin = numeric_limits<double>::max();
+  fMax = numeric_limits<double>::min();
 }
 
 void 

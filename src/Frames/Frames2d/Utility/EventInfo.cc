@@ -49,27 +49,16 @@ EventInfo::Render2d( RWWrapper& renderApp,
   const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
   eventInfo << "Run :" << event.GetRunID() << endl;
   eventInfo << "Sub Run :" << event.GetSubRunID() << endl;
-  /*  
-  if( event.ExistEV() )
+  eventInfo << "Event GTID :" << event.GetEventID() << endl;
+
+  const vector<string> sourceNames = RIDS::Event::GetSourceNames();
+  for( size_t source = 0; source < sourceNames.size(); source++ )
     {
-      RIDS::EV& ev = event.GetEV();
-      eventInfo << "EV:" << endl;
-      eventInfo << "\tGTID: " << ToHexString(ev.GetGTID()) << endl;
-      eventInfo << "\tTrigger Word: " << ToHexString( ev.GetTriggerWord() ) << endl;
-      eventInfo << "\tTriggers:" << TriggerToString( ev.GetTriggerWord() ) << endl;
-      eventInfo << "\tEvent Date: " << ev.GetTime().GetDate() << endl;
-      eventInfo << "\tEvent Time: " << ev.GetTime().GetTime() << endl;
-      eventInfo << "\tNhit (Cal):" << ev.GetCalNHits() << endl;
-      eventInfo << "\tNhit (UnCal):" << ev.GetUnCalNHits() << endl;
-      eventInfo << "\tNhit (Truth):" << ev.GetTruthNHits() << endl;
+      eventInfo << sourceNames[source] << ":" << endl;
+      const vector<string> typeNames = RIDS::Event::GetTypeNames( source );
+      for( size_t type = 0; type < typeNames.size(); type++ )
+        eventInfo << "\t" << typeNames[type] << ": " << event.GetSource( source ).GetType( type ).GetCount() << endl;
     }
-  if( event.ExistMC() )
-    {
-      RIDS::MC& mc = event.GetMC();
-      eventInfo << "MC:" << endl;
-      eventInfo << "\tNhit:" << mc.GetNHits() << endl;
-    }
-  */
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   renderApp.Draw( *fInfoText );  

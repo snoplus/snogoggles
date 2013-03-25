@@ -83,9 +83,9 @@ EventPanel::EventLoop()
                                     dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetState() );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
           if( fRenderState.GetDataSource() == -1 )
-            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( PythonScripts::GetInstance().GetAnalysis().GetDataLabels() );
+            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( PythonScripts::GetInstance().GetAnalysis().GetDataLabels() );
           else
-            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
+            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
           break;
         case eRate: // Change in event display rate
           {
@@ -104,8 +104,11 @@ EventPanel::EventLoop()
           }
           break;
         case eScaling: // Change in scaling
-          fRenderState.ChangeScaling( dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin(),
-                                      dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() );
+          const RIDS::Event& event = events.GetCurrentEvent();
+          const double range = event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() - event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin();
+          
+          fRenderState.ChangeScaling( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() * range,
+                                      event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() * range );
           break;
         }
       fEvents.pop();
@@ -141,7 +144,9 @@ EventPanel::PreInitialise( const ConfigurationTable* configTable )
 void
 EventPanel::PostInitialise( const ConfigurationTable* configTable )
 {
-
+  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->Initialise( RIDS::Event::GetSourceNames() );
+  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
+  
 }
 
 void
@@ -173,16 +178,10 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 31 );
               break;
             case eDataSource:
-              {
-                fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RIDS::Event::GetSourceNames() );
-              }
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
               break;
             case eDataType:
-              {
-                fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
-              }
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
               break;
             case eRate:
               {

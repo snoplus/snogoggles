@@ -45,6 +45,8 @@ public:
   void SetRunID( int runID ) { fRunID = runID; }
   /// Set the sub run ID
   void SetSubRunID( int subRunID ) { fSubRunID = subRunID; }
+  /// Set the event ID
+  void SetEventID( int eventID ) { fEventID = eventID; }
 
   /// Return a reference to the source as specified by it's id
   const Source& GetSource( int id ) const { return fSources[id]; }
@@ -57,6 +59,8 @@ public:
   int GetRunID() const { return fRunID; }
   /// Return the sub run ID
   int GetSubRunID() const { return fSubRunID; }
+  /// Return the event ID
+  int GetEventID() const { return fEventID; }
 private:
   static DataNames fsDataNames; /// < Names of the sources each associated with type names
 
@@ -64,6 +68,7 @@ private:
   std::vector<Source> fSources; /// < The event data organised by source
   int fRunID; /// < The run number
   int fSubRunID; /// < The sub run number
+  int fEventID; /// < The event ID
 };
 
 } // namespace RIDS

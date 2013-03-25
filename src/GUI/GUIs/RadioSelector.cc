@@ -22,6 +22,8 @@ RadioSelector::~RadioSelector()
 void 
 RadioSelector::Initialise( const vector<string>& options )
 {
+  fGUIManager.Clear();
+  fPersistLabels.clear();
   sf::Rect<double> fullSize = fRect->GetRect( Rect::eResolution );
   const double rowHeight = fullSize.height / static_cast<double>( options.size() ); 
   const double rowSpacing = 2.0;
@@ -74,12 +76,4 @@ RadioSelector::GetState() const
     if( fPersistLabels[iLabel]->GetState() )
       return iLabel;
   return 0;
-}
-
-
-void
-RadioSelector::SetOptions( const vector<string>& options )
-{
-  for( unsigned int iLabel = 0; iLabel < fPersistLabels.size(); iLabel++ )
-    fPersistLabels[iLabel]->SetLabel( options[iLabel] );
 }

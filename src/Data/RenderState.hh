@@ -33,8 +33,8 @@ public:
 
   void ChangeState( int source,
                     int type );
-  void ChangeScaling( double fractionalMin,
-                      double fractionalMax );
+  void ChangeScaling( const double min,
+                      const double max );
 
   inline int GetDataSource() const;
   inline int GetDataType() const;

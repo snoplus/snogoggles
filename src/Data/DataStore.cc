@@ -46,6 +46,7 @@ DataStore::Initialise()
   fEvents[fWrite] = currentEvent;
   fWrite = ( fWrite + 1 ) % fEvents.size();
   fEvent = new RIDS::Event( *currentEvent );
+  SetRun( fEvent->GetRunID() );
   fChanged = true;
 }
 
@@ -175,6 +176,7 @@ DataStore::ChangeEvent( const size_t eventID )
   fRead = eventID;
   delete fEvent;
   fEvent = new RIDS::Event( *fEvents[fRead] );
+  SetRun( fEvent->GetRunID() );
   fChanged = true;
   if( fAnalysing )
     PythonScripts::GetInstance().GetAnalysis().ProcessEvent( *fEvent );

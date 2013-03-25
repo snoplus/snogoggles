@@ -15,9 +15,11 @@ RenderState::ChangeState( int source,
 }
 
 void 
-RenderState::ChangeScaling( double fractionalMin,
-                            double fractionalMax )
+RenderState::ChangeScaling( const double min,
+                            const double max )
 {
+  fCurrentScalingMin = min;
+  fCurrentScalingMax = max;
   fChanged = true;
 }
 
