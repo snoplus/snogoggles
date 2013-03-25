@@ -47,6 +47,8 @@ public:
   void SetSubRunID( int subRunID ) { fSubRunID = subRunID; }
   /// Set the event ID
   void SetEventID( int eventID ) { fEventID = eventID; }
+  /// Set the trigger word
+  void SetTrigger( int trigger ) { fTrigger = trigger; }
 
   /// Return a reference to the source as specified by it's id
   const Source& GetSource( int id ) const { return fSources[id]; }
@@ -61,6 +63,8 @@ public:
   int GetSubRunID() const { return fSubRunID; }
   /// Return the event ID
   int GetEventID() const { return fEventID; }
+  /// Return the trigger word
+  int GetTrigger() const { return fTrigger; }
 private:
   static DataNames fsDataNames; /// < Names of the sources each associated with type names
 
@@ -69,6 +73,7 @@ private:
   int fRunID; /// < The run number
   int fSubRunID; /// < The sub run number
   int fEventID; /// < The event ID
+  int fTrigger; /// < The trigger word
 };
 
 } // namespace RIDS

@@ -80,7 +80,7 @@ FrameContainer::PreInitialise( const ConfigurationTable* configTable )
       posRect.top = configTable->GetD( "y" );
       posRect.width = configTable->GetD( "width" );
       posRect.height = configTable->GetD( "height" );
-      SetRect( posRect, Rect::eResolution );
+      SetRect( posRect, Rect::eLocal );
     }
 }
 
@@ -95,7 +95,7 @@ void
 FrameContainer::SaveConfiguration( ConfigurationTable* configTable )
 {
   configTable->SetS( "type", fFrame->GetName() ); // Loaded in FrameManager!
-  sf::Rect<double> posRect = fRect->GetRect( Rect::eResolution );
+  sf::Rect<double> posRect = fRect->GetRect( Rect::eLocal );
   configTable->SetD( "x", posRect.left );
   configTable->SetD( "y", posRect.top );
   configTable->SetD( "width", posRect.width );
