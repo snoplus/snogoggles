@@ -14,11 +14,13 @@ using namespace std;
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/PythonScripts.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
+
 
 EventPanel::EventPanel( RectPtr rect )
   : Panel( rect, "EventPanel" )
 {
-  fRenderState.ChangeState( RIDS::eCal, RIDS::eTAC ); /// TEMP
+  fRenderState.ChangeState( 0, 0 );
   fLatest = false;
   fEventPeriod = -1.0;
 }
@@ -77,13 +79,13 @@ EventPanel::EventLoop()
           break;
         case eDataSource: // Source change
         case eDataType: // Type change
-          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetEnumState<RIDS::EDataSource>(), 
-                                    dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetEnumState<RIDS::EDataType>() );
+          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(),
+                                    dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetState() );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
-          if( fRenderState.GetDataSource() == RIDS::eScript )
+          if( fRenderState.GetDataSource() == -1 )
             dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( PythonScripts::GetInstance().GetAnalysis().GetDataLabels() );
           else
-            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( RenderState::GetTypeStrings() );
+            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
           break;
         case eRate: // Change in event display rate
           {
@@ -132,8 +134,8 @@ EventPanel::PreInitialise( const ConfigurationTable* configTable )
                                                                     configTable->GetD( "scale_max" ) );
       dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( configTable->GetD( "event_rate_scale" ) );
     }
-  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetEnumState<RIDS::EDataSource>(), 
-                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetEnumState<RIDS::EDataType>() );
+  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(),
+                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetState() );
 }
 
 void
@@ -173,13 +175,13 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eDataSource:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetSourceStrings() );
+                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RIDS::Event::GetSourceNames() );
               }
               break;
             case eDataType:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetTypeStrings() );
+                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
               }
               break;
             case eRate:

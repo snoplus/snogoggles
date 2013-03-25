@@ -33,7 +33,7 @@ def sfml(env):
 def rat(env):
     env.Append( CPPPATH = [ os.environ["RATROOT"] + "/include" ] )
     env.Append( LIBPATH = [ os.environ["RATROOT"] + "/lib" ] )
-    env.Append( LIBS = [ 'RATEvent_' + os.environ["RATSYSTEM"] ] )
+    env.Append( LIBS = [ 'RATEvent_' + os.environ["RATSYSTEM"], 'rat_' + os.environ["RATSYSTEM"] ] )
     Curl(env)
 
 # Appends Curl and Bzip (for RAT)
@@ -63,13 +63,6 @@ def ratzdab(env):
     env.Append(LIBS = ["zdispatch", "zconvert", "zfile"])
     env.Append(CPPFLAGS='-D__ZDAB')
 
-# Append Avalanche and zmq
-def Avalanche(env):
-    avalancheLibPath = os.environ['AVALANCHEROOT']
-    env.Append( CPPPATH = [ os.environ['AVALANCHEROOT'] + "/src" ] )
-    env.Append( LIBPATH = [ os.environ['AVALANCHEROOT'] + "/lib" ] )
-    env.Append( LIBS = ["avalanche"] )
-
 # Append Python libraries
 def Python(env):
     ldflags = env.backtick( "python-config --includes").split() # Split on space, diff flags
@@ -85,7 +78,7 @@ def Python(env):
     env.MergeFlags( ' '.join( ldflags ) ) 
     
 # Adds all packages
-def addpackages(env, zdab):
+def addpackages(env):
     rat(env)
     glut(env)    
     geant4(env)
@@ -94,8 +87,6 @@ def addpackages(env, zdab):
     Python(env)
     xercesc(env)
     PThread(env)
-    if zdab:
-        ratzdab(env)
-    #Avalanche(env)
+    ratzdab(env)
 
 

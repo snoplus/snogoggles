@@ -1,6 +1,4 @@
 #include <iostream>
-#include <Viewer/RIDS/MC.hh>
-#include <Viewer/RIDS/Track.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/TrackBuffer.hh>

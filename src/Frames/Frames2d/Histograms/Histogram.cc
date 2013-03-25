@@ -10,14 +10,12 @@ using namespace std;
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/MapArea.hh>
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
+#include <Viewer/RIDS/Channel.hh>
 
 const double kAxisMargin = 0.1; // Size of the axis margin on the histogram
 
@@ -203,11 +201,10 @@ Histogram::CalculateHistogram( const RenderState& renderState )
     }
   fValues.clear();
   fValues.resize( ( numberOfValues - 4 ) / binWidth + 4, 0.0 ); // Overflows and margins don't compress
-  vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
-  for( vector<RIDS::PMTHit>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+  const vector<RIDS::Channel>& hits = DataStore::GetInstance().GetChannelData( renderState.GetDataSource(), renderState.GetDataType() );
+  for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-      const double data = iTer->GetData( renderState.GetDataType() );
-      int bin = CalculateBin( data );
+      int bin = CalculateBin( iTer->GetData() );
       fValues[ bin ] += 1.0;
     }
   if( fLogY && fOverflow )

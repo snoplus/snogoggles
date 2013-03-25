@@ -19,9 +19,9 @@
 #define __Viewer_Frames_ProjectionBase__
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/System/Vector3.hpp>
 
 #include <Viewer/Frame.hh>
-#include <Viewer/Vector3.hh>
 
 namespace Viewer
 {
@@ -60,13 +60,13 @@ public:
   virtual void DrawOutline() { };
 protected:
 
-  void ProjectGeodesicLine( Vector3 v1, 
-                            Vector3 v2 );
+  void ProjectGeodesicLine( sf::Vector3<double> v1, 
+                            sf::Vector3<double> v2 );
   void DrawHits( const RenderState& renderState );
   void DrawGeodesic();
   void DrawAllPMTs();
 
-  virtual sf::Vector2<double> Project( Vector3 pmtPos ) = 0;
+  virtual sf::Vector2<double> Project( sf::Vector3<double> pmtPos ) = 0;
   
   std::vector< sf::Vector2<double> > fProjectedPMTs; /// < Vector of projected pmt positions
   std::vector< sf::Vector2<double> > fProjectedGeodesic; /// < Vecotr of projected geodesic positions

@@ -24,7 +24,7 @@ typedef _object PyObject;
 #include <vector>
 #include <string>
 
-#include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/RIDS/Channel.hh>
 
 namespace Viewer
 {
@@ -48,14 +48,11 @@ public:
   void ProcessEvent( const RIDS::Event& event );  
   /// Reset the data
   void Reset();
-  /// Return a vector of RIDS PMTHits with data from the script
-  std::vector<RIDS::PMTHit> GetHitData() const;
   /// Return the vector of data labels
   std::vector<std::string> GetDataLabels() const { return fDataLabels; }
 private:
   PyObject* NewEmptyPyList();
-  PyObject* FillList( const RIDS::Event& event,
-                      RIDS::EDataSource source );
+  PyObject* FillList( const RIDS::Event& event );
 
   std::vector<std::string> fDataLabels; /// < Script labels the data types
   std::string fCurrentScript;

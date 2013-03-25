@@ -6,15 +6,13 @@ using namespace std;
 
 #include <Viewer/EventInfo.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/EV.hh>
-#include <Viewer/RIDS/MC.hh>
-#include <Viewer/RIDS/Time.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
 using namespace Viewer;
 using namespace Frames;
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/Time.hh>
 
 EventInfo::~EventInfo()
 {
@@ -51,7 +49,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
   eventInfo << "Run :" << event.GetRunID() << endl;
   eventInfo << "Sub Run :" << event.GetSubRunID() << endl;
-  
+  /*  
   if( event.ExistEV() )
     {
       RIDS::EV& ev = event.GetEV();
@@ -71,6 +69,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
       eventInfo << "MC:" << endl;
       eventInfo << "\tNhit:" << mc.GetNHits() << endl;
     }
+  */
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   renderApp.Draw( *fInfoText );  

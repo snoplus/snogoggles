@@ -41,7 +41,7 @@ public:
   virtual void Render2d( RWWrapper& renderApp,
                          const RenderState& renderState );
 protected:
-  virtual sf::Vector2<double> Project( Vector3 pmtPos ) = 0;
+  virtual sf::Vector2<double> Project( sf::Vector3<double> pmtPos ) = 0;
   
   GUIs::MapArea* fMapArea; /// < The map area gui
   HitInfo* fHitInfo; /// < The hit info widget

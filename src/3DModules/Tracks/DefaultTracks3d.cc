@@ -1,18 +1,18 @@
-#include <Viewer/DefaultTracks3d.hh>
-#include <Viewer/GUIManager.hh>
-#include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/GUIProperties.hh>
-#include <Viewer/PersistLabel.hh>
-#include <Viewer/RIDS/MC.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/DataStore.hh>
-
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/OpenGL.hpp>
 
 #include <map>
 #include <vector>
 #include <string>
+
+#include <Viewer/DefaultTracks3d.hh>
+#include <Viewer/GUIManager.hh>
+#include <Viewer/ConfigTableUtils.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/PersistLabel.hh>
+#include <Viewer/DataStore.hh>
+
+#include <Viewer/RIDS/Event.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -83,8 +83,8 @@ void DefaultTracks3d::EventLoop( )
 
 void DefaultTracks3d::ProcessData( const RenderState& renderState )
 {
-    RIDS::MC& mc = DataStore::GetInstance().GetCurrentEvent().GetMC();
-    fTrackBuffer.SetAll( mc );
+  //RIDS::MC& mc = DataStore::GetInstance().GetCurrentEvent().GetMC();
+  //fTrackBuffer.SetAll( mc );
 }
 
 void DefaultTracks3d::Render( const RenderState& renderState )

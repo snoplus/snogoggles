@@ -3,11 +3,9 @@
 #include <sstream>
 using namespace std;
 
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/EV.hh>
 #include <Viewer/EventSelectionScript.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
 
 EventSelectionScript::EventSelectionScript()
 {
@@ -62,33 +60,5 @@ EventSelectionScript::Load( const string& scriptName )
 bool
 EventSelectionScript::ProcessEvent( const RIDS::Event& event )
 {
-  /// Build data to send to the script
-  PyObject* pDataDict = PyDict_New();
-  PyObject* pTrigger;
-  PyObject* pNhit;
-  if( event.ExistEV() )
-    {
-      pTrigger = PyInt_FromLong( event.GetEV().GetTriggerWord() );
-      pNhit = PyInt_FromLong( event.GetEV().GetUnCalNHits() );
-    }
-  else
-    {
-      pTrigger = PyInt_FromLong( 0 );
-      pNhit = PyInt_FromLong( 0 );
-    }
-  PyDict_SetItemString( pDataDict, "trigger", pTrigger );
-  Py_DECREF( pTrigger );
-  PyDict_SetItemString( pDataDict, "nhit", pNhit );
-  Py_DECREF( pNhit );
-
-  /// Call the script, check the result and return true/false
-  PyObject* fpInput = PyString_FromString( fInputString.c_str() );
-  bool result = false;
-  PyObject* pResult = PyObject_CallFunctionObjArgs( fpSelectFunction, pDataDict, fpInput, NULL );
-  if( pResult == Py_True )
-    result = true;
-  Py_XDECREF( pResult );
-  Py_DECREF( pDataDict );
-  Py_DECREF( fpInput );
-  return result;
+  return true;
 }

@@ -20,9 +20,9 @@
 #include <TVector2.h>
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/System/Vector3.hpp>
 
 #include <Viewer/ProjectionMapArea.hh>
-#include <Viewer/Vector3.hh>
 
 namespace Viewer
 {
@@ -44,7 +44,7 @@ public:
 private:
   void DrawOutline();
 
-  sf::Vector2<double> Project( Vector3 pmtPos );
+  sf::Vector2<double> Project( sf::Vector3<double> pmtPos );
 
   void ProjectOutline( TVector2 v1,
                        TVector2 v2 );

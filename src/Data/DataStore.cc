@@ -6,8 +6,8 @@ using namespace std;
 
 #include <Viewer/DataStore.hh>
 #include <Viewer/PythonScripts.hh>
-#include <Viewer/RIDS/Event.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
 
 size_t AdjustIndex( const size_t currentIndex, const size_t limit, const int change )
 {
@@ -31,7 +31,7 @@ DataStore::DataStore()
   fRead = 0;
   fEventsAdded = 1;
   fEvent = NULL;
-  fRun = NULL;
+  fRunID = -1;
   fChanged = true;
   fSelecting = false;
   fAnalysing = false;
@@ -40,7 +40,7 @@ DataStore::DataStore()
 void
 DataStore::Initialise()
 {
-  PythonScripts::GetInstance().Initialise( *fRun->GetPMTProp() );
+  //PythonScripts::GetInstance().Initialise( *fRun->GetPMTProp() );
   RIDS::Event* currentEvent = NULL;
   fInputBuffer.Pop( currentEvent ); // Guaranteed by semaphore to work
   fEvents[fWrite] = currentEvent;
@@ -55,29 +55,28 @@ DataStore::~DataStore()
   for( unsigned int uLoop = 0; uLoop < fEvents.size(); uLoop++ )
     delete fEvents[uLoop];
   fEvents.clear();
-  delete fRun, fEvent;
+  delete fEvent;
 }
 
 void 
-DataStore::SetRun( RAT::DS::Run* rRun )
+DataStore::SetRun( int runID )
 {
-  fRun = new RAT::DS::Run( *rRun );
+  if( runID != fRunID )
+    {
+      fChannelList.Initialise( runID );
+      fRunID = runID;
+    }
 }
 
 bool
-DataStore::Add( RAT::DS::Root* rDS )
+DataStore::Add( RIDS::Event& event_ )
 {
-  RIDS::Event* event = new RIDS::Event( *rDS, 0 );  // Always add 0, (may only be a mc event)
+  RIDS::Event* event = new RIDS::Event( event_ ); // Create a local copy
   bool added = fInputBuffer.Push( event );
   if( !added )
     return false;
-  for( int iEV = 1; iEV < rDS->GetEVCount(); iEV++ )
-    {
-      event = new RIDS::Event( *rDS, iEV );
-      if( !fInputBuffer.Push( event ) )
-        return false;
-    }
-  return true;
+  else
+    return true;
 }
 
 void
@@ -181,20 +180,11 @@ DataStore::ChangeEvent( const size_t eventID )
     PythonScripts::GetInstance().GetAnalysis().ProcessEvent( *fEvent );
 }
 
-RIDS::Event* 
-DataStore::GetPreviousEvent( const size_t prev ) const
+const vector<RIDS::Channel>& 
+DataStore::GetChannelData( int source, int type ) const
 {
-  size_t event = AdjustIndex( fWrite, fEvents.size(), -1 - static_cast<int>( prev ) );
-  if( event == fWrite )
-    return NULL;
-  return fEvents[event];
-}
-
-vector<RIDS::PMTHit> 
-DataStore::GetHitData( RIDS::EDataSource source ) const
-{
-  if( source == RIDS::eScript )
-    return PythonScripts::GetInstance().GetAnalysis().GetHitData();
-  else
-    return GetCurrentEvent().GetHitData( source );
+  //  if( source == -1 )
+  //    return PythonScripts::GetInstance().GetAnalysis().GetHitData();
+  //  else
+    return GetCurrentEvent().GetData( source, type );
 }

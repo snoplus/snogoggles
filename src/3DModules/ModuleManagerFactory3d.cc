@@ -35,7 +35,7 @@ ModuleManager3d* ModuleManagerFactory3d::New(
 	m->SetAllModules(
 		CameraFactory3d::GetInstance()->GetCameraManager( camera ),
 		HitFactory3d::GetInstance()->GetHitManager( hits ),
-		TrackFactory3d::GetInstance()->GetTrackManager( tracks ),
+		NULL,//TrackFactory3d::GetInstance()->GetTrackManager( tracks ),
 		GeoFactory3d::GetInstance()->GetGeoManager( geo ),
 		FitterFactory3d::GetInstance()->GetFitterManager( fitter )
 	);

@@ -6,12 +6,10 @@ using namespace std;
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/DataStore.hh>
 #include <Viewer/GUIProperties.hh>
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/PMTHit.hh>
 #include <Viewer/BitManip.hh>
 #include <Viewer/PythonScripts.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
 
 void
 HitInfo::Render( RWWrapper& renderApp,
@@ -32,21 +30,21 @@ HitInfo::Render( RWWrapper& renderApp,
   info << "Cr:Cd:Ch:" << crate << ":" << card << ":" << channel << end.str();
 
   bool hasData = false;
-  vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
+  const RIDS::Source& sourceData = DataStore::GetInstance().GetCurrentEvent().GetSource( renderState.GetDataSource() );
   vector<string> dataTypes;
-  if( renderState.GetDataSource() == RIDS::eScript )
+  if( renderState.GetDataSource() < 0 ) // Negative sources are scripts
     dataTypes = PythonScripts::GetInstance().GetAnalysis().GetDataLabels();
   else
-    dataTypes = RenderState::GetTypeStrings();
-  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+    dataTypes = RIDS::Event::GetTypeNames( renderState.GetDataSource() );
+  for( size_t iChannel = 0; iChannel < sourceData.GetCount(); iChannel++ )
     {
-      if( lcn == iTer->GetLCN() )
+      if( lcn == sourceData.GetType( 0 ).GetChannel( iChannel ).GetID() )
         {
-          info << dataTypes[0] << ":" << iTer->GetTAC() << end.str();
-          info << dataTypes[1] << ":" << iTer->GetQHL() << end.str();
-          info << dataTypes[2] << ":" << iTer->GetQHS() << end.str();
-          info << dataTypes[3] << ":" << iTer->GetQLX() << end.str();
-          hasData = true;
+          for( size_t iType = 0; iType < dataTypes.size(); iType++ )
+            {
+              info << dataTypes[iType] << ":" << sourceData.GetType( iType ).GetChannel( iChannel ).GetData() << end.str();
+              hasData = true;
+            }
         }
     }
   if( hasData )

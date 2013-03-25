@@ -66,7 +66,7 @@ IcosahedralProjection::PostInitialise( const ConfigurationTable* configTable )
 
 void
 IcosahedralProjection::ProjectOutline( TVector2 v1,
-                                        TVector2 v2 )
+                                       TVector2 v2 )
 {
   TVector2 line = v2 - v1;
   double dist = line.Mod();
@@ -86,14 +86,13 @@ IcosahedralProjection::DrawOutline()
 }
 
 TVector2
-TransformCoord(
-               const TVector3& V1,
-               const TVector3& V2,
-               const TVector3& V3,
-               const TVector2& A1,
-               const TVector2& A2,
-               const TVector2& A3,
-               const TVector3& P )
+TransformCoord( const TVector3& V1,
+                const TVector3& V2,
+                const TVector3& V3,
+                const TVector2& A1,
+                const TVector2& A2,
+                const TVector2& A3,
+                const TVector3& P )
 {
   TVector3 xV = V2 - V1;
   TVector3 yV = ( ( V3 - V1 ) + ( V3 - V2 ) ) * 0.5;
@@ -117,8 +116,7 @@ TransformCoord(
 }
 
 TVector2
-ToSpherical(
-            const TVector3& P )
+ToSpherical( const TVector3& P )
 {
   double theta = acos( P.z() / P.Mag() );
   double phi = atan2( P.y(), P.x() );
@@ -126,10 +124,10 @@ ToSpherical(
 }
 
 sf::Vector2<double>
-IcosahedralProjection::Project( Vector3 pmtPos )
+IcosahedralProjection::Project( sf::Vector3<double> pmtPos )
 {
-  pmtPos = pmtPos.Unit();
   TVector3 pointOnSphere( pmtPos.x, pmtPos.y, pmtPos.z );
+  pointOnSphere = pointOnSphere.Unit();
   pointOnSphere.RotateX( -45.0 );
   // From http://www.rwgrayprojects.com/rbfnotes/polyhed/PolyhedraData/Icosahedralsahedron/Icosahedralsahedron.pdf
   const double t = ( 1.0 + sqrt( 5.0 ) ) / 2.0;

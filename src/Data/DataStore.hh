@@ -14,6 +14,7 @@
 ///     02/07/12 : O.Wasalski - Added method for frames to check whether
 ///                the current event being displayed has changed. \n
 ///     17/10/12 : P.Jones - New buffering system.\n
+///     22/03/13 : P.Jones - New RIDS refactor.\n
 ///
 /// \detail  Holds RIDS::Event events and the RAT::DS::Run data. 
 ///          Also has an index to the current DS event and then the 
@@ -26,17 +27,9 @@
 #include <vector>
 
 #include <Viewer/InputBuffer.hh>
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/PMTHit.hh>
 
-namespace RAT
-{
-namespace DS
-{
-  class Root;
-  class Run;
-}
-}
+#include <Viewer/RIDS/Channel.hh>
+#include <Viewer/RIDS/ChannelList.hh>
 
 namespace Viewer
 {
@@ -53,10 +46,10 @@ public:
   void Initialise();
 
   virtual ~DataStore();
-  /// Set the run 
-  void SetRun( RAT::DS::Run* rRun );
-  /// Add a DS event to the structure (data thread only)
-  bool Add( RAT::DS::Root* rDS );
+  /// Set the current run
+  void SetRun( int runID );
+  /// Add an event to the structure (data thread only)
+  bool Add( RIDS::Event& event );
   /// Move to the latest event
   void Latest();
   /// Move to the next event, rolls over
@@ -65,9 +58,6 @@ public:
   void Prev( const size_t step = 1 );
 
   inline const RIDS::Event& GetCurrentEvent() const;
-  /// Get the prev previous event to the latest
-  RIDS::Event* GetPreviousEvent( const size_t prev ) const;
-  inline RAT::DS::Run& GetRun() const;
   inline bool HasChanged() const;
   /// Update the data structure, fetch events from input buffer
   void Update();
@@ -78,7 +68,9 @@ public:
   int GetEventsAdded() const { return fEventsAdded; }
 
   /// Convienience method
-  std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
+  const std::vector<RIDS::Channel>& GetChannelData( int source, int type ) const;
+
+  inline const RIDS::ChannelList& GetChannelList() const;
 
   /// Set the analysis state
   void SetAnalysing( const bool state ) { fAnalysing = state; }
@@ -96,8 +88,9 @@ private:
   RIDS::Event* fEvent; /// < The currently rendered event
   size_t fRead; /// < The currently read position in fEvents
   size_t fWrite; /// < The current write position in fEvents
-  RAT::DS::Run* fRun; /// < The current run information
+  RIDS::ChannelList fChannelList; /// < The information about the channels pos etc...
   int fEventsAdded; /// < Count of added events 
+  int fRunID; /// < Current Run ID
 
   bool fAnalysing;
   bool fSelecting;
@@ -116,16 +109,16 @@ DataStore::GetInstance()
   return eventData;
 }
 
-inline RAT::DS::Run&
-DataStore::GetRun() const
-{
-  return *fRun;
-}
-
 inline const RIDS::Event&
 DataStore::GetCurrentEvent() const
 {
   return *fEvent;
+}
+
+inline const RIDS::ChannelList& 
+DataStore::GetChannelList() const
+{
+  return fChannelList;
 }
 
 inline bool

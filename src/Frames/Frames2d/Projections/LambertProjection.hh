@@ -17,10 +17,7 @@
 #ifndef __Viewer_Frames_LambertProjection__
 #define __Viewer_Frames_LambertProjection__
 
-#include <SFML/System/Vector2.hpp>
-
 #include <Viewer/ProjectionMapArea.hh>
-#include <Viewer/Vector3.hh>
 
 namespace Viewer
 {
@@ -37,7 +34,7 @@ public:
   static std::string Name() { return std::string( "Lambert" ); }
 
 private:
-  sf::Vector2<double> Project( Vector3 pmtPos );
+  sf::Vector2<double> Project( sf::Vector3<double> pmtPos );
 };
 
 } // ::Frames

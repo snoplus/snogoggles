@@ -13,8 +13,6 @@
 #include <Viewer/Axes3d.hh>
 #include <Viewer/DataStore.hh>
 #include <Viewer/Rect.hh>
-#include <Viewer/RIDS/EV.hh>
-#include <Viewer/RIDS/MC.hh>
 #include <Viewer/ModuleManager3d.hh>
 
 namespace RAT {
