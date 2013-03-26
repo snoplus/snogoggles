@@ -208,7 +208,7 @@ OpenConfiguration( bool output,
         }
       catch( ConfigurationFile::NoFileError& e )
         {
-          cout << "No compatible configuration file found." << endl;
+          cout << "Initialising defaults, no configuration file present." << endl;
           return NULL;
         }
       return NULL;

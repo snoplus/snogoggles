@@ -72,9 +72,9 @@ ScalingBar::Render( RWWrapper& renderApp )
   fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
   pos = sf::Vector2<double>( fMinValue, 0.1 );
   size = sf::Vector2<double>( 0.05, 0.8 );
-  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetColour( fMinValue ) );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
   pos.x = fMaxValue - size.x;
-  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetColourPalette().GetColour( fMaxValue ) );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
   fImage->Update();
   renderApp.Draw( *fImage );
 }

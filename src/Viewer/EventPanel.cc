@@ -84,11 +84,13 @@ EventPanel::EventLoop()
           else
             dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
+          ChangeScaling();
           break;
         case eDataType: // Type change
           fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(),
                                     dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetState() );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
+          ChangeScaling();
           break;
         case eRate: // Change in event display rate
           {
@@ -107,11 +109,7 @@ EventPanel::EventLoop()
           }
           break;
         case eScaling: // Change in scaling
-          const RIDS::Event& event = events.GetCurrentEvent();
-          const double range = event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() - event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin();
-          
-          fRenderState.ChangeScaling( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() * range,
-                                      event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() * range );
+          ChangeScaling();
           break;
         }
       fEvents.pop();
@@ -149,12 +147,7 @@ EventPanel::PostInitialise( const ConfigurationTable* configTable )
 {
   dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->Initialise( RIDS::Event::GetSourceNames() );
   dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
-  const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
-  const double range = event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() - event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin();
-  
-  fRenderState.ChangeScaling( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() * range,
-                              event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() * range );
-  
+  ChangeScaling();  
 }
 
 void
@@ -236,4 +229,14 @@ EventPanel::ChangeRateMode( double period, bool latest )
   if( period == 0.0 )
     dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.95 );
   fClock.restart();
+}
+
+void
+EventPanel::ChangeScaling()
+{
+  const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
+  const double range = event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() - event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin();
+  
+  fRenderState.ChangeScaling( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() * range,
+                              event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() * range );
 }

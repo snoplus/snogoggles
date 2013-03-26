@@ -46,6 +46,8 @@ protected:
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
 
   void ChangeRateMode( double period, bool latest );
+  /// Called when the scalling is adjusted
+  void ChangeScaling();
 
   RenderState fRenderState; /// < Current render state.
   sf::Clock fClock; /// < Clock to manage continuous event switching

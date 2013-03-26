@@ -185,7 +185,7 @@ void
 Histogram::CalculateHistogram( const RenderState& renderState )
 {
   fXDomain = pair<double, double>( renderState.GetScalingMin(), renderState.GetScalingMax() );
-  const unsigned int numberOfValues = ( renderState.GetScalingMax() - renderState.GetScalingMin() ) + 4; // Two overflows + 2 margins
+  const unsigned int numberOfValues = static_cast<unsigned int>( renderState.GetScalingMax() - renderState.GetScalingMin() ) + 4; // Two overflows + 2 margins
   const unsigned int numberOfPixels = static_cast<unsigned int>( (double)fImage->GetWidth() * ( 1.0 - kAxisMargin ) );
   int binWidth = 1;
 
@@ -202,6 +202,8 @@ Histogram::CalculateHistogram( const RenderState& renderState )
   fValues.clear();
   fValues.resize( ( numberOfValues - 4 ) / binWidth + 4, 0.0 ); // Overflows and margins don't compress
   const vector<RIDS::Channel>& hits = DataStore::GetInstance().GetChannelData( renderState.GetDataSource(), renderState.GetDataType() );
+  if( hits.empty() )
+    return;
   for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       int bin = CalculateBin( iTer->GetData() );
