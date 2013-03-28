@@ -24,14 +24,10 @@ typedef _object PyObject;
 #include <vector>
 #include <string>
 
-#include <Viewer/RIDS/Channel.hh>
+#include <Viewer/RIDS/Event.hh>
 
 namespace Viewer
 {
-namespace RIDS
-{
-  class Event;
-}
 
 class AnalysisScript
 {
@@ -46,21 +42,23 @@ public:
 
   /// Process the event
   void ProcessEvent( const RIDS::Event& event );  
-  /// Reset the data
+  /// Reset the accumulated data
   void Reset();
-  /// Return the vector of data labels
-  std::vector<std::string> GetDataLabels() const { return fDataLabels; }
+  /// Return the vector of type labels
+  std::vector<std::string> GetTypeNames() const { return fTypes; }
+  
 private:
-  PyObject* NewEmptyPyList();
-  PyObject* FillList( const RIDS::Event& event );
+  /// Convert fpData to fEvent
+  void PyToRIDS();
 
-  std::vector<std::string> fDataLabels; /// < Script labels the data types
-  std::string fCurrentScript;
+  std::vector<std::string> fTypes; /// < Script labels the data types
+  std::string fCurrentScript; /// < Name of the current script
+  RIDS::Event fEvent; /// < Data created by the script, RIDS format
 
   PyObject* fpScript; /// < The actual script
   PyObject* fpEventFunction; /// < Analyse event function
   PyObject* fpResetFunction; /// < Reset the script data function
-  PyObject* fpData; /// < Data created by the script, this is displayed
+  PyObject* fpData; /// < Data created by the script, Py format
 };
 
 } //::Viewer

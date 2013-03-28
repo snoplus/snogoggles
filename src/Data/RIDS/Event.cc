@@ -14,6 +14,12 @@ Event::Event()
     }
 }
 
+Event::Event( size_t types )
+{
+  Source source( types );
+  fSources.push_back( source );
+}
+
 const vector<Channel>& 
 Event::GetData( size_t source, 
                 size_t type ) const

@@ -78,9 +78,14 @@ EventPanel::EventLoop()
           events.Next();
           break;
         case eDataSource: // Source change
-          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(), 0 );
+          {
+            int source = dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState();
+            if( source >= RIDS::Event::GetSourceNames().size() )
+              source = -1;
+            fRenderState.ChangeState( source, 0 );
+          }
           if( fRenderState.GetDataSource() == -1 )
-            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( PythonScripts::GetInstance().GetAnalysis().GetDataLabels() );
+            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( PythonScripts::GetInstance().GetAnalysis().GetTypeNames() );
           else
             dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
@@ -145,6 +150,8 @@ EventPanel::PreInitialise( const ConfigurationTable* configTable )
 void
 EventPanel::PostInitialise( const ConfigurationTable* configTable )
 {
+  vector<string> sources = RIDS::Event::GetSourceNames();
+  sources.push_back( "Script" );
   dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->Initialise( RIDS::Event::GetSourceNames() );
   dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
   ChangeScaling();  

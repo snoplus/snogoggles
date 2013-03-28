@@ -39,6 +39,8 @@ public:
   
   /// Builds the event, adds the specified number of sources each with the specified number of types
   Event();
+  /// Builds an event for a single source (analysis script data)
+  Event( size_t types );
   /// Set the source of id
   void SetSource( int id, Source& source ) { fSources[id] = source; }
   /// Set the run ID

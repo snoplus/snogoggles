@@ -5,10 +5,10 @@
 using namespace std;
 
 #include <Viewer/AnalysisScript.hh>
+#include <Viewer/DataStore.hh>
 using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
-
-const int kNumChannels = 10000;
+#include <Viewer/RIDS/ChannelList.hh>
 
 AnalysisScript::AnalysisScript()
 {
@@ -62,31 +62,90 @@ AnalysisScript::Load( const string& scriptName )
   fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
   if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
     throw;
-  PyObject* pLabelsFunction = PyObject_GetAttrString( fpScript, "get_labels" );
+  PyObject* pLabelsFunction = PyObject_GetAttrString( fpScript, "get_types" );
   if( !pLabelsFunction || !PyCallable_Check( pLabelsFunction ) )
     throw;
   PyObject* pResult = PyObject_CallFunctionObjArgs( pLabelsFunction, NULL );
-  fDataLabels.clear();
-  for( int label = 0; label < 4; label++ )
+  fTypes.clear();
+  for( size_t iType = 0; iType < PyTuple_Size( pResult ); iType++ )
     {
-      fDataLabels.push_back( string( PyString_AsString( PyTuple_GetItem( pResult, label ) ) ) );
+      fTypes.push_back( string( PyString_AsString( PyTuple_GetItem( pResult, iType ) ) ) );
     }
   Py_DECREF( pResult );
-
   Py_DECREF( pLabelsFunction );
   fCurrentScript = scriptName;
-  //fpData = NewEmptyPyList();
+  // Reset the data
+  Reset();
 }
 
 void
 AnalysisScript::Reset()
 {
-  PyObject* pResult = PyObject_CallFunctionObjArgs( fpEventFunction, fpData, NULL );
-  Py_DECREF( pResult );
+  const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
+
+  Py_XDECREF( fpData );
+  // Create the python data structure
+  fpData = PyDict_New();
+  // Add a list of channels for each type the script declares
+  for( vector<string>::const_iterator iTer = fTypes.begin(); iTer != fTypes.end(); iTer++ )
+    {
+      PyObject* pList = PyList_New( channelList.GetChannelCount() );
+      // Fill with empty doubles...
+      for( size_t iChannel = 0; iChannel < channelList.GetChannelCount(); iChannel++ )
+        PyList_SetItem( pList, iChannel, PyFloat_FromDouble( 0.0 ) );
+      PyDict_SetItemString( fpData, iTer->c_str(), pList );
+    }
+  // Done can now be cleared
+  PyObject_CallFunctionObjArgs( fpResetFunction, fpData, NULL );
+  PyToRIDS();
+}
+
+void
+AnalysisScript::PyToRIDS()
+{
+  const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
+
+  fEvent = RIDS::Event( fTypes.size() );
+  RIDS::Source source( fTypes.size() );
+  for( size_t iType = 0; iType < fTypes.size(); iType++ )
+    {
+      PyObject* pList = PyDict_GetItemString( fpData, fTypes[iType].c_str() );
+      RIDS::Type type;
+      for( size_t iChannel = 0; iChannel < channelList.GetChannelCount(); iChannel++ )
+        {
+          const double data = PyFloat_AsDouble( PyList_GetItem( pList, iChannel ) );
+          if( data > 0.0 )
+            type.AddChannel( iChannel, data );
+        }
+      source.SetType( iType, type );
+    }  
+  fEvent.SetSource( 0, source );
 }
 
 void
 AnalysisScript::ProcessEvent( const RIDS::Event& event )
 {
+  const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
 
+  // First convert the event structure into a python structure
+  PyObject* pEvent = PyDict_New();
+  const vector<string> sources = RIDS::Event::GetSourceNames();
+  for( size_t iSource = 0; iSource < sources.size(); iSource++ )
+    {
+      PyObject* pSource = PyDict_New();
+      PyDict_SetItemString( pEvent, sources[iSource].c_str(), pSource );
+      const vector<string> types = RIDS::Event::GetTypeNames( iSource );
+      for( size_t iType = 0; iType < types.size(); iType++ )
+        {
+          PyObject* pList = PyList_New( channelList.GetChannelCount() );
+          const vector<RIDS::Channel> hits = DataStore::GetInstance().GetChannelData( iSource, iType );
+          for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+            PyList_SetItem( pList, iTer->GetID(), PyFloat_FromDouble( iTer->GetData() ) );
+          PyDict_SetItemString( pSource, types[iType].c_str(), pList );
+        }
+    }
+  // Can now call the function
+  PyObject_CallFunctionObjArgs( fpEventFunction, pEvent, fpData, NULL );
+  Py_DECREF( pEvent );
+  PyToRIDS();
 }

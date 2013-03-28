@@ -36,7 +36,7 @@ using namespace Viewer;
 #include <xercesc/util/PlatformUtils.hpp>
 using namespace xercesc;
 
-const int kConfigVersion = 1; /// The configuration version expected in the xml config files.
+const int kConfigVersion = 2; /// The configuration version expected in the xml config files.
 
 class CmdOptions
 {
