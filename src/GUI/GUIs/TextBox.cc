@@ -13,22 +13,33 @@ using namespace Viewer::GUIs;
 
 TextBox::TextBox( RectPtr rect,
                   unsigned int guiID )
-  : GUI( rect, guiID ), fDrawnText( rect )
+  : GUI( rect, guiID )
 {
+  sf::Rect<double> size = rect->GetRect( Rect::eLocal );
+  size.height = 0.8;
+  size.top = 0.1;
+  fDrawnText = new Text( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
   fActive = false;
   fHover = false;
-  fCursor = 0;
+  fCursorPos = 0;
   const GUITextureManager& textureManager = GUIProperties::GetInstance().GetGUITextures();
-  fTextBox[0] = textureManager.GetTexture( 22, eBase );
-  fTextBox[1] = textureManager.GetTexture( 22, eHighlight );
-  fTextBox[2] = textureManager.GetTexture( 22, eActive );
+  fLeftBox[0] = textureManager.GetTexture( 32, eBase );
+  fLeftBox[1] = textureManager.GetTexture( 32, eHighlight );
+  fLeftBox[2] = textureManager.GetTexture( 32, eActive );
+  fMiddleBox[0] = textureManager.GetTexture( 22, eBase );
+  fMiddleBox[1] = textureManager.GetTexture( 22, eHighlight );
+  fMiddleBox[2] = textureManager.GetTexture( 22, eActive );
+  fRightBox[0] = textureManager.GetTexture( 33, eBase );
+  fRightBox[1] = textureManager.GetTexture( 33, eHighlight );
+  fRightBox[2] = textureManager.GetTexture( 33, eActive );
+  fCursor[0] = textureManager.GetTexture( 23, eBase );
+  fCursor[1] = textureManager.GetTexture( 23, eHighlight );
+  fCursor[2] = textureManager.GetTexture( 23, eActive );
 }
 
 TextBox::~TextBox()
 {
-  fTextBox[0] = NULL; // Manager deletes the texture
-  fTextBox[1] = NULL; // Manager deletes the texture
-  fTextBox[2] = NULL; // Manager deletes the texture
+  delete fDrawnText;
 }
 
 GUIEvent 
@@ -67,17 +78,17 @@ TextBox::NewEvent( const Event& event )
         {
           LeftCursor();
           if( !fText.isEmpty() )
-            fText.erase( fCursor, 1 );
+            fText.erase( fCursorPos, 1 );
         }
       else if( event.text.unicode == 128 ) //Delete
         {
           if( !fText.isEmpty() )
-            fText.erase( fCursor, 1 );
+            fText.erase( fCursorPos, 1 );
           LeftCursor();
         }
       else if( event.text.unicode < 123 )
         {
-          fText.insert( fCursor, event.text.unicode );
+          fText.insert( fCursorPos, event.text.unicode );
           RightCursor();
         }
       break;
@@ -103,31 +114,68 @@ TextBox::NewEvent( const Event& event )
 void
 TextBox::LeftCursor()
 {
-  fCursor--;
-  if( fCursor < 0 )
-    fCursor = 0;
+  fCursorPos--;
+  if( fCursorPos < 0 )
+    fCursorPos = 0;
 }
 
 void
 TextBox::RightCursor()
 {
-  fCursor++;
-  if( fCursor > fText.getSize() )
-    fCursor--;
+  fCursorPos++;
+  if( fCursorPos > fText.getSize() )
+    fCursorPos--;
 }
 
 void
 TextBox::Render( RWWrapper& renderApp )
 {
-  Sprite buttonSprite( fRect );
+  sf::Rect<double> size = fRect->GetRect( Rect::eResolution );
+  size.width = 20.0;
+  Sprite left( RectPtr( fRect->NewDaughter( size, Rect::eResolution ) ) );
+  size.top += 2.0;
+  size.height -= 4.0;
+  Sprite cursor( RectPtr( fRect->NewDaughter( size, Rect::eResolution ) ) );
+  size = fRect->GetRect( Rect::eResolution );
+  size.left += 20.0;
+  size.width -= 40.0;
+  Sprite middle( RectPtr( fRect->NewDaughter( size, Rect::eResolution ) ) );
+  size = fRect->GetRect( Rect::eResolution );
+  size.left = size.left + size.width - 20.0;
+  size.width = 20.0;
+  Sprite right( RectPtr( fRect->NewDaughter( size, Rect::eResolution ) ) );
 
   if( !fActive && !fHover )
-    buttonSprite.SetTexture( fTextBox[0] );
+    {
+      left.SetTexture( fLeftBox[0] );
+      middle.SetTexture( fMiddleBox[0] );
+      right.SetTexture( fRightBox[0] );
+      cursor.SetTexture( fCursor[0] );
+    }
   else if( fHover )
-    buttonSprite.SetTexture( fTextBox[1] );
+    {
+      left.SetTexture( fLeftBox[1] );
+      middle.SetTexture( fMiddleBox[1] );
+      right.SetTexture( fRightBox[1] );
+      cursor.SetTexture( fCursor[1] );
+    }
   else
-    buttonSprite.SetTexture( fTextBox[2] );
-  renderApp.Draw( buttonSprite );
-  fDrawnText.SetString( fText.toAnsiString() );
-  renderApp.Draw( fDrawnText );
+    {
+      left.SetTexture( fLeftBox[2] );
+      middle.SetTexture( fMiddleBox[2] );
+      right.SetTexture( fRightBox[2] );
+      cursor.SetTexture( fCursor[2] );
+    }
+  renderApp.Draw( left );
+  renderApp.Draw( middle );
+  renderApp.Draw( right );
+  fDrawnText->SetString( fText.toAnsiString() );
+  if( fClock.getElapsedTime().asSeconds() > 0.5 )
+    {
+      fClock.restart();
+      fBlink = !fBlink;
+    }
+  if( fText.isEmpty() && fBlink )
+    renderApp.Draw( cursor );
+  renderApp.Draw( *fDrawnText );
 }
