@@ -47,7 +47,7 @@ ScriptPanel::EventLoop()
           dataSelector.SetSelect( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eEventOn] )->GetState() );
           break;
         case eEventInput:
-          //PythonScripts::GetInstance().GetEventSelection().SetInput( dynamic_cast<GUIs::TextBox*>( fGUIs[eEventInput] )->GetString() );
+          dataSelector.SetEventSelectionInput( dynamic_cast<GUIs::TextBox*>( fGUIs[eEventInput] )->GetString() );
           break;
         }
       fEvents.pop();

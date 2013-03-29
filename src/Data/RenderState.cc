@@ -26,5 +26,8 @@ RenderState::ChangeScaling( const double min,
 Colour
 RenderState::GetDataColour( double data ) const
 {
-  return GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - fCurrentScalingMin ) / ( fCurrentScalingMax - fCurrentScalingMin ) );
+  if( data < fCurrentScalingMin || data > fCurrentScalingMax )
+    return GUIProperties::GetInstance().GetGUIColourPalette().GetBackground();
+  else
+    return GUIProperties::GetInstance().GetColourPalette().GetColour( ( data - fCurrentScalingMin ) / ( fCurrentScalingMax - fCurrentScalingMin ) );
 }
