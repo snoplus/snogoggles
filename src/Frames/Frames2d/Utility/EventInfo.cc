@@ -5,16 +5,15 @@
 using namespace std;
 
 #include <Viewer/EventInfo.hh>
-#include <Viewer/DataStore.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/EV.hh>
-#include <Viewer/RIDS/MC.hh>
-#include <Viewer/RIDS/Time.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
+#include <Viewer/RenderState.hh>
 using namespace Viewer;
 using namespace Frames;
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/Time.hh>
 
 EventInfo::~EventInfo()
 {
@@ -48,28 +47,20 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo.precision( 0 );
   eventInfo << fixed;
 
-  const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
+  const RIDS::Event& event = DataSelector::GetInstance().GetEvent();
   eventInfo << "Run :" << event.GetRunID() << endl;
   eventInfo << "Sub Run :" << event.GetSubRunID() << endl;
-  
-  if( event.ExistEV() )
+  eventInfo << "Event GTID :" << event.GetEventID() << endl;
+  eventInfo << "Trigger :" << TriggerToString( event.GetTrigger() ) << endl;
+
+  const vector<string> sourceNames = RIDS::Event::GetSourceNames();
+  for( size_t source = 0; source < sourceNames.size(); source++ )
     {
-      RIDS::EV& ev = event.GetEV();
-      eventInfo << "EV:" << endl;
-      eventInfo << "\tGTID: " << ToHexString(ev.GetGTID()) << endl;
-      eventInfo << "\tTrigger Word: " << ToHexString( ev.GetTriggerWord() ) << endl;
-      eventInfo << "\tTriggers:" << TriggerToString( ev.GetTriggerWord() ) << endl;
-      eventInfo << "\tEvent Date: " << ev.GetTime().GetDate() << endl;
-      eventInfo << "\tEvent Time: " << ev.GetTime().GetTime() << endl;
-      eventInfo << "\tNhit (Cal):" << ev.GetCalNHits() << endl;
-      eventInfo << "\tNhit (UnCal):" << ev.GetUnCalNHits() << endl;
-      eventInfo << "\tNhit (Truth):" << ev.GetTruthNHits() << endl;
-    }
-  if( event.ExistMC() )
-    {
-      RIDS::MC& mc = event.GetMC();
-      eventInfo << "MC:" << endl;
-      eventInfo << "\tNhit:" << mc.GetNHits() << endl;
+      eventInfo << sourceNames[source] << ":" << endl;
+      const vector<string> typeNames = RIDS::Event::GetTypeNames( source );
+      for( size_t type = 0; type < typeNames.size(); type++ )
+        eventInfo << typeNames[type] << ": " << event.GetSource( source ).GetType( type ).GetCount() << ", ";
+      eventInfo << endl;
     }
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );

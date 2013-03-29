@@ -12,6 +12,8 @@
 /// \detail  The main function is defined here.
 ///
 ////////////////////////////////////////////////////////////////////////
+#include <Python.h>
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -30,13 +32,14 @@ using namespace std;
 #include <Viewer/RenderState.hh>
 #include <Viewer/GeodesicSphere.hh>
 #include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 
 #include <xercesc/util/PlatformUtils.hpp>
 using namespace xercesc;
 
-const int kConfigVersion = 1; /// The configuration version expected in the xml config files.
+const int kConfigVersion = 2; /// The configuration version expected in the xml config files.
 
 class CmdOptions
 {
@@ -56,6 +59,8 @@ void PrintHelp();
 void PreInitialise();
 /// Load the singletons that require event data/the DataStore class.
 void PostInitialise();
+/// Finalise and cleanup
+void Finalise();
 /// Load the configuration, if it exists and is the correct version
 ConfigurationFile* OpenConfiguration( bool output, const CmdOptions& options );
 
@@ -68,7 +73,6 @@ int main( int argc, char *argv[] )
   if( loadConfig != NULL )
     loadConfigTable = loadConfig->GetTable();
   GUIProperties::GetInstance().PreInitialise( loadConfigTable );
-  RenderState::Initialise(); // Must be after GUIProperties
   ViewerWindow& viewer = ViewerWindow::GetInstance();
   viewer.PreInitialise( loadConfigTable );
   Thread* loadData;
@@ -107,16 +111,17 @@ int main( int argc, char *argv[] )
   // Finish the thread
   loadData->KillAndWait();
   delete loadData;
-  GUIProperties::GetInstance().Destruct();
-  XMLPlatformUtils::Terminate();
+  Finalise();
   return 0;
 }
 
 void
 PreInitialise()
 {
+  Py_InitializeEx(0);
   XMLPlatformUtils::Initialize();
   DataStore::GetInstance();
+  DataSelector::GetInstance();
 }
 
 void 
@@ -124,6 +129,15 @@ PostInitialise()
 {
   GeodesicSphere::GetInstance(); // Forces it to load, should be initialised, PHIL
   DataStore::GetInstance().Initialise();
+  DataSelector::GetInstance().Initialise();
+}
+
+void
+Finalise()
+{
+  Py_Finalize();
+  GUIProperties::GetInstance().Destruct();
+  XMLPlatformUtils::Terminate();
 }
 
 CmdOptions 
@@ -209,7 +223,7 @@ OpenConfiguration( bool output,
         }
       catch( ConfigurationFile::NoFileError& e )
         {
-          cout << "No compatible configuration file found." << endl;
+          cout << "Initialising defaults, no configuration file present." << endl;
           return NULL;
         }
       return NULL;

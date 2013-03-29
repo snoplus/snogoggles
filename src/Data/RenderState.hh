@@ -8,6 +8,7 @@
 /// REVISION HISTORY:\n
 ///     19/02/12 : P.Jones - New file, first revision \n
 ///     07/05/12 : P.Jones - Update to use RIDS.\n
+///     25/03/13 : P.Jones - RIDS refactor.\n
 ///
 /// \detail  This class is used to define what data to show.
 ///
@@ -16,81 +17,63 @@
 #ifndef __Viewer_RenderState__
 #define __Viewer_RenderState__
 
-#include <string>
-#include <map>
-#include <vector>
-
-#include <Viewer/RIDS/RIDS.hh>
-
 namespace Viewer
 {
 class Colour;
-namespace RIDS {
-    class PMTHit;
-}
 
 class RenderState
 {
 public:
   inline RenderState();
 
-  inline RenderState( RIDS::EDataSource source,
-                      RIDS::EDataType type );
+  inline RenderState( int source, 
+                      int type );
 
   static void Initialise();
 
-  void ChangeState( RIDS::EDataSource source,
-                    RIDS::EDataType type );
-  void ChangeScaling( double fractionalMin,
-                      double fractionalMax );
+  void ChangeState( int source,
+                    int type );
+  void ChangeScaling( const double min,
+                      const double max );
 
-  static std::vector<std::string> GetSourceStrings();
-  static std::vector<std::string> GetTypeStrings();
-
-  inline RIDS::EDataSource GetDataSource() const;
-  inline RIDS::EDataType GetDataType() const;
+  inline int GetDataSource() const;
+  inline int GetDataType() const;
   inline double GetScalingMin() const;
   inline double GetScalingMax() const;
   Colour GetDataColour( double data ) const;
-  Colour GetHitColour( const RIDS::PMTHit& pmtHit ) const;
 
   inline bool HasChanged() const;
   inline void Reset();
 
 private:
-  RIDS::EDataSource fCurrentDataSource;
-  RIDS::EDataType fCurrentDataType;
+  int fCurrentDataSource;
+  int fCurrentDataType;
 
   double fCurrentScalingMin; /// < Lower numerical value to be displayed
   double fCurrentScalingMax; /// < Upper numerical value to be displayed
   bool fChanged; /// < Mark if data source/type has changed in the last frame
-
-  static std::map< RIDS::EDataSource, std::string > fsSourceNames;
-  static std::map< RIDS::EDataType, std::string > fsTypeNames;
-  static std::map< RIDS::EDataSource, std::map< RIDS::EDataType, double > > fsDefaultScalingMin;
-  static std::map< RIDS::EDataSource, std::map< RIDS::EDataType, double > > fsDefaultScalingMax;
 };
 
 inline 
 RenderState::RenderState()
 {
-  ChangeState( RIDS::eCal, RIDS::eTAC );
+  ChangeState( 0, 0 );
 }
 
 inline 
-RenderState::RenderState( RIDS::EDataSource source,
-                          RIDS::EDataType type )
+RenderState::RenderState( int source,
+                          int type )
 {
   ChangeState( source, type );
 }
 
-inline RIDS::EDataSource 
+inline int
 RenderState::GetDataSource() const
 {
   return fCurrentDataSource;
 }
 
-inline RIDS::EDataType 
+inline int
 RenderState::GetDataType() const
 {
   return fCurrentDataType;

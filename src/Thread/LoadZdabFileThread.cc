@@ -1,36 +1,32 @@
 #include <RAT/DS/Root.hh>
-#include <RAT/DS/Run.hh>
-using namespace RAT;
 
-#ifdef __ZDAB
-#include <zdab_file.hpp>
-#endif
-
-#include <TTree.h>
-#include <TFile.h>
-using namespace ROOT;
-
-#include <sstream>
-#include <iostream>
 using namespace std;
 
 #include <Viewer/LoadZdabFileThread.hh>
 #include <Viewer/DataStore.hh>
 #include <Viewer/Semaphore.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
+
+#include <zdab_file.hpp>
+
+void
+LoadZdabFileThread::InitialiseRIDS()
+{
+  vector< pair< string, vector< string > > > dataNames;
+  vector<string> uncalTypes; uncalTypes.push_back( "TAC" ); uncalTypes.push_back( "QHL" ); uncalTypes.push_back( "QHS" ); uncalTypes.push_back( "QLX" );
+  dataNames.push_back( pair< string, vector< string > >( "UnCal", uncalTypes ) );
+  RIDS::Event::Initialise( dataNames );
+}
 
 void
 LoadZdabFileThread::Run()
 {
-#ifdef __ZDAB
-  DataStore& events = DataStore::GetInstance();
-
   if( fFile == NULL )
     {
-      LoadRootFile();
+      InitialiseRIDS();
       fFile = new ratzdab::zdabfile( fFileName.c_str() );
       LoadNextEvent();
-      events.SetRun( fRun );
       fSemaphore.Signal();
       fMCEvent++;
       return;
@@ -41,20 +37,13 @@ LoadZdabFileThread::Run()
   if( !success )
     {
       delete fFile;
-      fRootFile->Close();
-      delete fRootFile;
-      delete fRun;
       Kill();
     }
-#else
-  Kill();
-#endif
 }
 
 bool
 LoadZdabFileThread::LoadNextEvent()
 {
-#ifdef __ZDAB
   try
     {
       TObject* record = fFile->next();
@@ -63,8 +52,7 @@ LoadZdabFileThread::LoadNextEvent()
       if( record->IsA() == RAT::DS::Root::Class() ) 
         {
           RAT::DS::Root* ds = new RAT::DS::Root( *reinterpret_cast<RAT::DS::Root*>( record ) );
-          DataStore& events = DataStore::GetInstance();
-          events.Add( ds );
+          BuildRIDSEvent( ds );
           delete ds;
           return true;
         }
@@ -75,18 +63,27 @@ LoadZdabFileThread::LoadNextEvent()
     {
       return LoadNextEvent(); // Carry on and try again...
     }
-#endif
 }
 
 void
-LoadZdabFileThread::LoadRootFile()
+LoadZdabFileThread::BuildRIDSEvent( RAT::DS::Root* rDS )
 {
-  stringstream fileLocation;
-  fileLocation << getenv( "VIEWERROOT" ) << "/Temp.root";
-  fRootFile = new TFile( fileLocation.str().c_str(), "READ" );
- 
-  fRunTree = (TTree*)fRootFile->Get( "runT" ); 
-  fRun = new RAT::DS::Run();
-  fRunTree->SetBranchAddress( "run", &fRun );
-  fRunTree->GetEntry();
+  RAT::DS::EV* rEV = rDS->GetEV( 0 );
+  RIDS::Source unCal( 4 );
+  RIDS::Type tac, qhl, qhs, qlx;
+  for( int iUnCal = 0; iUnCal < rEV->GetPMTUnCalCount(); iUnCal++ )
+    {
+      RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( iUnCal );
+      tac.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetTime() );
+      qhl.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetsQHL() );
+      qhs.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetsQHS() );
+      qlx.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetsQLX() );
+    }
+  unCal.SetType( 0, tac );
+  unCal.SetType( 1, qhl );
+  unCal.SetType( 2, qhs );
+  unCal.SetType( 3, qlx );
+  RIDS::Event* event = new RIDS::Event();
+  event->SetSource( 0, unCal );
+  DataStore::GetInstance().AddEvent( event );
 }

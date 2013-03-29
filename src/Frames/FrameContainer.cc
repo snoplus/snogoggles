@@ -80,7 +80,7 @@ FrameContainer::PreInitialise( const ConfigurationTable* configTable )
       posRect.top = configTable->GetD( "y" );
       posRect.width = configTable->GetD( "width" );
       posRect.height = configTable->GetD( "height" );
-      SetRect( posRect, Rect::eResolution );
+      SetRect( posRect, Rect::eLocal );
     }
 }
 
@@ -95,7 +95,7 @@ void
 FrameContainer::SaveConfiguration( ConfigurationTable* configTable )
 {
   configTable->SetS( "type", fFrame->GetName() ); // Loaded in FrameManager!
-  sf::Rect<double> posRect = fRect->GetRect( Rect::eResolution );
+  sf::Rect<double> posRect = fRect->GetRect( Rect::eLocal );
   configTable->SetD( "x", posRect.left );
   configTable->SetD( "y", posRect.top );
   configTable->SetD( "width", posRect.width );
@@ -137,22 +137,23 @@ void
 FrameContainer::SetRect( const sf::Rect<double>& rect,
                          const Rect::ECoordSystem& system )
 {
-  sf::Rect<double> size = rect;
-  fRect->SetRect( size, system );
+  fRect->SetRect( rect, system );
   // The top bar is always 20 high, so ensure this
-  size = fRect->GetRect( Rect::eResolution );
-  const double height = size.height;
-  size.height = 20.0;
-  fTopBar->SetRect( size );
+  const sf::Rect<double> size = fRect->GetRect( Rect::eResolution );
+  sf::Rect<double> topBarSize = size;
+  topBarSize.height = 20.0;
+  fTopBar->SetRect( topBarSize );
   /// Now the frame rect 2 pxl margin at base
-  size.height = height - 22.0;
-  size.top += 20.0;
-  fFrame->GetRect()->SetRect( size, Rect::eResolution );
-  size.height = 20.0;
-  size.width = 20.0;
-  size.left = rect.left + rect.width - 20.0;
-  size.top = rect.top + rect.height - 20.0;
-  fResizeButton->GetRect()->SetRect( size, Rect::eResolution );
+  sf::Rect<double> frameSize = size;
+  frameSize.height -= 22.0;
+  frameSize.top += 20.0;
+  fFrame->GetRect()->SetRect( frameSize, Rect::eResolution );
+  sf::Rect<double> resizeSize = size;
+  resizeSize.left = size.left + size.width - 20.0;
+  resizeSize.top = size.top + size.height - 20.0;
+  resizeSize.height = 20.0;
+  resizeSize.width = 20.0;
+  fResizeButton->GetRect()->SetRect( resizeSize, Rect::eResolution );
 }
 
 bool

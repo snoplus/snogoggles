@@ -7,16 +7,14 @@ using namespace std;
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/DataStore.hh>
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/HitInfo.hh>
 #include <Viewer/MapArea.hh>
 #include <Viewer/BitManip.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
+#include <Viewer/RIDS/Channel.hh>
 
 const int kCrateWidth = 17; // 16 cards + 1 border
 const int kCrateHeight = 33; // 32 channels + 1 border
@@ -104,12 +102,12 @@ CrateView::DrawPMT( const int lcn,
 void 
 CrateView::DrawPMTs( const RenderState& renderState )
 {
-  vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
-  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+  const vector<RIDS::Channel> hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
+  for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-      const double data = iTer->GetData( renderState.GetDataType() );
+      const double data = iTer->GetData();
       if( data == 0.0 )
         continue;
-      DrawPMT( iTer->GetLCN(), renderState.GetDataColour( data ) );
+      DrawPMT( iTer->GetID(), renderState.GetDataColour( data ) );
     }
 }

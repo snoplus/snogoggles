@@ -3,12 +3,13 @@
 ///
 /// \brief   Loads the ROOT files
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     04/11 : P.Jones - First Revision, new file. \n
+///     25/03/14 : P.Jones - RIDS Refactor. \n
 ///
-/// \detail  Load events
+/// \detail  Load events from a root file.
 ///
 ////////////////////////////////////////////////////////////////////////
 #ifndef __Viewer_LoadRootFileThread__
@@ -44,7 +45,12 @@ public:
   virtual void
   Run();
 private:
+  /// Load the root file and set the fDS and fRun pointers
   void LoadRootFile();
+  /// Initialise the RIDS i.e. define what data exists
+  void InitialiseRIDS();
+  /// Build a single RIDS event from the current fDS event
+  void BuildRIDSEvent();
 
   std::string fFileName;
   TFile* fFile;

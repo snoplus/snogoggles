@@ -9,15 +9,13 @@ using namespace std;
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/DataStore.hh>
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/MapArea.hh>
 #include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
+#include <Viewer/RIDS/Channel.hh>
 
 const double kAxisMargin = 0.1; // Size of the axis margin on the histogram
 
@@ -187,7 +185,7 @@ void
 Histogram::CalculateHistogram( const RenderState& renderState )
 {
   fXDomain = pair<double, double>( renderState.GetScalingMin(), renderState.GetScalingMax() );
-  const unsigned int numberOfValues = ( renderState.GetScalingMax() - renderState.GetScalingMin() ) + 4; // Two overflows + 2 margins
+  const unsigned int numberOfValues = static_cast<unsigned int>( renderState.GetScalingMax() - renderState.GetScalingMin() ) + 4; // Two overflows + 2 margins
   const unsigned int numberOfPixels = static_cast<unsigned int>( (double)fImage->GetWidth() * ( 1.0 - kAxisMargin ) );
   int binWidth = 1;
 
@@ -203,11 +201,12 @@ Histogram::CalculateHistogram( const RenderState& renderState )
     }
   fValues.clear();
   fValues.resize( ( numberOfValues - 4 ) / binWidth + 4, 0.0 ); // Overflows and margins don't compress
-  vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
-  for( vector<RIDS::PMTHit>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+  const vector<RIDS::Channel>& hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
+  if( hits.empty() )
+    return;
+  for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-      const double data = iTer->GetData( renderState.GetDataType() );
-      int bin = CalculateBin( data );
+      int bin = CalculateBin( iTer->GetData() );
       fValues[ bin ] += 1.0;
     }
   if( fLogY && fOverflow )

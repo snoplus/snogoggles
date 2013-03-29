@@ -14,18 +14,20 @@ using namespace std;
 #include <Viewer/DataStore.hh>
 #include <Viewer/Semaphore.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/Source.hh>
+#include <Viewer/RIDS/Type.hh>
+#include <Viewer/RIDS/Track.hh>
 
 void
 LoadRootFileThread::Run()
 {
-  DataStore& events = DataStore::GetInstance();
-
   if( fTree == NULL )
     {
       LoadRootFile();
-      events.SetRun( fRun );
       fTree->GetEntry( fMCEvent );
-      events.Add( fDS );
+      InitialiseRIDS();
+      BuildRIDSEvent();
       fSemaphore.Signal();
       fMCEvent++;
       return;
@@ -42,9 +44,111 @@ LoadRootFileThread::Run()
   else
     {
       fTree->GetEntry( fMCEvent );
-      events.Add( fDS );
+      BuildRIDSEvent();
       fMCEvent++;
       cout << "Loaded " << fMCEvent << " events." << endl;
+    }
+}
+
+void
+LoadRootFileThread::InitialiseRIDS()
+{
+  vector< pair< string, vector< string > > > dataNames;
+  vector<string> mcTypes; mcTypes.push_back( "TAC" ); mcTypes.push_back( "PE" );
+  dataNames.push_back( pair< string, vector< string > >( "MC", mcTypes ) );
+  vector<string> truthTypes; truthTypes.push_back( "TAC" ); truthTypes.push_back( "QHL" ); truthTypes.push_back( "QHS" ); truthTypes.push_back( "QLX" );
+  dataNames.push_back( pair< string, vector< string > >( "Truth", truthTypes ) );
+  vector<string> uncalTypes; uncalTypes.push_back( "TAC" ); uncalTypes.push_back( "QHL" ); uncalTypes.push_back( "QHS" ); uncalTypes.push_back( "QLX" );
+  dataNames.push_back( pair< string, vector< string > >( "UnCal", uncalTypes ) );
+  vector<string> calTypes; calTypes.push_back( "TAC" ); calTypes.push_back( "QHL" ); calTypes.push_back( "QHS" ); calTypes.push_back( "QLX" );
+  dataNames.push_back( pair< string, vector< string > >( "Cal", calTypes ) );
+  RIDS::Event::Initialise( dataNames );
+}
+
+void
+LoadRootFileThread::BuildRIDSEvent()
+{
+  for( int iEV = 0; iEV < fDS->GetEVCount(); iEV++ )
+    {
+      RIDS::Event* event = new RIDS::Event();
+      event->SetRunID( fDS->GetRunID() );
+      event->SetSubRunID( fDS->GetSubRunID() );
+      event->SetEventID( fDS->GetEV( iEV )->GetEventID() );
+      event->SetTrigger( fDS->GetEV( iEV )->GetTrigType() );
+      if( fDS->ExistMC() )
+        {
+          RAT::DS::MC* rMC = fDS->GetMC();
+          RIDS::Source mc( 2 );
+          RIDS::Type tac, pe;
+          for( int iMCPMT = 0; iMCPMT < rMC->GetMCPMTCount(); iMCPMT++ )
+            {
+              RAT::DS::MCPMT* rMCPMT = rMC->GetMCPMT( iMCPMT );
+              tac.AddChannel( rMCPMT->GetPMTID(), rMCPMT->GetMCPhoton( 0 )->GetHitTime() );
+              pe.AddChannel( rMCPMT->GetPMTID(), rMCPMT->GetMCPhotonCount() );
+            }
+          mc.SetType( 0, tac );
+          mc.SetType( 1, pe );
+          event->SetSource( 0, mc );
+          // Now tracking information
+          vector<RIDS::Track> tracks;
+          for( int iTrack = 0; iTrack < rMC->GetMCTrackCount(); iTrack++ )
+            tracks.push_back( RIDS::Track( *rMC->GetMCTrack( iTrack ) ) );
+          event->SetTracks( tracks );
+        }
+
+      RAT::DS::EV* rEV = fDS->GetEV( iEV );
+      {
+        RIDS::Source truth( 4 );
+        RIDS::Type tac, qhl, qhs, qlx;
+        for( int iTruth = 0; iTruth < rEV->GetPMTTruthCount(); iTruth++ )
+          {
+            RAT::DS::PMTTruth* rPMTTruth = rEV->GetPMTTruth( iTruth );
+            tac.AddChannel( rPMTTruth->GetID(), rPMTTruth->GetTime() );
+            qhl.AddChannel( rPMTTruth->GetID(), rPMTTruth->GetsQHL() );
+            qhs.AddChannel( rPMTTruth->GetID(), rPMTTruth->GetsQHS() );
+            qlx.AddChannel( rPMTTruth->GetID(), rPMTTruth->GetsQLX() );
+          }
+        truth.SetType( 0, tac );
+        truth.SetType( 1, qhl );
+        truth.SetType( 2, qhs );
+        truth.SetType( 3, qlx );
+        event->SetSource( 1, truth );
+      }
+      {
+        RIDS::Source unCal( 4 );
+        RIDS::Type tac, qhl, qhs, qlx;
+        for( int iUnCal = 0; iUnCal < rEV->GetPMTUnCalCount(); iUnCal++ )
+          {
+            RAT::DS::PMTUnCal* rPMTUnCal = rEV->GetPMTUnCal( iUnCal );
+            tac.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetTime() );
+            qhl.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetsQHL() );
+            qhs.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetsQHS() );
+            qlx.AddChannel( rPMTUnCal->GetID(), rPMTUnCal->GetsQLX() );
+          }
+        unCal.SetType( 0, tac );
+        unCal.SetType( 1, qhl );
+        unCal.SetType( 2, qhs );
+        unCal.SetType( 3, qlx );
+        event->SetSource( 2, unCal );
+      }
+      {
+        RIDS::Source cal( 4 );
+        RIDS::Type tac, qhl, qhs, qlx;
+        for( int iCal = 0; iCal < rEV->GetPMTCalCount(); iCal++ )
+          {
+            RAT::DS::PMTCal* rPMTCal = rEV->GetPMTCal( iCal );
+            tac.AddChannel( rPMTCal->GetID(), rPMTCal->GetTime() );
+            qhl.AddChannel( rPMTCal->GetID(), rPMTCal->GetsQHL() );
+            qhs.AddChannel( rPMTCal->GetID(), rPMTCal->GetsQHS() );
+            qlx.AddChannel( rPMTCal->GetID(), rPMTCal->GetsQLX() );
+          }
+        cal.SetType( 0, tac );
+        cal.SetType( 1, qhl );
+        cal.SetType( 2, qhs );
+        cal.SetType( 3, qlx );
+        event->SetSource( 3, cal );
+      }
+      DataStore::GetInstance().AddEvent( event );
     }
 }
 

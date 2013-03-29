@@ -77,8 +77,6 @@ public:
 
 private:
 
-    void SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState );
-
     RAT::DS::PMTProperties* fCurrentPMTList;
     RIDS::EV* fCurrentEV;
 

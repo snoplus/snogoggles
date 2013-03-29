@@ -46,13 +46,15 @@ public:
   /// Initilaise with DataStore access
   void PostInitialise( const ConfigurationTable* configTable );
   /// Process Data into renderable format
-  void ProcessData( );
+  void ProcessData();
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp );
   /// Render all 3d objects
   void Render3d( RWWrapper& renderApp );
   /// Render the GUI objects
   void RenderGUI( RWWrapper& renderApp );
+  /// Set screenshot mode (or not)
+  void ToggleScreenshot( bool enable );
 private:
   RectPtr fRect; /// < The desktop rect
   FrameManager* fFrameManager; /// < The frame maanager

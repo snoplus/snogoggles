@@ -53,6 +53,8 @@ public:
   void Render( RWWrapper& renderApp );
   /// Ask if object contains a point
   inline bool ContainsPoint( const sf::Vector2<double>& point );
+  /// Set wether the panel is enabled
+  void SetEnable( bool enable ) { fEnabled = enable; }
 protected:
   /// Load the GUI configuration specific to the panel
   virtual void LoadGUIConfiguration( const ConfigurationTable* guiConfig ) = 0;
@@ -65,6 +67,8 @@ protected:
   std::map<int, GUI*> fGUIs; /// < The GUI Objects, mapped by effect To implement
   std::map<int, Text*> fLabels; /// < The label objects, mapped by result
   std::vector<Text*> fTexts; /// < Extra text objects
+
+  bool fEnabled; /// < If false the frame is not drawn nor accepts events
 private:
   Panel();
 };

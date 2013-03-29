@@ -16,6 +16,7 @@
 #define __Viewer_GUIs_TextBox__
 
 #include <SFML/System/String.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include <sstream>
 
@@ -49,10 +50,15 @@ protected:
   void LeftCursor();
 
   sf::String fText; /// < The entered text (unicode)
-  Text fDrawnText; /// < The drawn text
-  sf::Texture* fTextBox[3]; /// < The textBox textures, base, highlight, active
-  int fCursor; /// < Position of the cursor
+  sf::Clock fClock; /// < Blinking cursor timer
+  Text* fDrawnText; /// < The drawn text
+  sf::Texture* fLeftBox[3]; /// < The textBox textures, base, highlight, active
+  sf::Texture* fMiddleBox[3]; /// < The textBox textures, base, highlight, active
+  sf::Texture* fRightBox[3]; /// < The textBox textures, base, highlight, active
+  sf::Texture* fCursor[3]; /// < The cursor textures, base, highlight, active
+  int fCursorPos; /// < Position of the cursor
 
+  bool fBlink; /// < Visible or invisible cursor (true is visible)
   bool fActive; /// < Has focus?
   bool fHover; /// < Hovering over?
 };

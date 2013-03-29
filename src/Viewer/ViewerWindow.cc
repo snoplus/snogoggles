@@ -46,11 +46,11 @@ ViewerWindow::PreInitialise( const ConfigurationTable* configTable )
   settings.stencilBits       = 8;  // Request a 8 bits stencil buffer
   sf::VideoMode fullScreen = sf::VideoMode::getDesktopMode();
   fullScreen.height -= 40.0; // Mac systems require this
-  if( configTable != NULL )
+  /*  if( configTable != NULL )
     {
       fullScreen.width = configTable->GetI( "width" );
       fullScreen.height = configTable->GetI( "height" );
-    }
+      }*/
   fWindowApp = new sf::RenderWindow( fullScreen, "SNO Goggles", sf::Style::Default, settings  ); 
   Rect::SetWindowSize( fWindowApp->getSize().x, fWindowApp->getSize().y );
   Rect::SetWindowResolution( fWindowApp->getSize().x, fWindowApp->getSize().y );  
@@ -150,6 +150,8 @@ ViewerWindow::EventLoop()
               // This is a user controlled exit
               return false;
             }
+          if( event.key.code == sf::Keyboard::S )
+            fDesktopManager->ToggleScreenshot();
           //Drop through
         default:
           Event viewerEvent( event );

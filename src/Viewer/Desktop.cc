@@ -11,7 +11,7 @@ using namespace std;
 #include <Viewer/RenderState.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIProperties.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 using namespace Viewer;
 
 Desktop::Desktop( RectPtr desktopRect )
@@ -99,7 +99,7 @@ void
 Desktop::ProcessData( )
 {
   const RenderState renderState = fEventPanel->GetRenderState();
-  if( renderState.HasChanged() || GUIProperties::GetInstance().HasChanged() || DataStore::GetInstance().HasChanged() ) 
+  if( renderState.HasChanged() || GUIProperties::GetInstance().HasChanged() || DataSelector::GetInstance().HasChanged() ) 
   {
     fFrameManager->ProcessData( renderState );
   }
@@ -126,4 +126,21 @@ Desktop::RenderGUI( RWWrapper& renderApp )
   fFrameManager->RenderGUI( renderApp, renderState );
   fEventPanel->Render( renderApp );
   fFramePanel->Render( renderApp );
+}
+
+void
+Desktop::ToggleScreenshot( bool enable )
+{
+  if( enable )
+    {
+      fFrameManager->ToggleScreenshot( true );
+      fFramePanel->SetEnable( false );
+      fEventPanel->SetEnable( false );
+    }
+  else
+    {
+      fFrameManager->ToggleScreenshot( false );
+      fFramePanel->SetEnable( true );
+      fEventPanel->SetEnable( true );
+    }
 }

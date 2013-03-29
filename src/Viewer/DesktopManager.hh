@@ -53,12 +53,15 @@ public:
   void Render3d( RWWrapper& renderApp );
   /// Draw the GUI objects
   void RenderGUI( RWWrapper& renderApp );
+  /// Toggle screenshot mode
+  void ToggleScreenshot();
 private:
   std::vector<Desktop*> fDesktops; /// < The available desktops
   RectPtr fGlobalMother; /// < The gloabl mother rect, this class does not need it's own
   DesktopPanel* fDesktopPanel; /// < The panel which controls which desktop is visible
   GUIPanel* fGUIPanel; /// < The panel which controls the gui settings
   ScriptPanel* fScriptPanel; /// < The panel which controls the scripts
+  bool fScreenshotMode; /// < In Screenshot mode?
 };
 
 } //::Viewer

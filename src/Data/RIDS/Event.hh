@@ -1,16 +1,16 @@
 ////////////////////////////////////////////////////////////////////
 /// \class Event
 ///
-/// \brief  Event data structure
-///          
+/// \brief Event data structure
+///
 /// \author Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     07/05/12 : P.Jones - First Revision, new file. \n
+/// 20/03/13 : P.Jones - New RIDS Refactor. \n
 ///
-/// \detail ROOT has many memory management issues, thus a ROOT 
-///         independent data structure exists. This is the event 
-///         data holder class.
+/// \detail This class holds all the event relevant data to display,
+///         in a generic format that accomodates ORCA, built and MC
+///         data in a ROOT independent manner.
 ///
 ////////////////////////////////////////////////////////////////////
 
@@ -18,55 +18,70 @@
 #define __Viewer_RIDS_Event__
 
 #include <vector>
+#include <string>
 
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/RIDS/Source.hh>
 #include <Viewer/RIDS/Time.hh>
-
-namespace RAT
-{
-namespace DS
-{
-  class Root;
-  class PackedEvent;
-}
-}
+#include <Viewer/RIDS/Track.hh>
 
 namespace Viewer
 {
 namespace RIDS
 {
-  class MC;
-  class EV;
+  typedef std::vector< std::pair< std::string, std::vector< std::string > > > DataNames;
+
 
 class Event
 {
 public:
-  Event( RAT::DS::Root& rDS,
-         unsigned int iEV );
-  Event( const Event& rhs );
-  Event& operator=( const Event& rhs );
-  ~Event();
-
-  bool ExistMC() const { return fMC != NULL; }
-  bool ExistEV() const { return fEV != NULL; }
-  MC& GetMC() const { return *fMC; }
-  EV& GetEV() const { return *fEV; }
-  int GetRunID() const { return fRunID; }
-  int GetSubRunID() const { return fSubRunID; }
-  Time GetTime() const { return fTime; }
-  /// Return a vector of PMTHits (data) by source, e.g. eCal
-  std::vector<PMTHit> GetHitData( EDataSource source ) const;
-
-private:
+  static void Initialise( const DataNames& sourceTypeStrings );
+  static std::vector<std::string> GetSourceNames();
+  static std::vector<std::string> GetTypeNames( int source );
+  static void SetTypeNames( int source, std::vector<std::string> types );
+  
+  /// Builds the event, adds the specified number of sources each with the specified number of types
   Event();
+  /// Builds an event for a single source (analysis script data)
+  Event( size_t types );
+  /// Set the source of id
+  void SetSource( int id, const Source& source ) { fSources[id] = source; }
+  /// Set the tracking information
+  void SetTracks( const std::vector<Track>& tracks ) { fTracks = tracks; }
+  /// Set the run ID
+  void SetRunID( int runID ) { fRunID = runID; }
+  /// Set the sub run ID
+  void SetSubRunID( int subRunID ) { fSubRunID = subRunID; }
+  /// Set the event ID
+  void SetEventID( int eventID ) { fEventID = eventID; }
+  /// Set the trigger word
+  void SetTrigger( int trigger ) { fTrigger = trigger; }
 
-  Time fTime; /// < Time viewer created the event (useful for performance tracking)
+  /// Return a reference to the source as specified by it's id
+  const Source& GetSource( int id ) const;
+  /// Return a vector of channel data in this event given the source and data type
+  const std::vector<Channel>& GetData( size_t source, /// < Data source index
+                                       size_t type ) const; /// < Data type index
+  const std::vector<Track>& GetTracks() const { return fTracks; }
+  /// Return the event's timestamp
+  Time GetTime() const { return fTime; }
+  /// Return the run ID
+  int GetRunID() const { return fRunID; }
+  /// Return the sub run ID
+  int GetSubRunID() const { return fSubRunID; }
+  /// Return the event ID
+  int GetEventID() const { return fEventID; }
+  /// Return the trigger word
+  int GetTrigger() const { return fTrigger; }
+private:
+  static DataNames fsDataNames; /// < Names of the sources each associated with type names
 
-  EV* fEV; /// < EV side event data
-  MC* fMC; /// < Monte Carlo side event data, optional
-  int fRunID; /// < Event run ID
-  int fSubRunID; /// < Event sub run ID
+  Time fTime;
+  std::vector<Source> fSources; /// < The event data organised by source
+  std::vector<Track> fTracks; /// < The tracking data (if it exists)
+  int fRunID; /// < The run number
+  int fSubRunID; /// < The sub run number
+  int fEventID; /// < The event ID
+  int fTrigger; /// < The trigger word
 };
 
 } // namespace RIDS

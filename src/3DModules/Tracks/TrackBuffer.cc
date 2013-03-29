@@ -1,9 +1,9 @@
-#include <iostream>
-#include <Viewer/RIDS/MC.hh>
-#include <Viewer/RIDS/Track.hh>
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/TrackBuffer.hh>
+
+#include <Viewer/RIDS/Track.hh>
+#include <Viewer/RIDS/Event.hh>
 
 namespace Viewer {
 
@@ -38,12 +38,11 @@ void TrackBuffer::SaveVisibility( ConfigurationTable* configTable )
         ConfigTableUtils::SetBoolean( configTable, itr->first, itr->second.fVisible );
 }
 
-void TrackBuffer::SetAll( RIDS::MC& mc )
+void TrackBuffer::SetAll( const RIDS::Event& event )
 {
     ClearAll();
-    if( &mc == NULL ) return;
 
-    std::vector< RIDS::Track >& tracks = mc.GetTracks();
+    const std::vector< RIDS::Track >& tracks = event.GetTracks();
     for( int i = 0; i < tracks.size(); i++ )
     {
         const std::string& name = tracks[i].GetParticleName();

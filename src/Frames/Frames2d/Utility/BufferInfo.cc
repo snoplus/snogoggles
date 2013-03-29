@@ -6,15 +6,13 @@ using namespace std;
 
 #include <Viewer/BufferInfo.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/EV.hh>
-#include <Viewer/RIDS/MC.hh>
-#include <Viewer/RIDS/Time.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
 using namespace Viewer;
 using namespace Frames;
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/Time.hh>
 
 BufferInfo::~BufferInfo()
 {
@@ -54,10 +52,6 @@ BufferInfo::Render2d( RWWrapper& renderApp,
   eventInfo << "Buffer:" << endl;
   eventInfo << "\tSize:" << DataStore::GetInstance().GetBufferSize() << endl;
   eventInfo << "\tEvents Added:" << DataStore::GetInstance().GetEventsAdded() << endl;
-
-  const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
-  eventInfo << "Current Event:" << endl;
-  eventInfo << "Recieved Time: " << event.GetTime().GetTime() << endl;
 
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );

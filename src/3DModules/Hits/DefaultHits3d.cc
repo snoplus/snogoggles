@@ -5,10 +5,10 @@
 #include <Viewer/GUIManager.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/RIDS/EV.hh>
+#include <Viewer/DataSelector.hh>
+
 #include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/PMTHit.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/RIDS/ChannelList.hh>
 
 #include <RAT/DS/PMTProperties.hh>
 #include <RAT/DS/Run.hh>
@@ -67,9 +67,26 @@ void DefaultHits3d::EventLoop( )
 
 void DefaultHits3d::ProcessData( const RenderState& renderState )
 {
-    RIDS::EV& ev = DataStore::GetInstance().GetCurrentEvent().GetEV();
-    RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
-    SaveHitsToBuffer( &ev, pmtList, renderState );
+  fFullBuffer.Clear();
+  fOutlineBuffer.Clear();
+
+  const std::vector<RIDS::Channel>& hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
+  for( int i = 0; i < hits.size(); i++ )
+    {
+      if( hits[i].GetData() == 0 || hits[i].GetID() >= channelList.GetChannelCount() )
+        continue;
+
+      const sf::Vector3<double> pp = channelList.GetPosition( hits[i].GetID() );
+      TVector3 p( pp.x, pp.y, pp.z );
+      Colour c = renderState.GetDataColour( hits[i].GetData() );
+
+      fFullBuffer.AddHitFull( p, c );
+      fOutlineBuffer.AddHitOutline( p, c );
+    }
+
+  fFullBuffer.Bind();
+  fOutlineBuffer.Bind();
 }
 
 void DefaultHits3d::Render( const RenderState& renderState )
@@ -78,15 +95,15 @@ void DefaultHits3d::Render( const RenderState& renderState )
         ProcessData( renderState );
     fInitialised = true;
 
-    RAT::DS::PMTProperties* pmtList = DataStore::GetInstance().GetRun().GetPMTProp();
+    /*    const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
     if( fCurrentPMTList != pmtList )
     {
         for( int i=0; i < pmtList->GetPMTCount(); i++ )
           fPMTListBuffer.AddHitOutline( pmtList->GetPos( i ), 
             GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
         fPMTListBuffer.Bind();
-        fCurrentPMTList = pmtList;
-    }
+          fCurrentPMTList = pmtList;
+          }*/
 
     if( !fDisplayFrontPMTsOnly )
         fOutlineBuffer.Render( GL_LINES );
@@ -99,31 +116,6 @@ void DefaultHits3d::Render( const RenderState& renderState )
     fFullBuffer.Render( GL_TRIANGLES );
     glDisable( GL_DEPTH_TEST );
 }
-
-void DefaultHits3d::SaveHitsToBuffer( RIDS::EV* ev, RAT::DS::PMTProperties* pmtList, const RenderState& renderState )
-{
-    fFullBuffer.Clear();
-    fOutlineBuffer.Clear();
-
-    if( ev == NULL ) return;
-
-    const std::vector<RIDS::PMTHit>& hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
-    for( int i = 0; i < hits.size(); i++ )
-    {
-        if( hits[i].GetData( renderState.GetDataType() ) == 0 || i >= pmtList->GetPMTCount() )
-            continue;
-
-        TVector3 p = pmtList->GetPos( hits[i].GetLCN() );
-        Colour c = renderState.GetHitColour( hits[i] );
-
-        fFullBuffer.AddHitFull( p, c );
-        fOutlineBuffer.AddHitOutline( p, c );
-    }
-
-    fFullBuffer.Bind();
-    fOutlineBuffer.Bind();
-}
-
 
 }; // namespace Frames
 }; // namespace Viewer

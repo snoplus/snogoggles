@@ -3,11 +3,9 @@
 #include <sstream>
 using namespace std;
 
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/EV.hh>
 #include <Viewer/EventSelectionScript.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
 
 EventSelectionScript::EventSelectionScript()
 {
@@ -37,26 +35,17 @@ EventSelectionScript::UnLoad()
 void
 EventSelectionScript::Load( const string& scriptName )
 {
-  if( scriptName != fCurrentScript )
-    {
-      UnLoad();
-      // Load new script
-      PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
-      fpScript = PyImport_Import( pScriptName ); // Load script
-      Py_DECREF( pScriptName );
-      fpSelectFunction = PyObject_GetAttrString( fpScript, "select" );
-      if( !fpSelectFunction || !PyCallable_Check( fpSelectFunction ) )
-        throw;
-    }
-  else
-    {
-      fpScript = PyImport_ReloadModule( fpScript ); // ReLoad script
-      Py_DECREF( fpSelectFunction );
-      fpSelectFunction = PyObject_GetAttrString( fpScript, "select" );
-      if( !fpSelectFunction || !PyCallable_Check( fpSelectFunction ) )
-        throw;
-    }
-  fCurrentScript = scriptName;
+  stringstream scriptPath;
+  scriptPath << "evselect_" << scriptName;
+  fCurrentScript = scriptPath.str();
+  UnLoad();
+  // Load new script
+  PyObject* pScriptName = PyString_FromString( fCurrentScript.c_str() );
+  fpScript = PyImport_Import( pScriptName ); // Load script
+  Py_DECREF( pScriptName );
+  fpSelectFunction = PyObject_GetAttrString( fpScript, "select" );
+  if( !fpSelectFunction || !PyCallable_Check( fpSelectFunction ) )
+    throw;
 }
 
 bool
@@ -64,20 +53,10 @@ EventSelectionScript::ProcessEvent( const RIDS::Event& event )
 {
   /// Build data to send to the script
   PyObject* pDataDict = PyDict_New();
-  PyObject* pTrigger;
-  PyObject* pNhit;
-  if( event.ExistEV() )
-    {
-      pTrigger = PyInt_FromLong( event.GetEV().GetTriggerWord() );
-      pNhit = PyInt_FromLong( event.GetEV().GetUnCalNHits() );
-    }
-  else
-    {
-      pTrigger = PyInt_FromLong( 0 );
-      pNhit = PyInt_FromLong( 0 );
-    }
+  PyObject* pTrigger = PyInt_FromLong( event.GetTrigger() );
   PyDict_SetItemString( pDataDict, "trigger", pTrigger );
   Py_DECREF( pTrigger );
+  PyObject* pNhit = PyInt_FromLong( 0 );
   PyDict_SetItemString( pDataDict, "nhit", pNhit );
   Py_DECREF( pNhit );
 
@@ -91,4 +70,5 @@ EventSelectionScript::ProcessEvent( const RIDS::Event& event )
   Py_DECREF( pDataDict );
   Py_DECREF( fpInput );
   return result;
+  return true;
 }

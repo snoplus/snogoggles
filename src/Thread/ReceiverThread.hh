@@ -8,6 +8,7 @@
 /// REVISION HISTORY:\n
 ///     23/02/12 : P.Jones - First Revision, new file. \n
 ///     27/02/12 : P.Jones - Second Revision, stability improvements. \n
+///     25/03/14 : P.Jones - RIDS Refactor. \n
 ///
 /// \detail Setup a avalanche client to receive packed ROOT events from
 ///         a suitable dispatcher.
@@ -20,14 +21,11 @@
 
 #include <string>
 
-#include <TTree.h>
-#include <TFile.h>
 namespace RAT
 {
 namespace DS
 {
   class Root;
-  class Run;
 }
 }
 
@@ -51,14 +49,15 @@ public:
   /// Run function, called by the thread
   virtual void Run();
 
-protected:
-  virtual void Initialise();
 private:
-  /// Prevent usage
+  /// Initialise the receiving socket
+  void Initialise();
+  /// Prevent usage outside of the calls
   void Receiver();
-  /// The run tree information must be present in the viewer, this information does not come from the 
-  /// packed events. Temporarily load this information from a pre made root file.
-  void LoadRunTree();
+  /// Initialise RIDS i.e define the data 
+  void InitialiseRIDS();
+  /// Build a RIDS event from the currently received event
+  void BuildRIDSEvent( RAT::DS::Root* rDS );
 
   ratzdab::dispatch* fReceiver; /// < The ratzdab dispatcher reciever and converter
   int fNumReceivedEvents; /// < The current number of recieved events

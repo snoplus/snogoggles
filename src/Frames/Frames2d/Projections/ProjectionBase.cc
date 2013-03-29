@@ -1,8 +1,6 @@
 #include <RAT/DS/Run.hh>
 #include <RAT/DS/PMTProperties.hh>
 
-#include <TVector3.h>
-
 #include <cmath>
 using namespace std;
 
@@ -14,14 +12,13 @@ using namespace std;
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/DataStore.hh>
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
-#include <Viewer/RIDS/PMTHit.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/Polyhedron.hh>
 #include <Viewer/Polygon.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/ChannelList.hh>
 
 const double kPSUPRadius = 8500.0;
 const double kLocalSize = 137.0 * 0.3 / kPSUPRadius;
@@ -51,15 +48,18 @@ ProjectionBase::Initialise( const sf::Rect<double>& size )
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), 1000, 600 );
   fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize * GetAspectRatio(), 1.5 * kLocalSize ) );
   // Firstly make the vector of PMT positions
-  DataStore& events = DataStore::GetInstance();
-  RAT::DS::PMTProperties* rPMTList = events.GetRun().GetPMTProp();
-  for( int ipmt = 0; ipmt < rPMTList->GetPMTCount(); ipmt++ )
-    fProjectedPMTs.push_back( Project( Vector3( rPMTList->GetPos( ipmt ) ) ) );
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
+  for( int ipmt = 0; ipmt < channelList.GetChannelCount(); ipmt++ )
+    fProjectedPMTs.push_back( Project( channelList.GetPosition( ipmt ) ) );
   // Secondly make the vector of geodesic dots
   const VBO& geodesicVBO = GeodesicSphere::GetInstance()->OutlineVBO();
   for( unsigned short i = 0; i < geodesicVBO.fIndices.size(); i+=2 )
-      ProjectGeodesicLine( Vector3( geodesicVBO.fVertices[ geodesicVBO.fIndices[i] ] ), 
-                           Vector3( geodesicVBO.fVertices[ geodesicVBO.fIndices[i+1] ] ) );
+    {
+      Vertex::Data start = geodesicVBO.fVertices[ geodesicVBO.fIndices[i] ];
+      Vertex::Data end = geodesicVBO.fVertices[ geodesicVBO.fIndices[i+1] ];
+      ProjectGeodesicLine( sf::Vector3<double>( start.x, start.y, start.z ),
+                           sf::Vector3<double>( end.x, end.y, end.z ) );
+    }
 }
 
 void 
@@ -100,27 +100,29 @@ ProjectionBase::DrawGeodesic()
 }
 
 void
-ProjectionBase::ProjectGeodesicLine( Vector3 v1, 
-                                     Vector3 v2 )
+ProjectionBase::ProjectGeodesicLine( sf::Vector3<double> vv1, 
+                                     sf::Vector3<double> vv2 )
 {
-  Vector3 line = v2 - v1;
+  TVector3 v1( vv1.x, vv1.y, vv1.z );
+  TVector3 v2( vv2.x, vv2.y, vv2.z );
+  TVector3 line = v2 - v1;
   double dist = line.Mag();
   line = line.Unit();
   for( double delta = 0.0; delta < dist; delta += dist / 30.0 )
     {
-      Vector3 deltaPos = line * delta + v1;
-      fProjectedGeodesic.push_back( Project( deltaPos ) );
+      const TVector3 deltaPos = line * delta + v1;
+      fProjectedGeodesic.push_back( Project( sf::Vector3<double>( deltaPos.x(), deltaPos.y(), deltaPos.z() ) ) );
     }
 }
 
 void
 ProjectionBase::DrawHits( const RenderState& renderState )
 {
-  vector<RIDS::PMTHit> hits = DataStore::GetInstance().GetHitData( renderState.GetDataSource() );
-  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+  const vector<RIDS::Channel>& hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
+  for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
-      const sf::Vector2<double> projPos = fProjectedPMTs[iTer->GetLCN()];
-      const double data = iTer->GetData( renderState.GetDataType() );
+      const sf::Vector2<double> projPos = fProjectedPMTs[iTer->GetID()];
+      const double data = iTer->GetData();
       if( data == 0.0 )
         continue;
       fImage->DrawSquare( projPos, renderState.GetDataColour( data ) );

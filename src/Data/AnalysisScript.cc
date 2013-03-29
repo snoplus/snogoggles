@@ -4,12 +4,11 @@
 #include <iostream>
 using namespace std;
 
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/Event.hh>
 #include <Viewer/AnalysisScript.hh>
+#include <Viewer/DataSelector.hh>
 using namespace Viewer;
-
-const int kNumChannels = 10000;
+#include <Viewer/RIDS/Event.hh>
+#include <Viewer/RIDS/ChannelList.hh>
 
 AnalysisScript::AnalysisScript()
 {
@@ -43,112 +42,108 @@ AnalysisScript::UnLoad()
 void
 AnalysisScript::Load( const string& scriptName )
 {
-  if( scriptName != fCurrentScript )
-    {
-      UnLoad();
-      // Load new script
-      PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
-      fpScript = PyImport_Import( pScriptName ); // Load script
-      Py_DECREF( pScriptName );
-    }
-  else
-    {
-      fpScript = PyImport_ReloadModule( fpScript );// ReLoad script
-      Py_DECREF( fpEventFunction );
-      Py_DECREF( fpResetFunction );
-    }
+  stringstream scriptPath;
+  scriptPath << "anal_" << scriptName;
+  fCurrentScript = scriptPath.str();
+  UnLoad();
+  // Load new script
+  PyObject* pScriptName = PyString_FromString( fCurrentScript.c_str() );
+  fpScript = PyImport_Import( pScriptName ); // Load script
+  Py_DECREF( pScriptName );
   fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
   if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
     throw;
   fpResetFunction = PyObject_GetAttrString( fpScript, "reset" );
   if( !fpResetFunction || !PyCallable_Check( fpResetFunction ) )
     throw;
-  PyObject* pLabelsFunction = PyObject_GetAttrString( fpScript, "get_labels" );
+  PyObject* pLabelsFunction = PyObject_GetAttrString( fpScript, "get_types" );
   if( !pLabelsFunction || !PyCallable_Check( pLabelsFunction ) )
     throw;
   PyObject* pResult = PyObject_CallFunctionObjArgs( pLabelsFunction, NULL );
-  fDataLabels.clear();
-  for( int label = 0; label < 4; label++ )
+  fTypes.clear();
+  for( size_t iType = 0; iType < PyTuple_Size( pResult ); iType++ )
     {
-      fDataLabels.push_back( string( PyString_AsString( PyTuple_GetItem( pResult, label ) ) ) );
+      fTypes.push_back( string( PyString_AsString( PyTuple_GetItem( pResult, iType ) ) ) );
     }
   Py_DECREF( pResult );
-
   Py_DECREF( pLabelsFunction );
-  fCurrentScript = scriptName;
-  fpData = NewEmptyPyList();
+  // Reset the data
+  Reset();
 }
 
 void
 AnalysisScript::Reset()
 {
-  PyObject* pResult = PyObject_CallFunctionObjArgs( fpEventFunction, fpData, NULL );
-  Py_DECREF( pResult );
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
+
+  Py_XDECREF( fpData );
+  // Create the python data structure
+  fpData = PyDict_New();
+  // Add a list of channels for each type the script declares
+  for( vector<string>::const_iterator iTer = fTypes.begin(); iTer != fTypes.end(); iTer++ )
+    {
+      PyObject* pList = PyList_New( channelList.GetChannelCount() );
+      // Fill with empty doubles...
+      for( size_t iChannel = 0; iChannel < channelList.GetChannelCount(); iChannel++ )
+        PyList_SetItem( pList, iChannel, PyFloat_FromDouble( 0.0 ) );
+      PyDict_SetItemString( fpData, iTer->c_str(), pList );
+      Py_DECREF( pList );
+    }
+  // Done can now be cleared
+  PyObject_CallFunctionObjArgs( fpResetFunction, fpData, NULL );
+  PyToRIDS();
+}
+
+void
+AnalysisScript::PyToRIDS()
+{
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
+
+  fEvent = RIDS::Event( fTypes.size() );
+  RIDS::Source source( fTypes.size() );
+  for( size_t iType = 0; iType < fTypes.size(); iType++ )
+    {
+      PyObject* pList = PyDict_GetItemString( fpData, fTypes[iType].c_str() );
+      RIDS::Type type;
+      for( size_t iChannel = 0; iChannel < channelList.GetChannelCount(); iChannel++ )
+        {
+          const double data = PyFloat_AsDouble( PyList_GetItem( pList, iChannel ) );
+          if( data > 0.0 )
+            type.AddChannel( iChannel, data );
+        }
+      source.SetType( iType, type );
+    }  
+  fEvent.SetSource( 0, source );
 }
 
 void
 AnalysisScript::ProcessEvent( const RIDS::Event& event )
 {
-  static int count = 0;
-  count++;
-  cout << count << endl;
-  // First produce the (4) python lists of data (MC, PMTTruth, PMTUnCal, PMTCal)
-  PyObject* pMC = FillList( event, RIDS::eMC );
-  PyObject* pTruth = FillList( event, RIDS::eTruth );
-  PyObject* pUnCal = FillList( event, RIDS::eUnCal );
-  PyObject* pCal = FillList( event, RIDS::eCal );
-  // Now place them into an appropriate dictionary
-  PyObject* pDataDict = PyDict_New();
-  PyDict_SetItemString( pDataDict, "mc", pMC ); // This increments the reference
-  Py_DECREF( pMC );
-  PyDict_SetItemString( pDataDict, "truth", pTruth );
-  Py_DECREF( pTruth );
-  PyDict_SetItemString( pDataDict, "uncal", pUnCal );
-  Py_DECREF( pUnCal );
-  PyDict_SetItemString( pDataDict, "cal", pCal );
-  Py_DECREF( pCal );
-  
-  PyObject* pResult = PyObject_CallFunctionObjArgs( fpEventFunction, pDataDict, fpData, NULL );
-  //Py_DECREF( pResult );
-  Py_DECREF( pDataDict );
-}
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
 
-vector<RIDS::PMTHit>
-AnalysisScript::GetHitData() const
-{
-  vector<RIDS::PMTHit> hitData;
-  for( int lcn = 0; lcn < kNumChannels; lcn++ )
+  // First convert the event structure into a python structure
+  PyObject* pEvent = PyDict_New();
+  const vector<string> sources = RIDS::Event::GetSourceNames();
+  for( size_t iSource = 0; iSource < sources.size() - 1; iSource++ )
     {
-      hitData.push_back( RIDS::PMTHit( PyList_GetItem( fpData, lcn ), lcn ) );
+      PyObject* pSource = PyDict_New();
+      const vector<string> types = RIDS::Event::GetTypeNames( iSource );
+      for( size_t iType = 0; iType < types.size(); iType++ )
+        {
+          PyObject* pList = PyList_New( channelList.GetChannelCount() );
+          for( size_t iChannel = 0; iChannel < channelList.GetChannelCount(); iChannel++ )
+            PyList_SetItem( pList, iChannel, PyFloat_FromDouble( -1.0 ) );
+          const vector<RIDS::Channel> hits = DataSelector::GetInstance().GetData( iSource, iType );
+          for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
+            PyList_SET_ITEM( pList, iTer->GetID(), PyFloat_FromDouble( iTer->GetData() ) ); // It is safe to lose the None
+          PyDict_SetItemString( pSource, types[iType].c_str(), pList );
+          Py_DECREF( pList );
+        }
+      PyDict_SetItemString( pEvent, sources[iSource].c_str(), pSource );
+      Py_DECREF( pSource );
     }
-  return hitData;
+  // Can now call the function
+  PyObject_CallFunctionObjArgs( fpEventFunction, pEvent, fpData, NULL );
+  Py_DECREF( pEvent );
+  PyToRIDS();
 }
-
-PyObject*
-AnalysisScript::NewEmptyPyList()
-{
-  PyObject* pList = PyList_New( kNumChannels );
-  RIDS::PMTHit nonHit( 0.0, 0.0, 0.0, 0.0 ); // Empty hit
-  // Now fill the list with these empty values
-  for( int iEntry = 0; iEntry < kNumChannels; iEntry++ )
-    {
-      PyObject* pEmptyHit = nonHit.NewPyList();
-      PyList_SetItem( pList, iEntry, pEmptyHit ); // This steals the reference
-    }
-  return pList;
-}
-
-PyObject*
-AnalysisScript::FillList( const RIDS::Event& event,
-                      RIDS::EDataSource source )
-{
-  PyObject* pList = NewEmptyPyList();
-  vector<RIDS::PMTHit> hits = event.GetHitData( source );
-  for( vector<RIDS::PMTHit>::iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
-    {
-      PyObject* pHitData = iTer->NewPyList();
-      PyList_SetItem( pList, iTer->GetLCN(), pHitData );
-    }
-  return pList;
-}
-

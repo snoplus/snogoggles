@@ -1,24 +1,27 @@
 #include <SFML/Window/Event.hpp>
 
+#include <sstream>
 using namespace std;
 
 #include <Viewer/EventPanel.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/Button.hh>
 #include <Viewer/RadioSelector.hh>
 #include <Viewer/SlideSelector.hh>
 #include <Viewer/ScalingBar.hh>
 #include <Viewer/PersistLabel.hh>
-#include <Viewer/PythonScripts.hh>
+#include <Viewer/TextBox.hh>
 using namespace Viewer;
+#include <Viewer/RIDS/Event.hh>
+
 
 EventPanel::EventPanel( RectPtr rect )
   : Panel( rect, "EventPanel" )
 {
-  fRenderState.ChangeState( RIDS::eCal, RIDS::eTAC ); /// TEMP
+  fRenderState.ChangeState( 0, 0 );
   fLatest = false;
   fEventPeriod = -1.0;
 }
@@ -31,13 +34,13 @@ EventPanel::~EventPanel()
 void
 EventPanel::NewEvent( const Event& event )
 {
-  DataStore& events = DataStore::GetInstance();
+  DataSelector& eventSelector = DataSelector::GetInstance();
   if( GUI::fsKeyboardFocus == -1 && event.type == sf::Event::KeyPressed )
     {
       if( event.key.code == sf::Keyboard::Right )
-        events.Next();
+        eventSelector.Move( 1 );
       else if( event.key.code == sf::Keyboard::Left )
-        events.Prev();
+        eventSelector.Move( -1 );
       else if( event.key.code == sf::Keyboard::P )
         {
           ChangeRateMode( -1.0, false );
@@ -58,32 +61,41 @@ void
 EventPanel::EventLoop()
 {
   fRenderState.Reset(); // Reset the changed information
-  DataStore& events = DataStore::GetInstance();
+  DataSelector& eventSelector = DataSelector::GetInstance();
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
         {
         case eMultiPrev:
-          events.Prev( 10 );
+          eventSelector.Move( -10 );
           break;
         case eMultiNext:
-          events.Next( 10 );
+          eventSelector.Move( 10 );
           break;
         case ePrev: // Previous
-          events.Prev();
+          eventSelector.Move( -1 );
           break;
         case eNext: // Next
-          events.Next();
+          eventSelector.Move( +1 );
+          break;
+        case eIDInput:
+          {
+            stringstream input( dynamic_cast<GUIs::TextBox*>( fGUIs[eIDInput] )->GetString() );
+            int id; input >> id;
+            eventSelector.MoveToID( id );
+          }
           break;
         case eDataSource: // Source change
-        case eDataType: // Type change
-          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetEnumState<RIDS::EDataSource>(), 
-                                    dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetEnumState<RIDS::EDataType>() );
+          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(), 0 );
+          dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( DataSelector::GetInstance().GetTypeNames( fRenderState.GetDataSource() ) );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
-          if( fRenderState.GetDataSource() == RIDS::eScript )
-            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( PythonScripts::GetInstance().GetAnalysis().GetDataLabels() );
-          else
-            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->SetOptions( RenderState::GetTypeStrings() );
+          ChangeScaling();
+          break;
+        case eDataType: // Type change
+          fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(),
+                                    dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetState() );
+          dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
+          ChangeScaling();
           break;
         case eRate: // Change in event display rate
           {
@@ -102,20 +114,19 @@ EventPanel::EventLoop()
           }
           break;
         case eScaling: // Change in scaling
-          fRenderState.ChangeScaling( dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin(),
-                                      dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() );
+          ChangeScaling();
           break;
         }
       fEvents.pop();
     }
   // Manage the continuous event switching
   if( fLatest )
-    events.Latest();
+    eventSelector.Latest();
   else if( !fLatest && fEventPeriod == 0.0 )
-    events.Next();
+    eventSelector.Move( 1 );
   else if( !fLatest && fEventPeriod > 0.0 && fClock.getElapsedTime().asSeconds() > fEventPeriod )
     {
-      events.Next();
+      eventSelector.Move( 1 );
       fClock.restart();
     }
 }
@@ -132,14 +143,16 @@ EventPanel::PreInitialise( const ConfigurationTable* configTable )
                                                                     configTable->GetD( "scale_max" ) );
       dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( configTable->GetD( "event_rate_scale" ) );
     }
-  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetEnumState<RIDS::EDataSource>(), 
-                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetEnumState<RIDS::EDataType>() );
+  fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(),
+                            dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->GetState() );
 }
 
 void
 EventPanel::PostInitialise( const ConfigurationTable* configTable )
 {
-
+  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->Initialise( RIDS::Event::GetSourceNames() );
+  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
+  ChangeScaling();  
 }
 
 void
@@ -171,16 +184,10 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 31 );
               break;
             case eDataSource:
-              {
-                fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetSourceStrings() );
-              }
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
               break;
             case eDataType:
-              {
-                fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
-                dynamic_cast<GUIs::RadioSelector*>( fGUIs[effect] )->Initialise( RenderState::GetTypeStrings() );
-              }
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
               break;
             case eRate:
               {
@@ -198,10 +205,13 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eScaling:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::ScalingBar >( posRect, effect );
+                dynamic_cast<GUIs::ScalingBar*>( fGUIs[effect] )->Initialise();
               }
               break;
+            case eIDInput:
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::TextBox >( posRect, effect );
+              break;
             }
-          
         }
     }
 }
@@ -227,4 +237,14 @@ EventPanel::ChangeRateMode( double period, bool latest )
   if( period == 0.0 )
     dynamic_cast<GUIs::SlideSelector*>( fGUIs[eRate] )->SetState( 0.95 );
   fClock.restart();
+}
+
+void
+EventPanel::ChangeScaling()
+{
+  const RIDS::Event& event = DataSelector::GetInstance().GetEvent();
+  const double range = event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() - event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin();
+  
+  fRenderState.ChangeScaling( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() * range,
+                              event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() * range );
 }

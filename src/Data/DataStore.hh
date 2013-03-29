@@ -14,94 +14,59 @@
 ///     02/07/12 : O.Wasalski - Added method for frames to check whether
 ///                the current event being displayed has changed. \n
 ///     17/10/12 : P.Jones - New buffering system.\n
+///     22/03/13 : P.Jones - New RIDS refactor. Split into DataStore and
+///                DataSelector. \n
 ///
-/// \detail  Holds RIDS::Event events and the RAT::DS::Run data. 
-///          Also has an index to the current DS event and then the 
-///          current sub ev event.
+/// \detail  This class holds all the RIDS::Events and all the ChannelLists
+///          A DataSelector chooses which event to show. This is a 
+///          singleton class.
 ///
 ////////////////////////////////////////////////////////////////////////
 #ifndef __Viewer_DataStore__
 #define __Viewer_DataStore__
 
 #include <vector>
+#include <map>
 
 #include <Viewer/InputBuffer.hh>
-#include <Viewer/RIDS/RIDS.hh>
-#include <Viewer/RIDS/PMTHit.hh>
-
-namespace RAT
-{
-namespace DS
-{
-  class Root;
-  class Run;
-}
-}
 
 namespace Viewer
 {
 namespace RIDS
 {
   class Event;
+  class ChannelList;
 }
 
 class DataStore
 {
 public:
+  /// Singleton class instance
   static DataStore& GetInstance();
-
+  /// Initialise the DataStore, post semaphore
   void Initialise();
-
+  /// Destory the DataStore
   virtual ~DataStore();
-  /// Set the run 
-  void SetRun( RAT::DS::Run* rRun );
-  /// Add a DS event to the structure (data thread only)
-  bool Add( RAT::DS::Root* rDS );
-  /// Move to the latest event
-  void Latest();
-  /// Move to the next event, rolls over
-  void Next( const size_t step = 1 );
-  /// Move to the previous event, rolls over
-  void Prev( const size_t step = 1 );
-
-  inline const RIDS::Event& GetCurrentEvent() const;
-  /// Get the prev previous event to the latest
-  RIDS::Event* GetPreviousEvent( const size_t prev ) const;
-  inline RAT::DS::Run& GetRun() const;
-  inline bool HasChanged() const;
-  /// Update the data structure, fetch events from input buffer
+  /// Add an event, this is called by the Data Thread ONLY, return true on success
+  bool AddEvent( RIDS::Event* event );
+  /// Update, moves events from the input buffer to the available buffer
   void Update();
-
-  int GetInputBufferSize() const { return fInputBuffer.GetSize(); }
-  int GetBufferElements() const { return fInputBuffer.GetNumElements(); }
-  int GetBufferSize() const { return fEvents.size(); }
-  int GetEventsAdded() const { return fEventsAdded; }
-
-  /// Convienience method
-  std::vector<RIDS::PMTHit> GetHitData( RIDS::EDataSource source ) const;
-
-  /// Set the analysis state
-  void SetAnalysing( const bool state ) { fAnalysing = state; }
-  /// Set the selection state
-  void SetEventSelecting( const bool state ) { fSelecting = state; }
-
+  /// Move to the event step away
+  void Move( RIDS::Event* event, 
+             RIDS::ChannelList* channelList,
+             int step );
+  /// Information functions
+  size_t GetInputBufferSize() const { return fInputBuffer.GetSize(); }
+  size_t GetBufferElements() const { return fInputBuffer.GetNumElements(); }
+  size_t GetBufferSize() const { return fEvents.size(); }
+  size_t GetEventsAdded() const { return fEventsAdded; }
 private:
-  /// Run the event over the script and return true if selected
-  bool SelectEvent( RIDS::Event* event );
-  /// Change the event and run analysis if required
-  void ChangeEvent( const size_t eventID );
-
   InputBuffer<RIDS::Event*> fInputBuffer; /// < The input buffer, events arrive here
+  std::map<int, RIDS::ChannelList*> fChannelLists; /// < ChannelLists mapped by run ID
   std::vector<RIDS::Event*> fEvents; /// < The event buffer for rendering
-  RIDS::Event* fEvent; /// < The currently rendered event
   size_t fRead; /// < The currently read position in fEvents
   size_t fWrite; /// < The current write position in fEvents
-  RAT::DS::Run* fRun; /// < The current run information
   int fEventsAdded; /// < Count of added events 
-
-  bool fAnalysing;
-  bool fSelecting;
-  bool fChanged;
 
   /// Prevent usage of methods below
   DataStore();
@@ -114,24 +79,6 @@ DataStore::GetInstance()
 {
   static DataStore eventData;
   return eventData;
-}
-
-inline RAT::DS::Run&
-DataStore::GetRun() const
-{
-  return *fRun;
-}
-
-inline const RIDS::Event&
-DataStore::GetCurrentEvent() const
-{
-  return *fEvent;
-}
-
-inline bool
-DataStore::HasChanged() const
-{
-  return fChanged;
 }
 
 } //::Viewer

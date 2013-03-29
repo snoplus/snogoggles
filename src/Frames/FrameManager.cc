@@ -304,3 +304,20 @@ FrameManager::UpdateFrameRect( const int targetFrame,
       break;
     }
 }
+
+void
+FrameManager::ToggleScreenshot( bool screenshot )
+{
+  if( screenshot )
+    {
+      sf::Rect<double> frameRect( 0.0, 0.0, 1.0, 1.0 );
+      fRect->SetRect( frameRect, Rect::eLocal );
+    }
+  else
+    {
+      const ConfigurationTable* guiConfig = GUIProperties::GetInstance().GetConfiguration( "FrameManager" );
+      sf::Rect<double> frameRect( guiConfig->GetD( "x" ), guiConfig->GetD( "y" ), guiConfig->GetD( "width" ), guiConfig->GetD( "height" ) );
+      fRect->SetRect( frameRect, Rect::eLocal );
+    }
+}
+

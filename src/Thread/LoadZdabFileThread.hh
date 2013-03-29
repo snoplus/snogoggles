@@ -3,19 +3,17 @@
 ///
 /// \brief   Loads the Zdab files
 ///
-/// \author  Phil Jones <p.jones22@physics.ox.ac.uk>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
 ///     20/10/12 : P.Jones - First Revision, new file. \n
+///     25/03/14 : P.Jones - RIDS Refactor. \n
 ///
-/// \detail  Load events
+/// \detail  Load events from a zdab file
 ///
 ////////////////////////////////////////////////////////////////////////
 #ifndef __Viewer_LoadZdabFileThread__
 #define __Viewer_LoadZdabFileThread__
-
-#include <TTree.h>
-#include <TFile.h>
 
 #include <string>
 
@@ -26,7 +24,6 @@ namespace RAT
 namespace DS
 {
   class Root;
-  class Run;
 }
 }
 
@@ -49,11 +46,12 @@ public:
   virtual void
   Run();
 private:
-  /// Must get the run tree from a root file to get the PMTProperties
-  void LoadRootFile();
-
   /// Loads the next event if possible, returns false if no more events
   bool LoadNextEvent();
+  /// Initialise RIDS i.e. define what data exists
+  void InitialiseRIDS();
+  /// Build a single RIDS event from a loaded event
+  void BuildRIDSEvent( RAT::DS::Root* rDS );
 
   std::string fFileName;
 
@@ -62,19 +60,12 @@ private:
 
   /// Main Zdab file to load from
   ratzdab::zdabfile* fFile;
-
-  /// Root file part for the PMTProperties 
-  TFile* fRootFile;
-  TTree* fRunTree;
-  RAT::DS::Run* fRun;
 };
 
 LoadZdabFileThread::LoadZdabFileThread( const std::string& fileName, Semaphore& semaphore )
   : fSemaphore( semaphore ), fFileName( fileName )
 { 
   fFile = NULL; 
-  fRootFile = NULL;
-  fRun = NULL; 
   fMCEvent = 0; 
 } 
 

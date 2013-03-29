@@ -70,6 +70,8 @@ public:
   /// Create a new frame
   void NewFrame( const std::string& frameName,
                  const ConfigurationTable* configTable = NULL );
+  /// Toggle screenshot mode
+  void ToggleScreenshot( bool screenshot );
 private:
   /// Send an event to a frame container
   FrameEvent SendEvent( const int targetFrame,
