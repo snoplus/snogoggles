@@ -23,7 +23,7 @@
 
 namespace Viewer {
     namespace RIDS {
-        class MC;
+        class Event;
     }; // namespace RIDS
 
     class ConfigurationTable;
@@ -42,7 +42,7 @@ public:
     std::vector< std::string > GetNames();
     void LoadVisibility( const ConfigurationTable* configTable );
     void SaveVisibility( ConfigurationTable* configTable );
-    void SetAll( RIDS::MC& mc );
+    void SetAll( const RIDS::Event& event );
     void Render( bool renderAllSteps );
 
     std::map< std::string, struct ParticleType > fParticleTypes;

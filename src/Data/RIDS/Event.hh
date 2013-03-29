@@ -22,6 +22,7 @@
 
 #include <Viewer/RIDS/Source.hh>
 #include <Viewer/RIDS/Time.hh>
+#include <Viewer/RIDS/Track.hh>
 
 namespace Viewer
 {
@@ -44,6 +45,8 @@ public:
   Event( size_t types );
   /// Set the source of id
   void SetSource( int id, const Source& source ) { fSources[id] = source; }
+  /// Set the tracking information
+  void SetTracks( const std::vector<Track>& tracks ) { fTracks = tracks; }
   /// Set the run ID
   void SetRunID( int runID ) { fRunID = runID; }
   /// Set the sub run ID
@@ -58,6 +61,7 @@ public:
   /// Return a vector of channel data in this event given the source and data type
   const std::vector<Channel>& GetData( size_t source, /// < Data source index
                                        size_t type ) const; /// < Data type index
+  const std::vector<Track>& GetTracks() const { return fTracks; }
   /// Return the event's timestamp
   Time GetTime() const { return fTime; }
   /// Return the run ID
@@ -73,6 +77,7 @@ private:
 
   Time fTime;
   std::vector<Source> fSources; /// < The event data organised by source
+  std::vector<Track> fTracks; /// < The tracking data (if it exists)
   int fRunID; /// < The run number
   int fSubRunID; /// < The sub run number
   int fEventID; /// < The event ID

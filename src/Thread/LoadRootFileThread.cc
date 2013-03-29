@@ -17,6 +17,7 @@ using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/Source.hh>
 #include <Viewer/RIDS/Type.hh>
+#include <Viewer/RIDS/Track.hh>
 
 void
 LoadRootFileThread::Run()
@@ -88,6 +89,11 @@ LoadRootFileThread::BuildRIDSEvent()
           mc.SetType( 0, tac );
           mc.SetType( 1, pe );
           event->SetSource( 0, mc );
+          // Now tracking information
+          vector<RIDS::Track> tracks;
+          for( int iTrack = 0; iTrack < rMC->GetMCTrackCount(); iTrack++ )
+            tracks.push_back( RIDS::Track( *rMC->GetMCTrack( iTrack ) ) );
+          event->SetTracks( tracks );
         }
 
       RAT::DS::EV* rEV = fDS->GetEV( iEV );

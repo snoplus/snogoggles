@@ -10,7 +10,7 @@
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/PersistLabel.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 
 #include <Viewer/RIDS/Event.hh>
 
@@ -83,8 +83,7 @@ void DefaultTracks3d::EventLoop( )
 
 void DefaultTracks3d::ProcessData( const RenderState& renderState )
 {
-  //RIDS::MC& mc = DataStore::GetInstance().GetCurrentEvent().GetMC();
-  //fTrackBuffer.SetAll( mc );
+  fTrackBuffer.SetAll( DataSelector::GetInstance().GetEvent() );
 }
 
 void DefaultTracks3d::Render( const RenderState& renderState )
