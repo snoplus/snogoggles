@@ -5,10 +5,11 @@
 using namespace std;
 
 #include <Viewer/EventInfo.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/Text.hh>
 #include <Viewer/RWWrapper.hh>
+#include <Viewer/RenderState.hh>
 using namespace Viewer;
 using namespace Frames;
 #include <Viewer/RIDS/Event.hh>
@@ -46,7 +47,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo.precision( 0 );
   eventInfo << fixed;
 
-  const RIDS::Event& event = DataStore::GetInstance().GetCurrentEvent();
+  const RIDS::Event& event = DataSelector::GetInstance().GetEvent();
   eventInfo << "Run :" << event.GetRunID() << endl;
   eventInfo << "Sub Run :" << event.GetSubRunID() << endl;
   eventInfo << "Event GTID :" << event.GetEventID() << endl;

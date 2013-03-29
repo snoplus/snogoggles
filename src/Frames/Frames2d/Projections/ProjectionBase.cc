@@ -12,7 +12,7 @@ using namespace std;
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/Polyhedron.hh>
 #include <Viewer/Polygon.hh>
 using namespace Viewer;
@@ -48,8 +48,7 @@ ProjectionBase::Initialise( const sf::Rect<double>& size )
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), 1000, 600 );
   fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize * GetAspectRatio(), 1.5 * kLocalSize ) );
   // Firstly make the vector of PMT positions
-  DataStore& events = DataStore::GetInstance();
-  const RIDS::ChannelList& channelList = events.GetChannelList();
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
   for( int ipmt = 0; ipmt < channelList.GetChannelCount(); ipmt++ )
     fProjectedPMTs.push_back( Project( channelList.GetPosition( ipmt ) ) );
   // Secondly make the vector of geodesic dots
@@ -119,7 +118,7 @@ ProjectionBase::ProjectGeodesicLine( sf::Vector3<double> vv1,
 void
 ProjectionBase::DrawHits( const RenderState& renderState )
 {
-  const vector<RIDS::Channel>& hits = DataStore::GetInstance().GetChannelData( renderState.GetDataSource(), renderState.GetDataType() );
+  const vector<RIDS::Channel>& hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
   for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const sf::Vector2<double> projPos = fProjectedPMTs[iTer->GetID()];

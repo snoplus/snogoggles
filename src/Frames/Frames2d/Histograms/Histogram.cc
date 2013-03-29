@@ -9,7 +9,7 @@ using namespace std;
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/MapArea.hh>
 #include <Viewer/ConfigurationTable.hh>
@@ -201,7 +201,7 @@ Histogram::CalculateHistogram( const RenderState& renderState )
     }
   fValues.clear();
   fValues.resize( ( numberOfValues - 4 ) / binWidth + 4, 0.0 ); // Overflows and margins don't compress
-  const vector<RIDS::Channel>& hits = DataStore::GetInstance().GetChannelData( renderState.GetDataSource(), renderState.GetDataType() );
+  const vector<RIDS::Channel>& hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
   if( hits.empty() )
     return;
   for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )

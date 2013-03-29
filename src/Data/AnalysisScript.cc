@@ -5,7 +5,7 @@
 using namespace std;
 
 #include <Viewer/AnalysisScript.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/ChannelList.hh>
@@ -42,20 +42,14 @@ AnalysisScript::UnLoad()
 void
 AnalysisScript::Load( const string& scriptName )
 {
-  if( scriptName != fCurrentScript )
-    {
-      UnLoad();
-      // Load new script
-      PyObject* pScriptName = PyString_FromString( scriptName.c_str() );
-      fpScript = PyImport_Import( pScriptName ); // Load script
-      Py_DECREF( pScriptName );
-    }
-  else
-    {
-      fpScript = PyImport_ReloadModule( fpScript );// ReLoad script
-      Py_DECREF( fpEventFunction );
-      Py_DECREF( fpResetFunction );
-    }
+  stringstream scriptPath;
+  scriptPath << "anal_" << scriptName;
+  fCurrentScript = scriptPath.str();
+  UnLoad();
+  // Load new script
+  PyObject* pScriptName = PyString_FromString( fCurrentScript.c_str() );
+  fpScript = PyImport_Import( pScriptName ); // Load script
+  Py_DECREF( pScriptName );
   fpEventFunction = PyObject_GetAttrString( fpScript, "event" );
   if( !fpEventFunction || !PyCallable_Check( fpEventFunction ) )
     throw;
@@ -73,7 +67,6 @@ AnalysisScript::Load( const string& scriptName )
     }
   Py_DECREF( pResult );
   Py_DECREF( pLabelsFunction );
-  fCurrentScript = scriptName;
   // Reset the data
   Reset();
 }
@@ -81,7 +74,7 @@ AnalysisScript::Load( const string& scriptName )
 void
 AnalysisScript::Reset()
 {
-  const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
 
   Py_XDECREF( fpData );
   // Create the python data structure
@@ -94,6 +87,7 @@ AnalysisScript::Reset()
       for( size_t iChannel = 0; iChannel < channelList.GetChannelCount(); iChannel++ )
         PyList_SetItem( pList, iChannel, PyFloat_FromDouble( 0.0 ) );
       PyDict_SetItemString( fpData, iTer->c_str(), pList );
+      Py_DECREF( pList );
     }
   // Done can now be cleared
   PyObject_CallFunctionObjArgs( fpResetFunction, fpData, NULL );
@@ -103,7 +97,7 @@ AnalysisScript::Reset()
 void
 AnalysisScript::PyToRIDS()
 {
-  const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
 
   fEvent = RIDS::Event( fTypes.size() );
   RIDS::Source source( fTypes.size() );
@@ -125,24 +119,28 @@ AnalysisScript::PyToRIDS()
 void
 AnalysisScript::ProcessEvent( const RIDS::Event& event )
 {
-  const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
 
   // First convert the event structure into a python structure
   PyObject* pEvent = PyDict_New();
   const vector<string> sources = RIDS::Event::GetSourceNames();
-  for( size_t iSource = 0; iSource < sources.size(); iSource++ )
+  for( size_t iSource = 0; iSource < sources.size() - 1; iSource++ )
     {
       PyObject* pSource = PyDict_New();
-      PyDict_SetItemString( pEvent, sources[iSource].c_str(), pSource );
       const vector<string> types = RIDS::Event::GetTypeNames( iSource );
       for( size_t iType = 0; iType < types.size(); iType++ )
         {
           PyObject* pList = PyList_New( channelList.GetChannelCount() );
-          const vector<RIDS::Channel> hits = DataStore::GetInstance().GetChannelData( iSource, iType );
+          for( size_t iChannel = 0; iChannel < channelList.GetChannelCount(); iChannel++ )
+            PyList_SetItem( pList, iChannel, PyFloat_FromDouble( -1.0 ) );
+          const vector<RIDS::Channel> hits = DataSelector::GetInstance().GetData( iSource, iType );
           for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
-            PyList_SetItem( pList, iTer->GetID(), PyFloat_FromDouble( iTer->GetData() ) );
+            PyList_SET_ITEM( pList, iTer->GetID(), PyFloat_FromDouble( iTer->GetData() ) ); // It is safe to lose the None
           PyDict_SetItemString( pSource, types[iType].c_str(), pList );
+          Py_DECREF( pList );
         }
+      PyDict_SetItemString( pEvent, sources[iSource].c_str(), pSource );
+      Py_DECREF( pSource );
     }
   // Can now call the function
   PyObject_CallFunctionObjArgs( fpEventFunction, pEvent, fpData, NULL );

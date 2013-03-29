@@ -7,7 +7,7 @@ using namespace std;
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/HitInfo.hh>
 #include <Viewer/MapArea.hh>
@@ -102,7 +102,7 @@ CrateView::DrawPMT( const int lcn,
 void 
 CrateView::DrawPMTs( const RenderState& renderState )
 {
-  const vector<RIDS::Channel> hits = DataStore::GetInstance().GetChannelData( renderState.GetDataSource(), renderState.GetDataType() );
+  const vector<RIDS::Channel> hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
   for( vector<RIDS::Channel>::const_iterator iTer = hits.begin(); iTer != hits.end(); iTer++ )
     {
       const double data = iTer->GetData();

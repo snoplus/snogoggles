@@ -2,10 +2,9 @@
 
 using namespace std;
 
-#include <Viewer/PythonScripts.hh>
 #include <Viewer/ScriptPanel.hh>
 #include <Viewer/Event.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/Selector.hh>
 #include <Viewer/TextBox.hh>
 #include <Viewer/ConfigurationTable.hh>
@@ -28,27 +27,27 @@ ScriptPanel::~ScriptPanel()
 void
 ScriptPanel::EventLoop()
 {
-  DataStore& events = DataStore::GetInstance();
+  DataSelector& dataSelector = DataSelector::GetInstance();
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
         {
         case eAnalSelect: // Change the analysis script
         case eAnalRefresh:
-          PythonScripts::GetInstance().GetAnalysis().Load( dynamic_cast<GUIs::Selector*>( fGUIs[eAnalSelect] )->GetStringState() );
+          dataSelector.SetAnalysisScript( dynamic_cast<GUIs::Selector*>( fGUIs[eAnalSelect] )->GetStringState() );
           break;
         case eAnalOn:
-          events.SetAnalysing( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eAnalOn] )->GetState() );
+          dataSelector.SetAnalyse( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eAnalOn] )->GetState() );
           break;
         case eEventSelect: // Change the analysis script
         case eEventRefresh:
-          PythonScripts::GetInstance().GetEventSelection().Load( dynamic_cast<GUIs::Selector*>( fGUIs[eEventSelect] )->GetStringState() );
+          dataSelector.SetEventSelectionScript( dynamic_cast<GUIs::Selector*>( fGUIs[eEventSelect] )->GetStringState() );
           break;
         case eEventOn:
-          events.SetEventSelecting( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eEventOn] )->GetState() );
+          dataSelector.SetSelect( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eEventOn] )->GetState() );
           break;
         case eEventInput:
-          PythonScripts::GetInstance().GetEventSelection().SetInput( dynamic_cast<GUIs::TextBox*>( fGUIs[eEventInput] )->GetString() );
+          //PythonScripts::GetInstance().GetEventSelection().SetInput( dynamic_cast<GUIs::TextBox*>( fGUIs[eEventInput] )->GetString() );
           break;
         }
       fEvents.pop();
@@ -88,7 +87,7 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, effect );
                 stringstream scriptDir;
                 scriptDir << getenv( "VIEWERROOT" ) << "/scripts/analysis";
-                dynamic_cast<GUIs::Selector*>( fGUIs[effect] )->Initialise( GetFilesInDirectory( scriptDir.str(), string("py") ) );
+                dynamic_cast<GUIs::Selector*>( fGUIs[effect] )->Initialise( GetFilesInDirectory( scriptDir.str(), string("py"), string("anal_") ) );
               }
               break;
             case eEventSelect:
@@ -96,7 +95,7 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 fGUIs[effect]  = fGUIManager.NewGUI< GUIs::Selector >( posRect, effect );
                 stringstream scriptDir;
                 scriptDir << getenv( "VIEWERROOT" ) << "/scripts/eventselect";
-                dynamic_cast<GUIs::Selector*>( fGUIs[effect] )->Initialise( GetFilesInDirectory( scriptDir.str() ) );
+                dynamic_cast<GUIs::Selector*>( fGUIs[effect] )->Initialise( GetFilesInDirectory( scriptDir.str(), string("py"), string("evselect_") ) );
               }
               break;
             case ePMTSelect:

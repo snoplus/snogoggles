@@ -32,6 +32,12 @@ public:
   Time( struct tm* tm );
   ~Time() { }
 
+  bool operator>( const Time& rhs );
+  bool operator>=( const Time& rhs );
+  bool operator<( const Time& rhs );
+  bool operator<=( const Time& rhs );
+  bool operator==( const Time& rhs );
+
   /// Return a string stating the difference in time to rhs
   std::string DiffTime( const Time& rhs ) const;
   std::string GetDate() const;

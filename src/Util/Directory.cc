@@ -6,7 +6,8 @@ using namespace std;
 
 vector<string> 
 Viewer::GetFilesInDirectory( const string& folderPath,
-                             const string& extension )
+                             const string& extension,
+                             const string& omit )
 {
   vector<string> files;
   DIR *dp = opendir( folderPath.c_str() );
@@ -23,7 +24,7 @@ Viewer::GetFilesInDirectory( const string& folderPath,
               vector<string> parts;
               Viewer::StringUtils::SplitString( fileName, string("."), parts, false );
               if( extension == string("") || extension == parts[1] )
-                files.push_back( parts[0] );
+                files.push_back( parts[0].substr( omit.size() ) );
             }
           dirp = readdir( dp );
         }    

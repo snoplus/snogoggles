@@ -83,7 +83,7 @@ LoadZdabFileThread::BuildRIDSEvent( RAT::DS::Root* rDS )
   unCal.SetType( 1, qhl );
   unCal.SetType( 2, qhs );
   unCal.SetType( 3, qlx );
-  RIDS::Event event;
-  event.SetSource( 0, unCal );
-  DataStore::GetInstance().Add( event );
+  RIDS::Event* event = new RIDS::Event();
+  event->SetSource( 0, unCal );
+  DataStore::GetInstance().AddEvent( event );
 }

@@ -21,8 +21,6 @@ using namespace Viewer;
 void
 LoadRootFileThread::Run()
 {
-  DataStore& events = DataStore::GetInstance();
-
   if( fTree == NULL )
     {
       LoadRootFile();
@@ -71,11 +69,11 @@ LoadRootFileThread::BuildRIDSEvent()
 {
   for( int iEV = 0; iEV < fDS->GetEVCount(); iEV++ )
     {
-      RIDS::Event event;
-      event.SetRunID( fDS->GetRunID() );
-      event.SetSubRunID( fDS->GetSubRunID() );
-      event.SetEventID( fDS->GetEV( iEV )->GetEventID() );
-      event.SetTrigger( fDS->GetEV( iEV )->GetTrigType() );
+      RIDS::Event* event = new RIDS::Event();
+      event->SetRunID( fDS->GetRunID() );
+      event->SetSubRunID( fDS->GetSubRunID() );
+      event->SetEventID( fDS->GetEV( iEV )->GetEventID() );
+      event->SetTrigger( fDS->GetEV( iEV )->GetTrigType() );
       if( fDS->ExistMC() )
         {
           RAT::DS::MC* rMC = fDS->GetMC();
@@ -89,7 +87,7 @@ LoadRootFileThread::BuildRIDSEvent()
             }
           mc.SetType( 0, tac );
           mc.SetType( 1, pe );
-          event.SetSource( 0, mc );
+          event->SetSource( 0, mc );
         }
 
       RAT::DS::EV* rEV = fDS->GetEV( iEV );
@@ -108,7 +106,7 @@ LoadRootFileThread::BuildRIDSEvent()
         truth.SetType( 1, qhl );
         truth.SetType( 2, qhs );
         truth.SetType( 3, qlx );
-        event.SetSource( 1, truth );
+        event->SetSource( 1, truth );
       }
       {
         RIDS::Source unCal( 4 );
@@ -125,7 +123,7 @@ LoadRootFileThread::BuildRIDSEvent()
         unCal.SetType( 1, qhl );
         unCal.SetType( 2, qhs );
         unCal.SetType( 3, qlx );
-        event.SetSource( 2, unCal );
+        event->SetSource( 2, unCal );
       }
       {
         RIDS::Source cal( 4 );
@@ -142,9 +140,9 @@ LoadRootFileThread::BuildRIDSEvent()
         cal.SetType( 1, qhl );
         cal.SetType( 2, qhs );
         cal.SetType( 3, qlx );
-        event.SetSource( 3, cal );
+        event->SetSource( 3, cal );
       }
-      DataStore::GetInstance().Add( event );
+      DataStore::GetInstance().AddEvent( event );
     }
 }
 

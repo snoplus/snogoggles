@@ -4,10 +4,9 @@ using namespace std;
 #include <Viewer/HitInfo.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/RWWrapper.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/BitManip.hh>
-#include <Viewer/PythonScripts.hh>
 using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 
@@ -30,10 +29,10 @@ HitInfo::Render( RWWrapper& renderApp,
   info << "Cr:Cd:Ch:" << crate << ":" << card << ":" << channel << end.str();
 
   bool hasData = false;
-  const RIDS::Source& sourceData = DataStore::GetInstance().GetCurrentEvent().GetSource( renderState.GetDataSource() );
+  const RIDS::Source& sourceData = DataSelector::GetInstance().GetEvent().GetSource( renderState.GetDataSource() );
   vector<string> dataTypes;
   if( renderState.GetDataSource() < 0 ) // Negative sources are scripts
-    dataTypes = PythonScripts::GetInstance().GetAnalysis().GetTypeNames();
+    dataTypes = DataSelector::GetInstance().GetTypeNames( renderState.GetDataSource() );
   else
     dataTypes = RIDS::Event::GetTypeNames( renderState.GetDataSource() );
   for( size_t iChannel = 0; iChannel < sourceData.GetCount(); iChannel++ )

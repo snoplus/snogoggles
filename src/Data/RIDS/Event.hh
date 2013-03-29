@@ -33,16 +33,17 @@ namespace RIDS
 class Event
 {
 public:
-  static void Initialise( const DataNames& sourceTypeStrings ) { fsDataNames = sourceTypeStrings; }
+  static void Initialise( const DataNames& sourceTypeStrings );
   static std::vector<std::string> GetSourceNames();
   static std::vector<std::string> GetTypeNames( int source );
+  static void SetTypeNames( int source, std::vector<std::string> types );
   
   /// Builds the event, adds the specified number of sources each with the specified number of types
   Event();
   /// Builds an event for a single source (analysis script data)
   Event( size_t types );
   /// Set the source of id
-  void SetSource( int id, Source& source ) { fSources[id] = source; }
+  void SetSource( int id, const Source& source ) { fSources[id] = source; }
   /// Set the run ID
   void SetRunID( int runID ) { fRunID = runID; }
   /// Set the sub run ID
@@ -53,7 +54,7 @@ public:
   void SetTrigger( int trigger ) { fTrigger = trigger; }
 
   /// Return a reference to the source as specified by it's id
-  const Source& GetSource( int id ) const { return fSources[id]; }
+  const Source& GetSource( int id ) const;
   /// Return a vector of channel data in this event given the source and data type
   const std::vector<Channel>& GetData( size_t source, /// < Data source index
                                        size_t type ) const; /// < Data type index

@@ -5,7 +5,7 @@
 #include <Viewer/GUIManager.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/RenderState.hh>
-#include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/ChannelList.hh>
@@ -70,8 +70,8 @@ void DefaultHits3d::ProcessData( const RenderState& renderState )
   fFullBuffer.Clear();
   fOutlineBuffer.Clear();
 
-  const std::vector<RIDS::Channel>& hits = DataStore::GetInstance().GetChannelData( renderState.GetDataSource(), renderState.GetDataType() );
-  const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
+  const std::vector<RIDS::Channel>& hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
   for( int i = 0; i < hits.size(); i++ )
     {
       if( hits[i].GetData() == 0 || hits[i].GetID() >= channelList.GetChannelCount() )
@@ -95,7 +95,7 @@ void DefaultHits3d::Render( const RenderState& renderState )
         ProcessData( renderState );
     fInitialised = true;
 
-    /*    const RIDS::ChannelList& channelList = DataStore::GetInstance().GetChannelList();
+    /*    const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
     if( fCurrentPMTList != pmtList )
     {
         for( int i=0; i < pmtList->GetPMTCount(); i++ )

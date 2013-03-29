@@ -46,6 +46,9 @@ public:
   void Reset();
   /// Return the vector of type labels
   std::vector<std::string> GetTypeNames() const { return fTypes; }
+
+  /// Return the event
+  const RIDS::Event& GetEvent() const { return fEvent; }
   
 private:
   /// Convert fpData to fEvent

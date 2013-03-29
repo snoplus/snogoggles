@@ -39,7 +39,6 @@ private:
   std::vector< sf::Vector3<double> > fPositions; /// < PMT Positions
 
   int fRunID; /// < Channel list should reinitialise if run changes
-  bool fChanged; /// < True if the channel list has changed since last reset
 };
 
 } // namespace RIDS

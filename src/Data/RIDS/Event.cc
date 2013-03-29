@@ -5,6 +5,21 @@ using namespace Viewer::RIDS;
 
 vector< pair< string, vector< string > > > Event::fsDataNames;
 
+void 
+Event::Initialise( const DataNames& sourceTypeStrings ) 
+{ 
+  fsDataNames = sourceTypeStrings; 
+  // Push back a analysis script source
+  fsDataNames.push_back( pair< string, vector< string > >( "Script", vector<string>() ) );
+}
+
+void
+Event::SetTypeNames( int source, 
+                     vector<string> types )
+{
+  fsDataNames[source] = pair< string, vector< string > >( "Script", types );
+}
+
 Event::Event()
 {
   for( DataNames::const_iterator iTer = fsDataNames.begin(); iTer != fsDataNames.end(); iTer++ )
@@ -20,11 +35,17 @@ Event::Event( size_t types )
   fSources.push_back( source );
 }
 
+const Source& 
+Event::GetSource( int id ) const
+{
+  return fSources[id];
+}
+
 const vector<Channel>& 
 Event::GetData( size_t source, 
                 size_t type ) const
 {
-  return fSources[source].GetData( type );
+  return GetSource( source ).GetData( type );
 }
 
 vector<string>

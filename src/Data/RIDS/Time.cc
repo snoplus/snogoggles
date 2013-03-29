@@ -80,3 +80,46 @@ Time::GetTime() const
   text << fHour << ":" << fMin << ":" << fSec;
   return text.str();
 }
+
+bool 
+Time::operator>( const Time& rhs )
+{
+  int date = fDay + fMonth * 1000 + fYear * 100000;
+  int rhsDate = rhs.fDay + rhs.fMonth * 1000 + rhs.fYear * 100000;
+  if( date > rhsDate )
+    return true;
+  else if( date == rhsDate )
+    {
+      int time = fSec + fMin * 100 + fHour * 10000;
+      int rhsTime = rhs.fSec + rhs.fMin * 100 + rhs.fHour * 10000;
+      if( time > rhsTime )
+        return true;
+      else
+        return false;
+    }
+  else
+    return false;
+}
+bool 
+Time::operator>=( const Time& rhs )
+{
+
+}
+
+bool 
+Time::operator<( const Time& rhs )
+{
+
+}
+
+bool 
+Time::operator<=( const Time& rhs )
+{
+
+}
+
+bool 
+Time::operator==( const Time& rhs )
+{
+
+}
