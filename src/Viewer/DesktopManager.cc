@@ -13,7 +13,7 @@ using namespace std;
 using namespace Viewer;
 
 DesktopManager::DesktopManager( RectPtr globalMother )
-  : fGlobalMother( globalMother )
+  : fGlobalMother( globalMother ), fScreenshotMode( false )
 {
   fDesktops.resize( 8 ); // Maximum allowed desktops
 }
@@ -126,4 +126,15 @@ DesktopManager::RenderGUI( RWWrapper& renderApp )
   fGUIPanel->Render( renderApp );
   fScriptPanel->Render( renderApp );
   fDesktops[fDesktopPanel->GetCurrentDesktop()]->RenderGUI( renderApp );
+}
+
+void
+DesktopManager::ToggleScreenshot()
+{
+  fScreenshotMode = !fScreenshotMode;
+  fDesktopPanel->SetEnable( !fScreenshotMode );
+  fGUIPanel->SetEnable( !fScreenshotMode );
+  fScriptPanel->SetEnable( !fScreenshotMode );
+  for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
+    fDesktops[iDesktop]->ToggleScreenshot( fScreenshotMode );
 }

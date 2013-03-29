@@ -150,6 +150,8 @@ ViewerWindow::EventLoop()
               // This is a user controlled exit
               return false;
             }
+          if( event.key.code == sf::Keyboard::S )
+            fDesktopManager->ToggleScreenshot();
           //Drop through
         default:
           Event viewerEvent( event );

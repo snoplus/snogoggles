@@ -13,7 +13,7 @@ using namespace Viewer;
 
 Panel::Panel( RectPtr rect,
               const string& guiConfigName )
-  : fRect( rect ), fGUIManager( rect ), fGUIConfigName( guiConfigName )
+  : fRect( rect ), fGUIManager( rect ), fGUIConfigName( guiConfigName ), fEnabled( true )
 {
 
 }
@@ -32,6 +32,8 @@ Panel::~Panel()
 void 
 Panel::NewEvent( const Event& event )
 {
+  if( !fEnabled )
+    return;
   GUIEvent guiEvent = fGUIManager.NewEvent( event );
   if( guiEvent.IsNULL() == false )
     fEvents.push( guiEvent );
@@ -77,6 +79,8 @@ Panel::PostInitialise( const ConfigurationTable* configTable )
 void 
 Panel::Render( RWWrapper& renderApp )
 {
+  if( !fEnabled )
+    return;
   fGUIManager.Render( renderApp );
   for( map< int, Text* >::iterator iTer = fLabels.begin(); iTer != fLabels.end(); iTer++ )
     {

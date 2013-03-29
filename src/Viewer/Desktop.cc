@@ -127,3 +127,20 @@ Desktop::RenderGUI( RWWrapper& renderApp )
   fEventPanel->Render( renderApp );
   fFramePanel->Render( renderApp );
 }
+
+void
+Desktop::ToggleScreenshot( bool enable )
+{
+  if( enable )
+    {
+      fFrameManager->ToggleScreenshot( true );
+      fFramePanel->SetEnable( false );
+      fEventPanel->SetEnable( false );
+    }
+  else
+    {
+      fFrameManager->ToggleScreenshot( false );
+      fFramePanel->SetEnable( true );
+      fEventPanel->SetEnable( true );
+    }
+}
