@@ -1,5 +1,6 @@
 #include <SFML/Window/Event.hpp>
 
+#include <sstream>
 using namespace std;
 
 #include <Viewer/EventPanel.hh>
@@ -12,6 +13,7 @@ using namespace std;
 #include <Viewer/SlideSelector.hh>
 #include <Viewer/ScalingBar.hh>
 #include <Viewer/PersistLabel.hh>
+#include <Viewer/TextBox.hh>
 using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 
@@ -75,6 +77,13 @@ EventPanel::EventLoop()
           break;
         case eNext: // Next
           eventSelector.Move( +1 );
+          break;
+        case eIDInput:
+          {
+            stringstream input( dynamic_cast<GUIs::TextBox*>( fGUIs[eIDInput] )->GetString() );
+            int id; input >> id;
+            eventSelector.MoveToID( id );
+          }
           break;
         case eDataSource: // Source change
           fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(), 0 );
@@ -199,8 +208,10 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
                 dynamic_cast<GUIs::ScalingBar*>( fGUIs[effect] )->Initialise();
               }
               break;
+            case eIDInput:
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::TextBox >( posRect, effect );
+              break;
             }
-          
         }
     }
 }

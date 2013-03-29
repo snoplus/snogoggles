@@ -72,6 +72,25 @@ DataSelector::Latest()
     }
 }
 
+void
+DataSelector::MoveToID( int id )
+{
+  int currentID = fEvent->GetEventID();
+  int step = +1;
+  if( currentID == id )
+    return;
+  else if( currentID < id )
+    step = -1;
+  Move( step );
+  while( fEvent->GetEventID() != currentID )
+    {
+      Move( step );
+      if( fEvent->GetEventID() == id )
+        return; // Found it horray
+    }
+  // Not found, looped back to where we were
+}
+
 const RIDS::Event& 
 DataSelector::GetEvent() const
 {

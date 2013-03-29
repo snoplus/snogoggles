@@ -50,6 +50,8 @@ public:
   void Move( int steps );
   /// Select the latest applicable event
   void Latest();
+  /// Select the event with the given gtid
+  void MoveToID( int gtid );
 
   /// Get the current Event
   const RIDS::Event& GetEvent() const;

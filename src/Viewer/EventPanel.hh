@@ -54,7 +54,7 @@ protected:
   double fEventPeriod; /// < Time period in seconds per event, negative values indicate no continuous switching
   bool fLatest; /// < Latest event switching
 private:
-  enum { eMultiPrev = 0, ePrev = 1, eNext = 2, eMultiNext = 3, eDataSource = 4, eDataType = 5, eRate = 6, eScaling = 7, eLatest = 8 };
+  enum { eMultiPrev = 0, ePrev = 1, eNext = 2, eMultiNext = 3, eDataSource = 4, eDataType = 5, eRate = 6, eScaling = 7, eLatest = 8, eIDInput = 9 };
 };
 
 const RenderState
