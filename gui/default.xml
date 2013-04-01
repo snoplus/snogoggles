@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <GUI version="1" desktops="8">
+  <Font type="Fudd.ttf" />
   <FontRing>
     <ring id="0" pixel="20"/>
     <ring id="1" size="0.1"/>

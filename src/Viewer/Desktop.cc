@@ -12,10 +12,11 @@ using namespace std;
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/DataSelector.hh>
+#include <Viewer/EventSummary.hh>
 using namespace Viewer;
 
 Desktop::Desktop( RectPtr desktopRect )
-  : fRect( desktopRect )
+  : fRect( desktopRect ), fScreenshotMode( false )
 {
 
 }
@@ -110,6 +111,13 @@ Desktop::Render2d( RWWrapper& renderApp )
 {
   const RenderState renderState = fEventPanel->GetRenderState();
   fFrameManager->Render2d( renderApp, renderState );
+  if( fScreenshotMode )
+    {
+      sf::Rect<double> size;
+      size.left= 0.0; size.top= 0.96; size.width = 1.0; size.height = 0.02;
+      EventSummary evSum( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
+      evSum.Render( renderApp, renderState );
+    }
 }
 
 void 
@@ -131,16 +139,8 @@ Desktop::RenderGUI( RWWrapper& renderApp )
 void
 Desktop::ToggleScreenshot( bool enable )
 {
-  if( enable )
-    {
-      fFrameManager->ToggleScreenshot( true );
-      fFramePanel->SetEnable( false );
-      fEventPanel->SetEnable( false );
-    }
-  else
-    {
-      fFrameManager->ToggleScreenshot( false );
-      fFramePanel->SetEnable( true );
-      fEventPanel->SetEnable( true );
-    }
+  fScreenshotMode = enable;
+  fFrameManager->ToggleScreenshot( fScreenshotMode );
+  fFramePanel->SetEnable( !fScreenshotMode );
+  fEventPanel->SetEnable( !fScreenshotMode );
 }

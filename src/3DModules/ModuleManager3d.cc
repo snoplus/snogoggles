@@ -34,13 +34,12 @@ ModuleManager3d::~ModuleManager3d()
 	DeleteAllModules();
 }
 
-void ModuleManager3d::SetAllModules( 
-    CameraManager3d* camera, 
-    HitManager3d* hits, 
-    TrackManager3d* tracks,
-    GeoManager3d* geo,
-    FitterManager3d* fitter
-)
+void 
+ModuleManager3d::SetAllModules( CameraManager3d* camera, 
+                                HitManager3d* hits, 
+                                TrackManager3d* tracks,
+                                GeoManager3d* geo,
+                                FitterManager3d* fitter )
 {
     DeleteAllModules();
     fModules.push_back( camera );

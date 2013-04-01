@@ -30,7 +30,7 @@ Arcball3d::Arcball3d()
 void Arcball3d::ResetRotation()
 {
     fRadius = 8500.0;
-    fCameraDist = 3.5;
+    fCameraDist = 4.5;
     fCamera.SetXYZ(fCameraDist*fRadius, 0, 0);
     fEye.SetXYZ(0,0,0);
     fUp.SetXYZ(0,0,1);

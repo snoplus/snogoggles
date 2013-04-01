@@ -37,12 +37,12 @@ void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& opt
 {
     sf::Rect<double> rect( optionsArea.left, optionsArea.top, optionsArea.width / 2.2, optionsArea.height); 
     fAllPMTsGUI = g.NewGUI<GUIs::PersistLabel>( rect );
-    fAllPMTsGUI->Initialise( 14, "Display All PMTs" );
+    fAllPMTsGUI->Initialise( 14, "All PMTs" );
     fAllPMTsGUI->SetState( fDisplayAllPMTs );
 
     rect.left += optionsArea.width/2;
     fFrontGUI = g.NewGUI<GUIs::PersistLabel>( rect );
-    fFrontGUI->Initialise( 14, "Show Front PMTs Only" );
+    fFrontGUI->Initialise( 14, "Front PMTs" );
     fFrontGUI->SetState( fDisplayFrontPMTsOnly );
 }
 
@@ -87,6 +87,16 @@ void DefaultHits3d::ProcessData( const RenderState& renderState )
 
   fFullBuffer.Bind();
   fOutlineBuffer.Bind();
+
+  fPMTListBuffer.Clear();
+  for( int i=0; i < channelList.GetChannelCount(); i++ )
+    {
+      const sf::Vector3<double> pp = channelList.GetPosition( i );
+      TVector3 p( pp.x, pp.y, pp.z );
+      fPMTListBuffer.AddHitOutline( p,
+                                    GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
+    }
+  fPMTListBuffer.Bind();
 }
 
 void DefaultHits3d::Render( const RenderState& renderState )
@@ -94,16 +104,6 @@ void DefaultHits3d::Render( const RenderState& renderState )
     if( fInitialised == false ) 
         ProcessData( renderState );
     fInitialised = true;
-
-    /*    const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
-    if( fCurrentPMTList != pmtList )
-    {
-        for( int i=0; i < pmtList->GetPMTCount(); i++ )
-          fPMTListBuffer.AddHitOutline( pmtList->GetPos( i ), 
-            GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
-        fPMTListBuffer.Bind();
-          fCurrentPMTList = pmtList;
-          }*/
 
     if( !fDisplayFrontPMTsOnly )
         fOutlineBuffer.Render( GL_LINES );

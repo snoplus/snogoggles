@@ -1,18 +1,24 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include <sstream>
+
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/RectPtr.hh>
 #include <Viewer/Rect.hh>
 #include <Viewer/Sprite.hh>
 #include <Viewer/PixelImage.hh>
 #include <Viewer/Text.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/ConfigurationTable.hh>
 using namespace Viewer;
 
 RWWrapper::RWWrapper( sf::RenderWindow& renderWindow )
   : fRenderWindow( renderWindow )
 {
-  fFont = sf::Font::getDefaultFont(); // Bug fix line, SFML issue #59
+  stringstream fontFileName;
+  fontFileName << getenv( "VIEWERROOT" ) << "/gui/" << GUIProperties::GetInstance().GetConfiguration( "Font" )->GetS( "type" );
+  fFont.loadFromFile( fontFileName.str() );
 }
 
 void 

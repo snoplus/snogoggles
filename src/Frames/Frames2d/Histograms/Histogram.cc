@@ -31,10 +31,10 @@ Histogram::PreInitialise( const ConfigurationTable* configTable )
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( imageSize, Rect::eLocal ) ) );
   sf::Rect<double> buttonSize( 0.8, 0.0, 0.2, 0.05 );
   GUIs::PersistLabel* logY = fGUIManager.NewGUI<GUIs::PersistLabel>( buttonSize, Rect::eLocal );
-  logY->Initialise( 14, "Log_10 Y?" );
+  logY->Initialise( 14, "Log Y" );
   buttonSize = sf::Rect<double>( 0.8, 0.05, 0.2, 0.05 );
   GUIs::PersistLabel* overflow = fGUIManager.NewGUI<GUIs::PersistLabel>( buttonSize, Rect::eLocal );
-  overflow->Initialise( 14, "Plot Overflow?" );
+  overflow->Initialise( 14, "Overflow" );
   sf::Rect<double> infoSize( 0.0, 1.0 - kAxisMargin / 2.0, 1.0, kAxisMargin / 2.0 );
   fInfoText = new Text( RectPtr( fRect->NewDaughter( infoSize, Rect::eLocal ) ) );
   imageSize.left = kAxisMargin;

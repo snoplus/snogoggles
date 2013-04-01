@@ -60,6 +60,7 @@ private:
   FrameManager* fFrameManager; /// < The frame maanager
   EventPanel* fEventPanel; /// < The GUI which controls the render state (Charge, Time, UnCal etc...)
   FramePanel* fFramePanel; /// < GUI control of the frame existance
+  bool fScreenshotMode; /// < In screenshot mode?
 };
 
 } //::Viewer

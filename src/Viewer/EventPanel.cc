@@ -199,7 +199,7 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eLatest:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Force Latest?" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Latest" );
               }
               break;
             case eScaling:

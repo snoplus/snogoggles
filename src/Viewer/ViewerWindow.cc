@@ -18,6 +18,7 @@ using namespace std;
 #include <Viewer/RenderState.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/DataStore.hh>
+#include <Viewer/DataSelector.hh>
 using namespace Viewer;
 
 const int kConfigVersion = 1;
@@ -126,6 +127,7 @@ ViewerWindow::EventLoop()
   // WILL CLOSE WINDOW IN ViewerWindow::Destruct()
 
   DataStore::GetInstance().Update();
+  DataSelector::GetInstance().Reset();
   sf::Event event;
   while( fWindowApp->pollEvent( event ) )
     {

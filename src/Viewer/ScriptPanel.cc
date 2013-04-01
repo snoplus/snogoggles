@@ -127,19 +127,19 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eAnalOn: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable?" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable" );
               }
               break;
             case eEventOn: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable?" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable" );
               }
               break;
             case ePMTOn: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable?" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable" );
               }
               break;
             case eEventInput:

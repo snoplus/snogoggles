@@ -310,7 +310,7 @@ FrameManager::ToggleScreenshot( bool screenshot )
 {
   if( screenshot )
     {
-      sf::Rect<double> frameRect( 0.0, 0.0, 1.0, 1.0 );
+      sf::Rect<double> frameRect( 0.0, 0.0, 1.0, 0.95 );
       fRect->SetRect( frameRect, Rect::eLocal );
     }
   else
