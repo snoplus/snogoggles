@@ -16,7 +16,7 @@ Scaler::Scaler( RectPtr rect,
   : GUI( rect, guiID )
 {
   fMinValue = 0.0;
-  fMaxValue = 0.99;
+  fMaxValue = 1.0;
   fState = eNormal;
   fImage = new ProjectionImage( rect );
 }
@@ -58,8 +58,8 @@ Scaler::NewEvent( const Event& event )
       retEvent = GUIEvent( fID, fGlobalID );
       if( fMinValue < 0.0 )
         fMinValue = 0.0;
-      if( fMaxValue > 0.99 )
-        fMaxValue = 0.99;
+      if( fMaxValue > 1.0 )
+        fMaxValue = 1.0;
       break;
     }
   return retEvent;

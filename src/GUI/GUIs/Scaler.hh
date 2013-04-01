@@ -74,7 +74,7 @@ inline void
 Scaler::Reset()
 {
   fMinValue = 0.0;
-  fMaxValue = 0.99;
+  fMaxValue = 1.0;
 }
 
 } // ::GUIs
