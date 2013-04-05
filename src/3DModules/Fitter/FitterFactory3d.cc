@@ -2,6 +2,7 @@
 #include <Viewer/FitterManager3d.hh>
 #include <Viewer/Factory.hh>
 #include <Viewer/Module3d.hh>
+#include <Viewer/DefaultFitter3d.hh>
 
 namespace Viewer {
 namespace Frames {
@@ -20,6 +21,7 @@ FitterFactory3d* FitterFactory3d::GetInstance()
 FitterFactory3d::FitterFactory3d()
 {
     fFactory.Register( Module3d::NullTag(), new NullAlloc<FitterManager3d>() );
+    fFactory.Register( DefaultFitter3d::Name(), new Alloc<FitterManager3d, DefaultFitter3d>() );
 }
 
 FitterManager3d* FitterFactory3d::GetFitterManager( const std::string name )

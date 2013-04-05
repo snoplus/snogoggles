@@ -41,8 +41,10 @@ public:
   inline void ClearOpenGL() const;
 
   void AddColourFraction( const Colour& newColour, 
-                          double fraction );
-
+                          const double fraction );
+  /// Tint the colour, >1.0 for lighter, <1.0 for darker.
+  void Tint( const double fraction );
+  
   void Load( const ConfigurationTable* configTable );
   void Save( ConfigurationTable* configTable ) const;
 };

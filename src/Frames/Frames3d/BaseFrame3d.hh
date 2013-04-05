@@ -32,28 +32,25 @@ namespace Frames {
 class BaseFrame3d : public Frame {
 public:
   BaseFrame3d( RectPtr rect );
-	virtual ~BaseFrame3d();
+  virtual ~BaseFrame3d();
   /// Initialise without using the DataStore
   virtual void PreInitialise( const ConfigurationTable* configTable );
   /// Initilaise with DataStore access
   virtual void PostInitialise( const ConfigurationTable* configTable );
   /// Save the configuration
   virtual void SaveConfiguration( ConfigurationTable* configTable );
-	virtual void EventLoop();
-    virtual void ProcessData( const RenderState& renderState );
-    virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
-	virtual void Render3d( RWWrapper& renderApp, const RenderState& renderState );
-
-	virtual ModuleManager3d* CreateModuleManager() = 0;
-	virtual sf::Rect< double > GetViewportArea() = 0;
-	virtual void CreateGUIObjects() = 0;
-
+  virtual void EventLoop();
+  virtual void ProcessData( const RenderState& renderState );
+  virtual void Render2d( RWWrapper& renderApp, const RenderState& renderState );
+  virtual void Render3d( RWWrapper& renderApp, const RenderState& renderState );
+  
+  virtual sf::Rect< double > GetViewportArea() = 0;  
 protected:
-	void LateInitialise();
+  virtual ModuleManager3d* CreateModuleManager() = 0;
+  /// Create the modules' GUI objects
+  virtual void CreateGUIObjects() = 0;
 
-	ModuleManager3d* fModuleManager;
-	bool fInitialised;
-
+  ModuleManager3d* fModuleManager;
 }; // class BaseFrame3d
 
 }; // namespace Frames

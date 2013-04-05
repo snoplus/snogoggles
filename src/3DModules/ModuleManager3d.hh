@@ -67,18 +67,20 @@ public:
 	ModuleManager3d();
     ~ModuleManager3d();
 
-    void SetAllModules( 
-        CameraManager3d* camera, 
-        HitManager3d* hits, 
-        TrackManager3d* tracks,
-        GeoManager3d* geo,
-        FitterManager3d* fitter
-       );
-
-    void DeleteAllModules();
-	void LateInitialise();
-    void LoadModuleConfigurations( const ConfigurationTable* configTable );
-    void SaveModuleConfigurations( ConfigurationTable* configTable );
+  /// Set the Modules newed elsewhere
+  void SetAllModules( CameraManager3d* camera, 
+                      HitManager3d* hits, 
+                      TrackManager3d* tracks,
+                      GeoManager3d* geo,
+                      FitterManager3d* fitter );
+  /// Delete the modules
+  void DeleteAllModules();
+  /// Initiliase before an event is loaded
+  void PreInitialise( const ConfigurationTable* configTable );
+  /// Initialise the modules after an event is loaded
+  void PostInitialise( const ConfigurationTable* configTable );
+  /// Save the modules' configuration
+  void SaveConfiguration( ConfigurationTable* configTable );
     void EventLoop();
     void ProcessData( const RenderState& renderState );
     void Render2d( RWWrapper& windowApp, const RenderState& renderState );

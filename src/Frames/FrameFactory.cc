@@ -8,6 +8,7 @@
 #include <Viewer/Histogram.hh>
 #include <Viewer/HitFrame3d.hh>
 #include <Viewer/TrackFrame3d.hh>
+#include <Viewer/FitterFrame3d.hh>
 using namespace Viewer;
 
 #include <string>
@@ -26,4 +27,5 @@ FrameFactory::FrameFactory()
 
   Register( Frames::HitFrame3d::Name(), new FrameAlloc<Frames::HitFrame3d>() );
   Register( Frames::TrackFrame3d::Name(), new FrameAlloc<Frames::TrackFrame3d>() );
+  Register( Frames::FitterFrame3d::Name(), new FrameAlloc<Frames::FitterFrame3d>() );
 }

@@ -34,19 +34,10 @@ class FitterManager3d : public Module3d {
 
 public:
 
-    virtual ~FitterManager3d() { }
-
-    static std::string TableName() { return "FitterManager3d"; }
-    std::string GetTableName() { return TableName(); }
-
-    /// Renders the fit vertex.
-    virtual void RenderFitVertex(  ) = 0;
-
-    static inline void RenderFitVertexSafe( FitterManager3d* f )
-    {
-        if( f != NULL )
-            f->RenderFitVertex();
-    }
+  virtual ~FitterManager3d() { }
+  
+  static std::string TableName() { return "FitterManager3d"; }
+  std::string GetTableName() { return TableName(); }
 
 }; // class FitterManager3d
 

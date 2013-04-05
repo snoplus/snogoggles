@@ -63,21 +63,22 @@ void ModuleManager3d::DeleteAllModules()
     fModules.clear();
 }
 
-void ModuleManager3d::LateInitialise()
+void ModuleManager3d::PostInitialise( const ConfigurationTable* configTable )
 {
-	if( fModules[CAMERA] == NULL )
-		throw NoCameraError();
-
-	GeoManager3d::LoadFileSafe( (GeoManager3d*)fModules[GEO] );
+  if( fModules[CAMERA] == NULL )
+    throw NoCameraError();
+  
+  GeoManager3d::LoadFileSafe( (GeoManager3d*)fModules[GEO] );
 }
 
-void ModuleManager3d::LoadModuleConfigurations( const ConfigurationTable* configTable )
+void ModuleManager3d::PreInitialise( const ConfigurationTable* configTable )
 {
+  if( configTable != NULL )
     for( int i = 0; i < fModules.size(); i++ )
-        Module3d::LoadConfigurationSafe( fModules[i], configTable );
+      Module3d::LoadConfigurationSafe( fModules[i], configTable );
 }
 
-void ModuleManager3d::SaveModuleConfigurations( ConfigurationTable* configTable )
+void ModuleManager3d::SaveConfiguration( ConfigurationTable* configTable )
 {
     for( int i = 0; i < fModules.size(); i++ )
         Module3d::SaveConfigurationSafe( fModules[i], configTable );

@@ -78,6 +78,20 @@ LoadRootFileThread::BuildRIDSEvent()
       if( fDS->ExistMC() )
         {
           RAT::DS::MC* rMC = fDS->GetMC();
+          for( int iMCParticle = 0; iMCParticle < rMC->GetMCParticleCount(); iMCParticle++ )
+            {
+              RAT::DS::MCParticle* rMCParticle = rMC->GetMCParticle( iMCParticle );
+              RIDS::Vertex vertex;
+              vertex.SetPosition( sf::Vector3<double>( rMCParticle->GetPos().x(), 
+                                                       rMCParticle->GetPos().y(), 
+                                                       rMCParticle->GetPos().z() ) );
+              vertex.SetTime( rMCParticle->GetTime() );
+              stringstream name;
+              name << "MC" << iMCParticle;
+              vertex.SetName( name.str() );
+              event->AddVertex( vertex );
+            }
+
           RIDS::Source mc( 2 );
           RIDS::Type tac, pe;
           for( int iMCPMT = 0; iMCPMT < rMC->GetMCPMTCount(); iMCPMT++ )
@@ -97,6 +111,28 @@ LoadRootFileThread::BuildRIDSEvent()
         }
 
       RAT::DS::EV* rEV = fDS->GetEV( iEV );
+      for( map<string, RAT::DS::FitResult>::iterator iTer = rEV->GetFitResultIterBegin(); iTer != rEV->GetFitResultIterEnd(); iTer++ )
+        {
+          RIDS::Vertex vertex;
+          vertex.SetName( iTer->first );
+          try
+            {
+              vertex.SetPosition( sf::Vector3<double>( iTer->second.GetVertex( 0 ).GetPosition().x(),
+                                                       iTer->second.GetVertex( 0 ).GetPosition().y(),
+                                                       iTer->second.GetVertex( 0 ).GetPosition().z() ) );
+              vertex.SetTime( iTer->second.GetVertex( 0 ).GetTime() );
+            }
+          catch( RAT::DS::FitResult::NoVertexError& error )
+            {
+              // Strange
+            }
+          catch( RAT::DS::FitVertex::NoValueError& error )
+            {
+              // Oh well...
+            }
+          event->AddVertex( vertex );
+        }
+
       {
         RIDS::Source truth( 4 );
         RIDS::Type tac, qhl, qhs, qlx;

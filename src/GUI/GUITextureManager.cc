@@ -142,17 +142,14 @@ GUITextureManager::Colourise( Colour shapeColourA,
 {
   Colour pixelColour;
   pixelColour = GUIProperties::GetInstance().GetGUIColourPalette().GetBackground();
+  // Set the base colours
   pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetA( state ), static_cast<double>( shapeColourA.r ) / 255.0 );
   pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetB( state ), static_cast<double>( shapeColourA.g ) / 255.0 );
   pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetC( state ), static_cast<double>( shapeColourA.b ) / 255.0 );
-  
-  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetD( state ), 
-                                 static_cast<double>( shapeColourB.r ) / 255.0 * static_cast<double>( shapeColourB.a ) / 255.0 );
-  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetE( state ), 
-                                 static_cast<double>( shapeColourB.g ) / 255.0 * static_cast<double>( shapeColourB.a ) / 255.0 );
-  pixelColour.AddColourFraction( GUIProperties::GetInstance().GetGUIColourPalette().GetF( state ), 
-                                 static_cast<double>( shapeColourB.b ) / 255.0 * static_cast<double>( shapeColourB.a ) / 255.0 );
-  
+  // Now add the shadowing
+  pixelColour.Tint( 1.0 + static_cast<double>( shapeColourB.r ) / 255.0 );
+  pixelColour.Tint( 1.0 - static_cast<double>( shapeColourB.g ) / 255.0 );
+  // Finnally set the alpha channel
   pixelColour.a = shapeColourA.a;
   return pixelColour;
 }

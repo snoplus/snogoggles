@@ -23,6 +23,7 @@
 #include <Viewer/RIDS/Source.hh>
 #include <Viewer/RIDS/Time.hh>
 #include <Viewer/RIDS/Track.hh>
+#include <Viewer/RIDS/Vertex.hh>
 
 namespace Viewer
 {
@@ -55,6 +56,8 @@ public:
   void SetEventID( int eventID ) { fEventID = eventID; }
   /// Set the trigger word
   void SetTrigger( int trigger ) { fTrigger = trigger; }
+  /// Add a vertex
+  void AddVertex( const Vertex& vertex ) { fVertices.push_back( vertex ); }
 
   /// Return a reference to the source as specified by it's id
   const Source& GetSource( int id ) const;
@@ -62,6 +65,10 @@ public:
   const std::vector<Channel>& GetData( size_t source, /// < Data source index
                                        size_t type ) const; /// < Data type index
   const std::vector<Track>& GetTracks() const { return fTracks; }
+  /// Return a vertex
+  const Vertex& GetVertex( size_t index ) const { return fVertices[index]; }
+  /// Return the number of vertices
+  size_t GetVertexCount() const { return fVertices.size(); }
   /// Return the event's timestamp
   Time GetTime() const { return fTime; }
   /// Return the run ID
@@ -76,6 +83,7 @@ private:
   static DataNames fsDataNames; /// < Names of the sources each associated with type names
 
   Time fTime;
+  std::vector<Vertex> fVertices; /// < Known or fitted vertices
   std::vector<Source> fSources; /// < The event data organised by source
   std::vector<Track> fTracks; /// < The tracking data (if it exists)
   int fRunID; /// < The run number

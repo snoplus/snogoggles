@@ -10,7 +10,7 @@ BaseFrame3d::BaseFrame3d(
 			 RectPtr rect )
   : Frame( rect )
 {
-	fInitialised = false;
+
 }
 
 BaseFrame3d::~BaseFrame3d()
@@ -22,52 +22,41 @@ BaseFrame3d::~BaseFrame3d()
 void BaseFrame3d::PreInitialise( const ConfigurationTable* configTable )
 {
   fModuleManager = CreateModuleManager();
-  if( configTable != NULL )
-    fModuleManager->LoadModuleConfigurations( configTable );
+  CreateGUIObjects();
+  fModuleManager->PreInitialise( configTable );
 }
 
 void BaseFrame3d::PostInitialise( const ConfigurationTable* configTable )
 {
-
+  fModuleManager->PostInitialise( configTable );
 }
 
 void BaseFrame3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-	fModuleManager->SaveModuleConfigurations( configTable );
+  fModuleManager->SaveConfiguration( configTable );
 }
 
 void BaseFrame3d::EventLoop()
 {
-	while( fEvents.empty() == false )
-		fEvents.pop();
-
-	LateInitialise(); // This is very prone to cause segfaults, must it work this way?
-	fModuleManager->EventLoop();
+  while( fEvents.empty() == false )
+    fEvents.pop();
+  
+  fModuleManager->EventLoop();
 }
 
 void BaseFrame3d::ProcessData( const RenderState& renderState )
 {
-    fModuleManager->ProcessData( renderState );
+  fModuleManager->ProcessData( renderState );
 }
 
 void BaseFrame3d::Render2d( RWWrapper& renderApp, const RenderState& renderState )
 {
-	fModuleManager->Render2d( renderApp, renderState );
+  fModuleManager->Render2d( renderApp, renderState );
 }
-
+  
 void BaseFrame3d::Render3d( RWWrapper& renderApp, const RenderState& renderState )
 {
-	fModuleManager->Render3d( fRect, renderState );
-}
-
-void BaseFrame3d::LateInitialise()
-{
-	if( fInitialised == false )
-	{
-		fModuleManager->LateInitialise();
-		CreateGUIObjects();
-		fInitialised = true;
-	}
+  fModuleManager->Render3d( fRect, renderState );
 }
 
 }; // namespace Frames
