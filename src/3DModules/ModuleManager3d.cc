@@ -80,20 +80,20 @@ void ModuleManager3d::PreInitialise( const ConfigurationTable* configTable )
 
 void ModuleManager3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-    for( int i = 0; i < fModules.size(); i++ )
-        Module3d::SaveConfigurationSafe( fModules[i], configTable );
+  for( int i = 0; i < fModules.size(); i++ )
+    Module3d::SaveConfigurationSafe( fModules[i], configTable );
 }
-
+  
 void ModuleManager3d::EventLoop()
 {
-    for( int i = 0; i < fModules.size(); i++ )
-        Module3d::EventLoopSafe( fModules[i] );
+  for( int i = 0; i < fModules.size(); i++ )
+    Module3d::EventLoopSafe( fModules[i] );
 }
 
 void ModuleManager3d::ProcessData( const RenderState& renderState )
 {
-    for( int i = 0; i < fModules.size(); i++ )
-        Module3d::ProcessDataSafe( fModules[i], renderState );
+  for( int i = 0; i < fModules.size(); i++ )
+    Module3d::ProcessDataSafe( fModules[i], renderState );
 }
 
 void ModuleManager3d::Render2d( RWWrapper& windowApp, const RenderState& renderState )

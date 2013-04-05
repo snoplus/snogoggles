@@ -36,7 +36,7 @@ namespace Viewer {
 
     namespace GUIs {
         class Arcball;
-        class ButtonLabel;
+        class Button;
         class PersistLabel;
     }; // namepsace GUIs
 
@@ -98,7 +98,8 @@ private:
 
     // All GUI objects.
     GUIs::Arcball* fArcball;
-    GUIs::ButtonLabel* fResetButton;
+    GUIs::Button* fResetButton;
+    GUIs::Button* fFlipButton;
     GUIs::PersistLabel* fPersistRotation;
     bool fPreviousPersistRotation;
 

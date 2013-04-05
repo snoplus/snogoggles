@@ -2,7 +2,7 @@
 #include <Viewer/ConfigTableUtils.hh>
 #include <Viewer/Arcball.hh>
 #include <Viewer/GUIManager.hh>
-#include <Viewer/ButtonLabel.hh>
+#include <Viewer/Button.hh>
 #include <Viewer/PersistLabel.hh>
 
 #include <SFML/Graphics.hpp>
@@ -51,10 +51,20 @@ void Arcball3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& options
     double width = optionsArea.width / 2;
     double height = optionsArea.height;
 
-    fResetButton = g.NewGUI<GUIs::ButtonLabel>( sf::Rect<double>( optionsArea.left + (1-buttonLength)*width, optionsArea.top + (1-buttonLength)*height, buttonLength*width, buttonLength*height ) ); 
-    fResetButton->Initialise( 2, "Reset" );
+    sf::Rect<double> size = optionsArea;
+    size.width = optionsArea.height;
 
-    fPersistRotation = g.NewGUI<GUIs::PersistLabel>( sf::Rect<double>( optionsArea.left + width, optionsArea.top, width, height ) );
+    fResetButton = g.NewGUI<GUIs::Button>( size );
+    fResetButton->Initialise( 24 );
+
+    size.left += size.width;
+    fFlipButton = g.NewGUI<GUIs::Button>( size );
+    fFlipButton->Initialise( 23 );
+
+    size.left += size.width;
+    size.width = optionsArea.width - size.width;
+
+    fPersistRotation = g.NewGUI<GUIs::PersistLabel>( size );
     fPersistRotation->Initialise( 14, "Persist Rotation" );
     fPersistRotation->SetState( fPreviousPersistRotation );
 }
@@ -87,22 +97,25 @@ void Arcball3d::SaveConfiguration( ConfigurationTable* configTable )
 
 void Arcball3d::EventLoop( )
 {
-    if( fResetButton->GetState() == true )
-        ResetRotation();
+  if( fResetButton->GetState() == true )
+    ResetRotation();
 
-    if( fPersistRotation->GetState() == true )
+  if( fFlipButton->GetState() == true )
+    fCamera = -fCamera;
+
+  if( fPersistRotation->GetState() == true )
     {
-        if( fPreviousPersistRotation == false )
+      if( fPreviousPersistRotation == false )
         {
-            fPreviousPersistRotation = true;
-            ResetRotation();
+          fPreviousPersistRotation = true;
+          ResetRotation();
         }
-    
-        RotateAll( Rotation( TVector3(0,0,1), fSpinSpeed*fClock.getElapsedTime().asSeconds() ) );
-        fClock.restart();
+      
+      RotateAll( Rotation( TVector3(0,0,1), fSpinSpeed*fClock.getElapsedTime().asSeconds() ) );
+      fClock.restart();
     }
-    else
-        fPreviousPersistRotation = false;
+  else
+    fPreviousPersistRotation = false;
 }
 
 void Arcball3d::RotateAll( const Rotation& r )
