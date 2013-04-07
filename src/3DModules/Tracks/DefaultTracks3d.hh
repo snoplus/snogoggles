@@ -1,81 +1,60 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::DefaultTracks3d
+/// \class Viewer::DefaultTracks3d
 ///
-/// \brief   Responsible for filtering and rendering tracks.
+/// \brief   Renders tracks to the screen
 ///
-/// \author Olivia Wasalski <wasalski@triumf.ca>
-///			    <oliviawasalski@gmail.com>
+/// \author  Olivia Wasalski <oliviawasalski@gmail.ca>
+///          Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-/// 	07/07/11 : Olivia Wasalski - First Revision, New File \n
-///     05/21/12 : Olivia Wasalski - Removed functionality, RIDS does not support yet. \n
-///     May 23, 2012 : O.Wasalski - Renders tracks through VBO and RIDS structure. \n
+///     06/04/13 : P.Jones - New file, first revision \n
 ///
-/// \details 	
+/// \detail  Modification of the original DefaultTracks3d class to take account
+///          of codebase changes.
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames_DefaultTracks3d__
-#define __Viewer_Frames_DefaultTracks3d__
+#ifndef __Viewer_DefaultTracks3d__
+#define __Viewer_DefaultTracks3d__
 
-#include <Viewer/TrackManager3d.hh>
+#include <map>
+#include <string>
+
+#include <Viewer/Module3d.hh>
 #include <Viewer/TrackBuffer.hh>
 
-#include <string>
-#include <vector>
-#include <map>
+namespace Viewer
+{
 
-namespace Viewer {
-    namespace GUIs {
-        class PersistLabel;
-    };
-
-    class ConfigurationTable;
-    class GUIManager;
-    class ColourPalette;
-
-namespace Frames {
-
-class DefaultTracks3d : public TrackManager3d {
-
+class DefaultTracks3d : public Module3d
+{
 public:
+  DefaultTracks3d( RectPtr rect ) : Module3d( rect ), fDisplayAll( true ), fDisplayFull( true ) { }
+  virtual ~DefaultTracks3d() { }
+  /// The event loop
+  virtual void EventLoop();
+  /// Save the current configuration
+  virtual void SaveConfiguration( ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access, Nothing to do here
+  virtual void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Process data into renderable format, Nothing to do here
+  virtual void ProcessData( const RenderState& renderState );
+  /// Render all 3d objects
+  virtual void Render3d();
+  /// Return the module name
+  virtual std::string GetName() { return DefaultTracks3d::Name(); }
+  static std::string Name() { return std::string( "DefaultTracks3d" ); }
+  
+protected:
+  TrackBuffer fTrackBuffer; /// < VBO for tracks
+  std::map<std::string, bool> fDisplayParticle; /// < Display particle by name
+  
+  bool fDisplayAll; /// < Display all the tracks
+  bool fDisplayFull; /// < Display the full track
+};
 
-    DefaultTracks3d();
+} //::Viewer
 
-    virtual ~DefaultTracks3d() { }
-
-    static std::string Name() { return "DefaultTracks"; }
-    virtual std::string GetName() { return Name(); }
-
-    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    virtual void LoadConfiguration( const ConfigurationTable* configTable );
-    virtual void SaveConfiguration( ConfigurationTable* configTable );
-    virtual void EventLoop( );
-    virtual void ProcessData( const RenderState& renderState );
-    virtual void Render( const RenderState& renderState );
-
-private:
-
-    void AddParticleType( const std::string& name, float eColour );
-
-    bool fAllParticles;
-    bool fRenderFullTrack;
-
-    static const std::string ALL_PARTICLES;
-    static const std::string PRIMARY_TRACKS_ONLY;
-    static const std::string RENDER_FULL_TRACK;
-    static const std::string VIS_MAP;
-
-    /// Map containing the supported particle types.
-    std::map< std::string, GUIs::PersistLabel* > fGUIs;
-    GUIs::PersistLabel* fFullTrackGUI;
-
-    TrackBuffer fTrackBuffer;
-    bool fInitialised;
-
-}; // class DefaultTracks3d
-
-}; // namesapce Frames 
-}; // namespace Viewer
-
-#endif // __Viewer_Frames_DefaultTracks3d__
+#endif

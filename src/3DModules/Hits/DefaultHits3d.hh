@@ -1,103 +1,64 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::DefaultHits3d
+/// \class Viewer::DefaultHits3d
 ///
-/// \brief   Responsible for filtering and rendering hits.
+/// \brief   The base class for all 3d modules
 ///
-/// \author Olivia Wasalski <wasalski@triumf.ca>
-///			    <oliviawasalski@triumf.ca>
+/// \author  Olivia Wasalski <oliviawasalski@gmail.ca>
+///          Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-/// 	06/07/11 : Olivia Wasalski - New File \n
-/// 	06/07/11 : Olivia Wasalski - Refactored so that hits are only
-///                                  filtered when needed. \n
-///     11/07/11 : Olivia Wasalski - Undid last revision. Hits are now displayed. \n
-///     xx/xx/xx : Olivia Wasalski - Basically rewritten to use VBOs \n
-///     05/21/12 : Olivia Wasalski - Removed dependence on global sphere; 
-///                                  was the source of lag. \n
+///     06/04/13 : P.Jones - New file, first revision \n
 ///
-/// \details    Implements functionality specified by the hit manager class.
-///             Filters hits if either the render state or the current EV 
+/// \detail  Modification of the original DefaultHits3d class to take account
+///          of codebase changes.
+///             Filters hits if either the render state or the current EV
 ///             changes. Stores each hit 2 ways, as a full hexagon and an
 ///             outline of a hexagon in 2 seperate VBOs. The full hexagon hits
-///             are rendered with the depth buffer enabled, and the outline 
+///             are rendered with the depth buffer enabled, and the outline
 ///             hits are rendered with the depth buffer disabled to create
-///             the effect that the hits in the back are outlines. Also has 
-///             a mode where it all of the PMT array. \n
+///             the effect that the hits in the back are outlines. Also has
+///             a mode where it all of the PMT array. \n 
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames_DefaultHits3d__
-#define __Viewer_Frames_DefaultHits3d__
+#ifndef __Viewer_DefaultHits3d__
+#define __Viewer_DefaultHits3d__
 
-#include <Viewer/HitManager3d.hh>
+#include <Viewer/Module3d.hh>
 #include <Viewer/HitBuffer.hh>
-#include <Viewer/RenderState.hh>
-#include <Viewer/Colour.hh>
-#include <TVector3.h>
 
-#include <string>
-#include <vector>
+namespace Viewer
+{
 
-namespace RAT {
-    namespace DS {
-        class PMTProperties;
-    };
+class DefaultHits3d : public Module3d
+{
+public:
+  DefaultHits3d( RectPtr rect ) : Module3d( rect ), fDisplayAll( true ), fDisplayFront( true ) { }
+  virtual ~DefaultHits3d() { }
+  /// The event loop
+  virtual void EventLoop();
+  /// Save the current configuration
+  virtual void SaveConfiguration( ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access, Nothing to do here
+  virtual void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Process data into renderable format, Nothing to do here
+  virtual void ProcessData( const RenderState& renderState );
+  /// Render all 3d objects
+  virtual void Render3d();
+  /// Return the module name
+  virtual std::string GetName() { return DefaultHits3d::Name(); }
+  static std::string Name() { return std::string( "DefaultHits3d" ); }
+protected:
+  HitBuffer fPMTListBuffer; /// < VBO for all PMTs
+  HitBuffer fFullBuffer; /// < VBO for full PMTs 
+  HitBuffer fOutlineBuffer; /// < VBO for wireframe PMTs
+
+  bool fDisplayAll; /// Display all channels (even non hit ones)
+  bool fDisplayFront; /// < Display only the front/nearest camera hits?
 };
 
-namespace Viewer {
-    namespace GUIs {
-        class PersistLabel;
-    };
+} //::Viewer
 
-    namespace RIDS {
-        class EV;
-        class PMTHit;
-    };
-
-    class ColourPalette;
-    class RenderState;
-    class ConfigurationTable;
-    class GUIManager;
-
-namespace Frames {
-
-class DefaultHits3d : public HitManager3d {
-public:
-
-    DefaultHits3d();
-
-    static std::string Name() { return "DefaultHits"; }
-    std::string GetName() { return Name(); }
-    void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-    void LoadConfiguration( const ConfigurationTable* configTable );
-    void SaveConfiguration( ConfigurationTable* configTable );
-    void EventLoop( );
-    void ProcessData( const RenderState& renderState );
-    void Render( const RenderState& renderState );
-
-private:
-
-    RAT::DS::PMTProperties* fCurrentPMTList;
-    RIDS::EV* fCurrentEV;
-
-    HitBuffer fPMTListBuffer;
-    HitBuffer fFullBuffer;
-    HitBuffer fOutlineBuffer;
-
-    static const std::string fDisplayAllPMTsTag;
-    static const std::string fPMTTypeTag;
-    static const std::string fDisplayFrontPMTsOnlyTag;
-
-    bool fDisplayAllPMTs;
-    bool fDisplayFrontPMTsOnly;
-    bool fInitialised;
-
-    GUIs::PersistLabel* fAllPMTsGUI;
-    GUIs::PersistLabel* fFrontGUI;
-
-}; // class DefaultHits3d
-
-}; // namespace Frames 
-}; // namespace Viewer
-
-#endif // Viewer_Frames_DefaultHits3d_hh
+#endif

@@ -19,7 +19,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <Viewer/Frame.hh>
+#include <Viewer/Frame2d.hh>
 
 namespace Viewer 
 {
@@ -34,10 +34,10 @@ namespace GUIs
 namespace Frames 
 {
 
-class CrateView : public Frame
+class CrateView : public Frame2d
 {
 public:
-  CrateView( RectPtr rect ) : Frame( rect ) { }
+  CrateView( RectPtr rect ) : Frame2d( rect ) { }
   ~CrateView();
   
   /// Initialise without using the DataStore

@@ -45,7 +45,7 @@ public:
   /// Return the local Rect (by reference)
   inline RectPtr GetRect();
   /// Return the text string
-  std::string GetString();
+  std::string GetString() const;
 
   inline void SetColour( const Colour& colour );
 

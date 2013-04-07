@@ -18,7 +18,7 @@
 
 #include <deque>
 
-#include <Viewer/Frame.hh>
+#include <Viewer/Frame2d.hh>
 
 namespace Viewer
 {
@@ -27,10 +27,10 @@ namespace Viewer
 namespace Frames
 {
 
-class About : public Frame
+class About : public Frame2d
 {
 public:
-  About( RectPtr rect ) : Frame( rect ) { }
+  About( RectPtr rect ) : Frame2d( rect ) { }
   ~About();
 
   /// Initialise without using the DataStore
@@ -49,10 +49,10 @@ public:
   virtual void ProcessData( const RenderState& renderState ) { }
 
   virtual void Render2d( RWWrapper& renderApp,
-			 const RenderState& renderState );
+                         const RenderState& renderState );
 
   void Render3d( RWWrapper& renderApp,
-		 const RenderState& renderState ) { }
+                 const RenderState& renderState ) { }
 
 private:
   std::deque<double> fFrameRates;

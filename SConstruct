@@ -30,6 +30,7 @@ ROOTARCH = os.popen(os.path.join(ROOTSYS, 'root-config') + ' --arch').read().str
 # Adds all packages used by the viewer
 addpackages(env)
 
+#env.Append(CXXFLAGS=['-Wfatal-errors'])
 # Temp always in debug
 env.Append(CXXFLAGS=["-g"])
 env.Append(LINKFLAGS=["-g"])

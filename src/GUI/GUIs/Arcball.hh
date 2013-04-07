@@ -27,8 +27,7 @@ namespace GUIs {
 class Arcball : public GUI {
 
 public:
-    Arcball( RectPtr rect, unsigned int guiID ) : 
-        GUI( rect, guiID ) {}
+    Arcball( RectPtr rect, unsigned int guiID ) : GUI( rect, guiID ) {}
     void Initialise( double radius );
     GUIEvent NewEvent( const Event& event );
     Rotation Update( GLint* viewport, GLdouble* modelview_matrix, GLdouble* projection_matrix );

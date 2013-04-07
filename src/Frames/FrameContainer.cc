@@ -168,9 +168,3 @@ FrameContainer::GetAspectRatio() const
   return fFrame->GetAspectRatio();
 }
 
-void
-FrameContainer::SetFrame( Frame* frame )
-{
-  fFrame = frame;
-  fFrame->NewMother( RectPtr( fRect->NewDaughter() ) );
-}

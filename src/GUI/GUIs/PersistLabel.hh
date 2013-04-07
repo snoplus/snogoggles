@@ -39,6 +39,7 @@ public:
   void Initialise( unsigned int textureNumber, 
                    const std::string& label );
   void SetLabel( const std::string& label ); 
+  const std::string GetLabel() { return fText.GetString(); }
 
   GUIEvent NewEvent( const Event& event );
   void Render( RWWrapper& windowApp );

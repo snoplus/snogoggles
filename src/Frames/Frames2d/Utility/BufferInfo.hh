@@ -17,7 +17,7 @@
 
 #include <string>
 
-#include <Viewer/Frame.hh>
+#include <Viewer/Frame2d.hh>
 
 namespace Viewer
 {
@@ -26,10 +26,10 @@ namespace Viewer
 namespace Frames
 {
 
-class BufferInfo : public Frame
+class BufferInfo : public Frame2d
 {
 public:
-  BufferInfo( RectPtr rect ) : Frame( rect ) { }
+  BufferInfo( RectPtr rect ) : Frame2d( rect ) { }
   ~BufferInfo();
 
   /// Initialise without using the DataStore

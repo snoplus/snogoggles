@@ -19,7 +19,7 @@
 
 #include <string>
 
-#include <Viewer/Frame.hh>
+#include <Viewer/Frame2d.hh>
 
 namespace Viewer
 {
@@ -28,10 +28,10 @@ namespace Viewer
 namespace Frames
 {
 
-class EventInfo : public Frame
+class EventInfo : public Frame2d
 {
 public:
-  EventInfo( RectPtr rect ) : Frame( rect ) { }
+  EventInfo( RectPtr rect ) : Frame2d( rect ) { }
   ~EventInfo();
 
   /// Initialise without using the DataStore

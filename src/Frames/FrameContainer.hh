@@ -80,7 +80,7 @@ public:
 		const Rect::ECoordSystem& system );
 
   bool IsPinned();
-  void SetFrame( Frame* frame );
+  void SetFrame( Frame* frame ) { fFrame = frame; }
 private:
   RectPtr fRect; /// < The container rect
   Frame* fFrame; /// < The frame

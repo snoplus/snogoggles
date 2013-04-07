@@ -1,104 +1,76 @@
-#include <SFML/Graphics/Rect.hpp>
-#include <SFML/OpenGL.hpp>
-
-#include <map>
-#include <vector>
-#include <string>
-
 #include <Viewer/DefaultTracks3d.hh>
-#include <Viewer/GUIManager.hh>
-#include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/GUIProperties.hh>
 #include <Viewer/PersistLabel.hh>
+#include <Viewer/GUIEvent.hh>
+#include <Viewer/ConfigurationTable.hh>
 #include <Viewer/DataSelector.hh>
+using namespace Viewer;
 
-#include <Viewer/RIDS/Event.hh>
-
-namespace Viewer {
-namespace Frames {
-
-const std::string DefaultTracks3d::PRIMARY_TRACKS_ONLY = "primaryTracksOnly";
-const std::string DefaultTracks3d::RENDER_FULL_TRACK = "renderFullTrack";
-const std::string DefaultTracks3d::VIS_MAP = "particleTypes";
-
-DefaultTracks3d::DefaultTracks3d()
+void 
+DefaultTracks3d::EventLoop()
 {
-    fAllParticles = true;
-    fRenderFullTrack = true;
-    fInitialised = false;
-	fFullTrackGUI = NULL;
-
-    AddParticleType( "opticalphoton", 0 );
-    AddParticleType( "gamma", 1.f/6 );
-    AddParticleType( "e-", 2.f/6 );
-    AddParticleType( "neutrino", 3.f/6 );
-    AddParticleType( "neutron", 4.f/6 );
-    AddParticleType( "unknown", 5.f/6 );
-}
-
-void DefaultTracks3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
-{
-    std::vector< std::string > names = fTrackBuffer.GetNames();
-    int numGUIs = names.size() + 1;
-    sf::Rect<double> rect( optionsArea.left, optionsArea.top, optionsArea.width, optionsArea.width / 5);
-
-    fFullTrackGUI = g.NewGUI<GUIs::PersistLabel>( rect );
-    fFullTrackGUI->Initialise( 14, "Render All Track Steps" );
-
-    for( int i = 0; i < names.size(); i++ )
+  while( !fEvents.empty() )
     {
-        rect.top += optionsArea.height / numGUIs;
-        fGUIs[ names.at(i) ] = g.NewGUI< GUIs::PersistLabel >( rect );
-        fGUIs[ names.at(i) ]->Initialise( 14, names.at(i) );
-        fGUIs[ names.at(i) ]->SetState( fTrackBuffer.fParticleTypes[ names.at(i) ].fVisible );
+      if( fEvents.front().fguiID == 0 )
+        fDisplayFull = !fDisplayFull;
+      else if( fEvents.front().fguiID > 0 )
+        {
+          GUIs::PersistLabel* button = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( fEvents.front().fguiID ) );
+          fDisplayParticle[button->GetLabel()] = button->GetState();
+          fTrackBuffer.fParticleTypes[button->GetLabel()].fVisible = button->GetState();
+        }
+      fEvents.pop();
     }
 }
 
-void DefaultTracks3d::LoadConfiguration( const ConfigurationTable* configTable )
+void 
+DefaultTracks3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-    ConfigTableUtils::GetBooleanSafe( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
-    try{ fTrackBuffer.LoadVisibility( configTable ); }
-    catch( ConfigurationTable::NoAttributeError& e ) { }
+  configTable->SetI( "DisplayFull", fDisplayFull );
+  for( map<string, bool>::iterator iTer = fDisplayParticle.begin(); iTer != fDisplayParticle.end(); iTer++ )
+    configTable->SetI( iTer->first, iTer->second );
 }
 
-void DefaultTracks3d::SaveConfiguration( ConfigurationTable* configTable )
+void 
+DefaultTracks3d::PreInitialise( const ConfigurationTable* configTable )
 {
-    ConfigTableUtils::SetBoolean( configTable, RENDER_FULL_TRACK, fRenderFullTrack );
-    fTrackBuffer.SaveVisibility( configTable );
-}
-
-void DefaultTracks3d::EventLoop( )
-{
-    if( fFullTrackGUI != NULL )
-        if( fFullTrackGUI->GetState() != fRenderFullTrack )
-            fRenderFullTrack = fFullTrackGUI->GetState();
-
-    if( fGUIs.empty() == false )
+  // First tell the track buffer what particles are special
+  fTrackBuffer.AddParticleType( "opticalphoton", 0 );
+  fTrackBuffer.AddParticleType( "gamma", 1.f/6 );
+  fTrackBuffer.AddParticleType( "e-", 2.f/6 );
+  fTrackBuffer.AddParticleType( "neutrino", 3.f/6 );
+  fTrackBuffer.AddParticleType( "neutron", 4.f/6 );
+  fTrackBuffer.AddParticleType( "unknown", 5.f/6 );
+  const vector<string> names = fTrackBuffer.GetNames();
+  // Now the display full track button
+  sf::Rect<double> size;
+  size.left = 0.0; size.top = 0.0; size.width = 1.0; 
+  size.height = 1.0 / static_cast<double>( names.size() + 1 );
+  GUIs::PersistLabel* displayFull = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
+  displayFull->Initialise( 14, "Full Tracks" );
+  if( configTable != NULL )
+    fDisplayFull = static_cast<bool>( configTable->GetI( "DisplayFull" ) );
+  displayFull->SetState( fDisplayAll );
+  // Now the individual particle states
+  for( vector<string>::const_iterator iTer = names.begin(); iTer != names.end(); iTer++ )
     {
-        std::map< std::string, GUIs::PersistLabel* >::iterator itr;
-        for( itr = fGUIs.begin(); itr != fGUIs.end(); itr++ )
-            fTrackBuffer.fParticleTypes[ itr->first ].fVisible = fGUIs[ itr->first ]->GetState();
+      size.top += size.height;
+      fDisplayParticle[*iTer] = false;
+      if( configTable != NULL )
+        fDisplayParticle[*iTer] = static_cast<bool>( configTable->GetI( *iTer ) );
+      GUIs::PersistLabel* button = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
+      button->Initialise( 14, *iTer );
+      button->SetState( fDisplayParticle[*iTer] );
     }
 }
 
-void DefaultTracks3d::ProcessData( const RenderState& renderState )
+void
+DefaultTracks3d::ProcessData( const RenderState& renderState )
 {
   fTrackBuffer.SetAll( DataSelector::GetInstance().GetEvent() );
 }
 
-void DefaultTracks3d::Render( const RenderState& renderState )
+void
+DefaultTracks3d::Render3d()
 {
-    if( fInitialised == false )
-        ProcessData( renderState );
-    fInitialised = true;
-
-    fTrackBuffer.Render( fRenderFullTrack );
+  fTrackBuffer.Render( fDisplayFull );
 }
-
-void DefaultTracks3d::AddParticleType( const std::string& name, float eColour )
-{
-    fTrackBuffer.AddParticleType( name, eColour );
-}
-
-}; // namespace Frames
-}; // namespace Viewer

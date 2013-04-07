@@ -21,7 +21,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
 
-#include <Viewer/Frame.hh>
+#include <Viewer/Frame2d.hh>
 
 namespace Viewer
 {
@@ -30,10 +30,10 @@ namespace Viewer
 namespace Frames
 {
 
-class ProjectionBase : public Frame
+class ProjectionBase : public Frame2d
 {
 public:
-  ProjectionBase( RectPtr rect ) : Frame( rect ) { }
+  ProjectionBase( RectPtr rect ) : Frame2d( rect ) { }
   virtual ~ProjectionBase();
 
   void Initialise( const sf::Rect<double>& size );

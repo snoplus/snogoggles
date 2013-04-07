@@ -1,64 +1,53 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::DefaultFitter3d
+/// \class Viewer::DefaultFitter3d
 ///
 /// \brief   Responsible for filtering and rendering reconstructed vertices.
 ///
-/// \author Phil G Jones <p.g.jones@qmul.ac.uk>
+/// \author  Olivia Wasalski <oliviawasalski@gmail.ca>
+///          Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-/// 05/04/13 : P. Jones - New File \n
+///     07/04/13 : P.Jones - New file, first revision \n
 ///
-/// \details    
+/// \detail  Modification of the original DefaultFitter3d class to take account
+///          of codebase changes.
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames_DefaultFitter3d__
-#define __Viewer_Frames_DefaultFitter3d__
+#ifndef __Viewer_DefaultFitter3d__
+#define __Viewer_DefaultFitter3d__
 
-#include <Viewer/FitterManager3d.hh>
+#include <Viewer/Module3d.hh>
 #include <Viewer/ReconBuffer.hh>
-#include <Viewer/RenderState.hh>
-#include <Viewer/Colour.hh>
-#include <TVector3.h>
 
-#include <string>
-#include <vector>
-
-namespace Viewer 
-{
-namespace GUIs 
-{
-  class PersistLabel;
-};
-  
-class ColourPalette;
-class RenderState;
-class ConfigurationTable;
-class GUIManager;
-
-namespace Frames 
+namespace Viewer
 {
 
-class DefaultFitter3d : public FitterManager3d 
+class DefaultFitter3d : public Module3d
 {
 public:
-  DefaultFitter3d();
+  DefaultFitter3d( RectPtr rect ) : Module3d( rect ) { }
+  virtual ~DefaultFitter3d() { }
+  /// The event loop
+  virtual void EventLoop() { };
+  /// Save the current configuration
+  virtual void SaveConfiguration( ConfigurationTable* configTable ) { };
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable ) { };
+  /// Initilaise with DataStore access, Nothing to do here
+  virtual void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Process data into renderable format, Nothing to do here
+  virtual void ProcessData( const RenderState& renderState );
+  /// Render all 3d objects
+  virtual void Render3d();
+  /// Return the module name
+  virtual std::string GetName() { return DefaultFitter3d::Name(); }
+  static std::string Name() { return std::string( "DefaultFitter3d" ); }
 
-  static std::string Name() { return "DefaultFitter"; }
-  std::string GetName() { return Name(); }
-  void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea );
-  void LoadConfiguration( const ConfigurationTable* configTable );
-  void SaveConfiguration( ConfigurationTable* configTable );
-  void EventLoop( );
-  void ProcessData( const RenderState& renderState );
-  void Render( const RenderState& renderState );
-  
-private:
+protected:
   ReconBuffer fBuffer;
+};
 
-}; // class DefaultFitter3d
+} //::Viewer
 
-}; // namespace Frames 
-}; // namespace Viewer
-
-#endif // Viewer_Frames_DefaultFitter3d_hh
+#endif

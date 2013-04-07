@@ -1,59 +1,40 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::TrackFrame3d
+/// \class Viewer::TrackFrame3d
 ///
-/// \brief   Currently does not have any functionality - tracks have
-///          not been added to the RIDS data structure.
+/// \brief   The fitter 3d frame
 ///
-/// \author Olivia Wasalski <wasalski@triumf.ca> 
-///			    <oliviawasalski@gmail.com>
+/// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-/// 	04/08/11 : Olivia Wasalski - New File \n
+///     07/04/13 : P.Jones - New file, first revision \n
+///
+/// \detail  Shows fit positions.
 ///
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __Viewer_Frames_TrackFrame3d__
-#define __Viewer_Frames_TrackFrame3d__
+#ifndef __Viewer_TrackFrame3d__
+#define __Viewer_TrackFrame3d__
 
-#include <iostream>
+#include <string>
 
-#include <Viewer/BaseFrame3d.hh>
-#include <Viewer/RectPtr.hh>
+#include <Viewer/Frame3d.hh>
 
-namespace Viewer {
-namespace Frames {
-	class ModuleManager3d;
+namespace Viewer
+{
+namespace Frames
+{
 
-class TrackFrame3d : public BaseFrame3d {
+class TrackFrame3d : public Frame3d
+{
 public:
-  TrackFrame3d( RectPtr rect ) : BaseFrame3d( rect ) { }
-	static inline std::string Name();
-	inline std::string GetName();
-	ModuleManager3d* CreateModuleManager();
-	inline sf::Rect< double > GetViewportArea();
-	void CreateGUIObjects();
+  TrackFrame3d( RectPtr rect );
+  virtual ~TrackFrame3d() { }
+  std::string GetName() { return TrackFrame3d::Name(); }
+  static std::string Name() { return std::string( "Tracks" ); }
+};
 
-}; // class TrackFrame3d
-
-////////////////////////////////////////////////////////////////////////
-// Inline methods
-////////////////////////////////////////////////////////////////////////
-std::string TrackFrame3d::Name()
-{
-	return "Tracks";
 }
 
-std::string TrackFrame3d::GetName()
-{
-	return Name();
-}
+} //::Viewer
 
-sf::Rect< double > TrackFrame3d::GetViewportArea()
-{
-	return sf::Rect< double >( 0, 0.05, 0.8, 0.8 );
-}
-
-}; // namespace Frames
-}; // namespace Viewer
-
-#endif // __Viewer_Frames_TrackFrame3d__
+#endif

@@ -1,71 +1,65 @@
-#include <Viewer/DefaultHits3d.hh>
-#include <Viewer/ConfigurationTable.hh>
-#include <Viewer/ConfigTableUtils.hh>
-#include <Viewer/GUIProperties.hh>
-#include <Viewer/GUIManager.hh>
-#include <Viewer/PersistLabel.hh>
-#include <Viewer/RenderState.hh>
-#include <Viewer/DataSelector.hh>
+#include <TVector3.h>
 
+#include <Viewer/DefaultHits3d.hh>
+#include <Viewer/PersistLabel.hh>
+#include <Viewer/GUIEvent.hh>
+#include <Viewer/ConfigurationTable.hh>
+#include <Viewer/DataSelector.hh>
+#include <Viewer/GUIProperties.hh>
+#include <Viewer/RenderState.hh>
+using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/ChannelList.hh>
 
-#include <RAT/DS/PMTProperties.hh>
-#include <RAT/DS/Run.hh>
-#include <SFML/OpenGL.hpp>
-
-#include <iostream>
-
-namespace Viewer {
-namespace Frames {
-
-const std::string DefaultHits3d::fDisplayAllPMTsTag = "DisplayAllPMTs";
-const std::string DefaultHits3d::fPMTTypeTag = "PMTType";
-const std::string DefaultHits3d::fDisplayFrontPMTsOnlyTag = "DisplayFrontPMTsOnly";
-
-DefaultHits3d::DefaultHits3d()
+void 
+DefaultHits3d::EventLoop()
 {
-    fDisplayAllPMTs = false;
-    fDisplayFrontPMTsOnly = false;
-    fInitialised = false;
-    fCurrentEV = NULL;
-    fAllPMTsGUI = NULL;
-    fFrontGUI = NULL;
+  while( !fEvents.empty() )
+    {
+      switch( fEvents.front().fguiID )
+        {
+        case 0: // Display all
+          fDisplayAll = !fDisplayAll;
+          break;
+        case 1: // Display front
+          fDisplayFront = !fDisplayFront;
+          break;
+        }
+      fEvents.pop();
+    }
 }
 
-void DefaultHits3d::CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea )
+void 
+DefaultHits3d::SaveConfiguration( ConfigurationTable* configTable )
 {
-    sf::Rect<double> rect( optionsArea.left, optionsArea.top, optionsArea.width / 2.2, optionsArea.height); 
-    fAllPMTsGUI = g.NewGUI<GUIs::PersistLabel>( rect );
-    fAllPMTsGUI->Initialise( 14, "All PMTs" );
-    fAllPMTsGUI->SetState( fDisplayAllPMTs );
-
-    rect.left += optionsArea.width/2;
-    fFrontGUI = g.NewGUI<GUIs::PersistLabel>( rect );
-    fFrontGUI->Initialise( 14, "Front PMTs" );
-    fFrontGUI->SetState( fDisplayFrontPMTsOnly );
+  configTable->SetI( "DisplayAll", fDisplayAll );
+  configTable->SetI( "DisplayFront", fDisplayFront );
 }
 
-void DefaultHits3d::LoadConfiguration( const ConfigurationTable* configTable )
+void 
+DefaultHits3d::PreInitialise( const ConfigurationTable* configTable )
 {
-    ConfigTableUtils::GetBooleanSafe( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
-    ConfigTableUtils::GetBooleanSafe( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
+  sf::Rect<double> size;
+  size.left = 0.0;
+  size.top = 0.0;
+  size.width = 1.0;
+  size.height = 0.5;
+  GUIs::PersistLabel* displayAll = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
+  displayAll->Initialise( 14, "Display All" );
+  size.top += 0.5;
+  GUIs::PersistLabel* displayFront = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
+  displayFront->Initialise( 14, "Front Only" );
+  if( configTable != NULL )
+    {
+      fDisplayAll = static_cast<bool>( configTable->GetI( "DisplayAll" ) );
+      fDisplayFront = static_cast<bool>( configTable->GetI( "DisplayFront" ) );
+    }
+  displayAll->SetState( fDisplayAll );
+  displayFront->SetState( fDisplayFront );
 }
 
-void DefaultHits3d::SaveConfiguration( ConfigurationTable* configTable )
-{
-    ConfigTableUtils::SetBoolean( configTable, fDisplayAllPMTsTag, fDisplayAllPMTs );
-    ConfigTableUtils::SetBoolean( configTable, fDisplayFrontPMTsOnlyTag, fDisplayFrontPMTsOnly );
-}
-
-void DefaultHits3d::EventLoop( )
-{
-    // TODO: Needs to be completed
-    fDisplayAllPMTs = fAllPMTsGUI->GetState();
-    fDisplayFrontPMTsOnly = fFrontGUI->GetState();
-}
-
-void DefaultHits3d::ProcessData( const RenderState& renderState )
+void
+DefaultHits3d::ProcessData( const RenderState& renderState )
 {
   fFullBuffer.Clear();
   fOutlineBuffer.Clear();
@@ -93,29 +87,23 @@ void DefaultHits3d::ProcessData( const RenderState& renderState )
     {
       const sf::Vector3<double> pp = channelList.GetPosition( i );
       TVector3 p( pp.x, pp.y, pp.z );
-      fPMTListBuffer.AddHitOutline( p,
-                                    GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
+      if( p.Mag2() > 0.0 )
+        fPMTListBuffer.AddHitOutline( p, GUIProperties::GetInstance().GetColourPalette().GetPrimaryColour( eGrey ) );
     }
   fPMTListBuffer.Bind();
 }
 
-void DefaultHits3d::Render( const RenderState& renderState )
+void
+DefaultHits3d::Render3d()
 {
-    if( fInitialised == false ) 
-        ProcessData( renderState );
-    fInitialised = true;
+  if( !fDisplayFront )
+    fOutlineBuffer.Render( GL_LINES );
+  
+  glEnable( GL_DEPTH_TEST );
 
-    if( !fDisplayFrontPMTsOnly )
-        fOutlineBuffer.Render( GL_LINES );
-
-    glEnable( GL_DEPTH_TEST );
-
-    if( fDisplayAllPMTs )
-        fPMTListBuffer.Render( GL_LINES );    
-
-    fFullBuffer.Render( GL_TRIANGLES );
-    glDisable( GL_DEPTH_TEST );
+  if( fDisplayAll )
+    fPMTListBuffer.Render( GL_LINES );
+  
+  fFullBuffer.Render( GL_TRIANGLES );
+  glDisable( GL_DEPTH_TEST );
 }
-
-}; // namespace Frames
-}; // namespace Viewer

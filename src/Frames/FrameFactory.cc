@@ -11,9 +11,6 @@
 #include <Viewer/FitterFrame3d.hh>
 using namespace Viewer;
 
-#include <string>
-using namespace std;
-
 FrameFactory::FrameFactory()
 {
   Register( Frames::About::Name(), new FrameAlloc<Frames::About>() );

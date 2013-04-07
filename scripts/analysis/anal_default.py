@@ -22,7 +22,6 @@ def event(in_data, out_data):
 
 def reset(out_data):
     """ This function clears all the data."""
-    print "Reset"
     return None
 
 def get_types():

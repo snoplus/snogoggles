@@ -34,7 +34,11 @@ public:
   virtual void Render( RWWrapper& windowApp ) { };
   virtual GUIEvent NewEvent( const Event& event );
 
-  inline sf::Vector2<double> GetMoveDelta();
+  inline sf::Vector2<double> GetMoveDelta() const;
+
+  sf::Vector2<double> GetStartPos() const { return fStartPos; }
+  sf::Vector2<double> GetEndPos() const { return fCurrentPos; }
+  bool GetPressed() const { return fPressed; }
 protected:
   sf::Vector2<double> fStartPos;
   sf::Vector2<double> fCurrentPos;
@@ -49,7 +53,7 @@ DragArea::DragArea( RectPtr rect, unsigned int guiID )
 }
 
 inline sf::Vector2<double>
-DragArea::GetMoveDelta()
+DragArea::GetMoveDelta() const
 {
   return fCurrentPos - fStartPos;
 }

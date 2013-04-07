@@ -1,65 +1,27 @@
 #include <Viewer/Module3d.hh>
-#include <Viewer/ConfigurationTable.hh>
-#include <Viewer/RenderState.hh>
-#include <Viewer/GUIProperties.hh>
-#include <Viewer/DataStore.hh>
+using namespace Viewer;
 
-#include <SFML/Graphics.hpp>
-
-#include <string>
-
-namespace Viewer {
-
-    class GUIManager;
-
-namespace Frames {
-
-const std::string Module3d::MODULE_TAG = "type";
-
-void Module3d::CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::Rect<double>& optionsArea )
+Module3d::Module3d( RectPtr rect )
+  : fRect( rect ), fGUIManager( rect )
 {
-    if( module != NULL ) 
-        module->CreateGUIObjects( g, optionsArea );
+
 }
 
-void Module3d::LoadConfigurationSafe( Module3d* module, 
-                                      const ConfigurationTable* configTable )
+Module3d::~Module3d()
 {
-    if( module != NULL ) 
-    {
-        try { module->LoadConfiguration( configTable->GetTable( module->GetTableName() ) ); }
-        catch( ConfigurationTable::NoTableError& e ) { }
-    }
+
 }
 
-void Module3d::SaveConfigurationSafe( Module3d* module, 
-                                      ConfigurationTable* configTable )
+void 
+Module3d::NewEvent( const Event& event )
 {
-    if( module != NULL ) 
-    {
-        ConfigurationTable* newConfigTable = configTable->NewTable( module->GetTableName() );
-        newConfigTable->SetS( MODULE_TAG, module->GetName() );
-        module->SaveConfiguration( newConfigTable );
-    }
+  GUIEvent guiEvent = fGUIManager.NewEvent( event );
+  if( guiEvent.IsNULL() == false )
+    fEvents.push( guiEvent );
 }
 
-void Module3d::EventLoopSafe( Module3d* module )
+void
+Module3d::RenderGUI( RWWrapper& renderApp )
 {
-    if( module != NULL ) 
-        module->EventLoop( );
+  fGUIManager.Render( renderApp );
 }
-
-void Module3d::ProcessDataSafe( Module3d* module, const RenderState& renderState )
-{
-    if( module != NULL )
-        module->ProcessData( renderState );
-}
-
-void Module3d::RenderSafe( Module3d* module, const RenderState& renderState )
-{
-    if( module != NULL )
-        module->Render( renderState );
-}
-
-}; // namespace Frames
-}; // namespace Viewer

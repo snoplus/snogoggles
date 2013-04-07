@@ -19,7 +19,7 @@
 
 #include <vector>
 
-#include <Viewer/Frame.hh>
+#include <Viewer/Frame2d.hh>
 #include <Viewer/Text.hh>
 
 namespace Viewer
@@ -29,10 +29,10 @@ namespace Viewer
 namespace Frames
 {
 
-class Histogram : public Frame
+class Histogram : public Frame2d
 {
 public:
-  Histogram( RectPtr rect ) : Frame( rect ), fLogY( false ) { }
+  Histogram( RectPtr rect ) : Frame2d( rect ), fLogY( false ) { }
   ~Histogram();
 
   /// Initialise without using the DataStore

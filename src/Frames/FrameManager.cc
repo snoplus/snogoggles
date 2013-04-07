@@ -225,7 +225,7 @@ FrameManager::NewFrame( const string& frameName,
   sf::Rect<double> rect( 0.0, 1.0, 121.0, 121.0 ); // Standard start 'guess' position
   RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eResolution ) );
   FrameContainer* newFrame = new FrameContainer( rectPtr );
-  newFrame->SetFrame( fFrameFactory.New( frameName, rectPtr ) );  
+  newFrame->SetFrame( fFrameFactory.New( frameName, RectPtr( rectPtr->NewDaughter() ) ) );  
   fFrameContainers.push_back( newFrame );
   if( configTable != NULL ) // Frame knowledge known
     {

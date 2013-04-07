@@ -1,77 +1,58 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::Axes3d
+/// \class Viewer::Axes3d
 ///
-/// \brief   
+/// \brief   The base class for all 3d modules
 ///
-/// \author Olivia Wasalski <wasalski@triumf.ca>
-///			    <oliviawasalski@triumf.ca>
+/// \author  Olivia Wasalski <oliviawasalski@gmail.ca>
+///          Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-/// 	12/07/11 : Olivia Wasalski - New File \n
+///     06/04/13 : P.Jones - New file, first revision \n
 ///
-/// \details 	
+/// \detail  Modification of the original Axes3d class to take account
+///          of codebase changes.
+///          Draws the x, y, z axes into the viewport area
 ///
 ////////////////////////////////////////////////////////////////////////
 
+#ifndef __Viewer_Axes3d__
+#define __Viewer_Axes3d__
 
-#ifndef __Viewer_Frames_Axes3d__
-#define __Viewer_Frames_Axes3d__
+#include <SFML/System/Vector3.hpp>
 
-#include <cstddef>
-#include <TVector3.h>
-#include <Viewer/Colour.hh>
 #include <Viewer/Module3d.hh>
 
-namespace Viewer {
-	namespace GUIs {
-		class PersistLabel;
-	}; // namespace GUIs
+namespace Viewer
+{
+  class Colour;
 
-namespace Frames {
-
-class Axes3d : public Module3d {
-
+class Axes3d : public Module3d
+{
 public:
-    Axes3d( double length );
-	virtual ~Axes3d() { }
-	inline std::string GetName();
-	inline std::string GetTableName();
-	void CreateGUIObjects( GUIManager& g, const sf::Rect< double >& optionsArea );
-	void LoadConfiguration( const ConfigurationTable* configTable );
-	void SaveConfiguration( ConfigurationTable* configTable );
-	void EventLoop();
-    void Render( const RenderState& renderState );
+  Axes3d( RectPtr rect ) : Module3d( rect ), fDisplay( true ) { }
+  virtual ~Axes3d() { }
+  /// The event loop
+  virtual void EventLoop();
+  /// Save the current configuration
+  virtual void SaveConfiguration( ConfigurationTable* configTable );
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable );
+  /// Initilaise with DataStore access, Nothing to do here
+  virtual void PostInitialise( const ConfigurationTable* configTable ) { };
+  /// Process data into renderable format, Nothing to do here
+  virtual void ProcessData( const RenderState& renderState ) { };
+  /// Render all 3d objects
+  virtual void Render3d();
+  /// Return the module name
+  virtual std::string GetName() { return Axes3d::Name(); }
+  static std::string Name() { return std::string( "Axes3d" ); }
+protected:
+  /// Render a single axis
+  void RenderAxis( const sf::Vector3<double>& point,
+                   Colour colour );
+  bool fDisplay; /// < Show the axes?
+};
 
-private:
-    void RenderAxis( const TVector3& farPoint, Colour& colour );
+} //::Viewer
 
-    Colour fXColour;
-    Colour fYColour;
-    Colour fZColour;
-
-    TVector3 fXPoint;
-    TVector3 fYPoint;
-    TVector3 fZPoint;
-
-	bool fDisplay;
-	GUIs::PersistLabel* fDisplayGUI;
-
-}; // class Axes3d
-
-////////////////////////////////////////////////////////////////////////
-// Inline methods
-////////////////////////////////////////////////////////////////////////
-std::string Axes3d::GetName()
-{
-	return "Axes";
-}
-
-std::string Axes3d::GetTableName()
-{
-	return "Axes";
-}
-
-}; // namespace Frames
-}; // namespace Viewer
-
-#endif // __Viewer_Frames_Axes3d__
+#endif

@@ -1,76 +1,66 @@
 ////////////////////////////////////////////////////////////////////////
-/// \class Viewer::Frames::Module3d
+/// \class Viewer::Module3d
 ///
-/// \brief   All the modules share these capabilities.
+/// \brief   The base class for all 3d modules
 ///
-/// \author Olivia Wasalski <wasalski@berkeley.edu>
-///			    <oliviawasalski@gmail.ca>
+/// \author  Olivia Wasalski <oliviawasalski@gmail.ca>
+///          Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-/// 	05/07/11 : Olivia Wasalski - New File \n
-///     06/07/11 : Olivia Wasalski - Added the module tag. \n
+///     06/04/13 : P.Jones - New file, first revision \n
 ///
-/// \details  Implements functionality that is shared by the camera, hit,
-///           track, geo and fitter modules. Also provides a nice abstraction
-///           for organizing these 5 different modules. \n
+/// \detail  Modification of the original Module3d class to take account
+///          of codebase changes.
+///          Implements functionality that is shared by the camera, hit,
+///          track, geo and fitter modules. Also provides a nice abstraction
+///          for organizing these 5 different modules. \n
 ///
 ////////////////////////////////////////////////////////////////////////
 
+#ifndef __Viewer_Module3d__
+#define __Viewer_Module3d__
 
-#ifndef __Viewer_Frames_Module3d__
-#define __Viewer_Frames_Module3d__
-
-#include <Viewer/ConfigurationTable.hh>
-#include <SFML/Graphics.hpp>
+#include <queue>
 #include <string>
 
-namespace Viewer {
+#include <Viewer/GUIEvent.hh>
+#include <Viewer/GUIManager.hh>
 
-    class GUIManager;
-    class RenderState;
+namespace Viewer
+{
+  class ConfigurationTable;
+  class RenderState;
 
-namespace Frames {
-
-class Module3d {
-
+class Module3d 
+{
 public:
+  Module3d( RectPtr rect );
 
-    virtual ~Module3d() { }
+  virtual ~Module3d();
+  /// Deal with a new UI event
+  void NewEvent( const Event& event );
+  /// The event loop
+  virtual void EventLoop() = 0;
+  /// Save the current configuration
+  virtual void SaveConfiguration( ConfigurationTable* configTable ) = 0;
+  /// Initialise without using the DataStore
+  virtual void PreInitialise( const ConfigurationTable* configTable ) = 0;
+  /// Initilaise with DataStore access
+  virtual void PostInitialise( const ConfigurationTable* configTable ) = 0;
+  /// Process data into renderable format
+  virtual void ProcessData( const RenderState& renderState ) = 0;
+  /// Render all 3d objects
+  virtual void Render3d() = 0;
+  /// Return the module name
+  virtual std::string GetName() = 0;
+  /// Render the GUI objects
+  void RenderGUI( RWWrapper& renderApp );
+protected:
+  RectPtr fRect; /// < The module rect
+  GUIManager fGUIManager; /// < The GUI Manager
+  std::queue<GUIEvent> fEvents; /// < The events queue (GUI events are stored here)
+};
 
-    /// Gets the name of the module instance. 
-    virtual std::string GetName() = 0;
-    virtual std::string GetTableName() = 0;
+} //::Viewer
 
-    static std::string NullTag() { return "NULL"; }
-
-    /// Creates all the GUI objects for the module.
-    static void CreateGUIObjectsSafe( Module3d* module, GUIManager& g, const sf::Rect<double>& optionsArea );
-    virtual void CreateGUIObjects( GUIManager& g, const sf::Rect<double>& optionsArea ) = 0;
-
-    /// Loads configuration
-    static void LoadConfigurationSafe( Module3d* module, const ConfigurationTable* configTable );
-    virtual void LoadConfiguration( const ConfigurationTable* configTable ) = 0;
-
-    /// Saves configuration
-    static void SaveConfigurationSafe( Module3d* module, ConfigurationTable* configTable );
-    virtual void SaveConfiguration( ConfigurationTable* configTable ) = 0;
-
-    /// Event loop for the camera manager.
-    static void EventLoopSafe( Module3d* module );
-    virtual void EventLoop( ) = 0;
-
-    static void ProcessDataSafe( Module3d* module, const RenderState& renderState );
-    virtual void ProcessData( const RenderState& renderState ) { }
-
-    static void RenderSafe( Module3d* module, const RenderState& renderState );
-    virtual void Render( const RenderState& renderState ) = 0;
-
-    static const std::string MODULE_TAG;
-
-}; // class Module3d
-
-}; // namespace Frames
-
-}; // namespace Viewer
-
-#endif // __Viewer_Frames_Module3d__
+#endif

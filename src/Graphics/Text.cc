@@ -27,7 +27,7 @@ Text::AddLine( const string& text )
 }
 
 string
-Text::GetString()
+Text::GetString() const
 {
   stringstream fullString;
   for( unsigned int iLine = 0; iLine < fTextLines.size(); iLine++ )
