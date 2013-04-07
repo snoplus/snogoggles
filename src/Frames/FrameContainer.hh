@@ -36,6 +36,7 @@ namespace Viewer
   class Event;
   class Frame;
   class TopBar;
+  class FrameOutline;
 namespace GUIs
 {
   class Button;
@@ -85,6 +86,7 @@ private:
   RectPtr fRect; /// < The container rect
   Frame* fFrame; /// < The frame
   TopBar* fTopBar; /// < The top bar GUI
+  FrameOutline* fFrameOutline; /// < The outline gui
   GUIs::Button* fResizeButton; /// < The resize button (bottom right)
 };
 

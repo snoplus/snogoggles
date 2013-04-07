@@ -23,6 +23,11 @@
 #include <Viewer/GUITextureManager.hh>
 #include <Viewer/FrameEvent.hh>
 
+namespace sf
+{
+  class Texture;
+}
+
 namespace Viewer
 {
   class RWWrapper;
@@ -58,10 +63,10 @@ public:
   bool IsPinned();
 private:
   RectPtr fRect; /// < The Top bar location
-  GUIs::Button* fLeft;
-  GUIs::Button* fBar;
-  GUIs::Button* fClose;
-  GUIs::Button* fRight;
+  GUIs::Button* fLeftButton;
+  GUIs::Button* fBarButton;
+  GUIs::Button* fCloseButton;
+  GUIs::Button* fRightButton;
 };
 
 inline bool 

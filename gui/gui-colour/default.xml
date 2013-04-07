@@ -13,12 +13,12 @@
     <inverted  r="200" g="200" b="200"/>
   </Aspect>
   <ColourA>
-    <base r="0" g="48" b="255"/>
+    <base r="190" g="190" b="190"/>
     <highlight r="128" g="112" b="216"/>
     <active r="96" g="75" b="216"/>
   </ColourA>
   <ColourB>
-    <base r="214" g="223" b="255"/>
+    <base r="137" g="137" b="137"/>
     <highlight r="158" g="0" b="22"/>
     <active r="255" g="227" b="115"/>
   </ColourB>

@@ -2,6 +2,7 @@
 
 #include <Viewer/FrameContainer.hh>
 #include <Viewer/TopBar.hh>
+#include <Viewer/FrameOutline.hh>
 #include <Viewer/Frame.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/ConfigurationTable.hh>
@@ -18,6 +19,7 @@ FrameContainer::~FrameContainer()
 {
   delete fFrame;
   delete fTopBar;
+  delete fFrameOutline;
   delete fResizeButton;
 }
 
@@ -69,8 +71,10 @@ FrameContainer::PreInitialise( const ConfigurationTable* configTable )
 {
   fTopBar = new TopBar( RectPtr( fRect->NewDaughter() ) );
   fTopBar->PreInitialise( configTable );
+  fFrameOutline = new FrameOutline( RectPtr( fRect->NewDaughter() ) );
+  fFrameOutline->PreInitialise( configTable );
   fResizeButton = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 0 );
-  fResizeButton->Initialise( 4 );
+  fResizeButton->Initialise( 5 );
   SetRect( fRect->GetRect( Rect::eResolution ), Rect::eResolution );
   fFrame->PreInitialise( configTable );
   if( configTable != NULL )
@@ -129,6 +133,7 @@ FrameContainer::RenderGUI( RWWrapper& renderApp,
                            const RenderState& renderState )
 {
   fFrame->RenderGUI( renderApp, renderState );
+  fFrameOutline->RenderGUI( renderApp );
   fTopBar->RenderGUI( renderApp );
   fResizeButton->Render( renderApp );
 }
@@ -143,6 +148,10 @@ FrameContainer::SetRect( const sf::Rect<double>& rect,
   sf::Rect<double> topBarSize = size;
   topBarSize.height = 20.0;
   fTopBar->SetRect( topBarSize );
+  sf::Rect<double> outlineSize = size;
+  outlineSize.top += 20.0;
+  outlineSize.height -= 20.0;
+  fFrameOutline->SetRect( outlineSize );
   /// Now the frame rect 2 pxl margin at base
   sf::Rect<double> frameSize = size;
   frameSize.height -= 22.0;

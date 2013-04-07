@@ -13,7 +13,7 @@ TopBar::TopBar( RectPtr rect )
 
 TopBar::~TopBar()
 {
-  delete fLeft, fBar, fClose, fRight;
+  delete fLeftButton, fBarButton, fCloseButton, fRightButton;
 }
 
 FrameEvent
@@ -25,47 +25,47 @@ TopBar::NewEvent( const Event& event )
     {
     case sf::Event::LostFocus:
       {
-        fLeft->NewEvent( event );
-        fBar->NewEvent( event );
-        fClose->NewEvent( event );
-        fRight->NewEvent( event );
+        fLeftButton->NewEvent( event );
+        fBarButton->NewEvent( event );
+        fCloseButton->NewEvent( event );
+        fRightButton->NewEvent( event );
         retEvent = FrameEvent( FrameEvent::eStopMove );
       }
       break;
     case sf::Event::MouseButtonPressed:
-      if( fLeft->ContainsPoint( event.GetPos() ) || fBar->ContainsPoint( event.GetPos() ) || fRight->ContainsPoint( event.GetPos() ) )
+      if( fLeftButton->ContainsPoint( event.GetPos() ) || fBarButton->ContainsPoint( event.GetPos() ) || fRightButton->ContainsPoint( event.GetPos() ) )
         {
-          fLeft->NewEvent( event );
-          fBar->NewEvent( event );
-          fRight->NewEvent( event );
+          fLeftButton->NewEvent( event );
+          fBarButton->NewEvent( event );
+          fRightButton->NewEvent( event );
           retEvent = FrameEvent( FrameEvent::eStartMove );
         }
     case sf::Event::MouseMoved:
       {
-        if( fLeft->ContainsPoint( event.GetPos() ) || fBar->ContainsPoint( event.GetPos() ) || fRight->ContainsPoint( event.GetPos() ) )
+        if( fLeftButton->ContainsPoint( event.GetPos() ) || fBarButton->ContainsPoint( event.GetPos() ) || fRightButton->ContainsPoint( event.GetPos() ) )
           {
-            fLeft->NewEvent( event );
-            fBar->NewEvent( event );
-            fRight->NewEvent( event );
+            fLeftButton->NewEvent( event );
+            fBarButton->NewEvent( event );
+            fRightButton->NewEvent( event );
           }
         else
           {
-            fLeft->NewEvent( Event( sf::Event::LostFocus ) );
-            fBar->NewEvent( Event( sf::Event::LostFocus ) );
-            fRight->NewEvent( Event( sf::Event::LostFocus ) );
+            fLeftButton->NewEvent( Event( sf::Event::LostFocus ) );
+            fBarButton->NewEvent( Event( sf::Event::LostFocus ) );
+            fRightButton->NewEvent( Event( sf::Event::LostFocus ) );
           }
-        if( fClose->ContainsPoint( event.GetPos() ) )
-          fClose->NewEvent( event );
+        if( fCloseButton->ContainsPoint( event.GetPos() ) )
+          fCloseButton->NewEvent( event );
         else
-          fClose->NewEvent( Event( sf::Event::LostFocus ) );
+          fCloseButton->NewEvent( Event( sf::Event::LostFocus ) );
       }
       break;
     case sf::Event::MouseButtonReleased:
-      if( fLeft->GetState() ) // Must return stop move if it is active
+      if( fLeftButton->GetState() ) // Must return stop move if it is active
         break;
-      if( fClose->ContainsPoint( event.GetPos() ) )
+      if( fCloseButton->ContainsPoint( event.GetPos() ) )
         {
-          fClose->NewEvent( event );
+          fCloseButton->NewEvent( event );
           retEvent = FrameEvent( FrameEvent::eClosed );
         }
       break;
@@ -76,14 +76,14 @@ TopBar::NewEvent( const Event& event )
 void 
 TopBar::PreInitialise( const ConfigurationTable* configTable )
 {
-  fLeft = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 0 );
-  fLeft->Initialise( 0 );
-  fBar = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 1 );
-  fBar->Initialise( 2 );
-  fClose = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 5 );
-  fClose->Initialise( 3 );
-  fRight = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 6 );
-  fRight->Initialise( 1 );
+  fLeftButton = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 0 );
+  fLeftButton->Initialise( 0 );
+  fBarButton = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 1 );
+  fBarButton->Initialise( 1 );
+  fCloseButton = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 5 );
+  fCloseButton->Initialise( 6 );
+  fRightButton = new GUIs::Button( RectPtr( fRect->NewDaughter() ), 6 );
+  fRightButton->Initialise( 2 );
 }
 
 void 
@@ -101,10 +101,10 @@ TopBar::SaveConfiguration( ConfigurationTable* configTable )
 void 
 TopBar::RenderGUI( RWWrapper& renderApp )
 {
-  fLeft->Render( renderApp );
-  fBar->Render( renderApp );
-  fClose->Render( renderApp );
-  fRight->Render( renderApp );
+  fLeftButton->Render( renderApp );
+  fBarButton->Render( renderApp );
+  fCloseButton->Render( renderApp );
+  fRightButton->Render( renderApp );
 }
 
 void
@@ -112,17 +112,18 @@ TopBar::SetRect( const sf::Rect<double>& rect )
 {
   sf::Rect<double> size = rect;
   fRect->SetRect( size, Rect::eResolution );
+  size.height = 20.0;
   // Left portion is 20.0 wide
   size.width = 20.0;
-  fLeft->GetRect()->SetRect( size, Rect::eResolution );
+  fLeftButton->GetRect()->SetRect( size, Rect::eResolution );
   size.width = rect.width - 60.0;
   size.left = rect.left + 20.0;
-  fBar->GetRect()->SetRect( size, Rect::eResolution );
+  fBarButton->GetRect()->SetRect( size, Rect::eResolution );
   size.width = 20.0;
   size.left = rect.left + rect.width - 40.0;
-  fClose->GetRect()->SetRect( size, Rect::eResolution );
+  fCloseButton->GetRect()->SetRect( size, Rect::eResolution );
   size.left = rect.left + rect.width - 20.0;
-  fRight->GetRect()->SetRect( size, Rect::eResolution );
+  fRightButton->GetRect()->SetRect( size, Rect::eResolution );
 }
 
 bool
