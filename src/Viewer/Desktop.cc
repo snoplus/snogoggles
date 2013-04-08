@@ -97,10 +97,10 @@ Desktop::SaveConfiguration( ConfigurationTable* configTable )
 }
 
 void
-Desktop::ProcessData( )
+Desktop::ProcessData( bool force )
 {
   const RenderState renderState = fEventPanel->GetRenderState();
-  if( renderState.HasChanged() || GUIProperties::GetInstance().HasChanged() || DataSelector::GetInstance().HasChanged() ) 
+  if( force || renderState.HasChanged() || GUIProperties::GetInstance().HasChanged() || DataSelector::GetInstance().HasChanged() ) 
   {
     fFrameManager->ProcessData( renderState );
   }

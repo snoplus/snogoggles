@@ -32,7 +32,10 @@ void
 DesktopManager::NewEvent( Event& event )
 {
   // Check the UI first
+  const size_t oldDesktop = fDesktopPanel->GetCurrentDesktop();
   fDesktopPanel->NewEvent( event ); 
+  if( oldDesktop != fDesktopPanel->GetCurrentDesktop() )
+    ChangeDesktop();
   fGUIPanel->NewEvent( event );
   fScriptPanel->NewEvent( event );
   fDesktops[fDesktopPanel->GetCurrentDesktop()]->NewEvent( event );
@@ -40,7 +43,10 @@ DesktopManager::NewEvent( Event& event )
 void 
 DesktopManager::EventLoop()
 {
+  const size_t oldDesktop = fDesktopPanel->GetCurrentDesktop();
   fDesktopPanel->EventLoop();
+  if( oldDesktop != fDesktopPanel->GetCurrentDesktop() )
+    ChangeDesktop();
   fGUIPanel->EventLoop();
   fScriptPanel->EventLoop();
   fDesktops[fDesktopPanel->GetCurrentDesktop()]->EventLoop();
@@ -85,6 +91,7 @@ DesktopManager::PostInitialise( const ConfigurationTable* configTable )
       else
         fDesktops[iDesktop]->PostInitialise( NULL );
     }
+  ChangeDesktop();
 }
 
 void 
@@ -137,4 +144,11 @@ DesktopManager::ToggleScreenshot()
   fScriptPanel->SetEnable( !fScreenshotMode );
   for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     fDesktops[iDesktop]->ToggleScreenshot( fScreenshotMode );
+}
+
+void
+DesktopManager::ChangeDesktop()
+{
+  // Force a reprocessing
+  fDesktops[fDesktopPanel->GetCurrentDesktop()]->ProcessData( true );
 }

@@ -46,7 +46,7 @@ public:
   /// Initilaise with DataStore access
   void PostInitialise( const ConfigurationTable* configTable );
   /// Process Data into renderable format
-  void ProcessData();
+  void ProcessData( bool force = false );
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp );
   /// Render all 3d objects

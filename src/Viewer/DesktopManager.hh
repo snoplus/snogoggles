@@ -56,6 +56,9 @@ public:
   /// Toggle screenshot mode
   void ToggleScreenshot();
 private:
+  /// Called when the current desktop changes
+  void ChangeDesktop();
+
   std::vector<Desktop*> fDesktops; /// < The available desktops
   RectPtr fGlobalMother; /// < The gloabl mother rect, this class does not need it's own
   DesktopPanel* fDesktopPanel; /// < The panel which controls which desktop is visible
