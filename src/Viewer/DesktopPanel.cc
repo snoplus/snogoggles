@@ -31,9 +31,9 @@ DesktopPanel::NewEvent( const Event& event )
   if( event.type == sf::Event::KeyPressed )
     {
       if( event.key.code == sf::Keyboard::Up && event.key.control == true )
-        ChangeDesktop( ( fCurrentDesktop + 1 ) % numDesktops );
-      else if( event.key.code == sf::Keyboard::Down && event.key.control == true )
         ChangeDesktop( ( fCurrentDesktop - 1 ) % numDesktops );
+      else if( event.key.code == sf::Keyboard::Down && event.key.control == true )
+        ChangeDesktop( ( fCurrentDesktop + 1 ) % numDesktops );
       if( event.key.code == sf::Keyboard::Right && event.key.control == true )
         ChangeDesktop( ( fCurrentDesktop + 2 ) % numDesktops );
       else if( event.key.code == sf::Keyboard::Left && event.key.control == true )
@@ -86,7 +86,7 @@ DesktopPanel::LoadGUIConfiguration( const ConfigurationTable* config )
         {
           sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
           fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Persist >( posRect, objectConfig->GetI( "effect" ) );
-          dynamic_cast<GUIs::Persist*>( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( 12 );
+          dynamic_cast<GUIs::Persist*>( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( 30 );
         }
     }
 }

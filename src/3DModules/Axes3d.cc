@@ -33,7 +33,7 @@ Axes3d::PreInitialise( const ConfigurationTable* configTable )
   size.width = 1.0;
   size.height = 1.0;
   GUIs::PersistLabel* display = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
-  display->Initialise( 14, "Display Axes" );
+  display->Initialise( 16, "Display Axes" );
   if( configTable != NULL )
     fDisplay = static_cast<bool>( configTable->GetI( "Display" ) );
   display->SetState( fDisplay );

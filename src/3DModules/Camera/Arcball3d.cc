@@ -42,15 +42,47 @@ Arcball3d::EventLoop()
               fDragRotate = false;
           }
           break;
-        case 1: // Reset
+        case 1: // Rotate
+          fRotate = ( dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( 1 ) )->GetState() );
+          break;
+        case 2: // Zoom in
+          fZoom -= 0.1;
+          if( fZoom < kMinZoom ) fZoom = kMinZoom;
+          break;
+        case 3: // Zoom out
+          fZoom += 0.1;
+          if( fZoom > kMaxZoom ) fZoom = kMaxZoom;
+          break;
+        case 4: // Reset
           Reset();
           break;
-        case 2: // Flip
-          fCamera = -fCamera;
-           break;
-        case 3: // Rotate
-          fRotate = ( dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( 3 ) )->GetState() );
+        case 5: // Right
+          {
+            Rotation rotation( TVector3( 0.0, 0.0, 1.0 ), kSpinSpeed );
+            Rotate( rotation );
+          }
           break;
+        case 6: // down
+          {
+            Rotation rotation( TVector3( 1.0, 0.0, 0.0 ), -kSpinSpeed );
+            Rotate( rotation );
+          }
+          break;
+        case 7: // left 
+          {
+            Rotation rotation( TVector3( 0.0, 0.0, 1.0 ), -kSpinSpeed );
+            Rotate( rotation );
+          }
+          break;
+        case 8: // up
+          {
+            Rotation rotation( TVector3( 1.0, 0.0, 0.0 ), kSpinSpeed );
+            Rotate( rotation );
+          }
+          break;
+        case 9: // Flip
+          fCamera = -fCamera;
+          break;         
         }
       fEvents.pop();
     }
@@ -73,19 +105,20 @@ Arcball3d::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> size( 0.0, 0.0, 1.0, 0.95 );
   fGUIManager.NewGUI<GUIs::DragArea>( size );
-
-  size.left = 0.0; size.top = 0.96; size.width = 0.05; size.height = 0.05;
-  GUIs::Button* resetButton = dynamic_cast<GUIs::Button*>( fGUIManager.NewGUI<GUIs::Button>( size ) );
-  resetButton->Initialise( 24 );
-  size.left = 0.1;
-  GUIs::Button* flipButton = dynamic_cast<GUIs::Button*>( fGUIManager.NewGUI<GUIs::Button>( size ) );
-  flipButton->Initialise( 24 );
-  size.left = 0.2; size.width = 0.8;
+  size.left = 0.5; size.top = 0.95; size.width = 0.5; size.height = 0.05;
   GUIs::PersistLabel* rotate = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
-  rotate->Initialise( 14, "Rotate" );
+  rotate->Initialise( 16, "Rotate" );
   if( configTable != NULL )
     fRotate = static_cast<bool>( configTable->GetI( "Rotate" ) );
   rotate->SetState( fRotate );
+  // Now the other buttons
+  size.left = 0.0; size.top = 0.95; size.width = 0.05; size.height = 0.05;
+  for( int iButton = 0; iButton < 8; iButton++ )
+    {
+      GUIs::Button* button = dynamic_cast<GUIs::Button*>( fGUIManager.NewGUI<GUIs::Button>( size ) );
+      button->Initialise( 20 + iButton );
+      size.left += 0.05;
+    }
   Reset(); // Reset/Initialise the camera
 }
 

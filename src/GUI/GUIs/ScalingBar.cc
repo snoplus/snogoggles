@@ -31,7 +31,7 @@ ScalingBar::Initialise()
   // Also add a reset button
   size.left = 0.9; size.width = 0.1;
   GUIs::Button* button = dynamic_cast<GUIs::Button*>( fGUIManager.NewGUI<GUIs::Button>( size, Rect::eLocal ) );
-  button->Initialise( 24 );
+  button->Initialise( 44 );
 }
 
 void 

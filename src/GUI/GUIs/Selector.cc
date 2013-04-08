@@ -22,15 +22,15 @@ Selector::Selector( RectPtr rect,
   sf::Rect<double> buttonSize = size;
   buttonSize.width = buttonWidth;
   GUIs::Button* temp = fGUIManager.NewGUI< GUIs::Button >( buttonSize, Rect::eResolution );
-  temp->Initialise( 20 );
+  temp->Initialise( 40 );
   buttonSize.left = size.left + size.width - buttonWidth;
   temp = fGUIManager.NewGUI< GUIs::Button >( buttonSize, Rect::eResolution );
-  temp->Initialise( 21 );
+  temp->Initialise( 41 );
   size.left = size.left + buttonWidth;
   size.width = size.width - 2.0 * buttonWidth;
   fBackground.GetRect()->SetRect( size, Rect::eResolution );
   const GUITextureManager& textureManager = GUIProperties::GetInstance().GetGUITextures();
-  fBackground.SetTexture( textureManager.GetTexture( 22, eBase ) );
+  fBackground.SetTexture( textureManager.GetTexture( 42, eBase ) );
 }
 
 Selector::~Selector()

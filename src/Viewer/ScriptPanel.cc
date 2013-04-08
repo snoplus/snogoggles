@@ -109,37 +109,37 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eAnalRefresh: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 24 );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 44 );
               }
               break;
             case eEventRefresh: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 24 );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 44 );
               }
               break;
             case ePMTRefresh: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 24 );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 44 );
               }
               break;
             case eAnalOn: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 16, "Enable" );
               }
               break;
             case eEventOn: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 16, "Enable" );
               }
               break;
             case ePMTOn: 
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Enable" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 16, "Enable" );
               }
               break;
             case eEventInput:

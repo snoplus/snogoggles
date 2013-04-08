@@ -42,13 +42,13 @@ DefaultHits3d::PreInitialise( const ConfigurationTable* configTable )
   sf::Rect<double> size;
   size.left = 0.0;
   size.top = 0.0;
-  size.width = 1.0;
-  size.height = 0.5;
+  size.width = 0.5;
+  size.height = 1.0;
   GUIs::PersistLabel* displayAll = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
-  displayAll->Initialise( 14, "Display All" );
-  size.top += 0.5;
+  displayAll->Initialise( 16, "Display All" );
+  size.left += 0.5;
   GUIs::PersistLabel* displayFront = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
-  displayFront->Initialise( 14, "Front Only" );
+  displayFront->Initialise( 16, "Front Only" );
   if( configTable != NULL )
     {
       fDisplayAll = static_cast<bool>( configTable->GetI( "DisplayAll" ) );

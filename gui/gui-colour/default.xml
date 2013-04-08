@@ -13,17 +13,17 @@
     <inverted  r="200" g="200" b="200"/>
   </Aspect>
   <ColourA>
-    <base r="190" g="190" b="190"/>
-    <highlight r="128" g="112" b="216"/>
+    <base r="110" g="110" b="110"/>
+    <highlight r="42" g="118" b="156"/>
     <active r="96" g="75" b="216"/>
   </ColourA>
   <ColourB>
-    <base r="137" g="137" b="137"/>
+    <base r="180" g="180" b="180"/>
     <highlight r="158" g="0" b="22"/>
     <active r="255" g="227" b="115"/>
   </ColourB>
   <ColourC>
-    <base r="123" g="154" b="255"/>
+    <base r="180" g="180" b="180"/>
     <highlight r="255" g="255" b="255"/>
     <active r="255" g="255" b="255"/>
   </ColourC>

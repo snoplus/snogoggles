@@ -46,7 +46,7 @@ DefaultTracks3d::PreInitialise( const ConfigurationTable* configTable )
   size.left = 0.0; size.top = 0.0; size.width = 1.0; 
   size.height = 1.0 / static_cast<double>( names.size() + 1 );
   GUIs::PersistLabel* displayFull = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
-  displayFull->Initialise( 14, "Full Tracks" );
+  displayFull->Initialise( 16, "Full Tracks" );
   if( configTable != NULL )
     fDisplayFull = static_cast<bool>( configTable->GetI( "DisplayFull" ) );
   displayFull->SetState( fDisplayAll );
@@ -58,7 +58,7 @@ DefaultTracks3d::PreInitialise( const ConfigurationTable* configTable )
       if( configTable != NULL )
         fDisplayParticle[*iTer] = static_cast<bool>( configTable->GetI( *iTer ) );
       GUIs::PersistLabel* button = dynamic_cast<GUIs::PersistLabel*>( fGUIManager.NewGUI<GUIs::PersistLabel>( size ) );
-      button->Initialise( 14, *iTer );
+      button->Initialise( 16, *iTer );
       button->SetState( fDisplayParticle[*iTer] );
     }
 }

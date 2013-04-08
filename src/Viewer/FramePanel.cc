@@ -86,7 +86,7 @@ FramePanel::LoadGUIConfiguration( const ConfigurationTable* config )
       size.left = ( colWidth + colSpacing ) * ( iFrame / numRows ) + buttonArea.left;
       size.top = ( rowHeight + rowSpacing ) * ( iFrame % numRows ) + buttonArea.top;
       fGUIs[iFrame + 10] = fGUIManager.NewGUI<GUIs::ButtonLabel>( size, iFrame + 10, Rect::eResolution );
-      dynamic_cast<GUIs::ButtonLabel*>( fGUIs[iFrame + 10] )->Initialise( 2, frameNames[iFrame] );
+      dynamic_cast<GUIs::ButtonLabel*>( fGUIs[iFrame + 10] )->Initialise( 36, frameNames[iFrame] );
     }
 
 }

@@ -23,18 +23,18 @@ TextBox::TextBox( RectPtr rect,
   fHover = false;
   fCursorPos = 0;
   const GUITextureManager& textureManager = GUIProperties::GetInstance().GetGUITextures();
-  fLeftBox[0] = textureManager.GetTexture( 32, eBase );
-  fLeftBox[1] = textureManager.GetTexture( 32, eHighlight );
-  fLeftBox[2] = textureManager.GetTexture( 32, eActive );
-  fMiddleBox[0] = textureManager.GetTexture( 22, eBase );
-  fMiddleBox[1] = textureManager.GetTexture( 22, eHighlight );
-  fMiddleBox[2] = textureManager.GetTexture( 22, eActive );
-  fRightBox[0] = textureManager.GetTexture( 33, eBase );
-  fRightBox[1] = textureManager.GetTexture( 33, eHighlight );
-  fRightBox[2] = textureManager.GetTexture( 33, eActive );
-  fCursor[0] = textureManager.GetTexture( 23, eBase );
-  fCursor[1] = textureManager.GetTexture( 23, eHighlight );
-  fCursor[2] = textureManager.GetTexture( 23, eActive );
+  fLeftBox[0] = textureManager.GetTexture( 45, eBase );
+  fLeftBox[1] = textureManager.GetTexture( 45, eHighlight );
+  fLeftBox[2] = textureManager.GetTexture( 45, eActive );
+  fMiddleBox[0] = textureManager.GetTexture( 42, eBase );
+  fMiddleBox[1] = textureManager.GetTexture( 42, eHighlight );
+  fMiddleBox[2] = textureManager.GetTexture( 42, eActive );
+  fRightBox[0] = textureManager.GetTexture( 46, eBase );
+  fRightBox[1] = textureManager.GetTexture( 46, eHighlight );
+  fRightBox[2] = textureManager.GetTexture( 46, eActive );
+  fCursor[0] = textureManager.GetTexture( 43, eBase );
+  fCursor[1] = textureManager.GetTexture( 43, eHighlight );
+  fCursor[2] = textureManager.GetTexture( 43, eActive );
 }
 
 TextBox::~TextBox()

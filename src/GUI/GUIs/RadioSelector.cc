@@ -36,7 +36,7 @@ RadioSelector::Initialise( const vector<string>& options )
     {
       size.top = rowHeight * iLabel + fullSize.top;
       fPersistLabels.push_back( fGUIManager.NewGUI<GUIs::PersistLabel>( size, Rect::eResolution ) );
-      dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( iLabel ) )->Initialise( 12, options[iLabel] );
+      dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( iLabel ) )->Initialise( 18, options[iLabel] );
     }
   SetState( 0 );
 }

@@ -169,19 +169,19 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             {
             case eMultiPrev: 
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 30 );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 32 );
               break;
             case ePrev: 
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 11 );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 34 );
               break;
             case eNext:
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 10 );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 35 );
               break;
             case eMultiNext:
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
-              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 31 );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 33 );
               break;
             case eDataSource:
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::RadioSelector >( posRect, effect );
@@ -199,7 +199,7 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eLatest:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, effect );
-                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 14, "Latest" );
+                dynamic_cast<GUIs::PersistLabel*>( fGUIs[effect] )->Initialise( 16, "Latest" );
               }
               break;
             case eScaling:

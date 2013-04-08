@@ -23,7 +23,7 @@ void
 BufferInfo::PreInitialise( const ConfigurationTable* configTable )
 {
   sf::Rect<double> textSize;
-  textSize.left = 0.0; textSize.top = 0.0; textSize.width = 1.0; textSize.height = 1.0;
+  textSize.left = 0.1; textSize.top = 0.0; textSize.width = 0.9; textSize.height = 0.9;
   fInfoText = new Text( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   string hello("Hello");
   fInfoText->SetString( hello );

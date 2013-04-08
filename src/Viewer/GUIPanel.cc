@@ -95,7 +95,7 @@ GUIPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               break;
             case 2:
               fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::PersistLabel >( posRect, objectConfig->GetI( "effect" ) );
-              dynamic_cast< GUIs::PersistLabel* >( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( 14, "Invert Colours?" );
+              dynamic_cast< GUIs::PersistLabel* >( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( 16, "Invert Colours?" );
               break;
             }
         }
