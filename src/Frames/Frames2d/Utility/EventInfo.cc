@@ -53,7 +53,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
   eventInfo << "Event GTID :" << event.GetEventID() << endl;
   eventInfo << "Trigger :" << TriggerToString( event.GetTrigger() ) << endl;
 
-  const vector<string> sourceNames = RIDS::Event::GetSourceNames();
+  /*const vector<string> sourceNames = RIDS::Event::GetSourceNames();
   for( size_t source = 0; source < sourceNames.size(); source++ )
     {
       eventInfo << sourceNames[source] << ":" << endl;
@@ -61,7 +61,7 @@ EventInfo::Render2d( RWWrapper& renderApp,
       for( size_t type = 0; type < typeNames.size(); type++ )
         eventInfo << typeNames[type] << ": " << event.GetSource( source ).GetType( type ).GetCount() << ", ";
       eventInfo << endl;
-    }
+      }*/
   fInfoText->SetString( eventInfo.str() );
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   renderApp.Draw( *fInfoText );  
