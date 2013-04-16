@@ -28,6 +28,7 @@ namespace RIDS
 {
   class Event;
   class ChannelList;
+  class FibreList;
   class Channel;
 }
 
@@ -61,6 +62,8 @@ public:
   const std::vector<std::string> GetTypeNames( int source ) const;
   /// Get the current ChannelList
   const RIDS::ChannelList& GetChannelList() const { return *fChannelList; }
+  /// Get the current FibreList
+  const RIDS::FibreList& GetFibreList() const { return *fFibreList; }
 
   /// Activate the analysis script
   void SetAnalyse( bool analyse ) { fAnalyse = analyse; }
@@ -79,6 +82,7 @@ private:
   //ChannelSelectionScript fChannelSelectionScript; /// < The channel selection script
   RIDS::Event* fEvent; /// < The currently selected event
   RIDS::ChannelList* fChannelList; /// < The channel list for fEvent
+  RIDS::FibreList* fFibreList; /// < The fibre list for fEvent
   bool fSelect; /// < True if the event selection script is active
   bool fAnalyse; /// < True if the analysis script is active
   bool fChanged; /// < True 

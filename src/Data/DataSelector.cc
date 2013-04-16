@@ -6,6 +6,7 @@ using namespace std;
 using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/ChannelList.hh>
+#include <Viewer/RIDS/FibreList.hh>
 
 DataSelector::DataSelector()
 {
@@ -18,10 +19,11 @@ DataSelector::Initialise()
   DataStore& dataStore = DataStore::GetInstance();
   fEvent = new RIDS::Event();
   fChannelList = new RIDS::ChannelList();
+  fFibreList = new RIDS::FibreList();
   fAnalysisScript.Load( "default" );
   RIDS::Event::SetTypeNames( RIDS::Event::GetSourceNames().size() - 1, fAnalysisScript.GetTypeNames() );
   fEventSelectionScript.Load( "default" );
-  dataStore.Move( fEvent, fChannelList, 0 );
+  dataStore.Move( fEvent, fChannelList, fFibreList, 0 );
   fAnalysisScript.Reset();
   fEvent->SetSource( RIDS::Event::GetSourceNames().size() - 1, fAnalysisScript.GetEvent().GetSource( 0 ) );
 }
@@ -39,7 +41,7 @@ DataSelector::Move( int steps )
   steps = sign * steps;
   for( size_t step = 0; step < steps; step++ )
     {
-      dataStore.Move( fEvent, fChannelList, sign );
+      dataStore.Move( fEvent, fChannelList, fFibreList, sign );
       if( fAnalyse && fSelect && fEventSelectionScript.ProcessEvent( *fEvent ) )
         fAnalysisScript.ProcessEvent( *fEvent );
       else if( fAnalyse && !fSelect )
@@ -48,7 +50,7 @@ DataSelector::Move( int steps )
         {
           steps++;
           if( steps > std::min( dataStore.GetBufferSize(), dataStore.GetEventsAdded() ) )
-            dataStore.Move( fEvent, fChannelList, -steps );
+            dataStore.Move( fEvent, fChannelList, fFibreList, -steps );
         }
     }
   fChanged = true;

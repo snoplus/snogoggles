@@ -5,6 +5,7 @@
 #include <Viewer/DefaultTracks3d.hh>
 #include <Viewer/DefaultFitter3d.hh>
 #include <Viewer/Geodesic3d.hh>
+#include <Viewer/Fibre3d.hh>
 using namespace Viewer;
 
 Module3dFactory::Module3dFactory()
@@ -15,4 +16,5 @@ Module3dFactory::Module3dFactory()
   Register( DefaultTracks3d::Name(), new Module3dAlloc<DefaultTracks3d>() );
   Register( DefaultFitter3d::Name(), new Module3dAlloc<DefaultFitter3d>() );
   Register( Geodesic3d::Name(), new Module3dAlloc<Geodesic3d>() );
+  Register( Fibre3d::Name(), new Module3dAlloc<Fibre3d>() );
 }

@@ -4,6 +4,7 @@ using namespace std;
 using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 #include <Viewer/RIDS/ChannelList.hh>
+#include <Viewer/RIDS/FibreList.hh>
 
 size_t 
 AdjustIndex( const size_t currentIndex, 
@@ -46,6 +47,9 @@ DataStore::~DataStore()
   for( map<int, RIDS::ChannelList*>::iterator iTer = fChannelLists.begin(); iTer != fChannelLists.end(); iTer++ )
     delete iTer->second;
   fChannelLists.clear();
+  for( map<int, RIDS::FibreList*>::iterator iTer = fFibreLists.begin(); iTer != fFibreLists.end(); iTer++ )
+    delete iTer->second;
+  fFibreLists.clear();
 }
 
 bool 
@@ -70,6 +74,12 @@ DataStore::Update()
           channelList->Initialise( runID );
           fChannelLists[runID] = channelList;
         }
+      if( fFibreLists.count( runID ) == 0 )
+        {
+          RIDS::FibreList* fibreList = new RIDS::FibreList();
+          fibreList->Initialise( runID );
+          fFibreLists[runID] = fibreList;
+        }
       fEvents[fWrite] = currentEvent;
       fWrite = AdjustIndex( fWrite, fEvents.size(), 1 );
     }
@@ -78,6 +88,7 @@ DataStore::Update()
 void 
 DataStore::Move( RIDS::Event* event,
                  RIDS::ChannelList* channelList,
+                 RIDS::FibreList* fibreList,
                  int step )
 {
   if( fEventsAdded > fEvents.size() )
@@ -86,4 +97,5 @@ DataStore::Move( RIDS::Event* event,
     fRead = AdjustIndex( fRead, fEventsAdded, step );
   *event = *fEvents[fRead]; // Copy it over
   *channelList = *fChannelLists[event->GetRunID()]; // Copy it over
+  *fibreList = *fFibreLists[event->GetRunID()]; // Copy it over
 }

@@ -36,6 +36,7 @@ namespace RIDS
 {
   class Event;
   class ChannelList;
+  class FibreList;
 }
 
 class DataStore
@@ -54,6 +55,7 @@ public:
   /// Move to the event step away
   void Move( RIDS::Event* event, 
              RIDS::ChannelList* channelList,
+             RIDS::FibreList* fibreList,
              int step );
   /// Information functions
   size_t GetInputBufferSize() const { return fInputBuffer.GetSize(); }
@@ -63,6 +65,7 @@ public:
 private:
   InputBuffer<RIDS::Event*> fInputBuffer; /// < The input buffer, events arrive here
   std::map<int, RIDS::ChannelList*> fChannelLists; /// < ChannelLists mapped by run ID
+  std::map<int, RIDS::FibreList*> fFibreLists; /// < FibreLists mapped by run ID
   std::vector<RIDS::Event*> fEvents; /// < The event buffer for rendering
   size_t fRead; /// < The currently read position in fEvents
   size_t fWrite; /// < The current write position in fEvents
