@@ -85,6 +85,7 @@ LoadRootFileThread::BuildRIDSEvent()
               vertex.SetPosition( sf::Vector3<double>( rMCParticle->GetPos().x(), 
                                                        rMCParticle->GetPos().y(), 
                                                        rMCParticle->GetPos().z() ) );
+              vertex.SetError( sf::Vector3<double>( 6000.0, 6000.0, 6000.0 ) );
               vertex.SetTime( rMCParticle->GetTime() );
               stringstream name;
               name << "MC" << iMCParticle;
@@ -120,6 +121,9 @@ LoadRootFileThread::BuildRIDSEvent()
               vertex.SetPosition( sf::Vector3<double>( iTer->second.GetVertex( 0 ).GetPosition().x(),
                                                        iTer->second.GetVertex( 0 ).GetPosition().y(),
                                                        iTer->second.GetVertex( 0 ).GetPosition().z() ) );
+              vertex.SetError( sf::Vector3<double>( iTer->second.GetVertex( 0 ).GetPositionError().x(),
+                                                    iTer->second.GetVertex( 0 ).GetPositionError().y(),
+                                                    iTer->second.GetVertex( 0 ).GetPositionError().z() ) );
               vertex.SetTime( iTer->second.GetVertex( 0 ).GetTime() );
             }
           catch( RAT::DS::FitResult::NoVertexError& error )

@@ -32,10 +32,14 @@ public:
   void SetName( const std::string& name ) { fName = name; }
   /// Set the vertex position
   void SetPosition( const sf::Vector3<double>& pos ) { fPosition = pos; }
+  /// Set the vertex error
+  void SetError( const sf::Vector3<double>& error ) { fError = error; }
   /// Set the vertex time
   void SetTime( const double time ) { fTime = time; }
   /// Return the vertex space coord
   sf::Vector3<double> GetPosition() const { return fPosition; }
+  /// Return the vertex error coord
+  sf::Vector3<double> GetError() const { return fError; }
   /// Return the vertex time coord
   double GetTime() const { return fTime; }
   /// Return the vertex name
@@ -43,6 +47,7 @@ public:
 private:
   std::string fName; /// < Vertex name (fit name or MC)
   sf::Vector3<double> fPosition; /// < Position
+  sf::Vector3<double> fError; /// < Error on the fit
   double fTime; /// < Time
 };
 

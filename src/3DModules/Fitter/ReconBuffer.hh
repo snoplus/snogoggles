@@ -17,19 +17,29 @@
 #ifndef __Viewer_ReconBuffer__
 #define __Viewer_ReconBuffer__
 
-class TVector3;
+#include <map>
+#include <string>
 
 #include <Viewer/VBO.hh>
 
 namespace Viewer 
 {
   class Colour;
-  
-class ReconBuffer : public VBO 
+namespace RIDS
+{
+  class Vertex;
+}
+
+class ReconBuffer
 {
 public:
-  void AddRecon( const TVector3& pos, 
-                 const Colour& colour );
+  void Clear();
+  void Render();
+
+  void AddVertex( const RIDS::Vertex& vertex, 
+                  const Colour& colour );
+private:
+  std::map< std::string, VBO > fVertices;
 };
 
 } // namespace Viewer
