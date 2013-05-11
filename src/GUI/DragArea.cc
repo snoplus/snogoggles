@@ -14,15 +14,19 @@ DragArea::NewEvent( const Event& event )
     case sf::Event::MouseButtonPressed:
       fStartPos = event.GetPos();
       fCurrentPos = event.GetPos();
-      fPressed = true;
+      if( event.mouseButton.button == sf::Mouse::Left )
+	fLeftPressed = true;
+      else if( event.mouseButton.button == sf::Mouse::Right )
+	fRightPressed = true;
       break;
     case sf::Event::MouseMoved:
-      if( fPressed )
+      if( fLeftPressed || fRightPressed )
         fCurrentPos = event.GetPos();
       break;
     case sf::Event::MouseButtonReleased:
     case sf::Event::LostFocus:
-      fPressed = false;
+      fLeftPressed = false;
+      fRightPressed = false;
       fStartPos = fCurrentPos = sf::Vector2<double>( -1, -1 );
       break;
     }

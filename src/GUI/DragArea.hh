@@ -38,18 +38,21 @@ public:
 
   sf::Vector2<double> GetStartPos() const { return fStartPos; }
   sf::Vector2<double> GetEndPos() const { return fCurrentPos; }
-  bool GetPressed() const { return fPressed; }
+  bool IsLeftPressed() const { return fLeftPressed; }
+  bool IsRightPressed() const { return fRightPressed; }
 protected:
   sf::Vector2<double> fStartPos;
   sf::Vector2<double> fCurrentPos;
-  bool fPressed;
+  bool fLeftPressed;
+  bool fRightPressed;
 };
 
 inline
 DragArea::DragArea( RectPtr rect, unsigned int guiID ) 
   : GUI( rect, guiID ) 
 { 
-  fPressed = false;
+  fLeftPressed = false;
+  fRightPressed = false;
 }
 
 inline sf::Vector2<double>

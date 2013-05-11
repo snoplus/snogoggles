@@ -27,19 +27,25 @@ Arcball3d::EventLoop()
         case 0: // Drag area mouse move or release
           {
             GUIs::DragArea* dragArea = dynamic_cast<GUIs::DragArea*>( fGUIManager.GetGUI( 0 ) );
-            if( dragArea->GetPressed() == true && fDragRotate == false ) // Start of drag rotation
+            if( dragArea->IsLeftPressed() && fDragRotate == false ) // Start of drag rotation
               {
                 fDragStartPos = Rect::GetOpenGLCoords( dragArea->GetStartPos() );
                 fDragEndPos = Rect::GetOpenGLCoords( dragArea->GetEndPos() );
-                fDragRotate = true;
+		fDragRotate = true;
               }
-            else if( dragArea->GetPressed() == true ) // Normal dragging
+            else if( dragArea->IsLeftPressed() ) // Normal dragging
               {
                 fDragEndPos = Rect::GetOpenGLCoords( dragArea->GetEndPos() ); // Switch to openGL Coords
                 fDragRotate = true;
               }
             else
               fDragRotate = false;
+	    if( dragArea->IsRightPressed() )
+	      {
+		fZoom -= ( dragArea->GetEndPos().y - dragArea->GetStartPos().y ) / 1000.0;
+		if( fZoom < kMinZoom ) fZoom = kMinZoom;
+		if( fZoom > kMaxZoom ) fZoom = kMaxZoom;
+	      }
           }
           break;
         case 1: // Rotate
