@@ -80,6 +80,17 @@ GUIManager::GetGUI( unsigned int guiID ) const
   return fGUIObjects[guiID];
 }
 
+void
+GUIManager::DeleteGUI( unsigned int guiID ) 
+{
+  for( vector<GUI*>::iterator iTer = fGUIObjects.begin(); iTer != fGUIObjects.end(); iTer++ )
+    if( (*iTer)->GetGUIID() == guiID )
+      {
+	delete *iTer;
+	fGUIObjects.erase( iTer );
+      }
+}
+
 int
 GUIManager::FindGUI( sf::Vector2<double> point )
 {

@@ -55,7 +55,9 @@ DesktopManager::EventLoop()
 void 
 DesktopManager::PreInitialise( const ConfigurationTable* configTable )
 {
-  fDesktopPanel = new DesktopPanel( RectPtr( fGlobalMother->NewDaughter() ) );
+  sf::Rect<double> defaultSize = fGlobalMother->GetRect( Rect::eResolution );
+  defaultSize.height = 20.0;
+  fDesktopPanel = new DesktopPanel( RectPtr( fGlobalMother->NewDaughter( defaultSize, Rect::eResolution ) ) );
   fDesktopPanel->PreInitialise( configTable );
   fGUIPanel = new GUIPanel( RectPtr( fGlobalMother->NewDaughter() ) );
   fGUIPanel->PreInitialise( configTable );
@@ -65,8 +67,10 @@ DesktopManager::PreInitialise( const ConfigurationTable* configTable )
   // Now initialise the Desktops
   for( int iDesktop = 0; iDesktop < fDesktops.size(); iDesktop++ )
     {
-      sf::Rect<double> defaultSize( 0.0, 0.0, 1.0, 1.0 );
-      fDesktops[iDesktop] = new Desktop( RectPtr( fGlobalMother->NewDaughter( defaultSize, Rect::eLocal ) ) );
+      defaultSize = fGlobalMother->GetRect( Rect::eResolution );
+      defaultSize.top += 20.0;
+      defaultSize.height -= 20.0;
+      fDesktops[iDesktop] = new Desktop( RectPtr( fGlobalMother->NewDaughter( defaultSize, Rect::eResolution ) ) );
       stringstream tableName;
       tableName << "Desktop" << iDesktop;
       if( configTable != NULL )

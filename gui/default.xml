@@ -33,18 +33,6 @@
     <gui effect="7" x="0.9" y="0.8" width="0.1" height="0.1" font-ring="0" />
     <gui effect="8" x="0.0" y="0.9" width="1.0" height="0.1" font-ring="0" />
   </ScriptPanel>
-  <DesktopPanel x="0.5" y="0.9" width="0.2" height="0.1">
-    <text caption="Current Desktop:" x="0.1" y="0.0" width="0.6" height="0.3" />
-    <label result="0" x="0.7" y="0.0" width="0.3" height="0.3" />
-    <gui effect="10" x="0.1" y="0.5" width="0.2" height="0.2" />
-    <gui effect="11" x="0.1" y="0.7" width="0.2" height="0.2" />
-    <gui effect="12" x="0.3" y="0.5" width="0.2" height="0.2" />
-    <gui effect="13" x="0.3" y="0.7" width="0.2" height="0.2" />
-    <gui effect="14" x="0.5" y="0.5" width="0.2" height="0.2" />
-    <gui effect="15" x="0.5" y="0.7" width="0.2" height="0.2" />
-    <gui effect="16" x="0.7" y="0.5" width="0.2" height="0.2" />
-    <gui effect="17" x="0.7" y="0.7" width="0.2" height="0.2" />
-  </DesktopPanel>
   <FramePanel x="0.0" y="0.9" width="0.5" height="0.1">
     <frameButtonArea x="0.0" y="0.0" width="1.0" height="1.0" />
   </FramePanel>

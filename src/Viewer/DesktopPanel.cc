@@ -28,34 +28,28 @@ DesktopPanel::NewEvent( const Event& event )
 {
   Panel::NewEvent( event );
   const unsigned int numDesktops = GUIProperties::GetInstance().GetNumDesktops();
-  if( event.type == sf::Event::KeyPressed )
+  if( event.type == sf::Event::KeyReleased )
     {
-      if( event.key.code == sf::Keyboard::Up && event.key.control == true )
-        ChangeDesktop( ( fCurrentDesktop - 1 ) % numDesktops );
-      else if( event.key.code == sf::Keyboard::Down && event.key.control == true )
-        ChangeDesktop( ( fCurrentDesktop + 1 ) % numDesktops );
-      if( event.key.code == sf::Keyboard::Right && event.key.control == true )
-        ChangeDesktop( ( fCurrentDesktop + 2 ) % numDesktops );
-      else if( event.key.code == sf::Keyboard::Left && event.key.control == true )
-        ChangeDesktop( ( fCurrentDesktop - 2 ) % numDesktops );
+      if( event.key.control && event.key.shift && event.key.code == sf::Keyboard::Tab )
+	{
+	  if( fCurrentDesktop == 0 )
+	    ChangeDesktop( numDesktops - 1 );
+	  else
+	    ChangeDesktop( ( fCurrentDesktop - 1 ) % numDesktops );
+	}
+      else if( event.key.control && !event.key.shift && event.key.code == sf::Keyboard::Tab )
+	ChangeDesktop( ( fCurrentDesktop + 1 ) % numDesktops );
     }
 }
 
 void
 DesktopPanel::EventLoop()
 {
-  DataStore& events = DataStore::GetInstance();
   while( !fEvents.empty() )
     {
-      if( fEvents.front().fguiID >= 10 && fEvents.front().fguiID < 10 + GUIProperties::GetInstance().GetNumDesktops() )
-        ChangeDesktop( fEvents.front().fguiID - 10 );
+      if( fEvents.front().fguiID >= 0 && fEvents.front().fguiID < GUIProperties::GetInstance().GetNumDesktops() )
+        ChangeDesktop( fEvents.front().fguiID );
        fEvents.pop();
-    }
-  if( fLabels.count( 0 ) )
-    {
-      stringstream temp;
-      temp << fCurrentDesktop;
-      fLabels[0]->SetString( temp.str() );
     }
 }
 
@@ -63,32 +57,17 @@ DesktopPanel::EventLoop()
 void 
 DesktopPanel::PreInitialise( const ConfigurationTable* configTable )
 {
-  Panel::PreInitialise( configTable );
+  const double numDesktops = static_cast<double>( GUIProperties::GetInstance().GetNumDesktops() );
+  for( unsigned int iGUI = 0; iGUI < GUIProperties::GetInstance().GetNumDesktops(); iGUI++ )
+    {
+      sf::Rect<double> size( iGUI * 1.0 / numDesktops, 0.0, 1.0 / numDesktops, 1.0 );
+      GUIs::Persist* tab = dynamic_cast<GUIs::Persist*>( fGUIManager.NewGUI<GUIs::Persist>( size, Rect::eLocal ) );
+      tab->Initialise( 30 );
+    }
   if( configTable != NULL )
     ChangeDesktop( configTable->GetI( "desktop" ) );
   else 
     ChangeDesktop( 0 );
-}
-
-void
-DesktopPanel::PostInitialise( const ConfigurationTable* configTable )
-{
-
-}
-
-void
-DesktopPanel::LoadGUIConfiguration( const ConfigurationTable* config )
-{
-  for( unsigned int uGUIs = 0; uGUIs < config->GetNumTables(); uGUIs++ )
-    {
-      const ConfigurationTable* objectConfig = config->GetTable( uGUIs );
-      if( objectConfig->GetName() == string( "gui" ) )
-        {
-          sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
-          fGUIs[objectConfig->GetI( "effect" )]  = fGUIManager.NewGUI< GUIs::Persist >( posRect, objectConfig->GetI( "effect" ) );
-          dynamic_cast<GUIs::Persist*>( fGUIs[objectConfig->GetI( "effect" )] )->Initialise( 30 );
-        }
-    }
 }
 
 void
@@ -100,12 +79,12 @@ DesktopPanel::SaveConfiguration( ConfigurationTable* configTable )
 void
 DesktopPanel::ChangeDesktop( const unsigned int newDesktop )
 {
-  for( unsigned int iGUI = 10; iGUI < 10 + GUIProperties::GetInstance().GetNumDesktops(); iGUI++ )
+  for( unsigned int iGUI = 0; iGUI < GUIProperties::GetInstance().GetNumDesktops(); iGUI++ )
     {
-      if( iGUI != newDesktop + 10 )
-        dynamic_cast<GUIs::Persist*>( fGUIs[iGUI] )->SetState( false );
+      if( iGUI != newDesktop )
+        dynamic_cast<GUIs::Persist*>( fGUIManager.GetGUI( iGUI ) )->SetState( false );
       else
-        dynamic_cast<GUIs::Persist*>( fGUIs[iGUI] )->SetState( true );
+        dynamic_cast<GUIs::Persist*>( fGUIManager.GetGUI( iGUI ) )->SetState( true );
     }
   fCurrentDesktop = newDesktop;
 }

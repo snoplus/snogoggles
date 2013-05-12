@@ -35,14 +35,14 @@ public:
   /// Initialise without using the DataStore
   virtual void PreInitialise( const ConfigurationTable* config );
   /// Initilaise with DataStore access
-  virtual void PostInitialise( const ConfigurationTable* config );
+  virtual void PostInitialise( const ConfigurationTable* config ) { }
   /// Save the current configuration
   virtual void SaveConfiguration( ConfigurationTable* configTable );
   /// Get the current selected desktop
   inline unsigned int GetCurrentDesktop();
 protected:
   /// Load the GUI configuration specific to the panel
-  virtual void LoadGUIConfiguration( const ConfigurationTable* config );
+  virtual void LoadGUIConfiguration( const ConfigurationTable* config ) { }
   /// Change the currently displayed desktop
   void ChangeDesktop( const unsigned int newDesktop );
 

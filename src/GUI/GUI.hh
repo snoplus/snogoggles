@@ -43,9 +43,9 @@ public:
 
   virtual ~GUI();
   /// Get the unique GUI ID within the frame (not globally unique)
-  inline unsigned int GetGUIID();
+  inline unsigned int GetGUIID() const;
   /// Get the globally unique GUI ID
-  inline unsigned int GetGlobalID();
+  inline unsigned int GetGlobalID() const;
   /// Get the Rect
   inline RectPtr GetRect();
   /// Set the GUI as hidden or not
@@ -81,13 +81,13 @@ GUI::GUI( RectPtr rect,
 }
 
 inline unsigned int 
-GUI::GetGUIID()
+GUI::GetGUIID() const
 {
   return fID;
 }
 
 inline unsigned int 
-GUI::GetGlobalID()
+GUI::GetGlobalID() const
 {
   return fGlobalID;
 }

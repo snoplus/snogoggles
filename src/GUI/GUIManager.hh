@@ -58,6 +58,8 @@ public:
   void DeleteGUI( unsigned int guiID );
   /// Change the rect to take account of a new mother
   inline void NewMother( RectPtr mother );
+  /// Return the current number of managed guis
+  size_t GetNumGUIs() const { return fGUIObjects.size(); }
 private:
   /// Find which GUI contains the point (resolution ALWAYS)
   int FindGUI( sf::Vector2<double> point );
