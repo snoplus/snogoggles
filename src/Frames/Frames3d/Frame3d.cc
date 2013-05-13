@@ -59,11 +59,19 @@ Frame3d::PostInitialise( const ConfigurationTable* configTable )
 }
 
 void 
-Frame3d::ProcessData( const RenderState& renderState )
+Frame3d::ProcessEvent( const RenderState& renderState )
 {
   for( vector<Module3d*>::iterator iTer = fModules.begin(); iTer != fModules.end(); iTer++ )
-    (*iTer)->ProcessData( renderState );
-  fCamera->ProcessData( renderState );
+    (*iTer)->ProcessEvent( renderState );
+  fCamera->ProcessEvent( renderState );
+}
+
+void 
+Frame3d::ProcessRun()
+{
+  for( vector<Module3d*>::iterator iTer = fModules.begin(); iTer != fModules.end(); iTer++ )
+    (*iTer)->ProcessRun();
+  fCamera->ProcessRun();
 }
 
 void 

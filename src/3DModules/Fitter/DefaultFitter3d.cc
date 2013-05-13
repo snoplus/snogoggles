@@ -4,7 +4,7 @@
 using namespace Viewer;
 
 void
-DefaultFitter3d::ProcessData( const RenderState& renderState )
+DefaultFitter3d::ProcessEvent( const RenderState& renderState )
 {
   fBuffer.Clear();
   const RIDS::Event& event = DataSelector::GetInstance().GetEvent();

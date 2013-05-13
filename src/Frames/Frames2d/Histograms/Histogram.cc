@@ -76,6 +76,12 @@ Histogram::EventLoop()
     }
 }
 
+void 
+Histogram::ProcessEvent( const RenderState& renderState )
+{
+  CalculateHistogram( renderState );
+}
+
 void
 Histogram::Render2d( RWWrapper& windowApp,
                      const RenderState& renderState )
@@ -83,7 +89,6 @@ Histogram::Render2d( RWWrapper& windowApp,
   fImage->Clear();
   fAxisText.clear();
 
-  CalculateHistogram( renderState );
   DrawHistogram();
   DrawAxis();
 

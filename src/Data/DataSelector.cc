@@ -39,6 +39,7 @@ DataSelector::Move( int steps )
   DataStore& dataStore = DataStore::GetInstance();
   int sign = ( 0 < steps ) - ( 0 > steps );
   steps = sign * steps;
+  int oldRun = fEvent->GetRunID();
   for( size_t step = 0; step < steps; step++ )
     {
       dataStore.Move( fEvent, fChannelList, fFibreList, sign );
@@ -53,7 +54,9 @@ DataSelector::Move( int steps )
             dataStore.Move( fEvent, fChannelList, fFibreList, -steps );
         }
     }
-  fChanged = true;
+  fEventChanged = true;
+  if( oldRun != fEvent->GetRunID() )
+    fRunChanged = true;
   fEvent->SetSource( RIDS::Event::GetSourceNames().size() - 1, fAnalysisScript.GetEvent().GetSource( 0 ) );
 }
 

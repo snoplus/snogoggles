@@ -64,7 +64,7 @@ DefaultTracks3d::PreInitialise( const ConfigurationTable* configTable )
 }
 
 void
-DefaultTracks3d::ProcessData( const RenderState& renderState )
+DefaultTracks3d::ProcessEvent( const RenderState& renderState )
 {
   fTrackBuffer.SetAll( DataSelector::GetInstance().GetEvent() );
 }

@@ -59,7 +59,7 @@ DefaultHits3d::PreInitialise( const ConfigurationTable* configTable )
 }
 
 void
-DefaultHits3d::ProcessData( const RenderState& renderState )
+DefaultHits3d::ProcessEvent( const RenderState& renderState )
 {
   fFullBuffer.Clear();
   fOutlineBuffer.Clear();
@@ -82,6 +82,12 @@ DefaultHits3d::ProcessData( const RenderState& renderState )
   fFullBuffer.Bind();
   fOutlineBuffer.Bind();
 
+}
+
+void
+DefaultHits3d::ProcessRun()
+{
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
   fPMTListBuffer.Clear();
   for( int i=0; i < channelList.GetChannelCount(); i++ )
     {

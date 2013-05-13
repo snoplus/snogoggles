@@ -69,7 +69,7 @@ Fibre3d::PreInitialise( const ConfigurationTable* configTable )
 }
 
 void
-Fibre3d::ProcessData( const RenderState& renderState )
+Fibre3d::ProcessRun()
 {
   const RIDS::FibreList& fibreList = DataSelector::GetInstance().GetFibreList();
   fAMELLIEPos.Clear();

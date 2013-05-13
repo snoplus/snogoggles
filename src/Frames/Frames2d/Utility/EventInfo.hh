@@ -47,7 +47,9 @@ public:
   
   static std::string Name() { return std::string( "Event Info" ); }
 
-  virtual void ProcessData( const RenderState& renderState ) { }
+  virtual void ProcessEvent( const RenderState& renderState );
+
+  virtual void ProcessRun() { }
 
   virtual void Render2d( RWWrapper& windowApp,
 			 const RenderState& renderState );

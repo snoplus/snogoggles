@@ -57,8 +57,10 @@ public:
   void PreInitialise( const ConfigurationTable* configTable );
   /// Initilaise with DataStore access
   void PostInitialise( const ConfigurationTable* configTable );
-  /// Process data to renderable format
-  void ProcessData( const RenderState& renderState );
+  /// Process event data
+  void ProcessEvent( const RenderState& renderState );
+  /// Process run data
+  void ProcessRun();
   /// Render all 2d objects
   void Render2d( RWWrapper& renderApp, 
                  const RenderState& renderState );

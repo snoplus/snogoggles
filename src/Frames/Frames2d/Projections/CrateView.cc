@@ -40,9 +40,8 @@ CrateView::PreInitialise( const ConfigurationTable* configTable )
   fPMTofInterest = -1;
 }
 
-void 
-CrateView::Render2d( RWWrapper& renderApp,
-                     const RenderState& renderState )
+void
+CrateView::ProcessEvent( const RenderState& renderState )
 {
   fImage->Clear();
   // Draw the crate outlines first
@@ -60,6 +59,12 @@ CrateView::Render2d( RWWrapper& renderApp,
   fPMTofInterest = -1;
   DrawPMTs( renderState );
   fImage->Update();
+}
+
+void 
+CrateView::Render2d( RWWrapper& renderApp,
+                     const RenderState& renderState )
+{
   renderApp.Draw( *fImage );
 
   if( fPMTofInterest != -1 )

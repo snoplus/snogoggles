@@ -43,9 +43,11 @@ public:
   virtual ~DataSelector();
 
   /// Return true if event has changed since last reset
-  bool HasChanged() const { return fChanged; }
-  /// Reset the changed marker
-  void Reset() { fChanged = false; }
+  bool EventChanged() const { return fEventChanged; }
+  /// Return true if the run has changed since last reset
+  bool RunChanged() const { return fRunChanged; }
+  /// Reset the changed markers
+  void Reset() { fEventChanged = false; fRunChanged = false; }
 
   /// Move through the events
   void Move( int steps );
@@ -85,7 +87,8 @@ private:
   RIDS::FibreList* fFibreList; /// < The fibre list for fEvent
   bool fSelect; /// < True if the event selection script is active
   bool fAnalyse; /// < True if the analysis script is active
-  bool fChanged; /// < True 
+  bool fEventChanged; /// < True if the event has changed since reset
+  bool fRunChanged; /// < True if the run has changed since reset
 
   /// Prevent usage of methods below
   DataSelector();

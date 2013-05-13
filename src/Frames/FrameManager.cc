@@ -178,10 +178,17 @@ FrameManager::SaveConfiguration( ConfigurationTable* configTable )
 }
 
 void
-FrameManager::ProcessData( const RenderState& renderState )
+FrameManager::ProcessEvent( const RenderState& renderState )
 {
   for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
-    (*iTer)->ProcessData( renderState );
+    (*iTer)->ProcessEvent( renderState );
+}
+
+void
+FrameManager::ProcessRun()
+{
+  for( vector<FrameContainer*>::iterator iTer = fFrameContainers.begin(); iTer != fFrameContainers.end(); iTer++ )
+    (*iTer)->ProcessRun();
 }
 
 void 

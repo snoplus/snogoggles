@@ -47,8 +47,10 @@ public:
   virtual void PreInitialise( const ConfigurationTable* configTable ) = 0;
   /// Initilaise with DataStore access
   virtual void PostInitialise( const ConfigurationTable* configTable ) = 0;
-  /// Process data into renderable format
-  virtual void ProcessData( const RenderState& renderState ) = 0;
+  /// Process event data
+  virtual void ProcessEvent( const RenderState& renderState ) = 0;
+  /// Process run data
+  virtual void ProcessRun() = 0;
   /// Render all 3d objects
   virtual void Render3d() = 0;
   /// Return the module name

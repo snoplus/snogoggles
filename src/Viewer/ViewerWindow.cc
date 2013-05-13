@@ -172,10 +172,6 @@ ViewerWindow::RenderLoop()
   fWindowApp->setActive();
   SetGlobalGLStates();
 
-  // SetGlobalGLStates clears the background colour to white.
-  // This SFML call is unnecessary.
-  //fWindowApp->Clear( sf::Color( 255, 255, 255 ) );
-
   fDesktopManager->ProcessData();
   fDesktopManager->Render3d( *fRWWrapper );
   fWindowApp->pushGLStates(); // This call seems to be necessary.

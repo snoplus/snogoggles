@@ -39,9 +39,9 @@ EventInfo::EventLoop()
       fEvents.pop();
     }
 }
+
 void 
-EventInfo::Render2d( RWWrapper& renderApp,
-		     const RenderState& renderState )
+EventInfo::ProcessEvent( const RenderState& renderState )
 {
   stringstream eventInfo;
   eventInfo.precision( 0 );
@@ -63,6 +63,12 @@ EventInfo::Render2d( RWWrapper& renderApp,
       eventInfo << endl;
       }*/
   fInfoText->SetString( eventInfo.str() );
+}
+
+void 
+EventInfo::Render2d( RWWrapper& renderApp,
+		     const RenderState& renderState )
+{
   fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
   renderApp.Draw( *fInfoText );  
 }

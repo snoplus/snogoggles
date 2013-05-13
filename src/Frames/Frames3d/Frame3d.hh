@@ -43,8 +43,10 @@ public:
   virtual void PreInitialise( const ConfigurationTable* configTable );
   /// Initilaise with DataStore access
   virtual void PostInitialise( const ConfigurationTable* configTable );
-  /// Process data into renderable format
-  virtual void ProcessData( const RenderState& renderState );
+  /// Process event data
+  virtual void ProcessEvent( const RenderState& renderState );
+  /// Process run data
+  virtual void ProcessRun();
   /// Render all 2d objects
   virtual void Render2d( RWWrapper& renderApp,
                          const RenderState& renderState ) { };

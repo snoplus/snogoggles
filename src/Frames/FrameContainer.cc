@@ -109,9 +109,15 @@ FrameContainer::SaveConfiguration( ConfigurationTable* configTable )
 }
 
 void
-FrameContainer::ProcessData( const RenderState& renderState )
+FrameContainer::ProcessEvent( const RenderState& renderState )
 {
-  fFrame->ProcessData( renderState );
+  fFrame->ProcessEvent( renderState );
+}
+
+void
+FrameContainer::ProcessRun()
+{
+  fFrame->ProcessRun();
 }
 
 void 

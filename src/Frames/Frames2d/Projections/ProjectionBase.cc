@@ -47,11 +47,7 @@ ProjectionBase::Initialise( const sf::Rect<double>& size )
 {
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), 1000, 600 );
   fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize * GetAspectRatio(), 1.5 * kLocalSize ) );
-  // Firstly make the vector of PMT positions
-  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
-  for( int ipmt = 0; ipmt < channelList.GetChannelCount(); ipmt++ )
-    fProjectedPMTs.push_back( Project( channelList.GetPosition( ipmt ) ) );
-  // Secondly make the vector of geodesic dots
+
   const VBO& geodesicVBO = GeodesicSphere::GetInstance()->OutlineVBO();
   for( unsigned short i = 0; i < geodesicVBO.fIndices.size(); i+=2 )
     {
@@ -72,8 +68,7 @@ ProjectionBase::EventLoop()
 }
 
 void
-ProjectionBase::Render2d( RWWrapper& windowApp,
-			  const RenderState& renderState )
+ProjectionBase::ProcessEvent( const RenderState& renderState )
 {
   fImage->Clear();
 
@@ -82,6 +77,20 @@ ProjectionBase::Render2d( RWWrapper& windowApp,
   DrawOutline();
 
   fImage->Update();
+}
+
+void
+ProjectionBase::ProcessRun()
+{
+  const RIDS::ChannelList& channelList = DataSelector::GetInstance().GetChannelList();
+  for( int ipmt = 0; ipmt < channelList.GetChannelCount(); ipmt++ )
+    fProjectedPMTs.push_back( Project( channelList.GetPosition( ipmt ) ) );
+}
+
+void
+ProjectionBase::Render2d( RWWrapper& windowApp,
+			  const RenderState& renderState )
+{
   windowApp.Draw( *fImage );
 }
 

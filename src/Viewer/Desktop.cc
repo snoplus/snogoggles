@@ -99,11 +99,15 @@ Desktop::SaveConfiguration( ConfigurationTable* configTable )
 void
 Desktop::ProcessData( bool force )
 {
-  const RenderState renderState = fEventPanel->GetRenderState();
-  if( force || renderState.HasChanged() || GUIProperties::GetInstance().HasChanged() || DataSelector::GetInstance().HasChanged() ) 
-  {
-    fFrameManager->ProcessData( renderState );
-  }
+  // Process run first, suppliers the channel information
+  if( force || DataSelector::GetInstance().RunChanged() )
+    {
+      fFrameManager->ProcessRun();
+    }
+  if( force || fEventPanel->GetRenderState().HasChanged() || GUIProperties::GetInstance().HasChanged() || DataSelector::GetInstance().EventChanged() ) 
+    {
+      fFrameManager->ProcessEvent( fEventPanel->GetRenderState() );
+    }
 }
 
 void 
