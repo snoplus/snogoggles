@@ -58,6 +58,9 @@ public:
 protected:
   /// Load the GUI configuration specific to the panel
   virtual void LoadGUIConfiguration( const ConfigurationTable* guiConfig ) = 0;
+  /// Return the correct sf rect as loaded
+  sf::Rect<double> LoadRect( const ConfigurationTable* guiConfig, RectPtr mother );
+
 
   RectPtr fRect; /// < The DMUI drawable area
   GUIManager fGUIManager; /// < The GUI manager
@@ -71,6 +74,13 @@ protected:
   bool fEnabled; /// < If false the frame is not drawn nor accepts events
 private:
   Panel();
+
+  sf::Rect<double>
+  LoadRect( const ConfigurationTable* guiConfig );
+
+  sf::Rect<double>
+  LoadRect( const ConfigurationTable* guiConfig,
+	    const sf::Rect<double> motherSize );
 };
 
 inline bool

@@ -42,7 +42,8 @@ public:
   /// Event handler
   GUIEvent NewEvent( const Event& event );
   /// Initialise with a list of string options
-  void Initialise( const std::vector<std::string>& options );
+  void Initialise( const std::vector<std::string>& options,
+		   bool fixed ); /// < Fixed/Max 20 pixel height?
   /// Set the current state
   void SetState( unsigned int state );
   /// Return the state as an unsigned int

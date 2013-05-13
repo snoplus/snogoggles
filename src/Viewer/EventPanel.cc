@@ -87,7 +87,7 @@ EventPanel::EventLoop()
           break;
         case eDataSource: // Source change
           fRenderState.ChangeState( dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->GetState(), 0 );
-          dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( DataSelector::GetInstance().GetTypeNames( fRenderState.GetDataSource() ) );
+          dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( DataSelector::GetInstance().GetTypeNames( fRenderState.GetDataSource() ), true );
           dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->Reset();
           ChangeScaling();
           break;
@@ -150,8 +150,8 @@ EventPanel::PreInitialise( const ConfigurationTable* configTable )
 void
 EventPanel::PostInitialise( const ConfigurationTable* configTable )
 {
-  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->Initialise( RIDS::Event::GetSourceNames() );
-  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ) );
+  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataSource] )->Initialise( RIDS::Event::GetSourceNames(), true );
+  dynamic_cast<GUIs::RadioSelector*>( fGUIs[eDataType] )->Initialise( RIDS::Event::GetTypeNames( fRenderState.GetDataSource() ), true );
   ChangeScaling();  
 }
 
@@ -163,7 +163,7 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
       const ConfigurationTable* objectConfig = config->GetTable( uGUIs );
       if( objectConfig->GetName() == string( "gui" ) )
         {
-          sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
+          sf::Rect<double> posRect = LoadRect( objectConfig, fRect );
           int effect = objectConfig->GetI( "effect" );
           switch( effect )
             {

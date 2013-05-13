@@ -20,13 +20,17 @@ RadioSelector::~RadioSelector()
 }
 
 void 
-RadioSelector::Initialise( const vector<string>& options )
+RadioSelector::Initialise( const vector<string>& options,
+			   bool fixed = false )
 {
   fGUIManager.Clear();
   fPersistLabels.clear();
   sf::Rect<double> fullSize = fRect->GetRect( Rect::eResolution );
-  const double rowHeight = fullSize.height / static_cast<double>( options.size() ); 
-  const double rowSpacing = 2.0;
+  double rowHeight = fullSize.height / static_cast<double>( options.size() ); 
+  double rowSpacing = 0.0;
+  if( fixed && 20.0 * static_cast<double>( options.size() ) <= fullSize.height )
+    rowHeight = 20.0;
+
 
   sf::Rect<double> size;
   size.left = fullSize.left;

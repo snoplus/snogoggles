@@ -43,7 +43,7 @@ void
 Panel::PreInitialise( const ConfigurationTable* configTable )
 {
   const ConfigurationTable* guiConfig = GUIProperties::GetInstance().GetConfiguration( fGUIConfigName );
-  sf::Rect<double> panelRect( guiConfig->GetD( "x" ), guiConfig->GetD( "y" ), guiConfig->GetD( "width" ), guiConfig->GetD( "height" ) );
+  sf::Rect<double> panelRect = LoadRect( guiConfig );
   fRect->SetRect( panelRect, Rect::eLocal );
   for( unsigned int uGUIs = 0; uGUIs < guiConfig->GetNumTables(); uGUIs++ )
     {
@@ -55,12 +55,12 @@ Panel::PreInitialise( const ConfigurationTable* configTable )
         }
       else if( objectConfig->GetName() == string( "label" ) ) // Then it is a Label(Text) object
         {
-          sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
+          sf::Rect<double> posRect = LoadRect( objectConfig, fRect );
           fLabels[objectConfig->GetI( "result" )] = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eLocal ) ) );
         }
       else if( objectConfig->GetName() == string( "text" ) ) // Should be Text then
         {
-          sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
+          sf::Rect<double> posRect = LoadRect( objectConfig, fRect );
           Text* tempText = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eLocal ) ) );
           tempText->SetString( objectConfig->GetS( "caption" ) );
           fTexts.push_back( tempText );
@@ -92,4 +92,38 @@ Panel::Render( RWWrapper& renderApp )
       fTexts[uText]->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
       renderApp.Draw( *fTexts[uText] );
     }
+}
+
+sf::Rect<double> /// Always returns in local coords
+Panel::LoadRect( const ConfigurationTable* guiConfig, 
+		 RectPtr mother )
+{
+  return LoadRect( guiConfig, mother->GetRect( Rect::eResolution ) );
+}
+
+sf::Rect<double>
+Panel::LoadRect( const ConfigurationTable* guiConfig )
+{
+  sf::Rect<double> size( 0.0, 20.0, Rect::GetWindowResolution().x, Rect::GetWindowResolution().y );
+  return LoadRect( guiConfig, size );
+}
+
+sf::Rect<double>
+Panel::LoadRect( const ConfigurationTable* guiConfig,
+		 const sf::Rect<double> motherSize )
+{
+  if( guiConfig->GetS( "system" ) == string( "resolution" ) )
+    {
+      double x = guiConfig->GetD( "x" ) / motherSize.width;
+      if( guiConfig->GetD( "x" ) < 0.0 )
+	x = ( motherSize.width + guiConfig->GetD( "x" ) ) / motherSize.width;
+      double y = guiConfig->GetD( "y" ) / motherSize.height;
+      if( guiConfig->GetD( "y" ) < 0.0 )
+	y = ( motherSize.height + guiConfig->GetD( "y" ) ) / motherSize.height;
+      const double width = guiConfig->GetD( "width" ) / motherSize.width;
+      const double height = guiConfig->GetD( "height" ) / motherSize.height;
+      return sf::Rect<double>( x, y, width, height );
+    }
+  else // Assume local
+    return sf::Rect<double>( guiConfig->GetD( "x" ), guiConfig->GetD( "y" ), guiConfig->GetD( "width" ), guiConfig->GetD( "height" ) );
 }

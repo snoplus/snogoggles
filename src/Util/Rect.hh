@@ -34,7 +34,7 @@ class Rect
 {
 public:
   enum ECoordSystem { eLocal, eWindow, eResolution, eGL };
-  /// Creat the global mother rect
+  /// Create the global mother rect
   static Rect& NewMother();
   /// Create a new Daughter rect for usage
   Rect* NewDaughter(); 
