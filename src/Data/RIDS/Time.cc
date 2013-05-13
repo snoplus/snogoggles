@@ -1,6 +1,7 @@
 #include <cmath>
 #include <sstream>
 #include <stdlib.h>
+#include <limits.h>
 using namespace std;
 
 #include <Viewer/RIDS/Time.hh>
@@ -81,8 +82,20 @@ Time::GetTime() const
   return text.str();
 }
 
+int
+Time::operator-( const Time& rhs ) const
+{
+  int date = fDay + fMonth * 1000 + fYear * 100000;
+  int rhsDate = rhs.fDay + rhs.fMonth * 1000 + rhs.fYear * 100000;
+  if( date != rhsDate )
+    return INT_MAX;
+  int time = fSec + fMin * 100 + fHour * 10000;
+  int rhsTime = rhs.fSec + rhs.fMin * 100 + rhs.fHour * 10000;
+  return time - rhsTime;
+}
+
 bool 
-Time::operator>( const Time& rhs )
+Time::operator>( const Time& rhs ) const
 {
   int date = fDay + fMonth * 1000 + fYear * 100000;
   int rhsDate = rhs.fDay + rhs.fMonth * 1000 + rhs.fYear * 100000;
@@ -101,25 +114,25 @@ Time::operator>( const Time& rhs )
     return false;
 }
 bool 
-Time::operator>=( const Time& rhs )
+Time::operator>=( const Time& rhs ) const
 {
 
 }
 
 bool 
-Time::operator<( const Time& rhs )
+Time::operator<( const Time& rhs ) const
 {
 
 }
 
 bool 
-Time::operator<=( const Time& rhs )
+Time::operator<=( const Time& rhs ) const 
 {
 
 }
 
 bool 
-Time::operator==( const Time& rhs )
+Time::operator==( const Time& rhs ) const
 {
 
 }

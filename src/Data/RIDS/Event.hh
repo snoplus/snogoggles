@@ -58,6 +58,8 @@ public:
   void SetTrigger( int trigger ) { fTrigger = trigger; }
   /// Add a vertex
   void AddVertex( const Vertex& vertex ) { fVertices.push_back( vertex ); }
+  /// Set the event time
+  void SetTime( const Time& time ) { fTime = time; }
 
   /// Return a reference to the source as specified by it's id
   const Source& GetSource( int id ) const;
@@ -70,7 +72,7 @@ public:
   /// Return the number of vertices
   size_t GetVertexCount() const { return fVertices.size(); }
   /// Return the event's timestamp
-  Time GetTime() const { return fTime; }
+  const Time& GetTime() const { return fTime; }
   /// Return the run ID
   int GetRunID() const { return fRunID; }
   /// Return the sub run ID

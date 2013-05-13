@@ -6,6 +6,7 @@
 #include <Viewer/IcosahedralProjection.hh>
 #include <Viewer/CrateView.hh>
 #include <Viewer/Histogram.hh>
+#include <Viewer/TriggerStream.hh>
 #include <Viewer/HitFrame3d.hh>
 #include <Viewer/TrackFrame3d.hh>
 #include <Viewer/FitterFrame3d.hh>
@@ -20,6 +21,7 @@ FrameFactory::FrameFactory()
   Register( Frames::LambertProjection::Name(), new FrameAlloc<Frames::LambertProjection>() );
   Register( Frames::IcosahedralProjection::Name(),new FrameAlloc<Frames::IcosahedralProjection>() );
   Register( Frames::Histogram::Name(),new FrameAlloc<Frames::Histogram>() );
+  Register( Frames::TriggerStream::Name(),new FrameAlloc<Frames::TriggerStream>() );
   Register( Frames::CrateView::Name(),new FrameAlloc<Frames::CrateView>() );
 
   Register( Frames::HitFrame3d::Name(), new FrameAlloc<Frames::HitFrame3d>() );

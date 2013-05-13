@@ -11,6 +11,8 @@ AdjustIndex( const size_t currentIndex,
              const size_t limit, 
              const int change )
 {
+  if( limit == 1 )
+    return 0;
   if( change > 0 )
     return ( currentIndex + change ) % limit;
   else
@@ -98,4 +100,15 @@ DataStore::Move( RIDS::Event* event,
   *event = *fEvents[fRead]; // Copy it over
   *channelList = *fChannelLists[event->GetRunID()]; // Copy it over
   *fibreList = *fFibreLists[event->GetRunID()]; // Copy it over
+}
+
+RIDS::Event*
+DataStore::Peek( int step )
+{
+  if( step < min( -fEventsAdded, -static_cast<int>( fEvents.size() ) ) )
+    return NULL;
+  if( fEventsAdded > fEvents.size() )
+    return fEvents[AdjustIndex( fRead, fEvents.size(), step )];
+  else
+    return fEvents[AdjustIndex( fRead, fEventsAdded, step )];
 }

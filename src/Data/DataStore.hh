@@ -57,6 +57,8 @@ public:
              RIDS::ChannelList* channelList,
              RIDS::FibreList* fibreList,
              int step );
+  /// Peek at the event step away
+  RIDS::Event* Peek( int step );
   /// Information functions
   size_t GetInputBufferSize() const { return fInputBuffer.GetSize(); }
   size_t GetBufferElements() const { return fInputBuffer.GetNumElements(); }

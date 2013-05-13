@@ -60,6 +60,12 @@ DataSelector::Move( int steps )
   fEvent->SetSource( RIDS::Event::GetSourceNames().size() - 1, fAnalysisScript.GetEvent().GetSource( 0 ) );
 }
 
+const RIDS::Event*
+DataSelector::PeekEvent( int step ) const
+{
+  return DataStore::GetInstance().Peek( step );
+}
+
 void 
 DataSelector::Latest()
 {

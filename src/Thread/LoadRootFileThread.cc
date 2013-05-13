@@ -75,6 +75,7 @@ LoadRootFileThread::BuildRIDSEvent()
       event->SetSubRunID( fDS->GetSubRunID() );
       event->SetEventID( fDS->GetEV( iEV )->GetEventID() );
       event->SetTrigger( fDS->GetEV( iEV )->GetTrigType() );
+      event->SetTime( RIDS::Time( fDS->GetEV( iEV )->GetClockCount10() ) );
       if( fDS->ExistMC() )
         {
           RAT::DS::MC* rMC = fDS->GetMC();

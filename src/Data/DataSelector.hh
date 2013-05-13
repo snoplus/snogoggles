@@ -58,6 +58,8 @@ public:
 
   /// Get the current Event
   const RIDS::Event& GetEvent() const;
+  /// Peek at a previous event (doesn't change the run) also NOT SAVED 
+  const RIDS::Event* PeekEvent( int peek ) const;
   /// Get the current channel data
   const std::vector<RIDS::Channel>& GetData( int source, int type ) const;
   /// Get the type names
