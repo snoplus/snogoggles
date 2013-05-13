@@ -22,16 +22,16 @@ DesktopTab::Initialise()
   fRightOff[0] = textureManager.GetTexture( textureNumber + 2, eBase );
   fRightOff[1] = textureManager.GetTexture( textureNumber + 2, eHighlight );
   fRightOff[2] = textureManager.GetTexture( textureNumber + 2, eActive );
-  textureNumber = 10;
-  fLeftOn[0] = textureManager.GetTexture( textureNumber, eBase );
+  textureNumber = 0;
+  fLeftOn[0] = textureManager.GetTexture( textureNumber, eActive );
   fLeftOn[1] = textureManager.GetTexture( textureNumber, eHighlight );
-  fLeftOn[2] = textureManager.GetTexture( textureNumber, eActive );
-  fBaseOn[0] = textureManager.GetTexture( textureNumber + 1, eBase );
+  fLeftOn[2] = textureManager.GetTexture( textureNumber, eBase );
+  fBaseOn[0] = textureManager.GetTexture( textureNumber + 1, eActive );
   fBaseOn[1] = textureManager.GetTexture( textureNumber + 1, eHighlight );
-  fBaseOn[2] = textureManager.GetTexture( textureNumber + 1, eActive );
-  fRightOn[0] = textureManager.GetTexture( textureNumber + 2, eBase );
+  fBaseOn[2] = textureManager.GetTexture( textureNumber + 1, eBase );
+  fRightOn[0] = textureManager.GetTexture( textureNumber + 2, eActive );
   fRightOn[1] = textureManager.GetTexture( textureNumber + 2, eHighlight );
-  fRightOn[2] = textureManager.GetTexture( textureNumber + 2, eActive );
+  fRightOn[2] = textureManager.GetTexture( textureNumber + 2, eBase );
 }
 
 DesktopTab::~DesktopTab()
