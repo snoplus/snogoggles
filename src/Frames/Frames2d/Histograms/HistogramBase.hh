@@ -19,7 +19,7 @@
 
 #include <Viewer/Frame2d.hh>
 #include <Viewer/Colour.hh>
-
+#include <Viewer/Text.hh>
 
 namespace Viewer
 {
@@ -58,9 +58,13 @@ protected:
   std::pair<double, double> fXDomain; /// < Domain in x that corresponds to the bins, from low to high
   std::pair<double, double> fYRange; /// < Range in y to draw, from low to high
 private:
+  /// Draw a tick on the image and save a text
+  void DrawTickLabel( double value,
+                      bool xAxis );
   /// Scale the value into a y relative coord
   double ScaleY( const double value ) const;
 
+  std::vector<Text> fAxisText; /// < The axis labels
   ProjectionImage* fImage; /// < The actual image
   bool fLogY; /// < Display Y in log scale
 };

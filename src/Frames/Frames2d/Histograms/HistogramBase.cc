@@ -2,6 +2,7 @@
 #include <Viewer/ProjectionImage.hh>
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/ConfigurationTable.hh>
+#include <Viewer/GUIProperties.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -30,6 +31,11 @@ HistogramBase::Render2d( RWWrapper& windowApp,
 			 const RenderState& renderState )
 {
   windowApp.Draw( *fImage );
+  for( vector<Text>::iterator iTer = fAxisText.begin(); iTer != fAxisText.end(); iTer++ )
+    {
+      iTer->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
+      windowApp.Draw( *iTer );
+    }
 }
 
 void
@@ -47,6 +53,7 @@ HistogramBase::GetMaxNumberOfBins()
 void
 HistogramBase::RenderToImage()
 {
+  fAxisText.clear();
   fImage->Clear();
   // First the histogram drawing part
   if( !fValues.empty() && fYRange.second > 0.0 ) 
@@ -65,9 +72,55 @@ HistogramBase::RenderToImage()
 	    }
 	}
     }
-  // Now the axis drawing part
-
+  // Now the axis drawing part, First the axis lines, x then y
+  sf::Vector2<double> pos( kAxisMargin, 1.0 - kAxisMargin );
+  sf::Vector2<double> size( 1.0 - kAxisMargin, 1.0 / fImage->GetHeight() );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
+  pos = sf::Vector2<double>( kAxisMargin, 0.0 );
+  size = sf::Vector2<double>( 1.0 / fImage->GetWidth(), 1.0 - kAxisMargin );
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
+  // Now the ticks and indeed labels (max of 10)
+  const int xOrdinal = log10( fXDomain.second );
+  const double xBase = pow( 10.0, xOrdinal );
+  const int yOrdinal = log10( fYRange.second );
+  const double yBase = pow( 10.0, yOrdinal );
+  for( int iTick = 0; iTick < 10; iTick++ )
+    {
+      const double xValue = xBase * iTick;
+      if( xValue >= fXDomain.first && xValue <= fXDomain.second )
+        DrawTickLabel( xValue, true );
+      const double yValue = yBase * iTick;
+      if( yValue >= fYRange.first && yValue <= fYRange.second )
+        DrawTickLabel( yValue, false );
+    }
   fImage->Update();
+}
+
+void
+HistogramBase::DrawTickLabel( double value,
+                              bool xAxis )
+{
+  sf::Vector2<double> pos, size;
+  sf::Rect<double> textSize;
+  if( xAxis )
+    {
+      pos = sf::Vector2<double>( ( value - fXDomain.first ) / ( fXDomain.second - fXDomain.first ) * ( 1.0 - kAxisMargin ) + kAxisMargin, 1.0 - kAxisMargin );
+      size = sf::Vector2<double>( 1.0 / fImage->GetWidth(), kAxisMargin / 6.0 );
+      textSize = sf::Rect<double>( pos.x, pos.y, ( 1.0 - kAxisMargin ) / 10.0, kAxisMargin / 2.0 );
+      if( pos.x > 0.9 )
+        textSize.left = pos.x - ( 1.0 - kAxisMargin ) / 15.0;
+    }
+  else
+    {
+      pos = sf::Vector2<double>( kAxisMargin - kAxisMargin / 6.0, 1.0 - kAxisMargin - ScaleY( value ) );
+      size = sf::Vector2<double>( kAxisMargin / 6.0, 1.0 / fImage->GetHeight() );
+      textSize = sf::Rect<double>( kAxisMargin / 6.0, pos.y - kAxisMargin / 2.0, kAxisMargin - kAxisMargin / 6.0, kAxisMargin / 2.0 );
+    }
+  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
+  Text label( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
+  stringstream temp; temp << value;
+  label.SetString( temp.str() );
+  fAxisText.push_back( label );
 }
 
 double

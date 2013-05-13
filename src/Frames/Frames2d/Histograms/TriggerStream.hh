@@ -15,7 +15,7 @@
 #ifndef __Viewer_Frames_TriggerStream__
 #define __Viewer_Frames_TriggerStream__
 
-#include <Viewer/HistogramBase.hh>
+#include <Viewer/HistogramStream.hh>
 
 namespace Viewer
 {
@@ -23,10 +23,10 @@ namespace Viewer
 namespace Frames
 {
 
-class TriggerStream : public HistogramBase
+class TriggerStream : public HistogramStream
 {
 public:
-  TriggerStream( RectPtr rect ) : HistogramBase( rect ) { }
+  TriggerStream( RectPtr rect ) : HistogramStream( rect ) { }
   virtual ~TriggerStream() { };
 
   /// Initialise without using the DataStore
@@ -34,25 +34,16 @@ public:
   /// Initilaise with DataStore access
   void PostInitialise( const ConfigurationTable* configTable ) { };
   /// Save the configuration
-  void SaveConfiguration( ConfigurationTable* configTable ) { HistogramBase::SaveConfiguration( configTable ); };
+  void SaveConfiguration( ConfigurationTable* configTable );
 
   virtual void EventLoop() { };
   
   virtual std::string GetName() { return TriggerStream::Name(); }
   
   static std::string Name() { return std::string( "TriggerStream" ); }
-
-  virtual void ProcessEvent( const RenderState& renderState );
-
-  virtual void ProcessRun() { };
 protected:
-  /// Return the bin render colour, based on the stack, bin or value (as appropriate)
-  Colour GetRenderColor( const unsigned int stack,
-			 const unsigned int bin,
-			 const double value );
-
-  void FillStackFromTrigger( const int trigger,
-			     const unsigned int iBin );
+  void ExtractData( const RIDS::Event& event,
+                    const unsigned int iBin );
 };
 
 } // ::Frames
