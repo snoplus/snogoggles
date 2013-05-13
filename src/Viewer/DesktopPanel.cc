@@ -6,7 +6,7 @@ using namespace std;
 #include <Viewer/DesktopPanel.hh>
 #include <Viewer/Event.hh>
 #include <Viewer/DataStore.hh>
-#include <Viewer/Persist.hh>
+#include <Viewer/DesktopTab.hh>
 #include <Viewer/GUIProperties.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/Text.hh>
@@ -58,11 +58,11 @@ void
 DesktopPanel::PreInitialise( const ConfigurationTable* configTable )
 {
   const double numDesktops = static_cast<double>( GUIProperties::GetInstance().GetNumDesktops() );
+  const double tabWidth = 1.0 / ( numDesktops + 1 ); 
   for( unsigned int iGUI = 0; iGUI < GUIProperties::GetInstance().GetNumDesktops(); iGUI++ )
     {
-      sf::Rect<double> size( iGUI * 1.0 / numDesktops, 0.0, 1.0 / numDesktops, 1.0 );
-      GUIs::Persist* tab = dynamic_cast<GUIs::Persist*>( fGUIManager.NewGUI<GUIs::Persist>( size, Rect::eLocal ) );
-      tab->Initialise( 30 );
+      sf::Rect<double> size( iGUI * tabWidth, 0.0, tabWidth, 1.0 );
+      dynamic_cast<GUIs::DesktopTab*>( fGUIManager.NewGUI<GUIs::DesktopTab>( size, Rect::eLocal ) )->Initialise();
     }
   if( configTable != NULL )
     ChangeDesktop( configTable->GetI( "desktop" ) );
@@ -82,9 +82,9 @@ DesktopPanel::ChangeDesktop( const unsigned int newDesktop )
   for( unsigned int iGUI = 0; iGUI < GUIProperties::GetInstance().GetNumDesktops(); iGUI++ )
     {
       if( iGUI != newDesktop )
-        dynamic_cast<GUIs::Persist*>( fGUIManager.GetGUI( iGUI ) )->SetState( false );
+        dynamic_cast<GUIs::DesktopTab*>( fGUIManager.GetGUI( iGUI ) )->SetState( false );
       else
-        dynamic_cast<GUIs::Persist*>( fGUIManager.GetGUI( iGUI ) )->SetState( true );
+        dynamic_cast<GUIs::DesktopTab*>( fGUIManager.GetGUI( iGUI ) )->SetState( true );
     }
   fCurrentDesktop = newDesktop;
 }
