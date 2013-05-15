@@ -33,10 +33,13 @@ PersistLabel::~PersistLabel()
 
 void
 PersistLabel::Initialise( unsigned int textureNumber,
-                          const string& label )
+                          const string& label, 
+                          bool fixed )
 {
   fPersist.Initialise( textureNumber );
   fText.SetString( label );
+  if( fixed )
+    fText.SetCharSize( GUIProperties::GetInstance().GetTextSize() );
 }
 
 void

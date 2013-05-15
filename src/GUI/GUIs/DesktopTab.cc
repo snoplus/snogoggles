@@ -12,7 +12,7 @@ void
 DesktopTab::Initialise()
 {
   const GUITextureManager& textureManager = GUIProperties::GetInstance().GetGUITextures();
-  int textureNumber = 0;
+  int textureNumber = 50;
   fLeftOff[0] = textureManager.GetTexture( textureNumber, eBase );
   fLeftOff[1] = textureManager.GetTexture( textureNumber, eHighlight );
   fLeftOff[2] = textureManager.GetTexture( textureNumber, eActive );
@@ -22,7 +22,7 @@ DesktopTab::Initialise()
   fRightOff[0] = textureManager.GetTexture( textureNumber + 2, eBase );
   fRightOff[1] = textureManager.GetTexture( textureNumber + 2, eHighlight );
   fRightOff[2] = textureManager.GetTexture( textureNumber + 2, eActive );
-  textureNumber = 0;
+  textureNumber = 53;
   fLeftOn[0] = textureManager.GetTexture( textureNumber, eActive );
   fLeftOn[1] = textureManager.GetTexture( textureNumber, eHighlight );
   fLeftOn[2] = textureManager.GetTexture( textureNumber, eBase );

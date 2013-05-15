@@ -51,3 +51,9 @@ GUIProperties::GetNumDesktops() const
 {
   return fGUIConfiguration->GetTable()->GetI( "desktops" );
 }
+
+unsigned int
+GUIProperties::GetTextSize() const
+{
+  return fGUIConfiguration->GetTable()->GetI( "fontSize" );
+}

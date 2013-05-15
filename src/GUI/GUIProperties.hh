@@ -43,6 +43,8 @@ public:
   const ConfigurationTable* GetConfiguration( const std::string& object ) const;
   /// Get the number of desktops
   unsigned int GetNumDesktops() const;
+  /// Get the fixed gui text size
+  unsigned int GetTextSize() const;
   /// Load new gui colour scheme
   inline void LoadGUIColourPalette( const std::string& filename );
   /// Load new colour scheme

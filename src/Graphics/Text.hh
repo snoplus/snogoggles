@@ -50,16 +50,20 @@ public:
   inline void SetColour( const Colour& colour );
 
   inline Colour GetColour();
+  
+  void SetCharSize( unsigned int charSize ) { fCharSize = charSize; }
+  unsigned int GetCharSize() { return fCharSize; }
 protected:
   std::vector< std::string > fTextLines; /// < The lines of text string
   Colour fColour; /// < The text colour
   RectPtr fLocalRect; /// < The text local rect
   unsigned int fMaxLineLength;
+  unsigned int fCharSize; /// < Fixed char size, 0 if not fixed
 };
 
 inline 
 Text::Text( RectPtr localRect )
-  : fLocalRect( localRect )
+  : fLocalRect( localRect ), fCharSize( 0 )
 {
   Clear();
 }

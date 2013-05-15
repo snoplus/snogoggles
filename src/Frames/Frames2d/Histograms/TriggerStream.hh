@@ -40,7 +40,7 @@ public:
   
   virtual std::string GetName() { return TriggerStream::Name(); }
   
-  static std::string Name() { return std::string( "TriggerStream" ); }
+  static std::string Name() { return std::string( "Triggers" ); }
 protected:
   void ExtractData( const RIDS::Event& event,
                     const unsigned int iBin );

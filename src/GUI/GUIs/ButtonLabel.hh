@@ -32,7 +32,8 @@ public:
                       unsigned int guiID );
   ~ButtonLabel() { };
   void Initialise( unsigned int textureNumber,
-                   const std::string& label );
+                   const std::string& label,
+                   bool fixed = false ); /// < Fixed text size
   
   void Render( RWWrapper& renderApp );
   inline const std::string GetLabel();

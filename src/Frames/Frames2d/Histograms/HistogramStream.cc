@@ -21,7 +21,7 @@ HistogramStream::ProcessEvent( const RenderState& renderState )
   fValues.clear();
   fValues.resize( fNumStacks, vector<double>( fNumBins, 0.0 ) );
   // Now fill
-  fXDomain = pair<double, double>( renderState.GetScalingMin(), renderState.GetScalingMax() );
+  fXDomain = pair<double, double>( 0.0, fNumBins );
   if( fNumBins > GetMaxNumberOfBins() )
     return; // Some issues here....
   const RIDS::Event& event = DataSelector::GetInstance().GetEvent();

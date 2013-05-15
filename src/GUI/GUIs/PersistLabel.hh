@@ -37,7 +37,8 @@ public:
   virtual ~PersistLabel();
 
   void Initialise( unsigned int textureNumber, 
-                   const std::string& label );
+                   const std::string& label,
+                   bool fixed = false); /// < Fixed size font?
   void SetLabel( const std::string& label ); 
   const std::string GetLabel() { return fText.GetString(); }
 

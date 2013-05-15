@@ -57,12 +57,14 @@ Panel::PreInitialise( const ConfigurationTable* configTable )
         {
           sf::Rect<double> posRect = LoadRect( objectConfig, fRect );
           fLabels[objectConfig->GetI( "result" )] = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eLocal ) ) );
+          fLabels[objectConfig->GetI( "result" )]->SetCharSize( GUIProperties::GetInstance().GetTextSize() );
         }
       else if( objectConfig->GetName() == string( "text" ) ) // Should be Text then
         {
           sf::Rect<double> posRect = LoadRect( objectConfig, fRect );
           Text* tempText = new Text( RectPtr( fRect->NewDaughter( posRect, Rect::eLocal ) ) );
           tempText->SetString( objectConfig->GetS( "caption" ) );
+          tempText->SetCharSize( GUIProperties::GetInstance().GetTextSize() );
           fTexts.push_back( tempText );
         }
     }
@@ -110,18 +112,38 @@ Panel::LoadRect( const ConfigurationTable* guiConfig )
 
 sf::Rect<double>
 Panel::LoadRect( const ConfigurationTable* guiConfig,
-		 const sf::Rect<double> motherSize )
+                 const sf::Rect<double> motherSize )
 {
   if( guiConfig->GetS( "system" ) == string( "resolution" ) )
     {
       double x = guiConfig->GetD( "x" ) / motherSize.width;
       if( guiConfig->GetD( "x" ) < 0.0 )
-	x = ( motherSize.width + guiConfig->GetD( "x" ) ) / motherSize.width;
+        x = ( motherSize.width + guiConfig->GetD( "x" ) ) / motherSize.width;
       double y = guiConfig->GetD( "y" ) / motherSize.height;
       if( guiConfig->GetD( "y" ) < 0.0 )
-	y = ( motherSize.height + guiConfig->GetD( "y" ) ) / motherSize.height;
+        y = ( motherSize.height + guiConfig->GetD( "y" ) ) / motherSize.height;
       const double width = guiConfig->GetD( "width" ) / motherSize.width;
       const double height = guiConfig->GetD( "height" ) / motherSize.height;
+      return sf::Rect<double>( x, y, width, height );
+    }
+  else if( guiConfig->GetS( "system" ) == string( "mixed" ) )
+    {
+      double x = guiConfig->GetD( "x" );
+      if( x < 0.0 )
+        x = ( motherSize.width + guiConfig->GetD( "x" ) ) / motherSize.width;
+      else if( x > 1.0 )
+        x = x / motherSize.width;
+      double y = guiConfig->GetD( "y" );
+      if( y < 0.0 )
+        y = ( motherSize.height + guiConfig->GetD( "y" ) ) / motherSize.height;
+      else if( y > 1.0 )
+        y = y / motherSize.width;
+      double width = guiConfig->GetD( "width" );
+      if( width > 1.0 )
+        width = guiConfig->GetD( "width" ) / motherSize.width;
+      double height = guiConfig->GetD( "height" );
+      if( height > 1.0 )
+        height = guiConfig->GetD( "height" ) / motherSize.height;
       return sf::Rect<double>( x, y, width, height );
     }
   else // Assume local

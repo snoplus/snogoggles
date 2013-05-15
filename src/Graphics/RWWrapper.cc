@@ -36,15 +36,25 @@ RWWrapper::Draw( Text& object )
 {
   sf::Text sfmlText( object.GetString(), fFont );
   sf::Rect<double> resPos = object.GetRect()->GetRect( Rect::eResolution );
-  sfmlText.setPosition( resPos.left, resPos.top );
-  // Now the character size, start with the height divided by number of lines
-  double characterSize = resPos.height / object.GetNumLines();
-  if( characterSize * object.GetMaxLineLength() / 2.0 > resPos.width )
-    // Too large go for safer smaller
-    characterSize = resPos.width * 2.0 / object.GetMaxLineLength();
-  if( characterSize < 1.0 )
-    characterSize = 1.0;
-  sfmlText.setCharacterSize( characterSize ); // Must use this and not scale to avoid bounding box bug.
+  if( object.GetCharSize() > 0 )
+    sfmlText.setCharacterSize( object.GetCharSize() );
+  else
+    {
+      // First find the largest character size that works
+      for( unsigned int charSize = 2; charSize < 40; charSize++ )
+        {
+          sfmlText.setCharacterSize( charSize );
+          const sf::Rect<float> bounds = sfmlText.getGlobalBounds();
+          if( bounds.width > resPos.width || bounds.height > resPos.height )
+            {
+              sfmlText.setCharacterSize( charSize - 1 );
+              break;
+            }
+        }
+    }
+  double yOffset = sfmlText.getGlobalBounds().top;
+  // Now se the position
+  sfmlText.setPosition( resPos.left - sfmlText.getGlobalBounds().left, resPos.top - yOffset );
   sfmlText.setColor( object.GetColour() );
   DrawObject( sfmlText );
 }

@@ -28,7 +28,7 @@ HistogramBase::SaveConfiguration( ConfigurationTable* configTable )
 
 void
 HistogramBase::Render2d( RWWrapper& windowApp,
-			 const RenderState& renderState )
+                         const RenderState& renderState )
 {
   windowApp.Draw( *fImage );
   for( vector<Text>::iterator iTer = fAxisText.begin(); iTer != fAxisText.end(); iTer++ )
@@ -59,18 +59,17 @@ HistogramBase::RenderToImage()
   if( !fValues.empty() && fYRange.second > 0.0 ) 
     {
       for( unsigned int iStack = 0; iStack < fValues.size(); iStack++ )
-	{
-	  const vector<double> values = fValues[iStack];
-	  const double barWidth = 1.0 / static_cast<double>( values.size() );
-	  for( unsigned int iBin = 0; iBin < values.size(); iBin++ )
-	    {
-	      const double value = values[iBin];
-	      const double binRatio = static_cast<double>( iBin ) / static_cast<double>( values.size() );
-	      sf::Vector2<double> pos( binRatio * ( 1.0 - kAxisMargin ) + kAxisMargin, 1.0 - ScaleY( value ) - kAxisMargin );
-	      sf::Vector2<double> size( barWidth, ScaleY( value ) );
-	      fImage->DrawSquare( pos, size, GetRenderColor( iStack, iBin, value ) );
-	    }
-	}
+        {
+          const vector<double> values = fValues[iStack];
+          for( unsigned int iBin = 0; iBin < values.size(); iBin++ )
+            {
+              const double value = values[iBin];
+              const double binWidth = 1.0 / static_cast<double>( values.size() );
+              sf::Vector2<double> pos( static_cast<double>( iBin ) * binWidth + kAxisMargin, 1.0 - ScaleY( value ) - kAxisMargin );
+              sf::Vector2<double> size( binWidth, ScaleY( value ) );
+              fImage->DrawSquare( pos, size, GetRenderColor( iStack, iBin, value ) );
+            }
+        }
     }
   // Now the axis drawing part, First the axis lines, x then y
   sf::Vector2<double> pos( kAxisMargin, 1.0 - kAxisMargin );
@@ -88,16 +87,17 @@ HistogramBase::RenderToImage()
     {
       const double xValue = xBase * iTick;
       if( xValue >= fXDomain.first && xValue <= fXDomain.second )
-        DrawTickLabel( xValue, true );
+        DrawTickLabel( xValue, xOrdinal, true );
       const double yValue = yBase * iTick;
       if( yValue >= fYRange.first && yValue <= fYRange.second )
-        DrawTickLabel( yValue, false );
+        DrawTickLabel( yValue, yOrdinal, false );
     }
   fImage->Update();
 }
 
 void
 HistogramBase::DrawTickLabel( double value,
+                              int ordinal,
                               bool xAxis )
 {
   sf::Vector2<double> pos, size;
@@ -106,19 +106,25 @@ HistogramBase::DrawTickLabel( double value,
     {
       pos = sf::Vector2<double>( ( value - fXDomain.first ) / ( fXDomain.second - fXDomain.first ) * ( 1.0 - kAxisMargin ) + kAxisMargin, 1.0 - kAxisMargin );
       size = sf::Vector2<double>( 1.0 / fImage->GetWidth(), kAxisMargin / 6.0 );
-      textSize = sf::Rect<double>( pos.x, pos.y, ( 1.0 - kAxisMargin ) / 10.0, kAxisMargin / 2.0 );
-      if( pos.x > 0.9 )
-        textSize.left = pos.x - ( 1.0 - kAxisMargin ) / 15.0;
+      textSize = sf::Rect<double>( pos.x, pos.y, kAxisMargin, kAxisMargin );
+      if( textSize.left > 1.0 - textSize.width )
+        textSize.left = 1.0 - textSize.width;
     }
   else
     {
       pos = sf::Vector2<double>( kAxisMargin - kAxisMargin / 6.0, 1.0 - kAxisMargin - ScaleY( value ) );
       size = sf::Vector2<double>( kAxisMargin / 6.0, 1.0 / fImage->GetHeight() );
-      textSize = sf::Rect<double>( kAxisMargin / 6.0, pos.y - kAxisMargin / 2.0, kAxisMargin - kAxisMargin / 6.0, kAxisMargin / 2.0 );
+      textSize = sf::Rect<double>( kAxisMargin / 6.0, pos.y - kAxisMargin / 2.0, kAxisMargin, kAxisMargin );
     }
   fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
   Text label( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
-  stringstream temp; temp << value;
+  stringstream temp; 
+  if( value == 0.0 )
+    { 
+      for( int iSpaces = 0; iSpaces < ordinal; iSpaces++ )
+        temp << ' ';
+    }
+  temp << value;
   label.SetString( temp.str() );
   fAxisText.push_back( label );
 }

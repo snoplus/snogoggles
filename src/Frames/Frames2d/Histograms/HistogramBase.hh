@@ -60,6 +60,7 @@ protected:
 private:
   /// Draw a tick on the image and save a text
   void DrawTickLabel( double value,
+                      int oridnal,
                       bool xAxis );
   /// Scale the value into a y relative coord
   double ScaleY( const double value ) const;

@@ -45,6 +45,7 @@ ProjectionBase::PostInitialise( const ConfigurationTable* configTable )
 void
 ProjectionBase::Initialise( const sf::Rect<double>& size )
 {
+  ProcessRun();
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ), 1000, 600 );
   fImage->SetSquareSize( sf::Vector2<double>( 1.5 * kLocalSize * GetAspectRatio(), 1.5 * kLocalSize ) );
 

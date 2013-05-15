@@ -21,7 +21,7 @@ RadioSelector::~RadioSelector()
 
 void 
 RadioSelector::Initialise( const vector<string>& options,
-			   bool fixed = false )
+                           bool fixed = false )
 {
   fGUIManager.Clear();
   fPersistLabels.clear();
@@ -40,7 +40,7 @@ RadioSelector::Initialise( const vector<string>& options,
     {
       size.top = rowHeight * iLabel + fullSize.top;
       fPersistLabels.push_back( fGUIManager.NewGUI<GUIs::PersistLabel>( size, Rect::eResolution ) );
-      dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( iLabel ) )->Initialise( 18, options[iLabel] );
+      dynamic_cast<GUIs::PersistLabel*>( fGUIManager.GetGUI( iLabel ) )->Initialise( 18, options[iLabel], fixed );
     }
   SetState( 0 );
 }
