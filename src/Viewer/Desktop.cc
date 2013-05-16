@@ -39,6 +39,7 @@ Desktop::NewEvent( Event& event )
 void 
 Desktop::EventLoop()
 {
+  fFrameManager->Reset();
   fEventPanel->EventLoop();
   fFramePanel->EventLoop();
   fFrameManager->EventLoop();
@@ -104,7 +105,8 @@ Desktop::ProcessData( bool force )
     {
       fFrameManager->ProcessRun();
     }
-  if( force || fEventPanel->GetRenderState().HasChanged() || GUIProperties::GetInstance().HasChanged() || DataSelector::GetInstance().EventChanged() ) 
+  if( force || fEventPanel->GetRenderState().HasChanged() || GUIProperties::GetInstance().HasChanged() || 
+      DataSelector::GetInstance().EventChanged() || fFrameManager->HasChanged() ) 
     {
       fFrameManager->ProcessEvent( fEventPanel->GetRenderState() );
     }

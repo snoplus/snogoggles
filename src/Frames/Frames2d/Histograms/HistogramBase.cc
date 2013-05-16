@@ -58,16 +58,21 @@ HistogramBase::RenderToImage()
   // First the histogram drawing part
   if( !fValues.empty() && fYRange.second > 0.0 ) 
     {
-      for( unsigned int iStack = 0; iStack < fValues.size(); iStack++ )
+      const double binWidth = 1.0 / static_cast<double>( fValues.size() );
+      for( unsigned int iBin = 0; iBin < fValues.size(); iBin++ )
         {
-          const vector<double> values = fValues[iStack];
-          for( unsigned int iBin = 0; iBin < values.size(); iBin++ )
+          const vector<double> values = fValues[iBin];
+          double valueOffset = 0.0; // Sum of the previous stack values
+          for( unsigned int iStack = 0; iStack < values.size(); iStack++ )
             {
-              const double value = values[iBin];
-              const double binWidth = 1.0 / static_cast<double>( values.size() );
-              sf::Vector2<double> pos( static_cast<double>( iBin ) * binWidth + kAxisMargin, 1.0 - ScaleY( value ) - kAxisMargin );
-              sf::Vector2<double> size( binWidth, ScaleY( value ) );
-              fImage->DrawSquare( pos, size, GetRenderColor( iStack, iBin, value ) );
+              const double value = values[iStack] + valueOffset;
+              if( value > 0.0 )
+                {
+                  sf::Vector2<double> pos( static_cast<double>( iBin ) * binWidth + kAxisMargin, 1.0 - ScaleY( value ) - kAxisMargin );
+                  sf::Vector2<double> size( binWidth, ScaleY( value ) - ScaleY( valueOffset ) );
+                  fImage->DrawSquare( pos, size, GetRenderColor( iStack, iBin, value - valueOffset ) );
+                }
+              valueOffset += values[iStack];
             }
         }
     }
@@ -119,12 +124,12 @@ HistogramBase::DrawTickLabel( double value,
   fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetAspect() );
   Text label( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );
   stringstream temp; 
+  temp << value;
   if( value == 0.0 )
     { 
       for( int iSpaces = 0; iSpaces < ordinal; iSpaces++ )
         temp << ' ';
     }
-  temp << value;
   label.SetString( temp.str() );
   fAxisText.push_back( label );
 }

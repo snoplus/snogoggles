@@ -229,6 +229,7 @@ void
 FrameManager::NewFrame( const string& frameName,
                         const ConfigurationTable* configTable )
 {
+  fChanged = true;
   sf::Rect<double> rect( 0.0, 1.0, 121.0, 121.0 ); // Standard start 'guess' position
   RectPtr rectPtr( fRect->NewDaughter( rect, Rect::eResolution ) );
   FrameContainer* newFrame = new FrameContainer( rectPtr );
@@ -266,6 +267,7 @@ FrameManager::DeleteFrame( const int targetFrame )
   fFrameContainers.erase( fFrameContainers.begin() + targetFrame );
   fFocus = -1;
   fState = eNormal;
+  fChanged = true;
 }
 
 bool

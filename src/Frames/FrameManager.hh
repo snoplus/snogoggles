@@ -74,6 +74,10 @@ public:
                  const ConfigurationTable* configTable = NULL );
   /// Toggle screenshot mode
   void ToggleScreenshot( bool screenshot );
+  /// Reset the has changed flag
+  void Reset() { fChanged = false; }
+  /// Return true if changed (new or deleted frame)
+  bool HasChanged() const { return fChanged; }
 private:
   /// Send an event to a frame container
   FrameEvent SendEvent( const int targetFrame,
@@ -97,6 +101,7 @@ private:
   sf::Vector2<double> fPressOffset; /// < Vector between fPressPosition and frame top left on press, from top left to press pos
   int fFocus; /// < The current frame focus
   EState fState; /// < Current Frame manager state
+  bool fChanged; /// < Has the FrameManager changed since last reset (new or deleted frame)
 };
 
 inline bool

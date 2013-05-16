@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<GUI version="1" desktops="8" fontSize="22">
+<GUI version="1" desktops="8" fontSize="23">
   <Font type="Fudd.ttf" />
   <FrameManager x="0.0" y="0.0" width="0.9" height="0.9" />
   <GUIPanel x="0.7" y="0.9" width="0.2" height="0.1" system="local">

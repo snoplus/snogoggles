@@ -105,7 +105,7 @@ DataStore::Move( RIDS::Event* event,
 RIDS::Event*
 DataStore::Peek( int step )
 {
-  if( step < min( -fEventsAdded, -static_cast<int>( fEvents.size() ) ) )
+  if( step <= -min( fEventsAdded, static_cast<int>( fEvents.size() ) ) )
     return NULL;
   if( fEventsAdded > fEvents.size() )
     return fEvents[AdjustIndex( fRead, fEvents.size(), step )];

@@ -19,7 +19,7 @@ HistogramStream::ProcessEvent( const RenderState& renderState )
 {
   // Initialise the stacks
   fValues.clear();
-  fValues.resize( fNumStacks, vector<double>( fNumBins, 0.0 ) );
+  fValues.resize( fNumBins, vector<double>( fNumStacks, 0.0 ) );
   // Now fill
   fXDomain = pair<double, double>( 0.0, fNumBins );
   if( fNumBins > GetMaxNumberOfBins() )
@@ -48,7 +48,7 @@ HistogramStream::ProcessEvent( const RenderState& renderState )
     {
       double value = 0.0;
       for( unsigned int iStack = 0; iStack < fNumStacks; iStack++ )
-        value += fValues[iStack][iBin];
+        value += fValues[iBin][iStack];
       maxValue = max( value, maxValue );
     }
   fYRange = pair<double, double>( 0.0, maxValue );
@@ -58,8 +58,8 @@ HistogramStream::ProcessEvent( const RenderState& renderState )
 
 Colour 
 HistogramStream::GetRenderColor( const unsigned int stack,
-				 const unsigned int,
-				 const double )
+                                 const unsigned int,
+                                 const double )
 {
   return GUIProperties::GetInstance().GetColourPalette().GetColour( static_cast<double>( stack ) / static_cast<double>( fNumStacks ) );
 }
