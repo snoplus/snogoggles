@@ -26,7 +26,7 @@ namespace Viewer
 class Fibre3d : public Module3d
 {
 public:
-  Fibre3d( RectPtr rect ) : Module3d( rect ) { }
+  Fibre3d( RectPtr rect ) : Module3d( rect ), fDisplayAMELLIE( false ), fDisplaySMELLIE( false ), fDisplayTELLIE( false ) { }
   virtual ~Fibre3d() { }
   /// The event loop
   virtual void EventLoop();

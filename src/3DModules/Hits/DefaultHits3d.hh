@@ -33,7 +33,7 @@ namespace Viewer
 class DefaultHits3d : public Module3d
 {
 public:
-  DefaultHits3d( RectPtr rect ) : Module3d( rect ), fDisplayAll( true ), fDisplayFront( true ) { }
+  DefaultHits3d( RectPtr rect ) : Module3d( rect ), fDisplayAll( false ), fDisplayFront( true ) { }
   virtual ~DefaultHits3d() { }
   /// The event loop
   virtual void EventLoop();

@@ -31,7 +31,7 @@ namespace Viewer
 class Arcball3d : public Camera3d
 {
 public:
-  Arcball3d( RectPtr rect ) : Camera3d( rect ), fDragRotate( false ) { }
+  Arcball3d( RectPtr rect ) : Camera3d( rect ), fDragRotate( false ), fRotate( false ) { }
   virtual ~Arcball3d() { }
   /// The event loop
   virtual void EventLoop();
