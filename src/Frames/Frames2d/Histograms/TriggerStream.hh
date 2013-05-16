@@ -36,7 +36,7 @@ public:
   /// Save the configuration
   void SaveConfiguration( ConfigurationTable* configTable );
 
-  virtual void EventLoop() { };
+  virtual void EventLoop();
   
   virtual std::string GetName() { return TriggerStream::Name(); }
   

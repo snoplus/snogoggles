@@ -3,6 +3,7 @@
 #include <Viewer/RWWrapper.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIProperties.hh>
+#include <Viewer/MapArea.hh>
 using namespace Viewer;
 using namespace Viewer::Frames;
 
@@ -11,6 +12,7 @@ const double kAxisMargin = 0.1;
 HistogramBase::~HistogramBase()
 {
   delete fImage;
+  delete fInfoText;
 }
 
 void 
@@ -36,18 +38,43 @@ HistogramBase::Render2d( RWWrapper& windowApp,
       iTer->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
       windowApp.Draw( *iTer );
     }
+  if( fMousePos.x > 0.0 && fMousePos.x < 1.0 )
+    {
+      const int bin = static_cast<int>( fMousePos.x * fValues.size() );
+      stringstream info;
+      info << "(" << bin;
+      info << ", " << fMousePos.x * ( fXDomain.second - fXDomain.first ) + fXDomain.first;
+      for( unsigned int iStack = 0; iStack < fValues[bin].size(); iStack++ )
+        info << ", " << fValues[bin][iStack];
+      info << ")";
+      fInfoText->SetString( info.str() );
+      fInfoText->SetColour( GUIProperties::GetInstance().GetGUIColourPalette().GetText() );
+      windowApp.Draw( *fInfoText );
+    }
 }
 
 void
-HistogramBase::Initialise( const sf::Rect<double> imageSize )
+HistogramBase::Initialise()
 {
+  const sf::Rect<double> imageSize( 0.0, 0.0, 1.0, 1.0 );
   fImage = new ProjectionImage( RectPtr( fRect->NewDaughter( imageSize, Rect::eLocal ) ) );
+  const sf::Rect<double> mapSize( kAxisMargin, 0.0, 1.0 - kAxisMargin, 1.0 - kAxisMargin );
+  fGUIManager.NewGUI<GUIs::MapArea>( mapSize, Rect::eLocal );
+  const sf::Rect<double> infoSize( 0.2, 1.0 - kAxisMargin / 2.0, 0.6, kAxisMargin / 2.0 );
+  fInfoText = new Text( RectPtr( fRect->NewDaughter( infoSize, Rect::eLocal ) ) );
 }
 
 unsigned int
 HistogramBase::GetMaxNumberOfBins()
 {
   return static_cast<unsigned int>( static_cast<double>( fImage->GetWidth() ) * ( 1.0 - kAxisMargin ) );
+}
+
+void
+HistogramBase::GUIEvent( unsigned int guiID )
+{
+  if( guiID == 0 )
+    fMousePos = dynamic_cast<GUIs::MapArea*>( fGUIManager.GetGUI( 0 ) )->GetPosition();
 }
 
 void

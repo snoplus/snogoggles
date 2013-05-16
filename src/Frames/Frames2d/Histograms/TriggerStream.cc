@@ -10,8 +10,7 @@ void
 TriggerStream::PreInitialise( const ConfigurationTable* configTable )
 {
   HistogramBase::PreInitialise( configTable );
-  sf::Rect<double> imageSize( 0.0, 0.0, 1.0, 1.0 );
-  Initialise( imageSize );
+  Initialise();
   SetNumBinsStacks( 200, 6 );
 }
 
@@ -19,6 +18,21 @@ void
 TriggerStream::SaveConfiguration( ConfigurationTable* configTable )
 {
   HistogramBase::SaveConfiguration( configTable );
+}
+
+void
+TriggerStream::EventLoop()
+{
+  while( !fEvents.empty() )
+    {
+      switch( fEvents.front().fguiID )
+        {
+        case 0: // Nothing to do with this class
+          GUIEvent( 0 );
+          break;
+        }
+      fEvents.pop();
+    }
 }
 
 void

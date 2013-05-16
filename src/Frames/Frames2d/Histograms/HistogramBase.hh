@@ -41,10 +41,9 @@ public:
   
   virtual void Render2d( RWWrapper& renderApp, 
                          const RenderState& renderState );
-
 protected:
   /// Initialise the histogram
-  void Initialise( const sf::Rect<double> imageSize );
+  void Initialise();
   /// Return the bin render colour, based on the stack, bin or value (as appropriate)
   virtual Colour GetRenderColor( const unsigned int stack,
 				 const unsigned int bin,
@@ -53,6 +52,8 @@ protected:
   unsigned int GetMaxNumberOfBins();
   /// Render the histogram to the image
   void RenderToImage();
+  /// Should be called by derived classes when they don't recognise the event
+  void GUIEvent( unsigned int eventID );
 
   std::vector< std::vector<double> > fValues; /// < The stack of histogram bin values
   std::pair<double, double> fXDomain; /// < Domain in x that corresponds to the bins, from low to high
@@ -66,6 +67,8 @@ private:
   double ScaleY( const double value ) const;
 
   std::vector<Text> fAxisText; /// < The axis labels
+  sf::Vector2<double> fMousePos; /// < The mouse position (-1, -1) if not in frame
+  Text* fInfoText; /// < Displays info about the selected bin
   ProjectionImage* fImage; /// < The actual image
   bool fLogY; /// < Display Y in log scale
 };
