@@ -38,7 +38,7 @@ public:
   inline GUIManager( RectPtr rect );
   ~GUIManager();
   /// Handle an event
-  GUIEvent NewEvent( const Event& event );
+  std::vector<GUIEvent> NewEvent( const Event& event );
   /// Render the GUI objects
   void Render( RWWrapper& windowApp );
   /// Make a GUI object under management, deleted by this class

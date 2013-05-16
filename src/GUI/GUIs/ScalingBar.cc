@@ -43,13 +43,11 @@ ScalingBar::Render( RWWrapper& renderApp )
 GUIEvent 
 ScalingBar::NewEvent( const Event& event )
 {
-  GUIEvent eventReturned = fGUIManager.NewEvent( event );
-  if( !eventReturned.IsNULL() )
-    {
-      if( eventReturned.fguiID == 1 ) // Reset button pressed
+  vector<GUIEvent> guiEvents = fGUIManager.NewEvent( event );
+  for( vector<GUIEvent>::const_iterator iTer = guiEvents.begin(); iTer != guiEvents.end(); iTer++ )
+    if( iTer->IsNULL() == false && iTer->fguiID == 1 )
         fScaler->Reset();
       return GUIEvent( fID, fGlobalID );
-    }
   return GUIEvent();
 }
 

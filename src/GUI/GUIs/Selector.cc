@@ -47,18 +47,19 @@ Selector::Initialise( const vector<string>& options )
 GUIEvent 
 Selector::NewEvent( const Event& event )
 {
-  GUIEvent returnedEvent = fGUIManager.NewEvent( event );
-  if( !returnedEvent.IsNULL() )
-    {
-      if( returnedEvent.fguiID == 1 ) // Next option
-        fState = ( fState + 1 ) % fOptions.size();
-      if( returnedEvent.fguiID == 0 ) // Prev option
-        if( fState == 0 )
-          fState = fOptions.size() - 1;
-        else
-          fState = ( fState - 1 ) % fOptions.size();
-      return GUIEvent( fID, fGlobalID );
-    }
+  vector<GUIEvent> guiEvents = fGUIManager.NewEvent( event );
+  for( vector<GUIEvent>::const_iterator iTer = guiEvents.begin(); iTer != guiEvents.end(); iTer++ )
+    if( iTer->IsNULL() == false )
+      {
+        if( iTer->fguiID == 1 ) // Next option
+          fState = ( fState + 1 ) % fOptions.size();
+        if( iTer->fguiID == 0 ) // Prev option
+          if( fState == 0 )
+            fState = fOptions.size() - 1;
+          else
+            fState = ( fState - 1 ) % fOptions.size();
+        return GUIEvent( fID, fGlobalID );
+      }
   return GUIEvent();
 }
 

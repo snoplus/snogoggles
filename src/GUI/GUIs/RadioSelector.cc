@@ -54,12 +54,13 @@ RadioSelector::Render( RWWrapper& renderApp )
 GUIEvent 
 RadioSelector::NewEvent( const Event& event )
 {
-  GUIEvent eventReturned = fGUIManager.NewEvent( event );
-  if( !eventReturned.IsNULL() )
-    {
-      SetState( eventReturned.fguiID );
-      return GUIEvent( fID, fGlobalID );
-    }
+  vector<GUIEvent> guiEvents = fGUIManager.NewEvent( event );
+  for( vector<GUIEvent>::const_iterator iTer = guiEvents.begin(); iTer != guiEvents.end(); iTer++ )
+    if( iTer->IsNULL() == false )
+      {
+        SetState( iTer->fguiID );
+        return GUIEvent( fID, fGlobalID );
+      }
   return GUIEvent();
 }
 

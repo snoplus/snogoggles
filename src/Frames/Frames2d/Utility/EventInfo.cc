@@ -52,6 +52,7 @@ EventInfo::ProcessEvent( const RenderState& renderState )
   eventInfo << "Sub Run :" << event.GetSubRunID() << endl;
   eventInfo << "Event GTID :" << event.GetEventID() << endl;
   eventInfo << "Trigger :" << TriggerToString( event.GetTrigger() ) << endl;
+  eventInfo << "Time :" << event.GetTime().GetTime() << endl;
 
   /*const vector<string> sourceNames = RIDS::Event::GetSourceNames();
   for( size_t source = 0; source < sourceNames.size(); source++ )

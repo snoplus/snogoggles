@@ -88,5 +88,10 @@ ReceiverThread::BuildRIDSEvent( RAT::DS::Root* rDS )
   unCal.SetType( 3, qlx );
   RIDS::Event* event = new RIDS::Event();
   event->SetSource( 0, unCal );
+  event->SetRunID( rDS->GetRunID() );
+  event->SetSubRunID( rDS->GetSubRunID() );
+  event->SetEventID( rEV->GetEventID() );
+  event->SetTrigger( rEV->GetTrigType() );
+  event->SetTime( RIDS::Time( rEV->GetClockCount10() ) );
   DataStore::GetInstance().AddEvent( event );
 }

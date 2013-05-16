@@ -15,9 +15,10 @@ Module3d::~Module3d()
 void 
 Module3d::NewEvent( const Event& event )
 {
-  GUIEvent guiEvent = fGUIManager.NewEvent( event );
-  if( guiEvent.IsNULL() == false )
-    fEvents.push( guiEvent );
+  vector<GUIEvent> guiEvents = fGUIManager.NewEvent( event );
+  for( vector<GUIEvent>::const_iterator iTer = guiEvents.begin(); iTer != guiEvents.end(); iTer++ )
+    if( iTer->IsNULL() == false )
+      fEvents.push( *iTer );
 }
 
 void

@@ -89,8 +89,8 @@ Time::operator-( const Time& rhs ) const
   int rhsDate = rhs.fDay + rhs.fMonth * 1000 + rhs.fYear * 100000;
   if( date != rhsDate )
     return INT_MAX;
-  int time = fSec + fMin * 100 + fHour * 10000;
-  int rhsTime = rhs.fSec + rhs.fMin * 100 + rhs.fHour * 10000;
+  int time = fSec + fMin * 60 + fHour * 60 * 60;
+  int rhsTime = rhs.fSec + rhs.fMin * 60 + rhs.fHour * 60 * 60;
   return time - rhsTime;
 }
 

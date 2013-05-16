@@ -26,7 +26,7 @@ public:
   GUIEvent() : fguiID( -1 ), fGlobalID( -1 ), fNULL( true ) { }
   inline GUIEvent( unsigned int guiID, unsigned int globalID );
 
-  inline bool IsNULL();
+  inline bool IsNULL() const;
 
   unsigned int fguiID;
   unsigned int fGlobalID;
@@ -40,7 +40,7 @@ GUIEvent::GUIEvent( unsigned int guiID, unsigned int globalID )
 }
 
 bool
-GUIEvent::IsNULL()
+GUIEvent::IsNULL() const
 {
   return fNULL;
 }

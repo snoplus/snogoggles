@@ -18,28 +18,28 @@ GUIManager::Clear()
   fGUIObjects.clear();
 }
 
-GUIEvent 
+vector<GUIEvent> 
 GUIManager::NewEvent( const Event& event )
 {
-  GUIEvent retEvent; // Returned event
+  vector<GUIEvent> retEvents; // Returned event
   int oldFocus = fFocus;
   switch( event.type )
     {
     case sf::Event::LostFocus:
       for( vector<GUI*>::iterator iTer = fGUIObjects.begin(); iTer != fGUIObjects.end(); iTer++ )
-        (*iTer)->NewEvent( event );
+        retEvents.push_back( (*iTer)->NewEvent( event ) );
       fFocus = -1;
       break;
 // First events that go straight through to Focus
     case sf::Event::KeyPressed:
     case sf::Event::KeyReleased:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-        retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvents.push_back( fGUIObjects[fFocus]->NewEvent( event ) );
       break;
 // Now events that go straight through to Focus and change the focus   
     case sf::Event::MouseButtonReleased:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-        retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvents.push_back( fGUIObjects[fFocus]->NewEvent( event ) );
       fFocus = FindGUI( event.GetPos() );
       break;
 // Now events that change the focus   
@@ -47,22 +47,22 @@ GUIManager::NewEvent( const Event& event )
     case sf::Event::MouseButtonPressed:
       fFocus = FindGUI( event.GetPos() );
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-        retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvents.push_back( fGUIObjects[fFocus]->NewEvent( event ) );
       break;
 
 // All other events, e.g. text
     default:
       if( fFocus >= 0 && fFocus < fGUIObjects.size() )
-        retEvent = fGUIObjects[fFocus]->NewEvent( event );
+        retEvents.push_back( fGUIObjects[fFocus]->NewEvent( event ) );
       break;
     }
 // Focus change
   if( oldFocus != fFocus && oldFocus != -1 ) 
     {
       Event lostFocus( sf::Event::LostFocus );
-      fGUIObjects[oldFocus]->NewEvent( lostFocus );
+      retEvents.push_back(fGUIObjects[oldFocus]->NewEvent( lostFocus ) );
     }
-  return retEvent;
+  return retEvents;
 }
   
 void 
