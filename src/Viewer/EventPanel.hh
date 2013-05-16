@@ -27,7 +27,8 @@ namespace Viewer
 class EventPanel : public Panel
 {
 public:
-  EventPanel( RectPtr rect );
+  EventPanel( RectPtr rect,
+              RenderState& renderState );
   ~EventPanel();
   /// On new event
   void NewEvent( const Event& event );
@@ -47,12 +48,12 @@ protected:
 
   void ChangeRateMode( double period, bool latest );
 
-  RenderState fRenderState; /// < Current render state.
+  RenderState& fRenderState; /// < Reference to the desktop current render state.
   sf::Clock fClock; /// < Clock to manage continuous event switching
   double fEventPeriod; /// < Time period in seconds per event, negative values indicate no continuous switching
   bool fLatest; /// < Latest event switching
 private:
-  enum { eMultiPrev = 0, ePrev = 1, eNext = 2, eMultiNext = 3, eDataSource = 4, eDataType = 5, eRate = 6, eLatest = 8, eIDInput = 9 };
+  enum { eMultiPrev = 0, ePrev = 1, eNext = 2, eMultiNext = 3, eDataSource = 4, eDataType = 5, eRate = 6, eGotoID = 7, eLatest = 8, eIDInput = 9 };
 };
 
 const RenderState

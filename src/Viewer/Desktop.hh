@@ -19,11 +19,13 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <Viewer/RectPtr.hh>
+#include <Viewer/RenderState.hh>
 
 namespace Viewer
 {
   class EventPanel;
   class FramePanel;
+  class ScalingPanel;
   class FrameManager;
   class Event;
   class ConfigurationTable;
@@ -56,10 +58,12 @@ public:
   /// Set screenshot mode (or not)
   void ToggleScreenshot( bool enable );
 private:
+  RenderState fRenderState; /// < The desktop render state
   RectPtr fRect; /// < The desktop rect
   FrameManager* fFrameManager; /// < The frame maanager
   EventPanel* fEventPanel; /// < The GUI which controls the render state (Charge, Time, UnCal etc...)
   FramePanel* fFramePanel; /// < GUI control of the frame existance
+  ScalingPanel* fScalingPanel; /// < Controls the colours/scaling
   bool fScreenshotMode; /// < In screenshot mode?
 };
 

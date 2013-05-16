@@ -74,7 +74,7 @@ GUIPanel::LoadGUIConfiguration( const ConfigurationTable* config )
       const ConfigurationTable* objectConfig = config->GetTable( uGUIs );
       if( objectConfig->GetName() == string( "gui" ) )
         {
-          sf::Rect<double> posRect( objectConfig->GetD( "x" ), objectConfig->GetD( "y" ), objectConfig->GetD( "width" ), objectConfig->GetD( "height" ) );
+          sf::Rect<double> posRect = LoadRect( objectConfig, fRect );
           switch( objectConfig->GetI( "effect" ) )
             {
             case 0:

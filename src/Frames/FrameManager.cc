@@ -11,13 +11,14 @@ using namespace std;
 #include <Viewer/Event.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIProperties.hh>
+#include <Viewer/Panel.hh>
 using namespace Viewer;
 
 FrameManager::FrameManager( RectPtr rect )
   : fRect( rect )
 {
   const ConfigurationTable* guiConfig = GUIProperties::GetInstance().GetConfiguration( "FrameManager" );
-  sf::Rect<double> frameRect( guiConfig->GetD( "x" ), guiConfig->GetD( "y" ), guiConfig->GetD( "width" ), guiConfig->GetD( "height" ) );
+  sf::Rect<double> frameRect = Panel::LoadRect( guiConfig );
   fRect->SetRect( frameRect, Rect::eLocal );
 }
 

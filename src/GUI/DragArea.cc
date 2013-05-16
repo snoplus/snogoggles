@@ -15,9 +15,9 @@ DragArea::NewEvent( const Event& event )
       fStartPos = event.GetPos();
       fCurrentPos = event.GetPos();
       if( event.mouseButton.button == sf::Mouse::Left )
-	fLeftPressed = true;
+        fLeftPressed = true;
       else if( event.mouseButton.button == sf::Mouse::Right )
-	fRightPressed = true;
+        fRightPressed = true;
       break;
     case sf::Event::MouseMoved:
       if( fLeftPressed || fRightPressed )

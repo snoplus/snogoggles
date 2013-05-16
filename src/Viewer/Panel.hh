@@ -55,11 +55,14 @@ public:
   inline bool ContainsPoint( const sf::Vector2<double>& point );
   /// Set wether the panel is enabled
   void SetEnable( bool enable ) { fEnabled = enable; }
+  /// Return the correct sf rect as loaded
+  static sf::Rect<double> LoadRect( const ConfigurationTable* guiConfig, RectPtr mother );
+
+  static sf::Rect<double>
+  LoadRect( const ConfigurationTable* guiConfig );
 protected:
   /// Load the GUI configuration specific to the panel
   virtual void LoadGUIConfiguration( const ConfigurationTable* guiConfig ) = 0;
-  /// Return the correct sf rect as loaded
-  sf::Rect<double> LoadRect( const ConfigurationTable* guiConfig, RectPtr mother );
 
 
   RectPtr fRect; /// < The DMUI drawable area
@@ -75,12 +78,9 @@ protected:
 private:
   Panel();
 
-  sf::Rect<double>
-  LoadRect( const ConfigurationTable* guiConfig );
-
-  sf::Rect<double>
+  static sf::Rect<double>
   LoadRect( const ConfigurationTable* guiConfig,
-	    const sf::Rect<double> motherSize );
+            const sf::Rect<double> motherSize );
 };
 
 inline bool

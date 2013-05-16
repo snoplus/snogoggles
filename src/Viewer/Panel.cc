@@ -99,7 +99,7 @@ Panel::Render( RWWrapper& renderApp )
 
 sf::Rect<double> /// Always returns in local coords
 Panel::LoadRect( const ConfigurationTable* guiConfig, 
-		 RectPtr mother )
+                 RectPtr mother )
 {
   return LoadRect( guiConfig, mother->GetRect( Rect::eResolution ) );
 }
@@ -123,8 +123,12 @@ Panel::LoadRect( const ConfigurationTable* guiConfig,
       double y = guiConfig->GetD( "y" ) / motherSize.height;
       if( guiConfig->GetD( "y" ) < 0.0 )
         y = ( motherSize.height + guiConfig->GetD( "y" ) ) / motherSize.height;
-      const double width = guiConfig->GetD( "width" ) / motherSize.width;
-      const double height = guiConfig->GetD( "height" ) / motherSize.height;
+      double width = guiConfig->GetD( "width" ) / motherSize.width;
+      if( guiConfig->GetD( "width" ) < 0.0 )
+        width = ( motherSize.width + guiConfig->GetD( "width" ) ) / motherSize.width;
+      double height = guiConfig->GetD( "height" ) / motherSize.height;
+      if( guiConfig->GetD( "height" ) < 0.0 )
+        height = ( motherSize.height + guiConfig->GetD( "height" ) ) / motherSize.height;
       return sf::Rect<double>( x, y, width, height );
     }
   else if( guiConfig->GetS( "system" ) == string( "mixed" ) )

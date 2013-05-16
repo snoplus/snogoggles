@@ -52,7 +52,7 @@ protected:
 
 inline void
 Scaler::SetState( const double min,
-                      const double max )
+                  const double max )
 {
   fMinValue = min;
   fMaxValue = max;

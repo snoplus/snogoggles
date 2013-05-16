@@ -17,8 +17,9 @@ using namespace Viewer;
 #include <Viewer/RIDS/Event.hh>
 
 
-EventPanel::EventPanel( RectPtr rect )
-  : Panel( rect, "EventPanel" )
+EventPanel::EventPanel( RectPtr rect, 
+                        RenderState& renderState )
+  : Panel( rect, "EventPanel" ), fRenderState( renderState )
 {
   fRenderState.ChangeState( 0, 0 );
   fLatest = false;
@@ -78,6 +79,7 @@ EventPanel::EventLoop()
           eventSelector.Move( +1 );
           break;
         case eIDInput:
+        case eGotoID:
           {
             stringstream input( dynamic_cast<GUIs::TextBox*>( fGUIs[eIDInput] )->GetString() );
             int id; input >> id;
@@ -193,6 +195,10 @@ EventPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               break;
             case eIDInput:
               fGUIs[effect] = fGUIManager.NewGUI< GUIs::TextBox >( posRect, effect );
+              break;
+            case eGotoID:
+              fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+              dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 41 );
               break;
             }
         }

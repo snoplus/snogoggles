@@ -8,6 +8,7 @@ using namespace std;
 #include <Viewer/FrameManager.hh>
 #include <Viewer/EventPanel.hh>
 #include <Viewer/FramePanel.hh>
+#include <Viewer/ScalingPanel.hh>
 #include <Viewer/RenderState.hh>
 #include <Viewer/ConfigurationTable.hh>
 #include <Viewer/GUIProperties.hh>
@@ -25,6 +26,7 @@ Desktop::~Desktop()
 {
   delete fEventPanel;
   delete fFramePanel;
+  delete fScalingPanel;
   delete fFrameManager;
 }
 
@@ -35,6 +37,7 @@ Desktop::NewEvent( Event& event )
   fEventPanel->NewEvent( event );
   fFramePanel->NewEvent( event );
   fFrameManager->NewEvent( event );
+  fScalingPanel->NewEvent( event );
 }
 void 
 Desktop::EventLoop()
@@ -43,29 +46,34 @@ Desktop::EventLoop()
   fEventPanel->EventLoop();
   fFramePanel->EventLoop();
   fFrameManager->EventLoop();
+  fScalingPanel->EventLoop();
 }
 
 void 
 Desktop::PreInitialise( const ConfigurationTable* configTable )
 {
   // First initialise the UI
-  fEventPanel = new EventPanel( RectPtr( fRect->NewDaughter() ) );
+  fEventPanel = new EventPanel( RectPtr( fRect->NewDaughter() ), fRenderState );
   // Now initialise the FrameManager
   RectPtr frameMotherRect = RectPtr( fRect->NewDaughter() );
   fFrameManager = new FrameManager( frameMotherRect );
   // Now the FramePanel
   fFramePanel = new FramePanel( RectPtr( fRect->NewDaughter() ), frameMotherRect, *fFrameManager );
+  // Now the ScalingPanel
+  fScalingPanel = new ScalingPanel( RectPtr( fRect->NewDaughter() ), fRenderState );
   if( configTable != NULL )
     {
       fEventPanel->PreInitialise( configTable->GetTable( "eventPanel" ) );
       fFramePanel->PreInitialise( configTable->GetTable( "framePanel" ) );
       fFrameManager->PreInitialise( configTable->GetTable( "frameManager" ) );
+      fScalingPanel->PreInitialise( configTable->GetTable( "scalingPanel" ) );
     }
   else
     {
       fEventPanel->PreInitialise( NULL );
       fFramePanel->PreInitialise( NULL );
       fFrameManager->PreInitialise( NULL );
+      fScalingPanel->PreInitialise( NULL );
     }
 }
 
@@ -77,12 +85,14 @@ Desktop::PostInitialise( const ConfigurationTable* configTable )
       fEventPanel->PostInitialise( configTable->GetTable( "eventPanel" ) );
       fFramePanel->PostInitialise( configTable->GetTable( "framePanel" ) );
       fFrameManager->PostInitialise( configTable->GetTable( "frameManager" ) );
+      fScalingPanel->PostInitialise( configTable->GetTable( "scalingPanel" ) );
     }
   else
     {
       fEventPanel->PostInitialise( NULL );
       fFramePanel->PostInitialise( NULL );
       fFrameManager->PostInitialise( NULL );
+      fScalingPanel->PostInitialise( NULL );
     }
 }
 
@@ -95,6 +105,8 @@ Desktop::SaveConfiguration( ConfigurationTable* configTable )
   fFramePanel->SaveConfiguration( fpTable );
   ConfigurationTable* fmTable = configTable->NewTable( "frameManager" );
   fFrameManager->SaveConfiguration( fmTable );
+  ConfigurationTable* spTable = configTable->NewTable( "scalingPanel" );
+  fScalingPanel->SaveConfiguration( fmTable );
 }
 
 void
@@ -115,31 +127,29 @@ Desktop::ProcessData( bool force )
 void 
 Desktop::Render2d( RWWrapper& renderApp )
 {
-  const RenderState renderState = fEventPanel->GetRenderState();
-  fFrameManager->Render2d( renderApp, renderState );
+  fFrameManager->Render2d( renderApp, fRenderState );
   if( fScreenshotMode )
     {
       sf::Rect<double> size;
       size.left= 0.0; size.top= 0.96; size.width = 1.0; size.height = 0.02;
       EventSummary evSum( RectPtr( fRect->NewDaughter( size, Rect::eLocal ) ) );
-      evSum.Render( renderApp, renderState );
+      evSum.Render( renderApp, fRenderState );
     }
 }
 
 void 
 Desktop::Render3d( RWWrapper& renderApp )
 {
-  const RenderState renderState = fEventPanel->GetRenderState();
-  fFrameManager->Render3d( renderApp, renderState );
+  fFrameManager->Render3d( renderApp, fRenderState );
 }
 
 void 
 Desktop::RenderGUI( RWWrapper& renderApp )
 {
-  const RenderState renderState = fEventPanel->GetRenderState();
-  fFrameManager->RenderGUI( renderApp, renderState );
+  fFrameManager->RenderGUI( renderApp, fRenderState );
   fEventPanel->Render( renderApp );
   fFramePanel->Render( renderApp );
+  fScalingPanel->Render( renderApp );
 }
 
 void
