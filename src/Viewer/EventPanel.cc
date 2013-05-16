@@ -245,6 +245,6 @@ EventPanel::ChangeScaling()
   const RIDS::Event& event = DataSelector::GetInstance().GetEvent();
   const double range = event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() - event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin();
   
-  fRenderState.ChangeScaling( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() * range * 0.99,
-                              event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() * range * 1.01 );
+  fRenderState.ChangeScaling( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMin() * range * 0.9,
+                              event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin() + dynamic_cast<GUIs::ScalingBar*>( fGUIs[eScaling] )->GetMax() * range * 1.1 );
 }

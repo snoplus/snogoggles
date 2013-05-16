@@ -6,34 +6,32 @@
 /// \author  Phil Jones <p.g.jones@qmul.ac.uk>
 ///
 /// REVISION HISTORY:\n
-///     29/06/12 : P.Jones - First Revision, new file. \n
+///     16/05/12 : P.Jones - First Revision, new file (refactored version). \n
 ///
-/// \detail  Draws histograms onto the screen. 
+/// \detail  Draws a histogram of the current selected data.
 ///
 ////////////////////////////////////////////////////////////////////////
 
 #ifndef __Viewer_Frames_Histogram__
 #define __Viewer_Frames_Histogram__
 
-#include <SFML/System/Vector2.hpp>
-
-#include <vector>
-
-#include <Viewer/Frame2d.hh>
-#include <Viewer/Text.hh>
+#include <Viewer/HistogramBase.hh>
 
 namespace Viewer
 {
-  class ProjectionImage;
+namespace RIDS
+{
+  class Event;
+}
 
 namespace Frames
 {
 
-class Histogram : public Frame2d
+class Histogram : public HistogramBase
 {
 public:
-  Histogram( RectPtr rect ) : Frame2d( rect ), fLogY( false ) { }
-  ~Histogram();
+  Histogram( RectPtr rect ) : HistogramBase( rect ) { }
+  virtual ~Histogram() { };
 
   /// Initialise without using the DataStore
   void PreInitialise( const ConfigurationTable* configTable );
@@ -43,41 +41,19 @@ public:
   void SaveConfiguration( ConfigurationTable* configTable );
 
   virtual void EventLoop();
-  
+
   virtual std::string GetName() { return Histogram::Name(); }
-  
+
   static std::string Name() { return std::string( "Histogram" ); }
 
   virtual void ProcessEvent( const RenderState& renderState );
 
   virtual void ProcessRun() { };
-
-  virtual void Render2d( RWWrapper& renderApp, 
-                         const RenderState& renderState );
-
-  void Render3d( RWWrapper& renderApp, 
-                 const RenderState& renderState ) { }
-
 protected:
-  void CalculateHistogram( const RenderState& renderState );
-  void DrawHistogram();
-  void DrawAxis();
-
-  void DrawTickLabel( double value,
-                      bool xAxis );
-  int CalculateBin( double value );
-  double ScaleY( double value );
-
-  std::vector<Text> fAxisText;
-  std::vector<double> fValues; /// < The histogram values, by bin (always binned by 1)
-  std::pair<double, double> fXDomain; /// < Domain in x, from low to high
-  std::pair<double, double> fYRange; /// < Range in y, from low to high
-  sf::Vector2<double> fMousePos; /// < The mouse position (-1, -1) if not in frame
-  Text* fInfoText; /// < Displays info about the selected bin
-  ProjectionImage* fImage; /// < The histogram image to display
-  double fBarWidth; /// < Amount of pixels per drawn bin
-  bool fLogY; /// < LogY?
-  bool fOverflow; /// < Plot the overflow bins?
+  /// Return the render colour given the stack, bin and value
+  Colour GetRenderColor( const unsigned int stack,
+                         const unsigned int bin,
+                         const double value );
 };
 
 } // ::Frames
