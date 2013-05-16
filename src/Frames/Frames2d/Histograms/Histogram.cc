@@ -39,10 +39,12 @@ Histogram::ProcessEvent( const RenderState& renderState )
 {
   // Initialise the stacks
   fValues.clear();
-  fValues.resize( GetMaxNumberOfBins(), vector<double>( 1, 0.0 ) );
-  // Now fill
   fXDomain = pair<double, double>( renderState.GetScalingMin(), renderState.GetScalingMax() );
-  double binWidth = 1.0;
+  if( fXDomain.second - fXDomain.first < GetMaxNumberOfBins() )
+    fValues.resize( static_cast<int>( fXDomain.second - fXDomain.first ) + 2, vector<double>( 1, 0.0 ) );
+  else
+    fValues.resize( GetMaxNumberOfBins(), vector<double>( 1, 0.0 ) );
+  // Now fill
   const vector<RIDS::Channel>& hits = DataSelector::GetInstance().GetData( renderState.GetDataSource(), renderState.GetDataType() );
   if( hits.empty() )
     return;
@@ -52,14 +54,14 @@ Histogram::ProcessEvent( const RenderState& renderState )
       if( iTer->GetData() <= fXDomain.first )
         iBin = 0;
       else if( iTer->GetData() >= fXDomain.second )
-        iBin = GetMaxNumberOfBins() - 1;
+        iBin = fValues.size() - 1;
       else
-        iBin = static_cast<int>( ( iTer->GetData() - fXDomain.first ) / ( fXDomain.second - fXDomain.first ) * ( GetMaxNumberOfBins() - 2 ) ) + 1;
+        iBin = static_cast<int>( ( iTer->GetData() - fXDomain.first ) / ( fXDomain.second - fXDomain.first ) * ( fValues.size() - 2 ) ) + 1;
       fValues[iBin][0] += iTer->GetData();
     }
   // Now find the Y domain
   double maxValue = 0.0;
-  for( unsigned int iBin = 0; iBin < GetMaxNumberOfBins(); iBin++ )
+  for( unsigned int iBin = 0; iBin < fValues.size(); iBin++ )
     {
       double value = fValues[iBin][0];
       maxValue = max( value, maxValue );
