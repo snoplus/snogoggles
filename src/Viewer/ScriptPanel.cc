@@ -47,6 +47,7 @@ ScriptPanel::EventLoop()
           dataSelector.SetSelect( dynamic_cast<GUIs::PersistLabel*>( fGUIs[eEventOn] )->GetState() );
           break;
         case eEventInput:
+        case eEventInputButton:
           dataSelector.SetEventSelectionInput( dynamic_cast<GUIs::TextBox*>( fGUIs[eEventInput] )->GetString() );
           break;
         }
@@ -145,6 +146,12 @@ ScriptPanel::LoadGUIConfiguration( const ConfigurationTable* config )
             case eEventInput:
               {
                 fGUIs[effect] = fGUIManager.NewGUI< GUIs::TextBox >( posRect, effect );
+              }
+              break;
+            case eEventInputButton:
+              {
+                fGUIs[effect] = fGUIManager.NewGUI< GUIs::Button >( posRect, effect );
+                dynamic_cast<GUIs::Button*>( fGUIs[effect] )->Initialise( 41 );
               }
               break;
             }

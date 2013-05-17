@@ -40,8 +40,9 @@ protected:
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
 
   RenderState& fRenderState; /// < Reference to the current desktop render state
+  bool fAutoScale; /// < Auto rescale?
 private:
-  enum { eScaling = 0, eScaleReset = 1, eScaleZoomIn = 2, eScaleZoomOut = 3, eInvertBG = 4, eSelectColour = 5 };
+  enum { eScaling = 0, eAutoScale = 1 };//eScaleReset = 1, eScaleZoomIn = 2, eScaleZoomOut = 3
 };
 
 } //::Viewer

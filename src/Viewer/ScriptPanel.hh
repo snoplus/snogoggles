@@ -38,7 +38,7 @@ protected:
   virtual void LoadGUIConfiguration( const ConfigurationTable* config );
 private:
   enum { eAnalSelect = 0, eAnalRefresh = 1, eAnalOn = 2, 
-         eEventSelect = 3, eEventRefresh = 4, eEventOn = 5, eEventInput = 9,
+         eEventSelect = 3, eEventRefresh = 4, eEventOn = 5, eEventInput = 9, eEventInputButton = 10,
          ePMTSelect = 6, ePMTRefresh = 7, ePMTOn = 8 };
 };
 

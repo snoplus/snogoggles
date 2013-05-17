@@ -107,10 +107,16 @@ AxisScaler::Render( RWWrapper& renderApp )
   sf::Vector2<double> size = sf::Vector2<double>( 1.0, kBarSize );
   fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetA( eBase ) );
   pos = sf::Vector2<double>( ValueToPos( fMinValue ), 0.05 );
-  size = sf::Vector2<double>( 0.05, 0.9 );
-  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetA( eBase ) );
+  size = sf::Vector2<double>( 0.025, 0.9 );
+  if( fState == eNormal || fState == eScalingMax )
+    fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetA( eBase ) );
+  else if( fState == eScalingMin || fState == eBoth )
+    fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetA( eActive ) );
   pos.x = ValueToPos( fMaxValue ) - size.x;
-  fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetA( eBase ) );
+  if( fState == eNormal || fState == eScalingMin )
+    fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetA( eBase ) );
+  else if( fState == eScalingMax || fState == eBoth )
+    fImage->DrawSquare( pos, size, GUIProperties::GetInstance().GetGUIColourPalette().GetA( eActive ) );
   // Draw labels
   sf::Rect<double> textSize( 0.0, 0.5, 1.0 / 5.0, 0.5 );
   Text minLimit( RectPtr( fRect->NewDaughter( textSize, Rect::eLocal ) ) );

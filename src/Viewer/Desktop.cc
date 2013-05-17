@@ -46,7 +46,7 @@ Desktop::EventLoop()
   fEventPanel->EventLoop();
   fFramePanel->EventLoop();
   fFrameManager->EventLoop();
-  fScalingPanel->EventLoop();
+  fScalingPanel->EventLoop(); // EventPanel must be first
 }
 
 void 
