@@ -45,7 +45,8 @@ public:
   void Reset() { fMinValue = fMinLimit; fMaxValue = fMaxLimit; }
   /// Set the axis size (also functions as the zoom out)
   void SetLimits( const double min,
-                  const double max );
+                  const double max,
+                  bool override = true );
   /// Get the current max
   double GetMax() const { return fMaxValue; }
   /// Get the current min

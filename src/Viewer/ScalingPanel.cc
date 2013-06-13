@@ -9,6 +9,7 @@ using namespace std;
 #include <Viewer/AxisScaler.hh>
 #include <Viewer/PersistLabel.hh>
 #include <Viewer/DataSelector.hh>
+#include <Viewer/Button.hh>
 using namespace Viewer;
 
 ScalingPanel::ScalingPanel( RectPtr rect,
@@ -29,10 +30,18 @@ ScalingPanel::EventLoop()
   const RIDS::Event& event = DataSelector::GetInstance().GetEvent();  
   if( DataSelector::GetInstance().EventChanged() ) // Event has changed
     dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->SetLimits( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin(),
-                                                                   event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax() );
+                                                                   event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax(),
+                                                                   false );
   if( fRenderState.HasChanged() || fAutoScale ) // Data types changed...
-    dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->Reset();
-
+    {
+      dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->SetLimits( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin(),
+                                                                     event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax(),
+                                                                     true );
+    
+      fRenderState.ChangeScaling( dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->GetMin(),
+                                  dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->GetMax() );
+    }
+  
   while( !fEvents.empty() )
     {
       switch( fEvents.front().fguiID )
@@ -43,6 +52,17 @@ ScalingPanel::EventLoop()
           break;
         case eAutoScale: 
           fAutoScale = dynamic_cast<GUIs::PersistLabel*>( fGUIs[eAutoScale] )->GetState();
+          break;
+        case eZoomIn:
+          dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->ZoomIn();
+          break;
+        case eZoomOut:
+          dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->SetLimits( event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMin(),
+                                                                         event.GetSource( fRenderState.GetDataSource() ).GetType( fRenderState.GetDataType() ).GetMax(),
+                                                                         true );
+          dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->Reset();
+          fRenderState.ChangeScaling( dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->GetMin(),
+                                      dynamic_cast<GUIs::AxisScaler*>( fGUIs[eScaling] )->GetMax() );
           break;
         }
       fEvents.pop();
@@ -91,6 +111,18 @@ ScalingPanel::LoadGUIConfiguration( const ConfigurationTable* config )
               {
                 fGUIs[eAutoScale] = fGUIManager.NewGUI<GUIs::PersistLabel>( posRect, objectConfig->GetI( "effect" ) );
                 dynamic_cast<GUIs::PersistLabel*>( fGUIs[eAutoScale] )->Initialise( 16, "AutoScale" );
+              }
+              break;
+            case eZoomIn:
+              {
+                fGUIs[eAutoScale] = fGUIManager.NewGUI<GUIs::Button>( posRect, objectConfig->GetI( "effect" ) );
+                dynamic_cast<GUIs::Button*>( fGUIs[eAutoScale] )->Initialise( 20 );
+              }
+              break;
+            case eZoomOut:
+              {
+                fGUIs[eAutoScale] = fGUIManager.NewGUI<GUIs::Button>( posRect, objectConfig->GetI( "effect" ) );
+                dynamic_cast<GUIs::Button*>( fGUIs[eAutoScale] )->Initialise( 21 );
               }
               break;
             }

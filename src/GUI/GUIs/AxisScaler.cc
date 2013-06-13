@@ -32,17 +32,23 @@ AxisScaler::~AxisScaler()
 
 void 
 AxisScaler::SetLimits( const double min,
-                       const double max )
+                       const double max,
+                       bool override )
 {
-  if( min > fMinLimit && fMinValue < min )
-    fMinLimit = fMinValue;
+  if( override )
+    {
+      fMaxLimit = max;
+      fMinLimit = min;
+      fMaxValue = max;
+      fMinValue = min;
+    }
   else
-    fMinLimit = 0.8 * min;
-    
-  if( max < fMaxLimit && fMaxValue > max )
-    fMaxLimit = fMaxValue;
-  else
-    fMaxLimit = 1.2 * max;
+    {
+      if( max > fMaxLimit )
+        fMaxLimit = max;
+      if( min < fMinLimit )
+        fMinLimit = min;
+    }
 }
 
 GUIEvent 

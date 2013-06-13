@@ -11,7 +11,7 @@ def xercesc(env):
 def geant4(env):
     env.ParseConfig( "geant4-config --cflags --libs" )
     env.ParseConfig( "clhep-config --include --libs" )
-    env.Append( LIBS=['Xm'] ) # Required for some reason??
+    #env.Append( LIBS=['Xm'] ) # Required for some reason??
 
 # Appends ROOT
 def root(env):

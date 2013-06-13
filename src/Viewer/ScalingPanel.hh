@@ -42,7 +42,7 @@ protected:
   RenderState& fRenderState; /// < Reference to the current desktop render state
   bool fAutoScale; /// < Auto rescale?
 private:
-  enum { eScaling = 0, eAutoScale = 1 };//eScaleReset = 1, eScaleZoomIn = 2, eScaleZoomOut = 3
+  enum { eScaling = 0, eAutoScale = 1, eZoomIn = 2, eZoomOut = 3 };
 };
 
 } //::Viewer

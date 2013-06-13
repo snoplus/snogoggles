@@ -48,8 +48,10 @@
     <gui effect="5" x="10.0" y="325.0" width="140.0" height="80.0" system="resolution" />
   </EventPanel>
   <ScalingPanel x="0.5" y="-70.0" width="360.0" height="70.0" system="mixed">
-    <gui effect="0" x="0.0" y="0.0" width="300.0" height="40.0" system="resolution" />
+    <gui effect="0" x="0.0" y="0.0" width="340.0" height="40.0" system="resolution" />
     <gui effect="1" x="0.0" y="40.0" width="120.0" height="20.0" system="resolution" />
+    <gui effect="2" x="340.0" y="0.0" width="20.0" height="20.0" system="resolution" />
+    <gui effect="3" x="340.0" y="20.0" width="20.0" height="20.0" system="resolution" />
   </ScalingPanel>
   <FrameManager x="0.0" y="0.0" width="0.9" height="1.0"/>
 
